@@ -1,5 +1,3 @@
-import type { CSSProperties } from "react";
-
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
@@ -8,12 +6,8 @@ import { locale as rootLocale } from "next/root-params";
 import { hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { getLangDir } from "rtl-detect";
-import { Toaster } from "sonner";
 
 import { AppRootProvider } from "@/app/[locale]/_components/app-root-provider";
-import { NewRelicBrowserAgent } from "@/components/analytics/new-relic-browser-agent";
-import { JsonLdScript } from "@/components/seo/json-ld-script";
-import { SpinnerAssetsPreloader } from "@/components/ui/spinner-assets-preloader";
 import { routing } from "@/i18n/routing";
 import { getStoresConfig } from "@/lib/actions/config/get-stores-config";
 import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
@@ -21,7 +15,6 @@ import { PROTOCOL } from "@/lib/constants/environment";
 import { LOCALE_TO_DOMAIN } from "@/lib/constants/i18n";
 import { Stores } from "@/lib/models/stores";
 import { getLocaleInfo, initializePageLocale } from "@/lib/utils/locale";
-import { generateOrganizationSchema } from "@/lib/utils/schema";
 import { isOk } from "@/lib/utils/service-result";
 
 import type { Locale } from "@/lib/constants/i18n";
@@ -169,7 +162,7 @@ export default async function RootLayout({
   const direction = getLangDir(locale);
 
   // Generate Organization schema for SEO (appears on all pages)
-  const organizationSchema = generateOrganizationSchema(locale as Locale);
+  // const organizationSchema = generateOrganizationSchema(locale as Locale);
 
   return (
     <html
@@ -181,17 +174,16 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NewRelicBrowserAgent />
-        {/* Organization Schema - appears on every page */}
+        {/* <NewRelicBrowserAgent />
         <JsonLdScript data={organizationSchema} id="organization-schema" />
-        <SpinnerAssetsPreloader />
+        <SpinnerAssetsPreloader /> */}
 
         <AppRootProvider locale={locale as Locale}>
           {children}
           {dialog}
           {drawer}
         </AppRootProvider>
-        <Toaster
+        {/* <Toaster
           expand
           mobileOffset={{
             bottom: "40px",
@@ -207,7 +199,7 @@ export default async function RootLayout({
               "--width": "390px",
             } as CSSProperties
           }
-        />
+        /> */}
       </body>
     </html>
   );
