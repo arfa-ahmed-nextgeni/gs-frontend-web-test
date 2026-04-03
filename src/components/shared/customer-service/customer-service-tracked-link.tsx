@@ -1,61 +1,79 @@
-"use client";
+import type { ComponentProps, PropsWithChildren } from "react";
 
-import { ComponentProps, PropsWithChildren } from "react";
+import { Link } from "@/i18n/navigation";
+import { CUSTOMER_SERVICE_TRACKING_DATA_ATTRIBUTE } from "@/lib/constants/tracking-data-attributes";
 
-import { EmailLink } from "@/components/shared/email-link";
-import { PhoneLink } from "@/components/shared/phone-link";
-import { WhatsAppLink } from "@/components/shared/whatsapp-link";
-import {
-  trackCsCall,
-  trackCsEmail,
-  trackCsWhatsapp,
-} from "@/lib/analytics/events";
-
-type EmailLinkProps = PropsWithChildren<
-  Omit<ComponentProps<typeof EmailLink>, "children">
+type CustomerServiceLinkProps = PropsWithChildren<
+  Omit<ComponentProps<typeof Link>, "children" | "href">
 >;
 
-type PhoneLinkProps = PropsWithChildren<
-  Omit<ComponentProps<typeof PhoneLink>, "children">
->;
+type EmailLinkProps = {
+  email: string;
+} & CustomerServiceLinkProps;
 
-type WhatsAppLinkProps = PropsWithChildren<
-  Omit<ComponentProps<typeof WhatsAppLink>, "children">
->;
+type PhoneLinkProps = {
+  phoneNumber: string;
+} & CustomerServiceLinkProps;
+
+type WhatsAppLinkProps = {
+  phoneNumber: string;
+} & CustomerServiceLinkProps;
 
 export function CustomerServiceCallLink({
   children,
-  ...phoneLinkProps
+  phoneNumber,
+  ...linkProps
 }: PhoneLinkProps) {
   return (
-    <PhoneLink {...phoneLinkProps} onClick={trackCsCall}>
+    <Link
+      {...linkProps}
+      href={`tel:${phoneNumber}`}
+      {...{
+        [CUSTOMER_SERVICE_TRACKING_DATA_ATTRIBUTE]: "call",
+      }}
+    >
       {children}
-    </PhoneLink>
+    </Link>
   );
 }
 
 export function CustomerServiceEmailLink({
   children,
-  ...emailLinkProps
+  email,
+  ...linkProps
 }: EmailLinkProps) {
   return (
-    <EmailLink {...emailLinkProps} onClick={trackCsEmail}>
+    <Link
+      {...linkProps}
+      href={`mailto:${email}`}
+      {...{
+        [CUSTOMER_SERVICE_TRACKING_DATA_ATTRIBUTE]: "email",
+      }}
+    >
       {children}
-    </EmailLink>
+    </Link>
   );
 }
 
 export function CustomerServiceWhatsappLink({
   children,
-  ...whatsappLinkProps
+  phoneNumber,
+  ...linkProps
 }: WhatsAppLinkProps) {
   return (
-    <WhatsAppLink
-      {...whatsappLinkProps}
-      onClick={trackCsWhatsapp}
+    <Link
+      {...linkProps}
+      href={getWhatsappUrl(phoneNumber)}
       target="_blank"
+      {...{
+        [CUSTOMER_SERVICE_TRACKING_DATA_ATTRIBUTE]: "whatsapp",
+      }}
     >
       {children}
-    </WhatsAppLink>
+    </Link>
   );
+}
+
+function getWhatsappUrl(phoneNumber: string) {
+  return `https://wa.me/${phoneNumber.replace(/\s+/g, "").replace(/[^\d+]/g, "")}`;
 }

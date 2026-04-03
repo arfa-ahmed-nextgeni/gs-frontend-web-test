@@ -6,13 +6,13 @@ definitions:
 pipelines:
   branches:
     develop:
-      - step:
-          name: "Run SonarQube Scan"
-          image: sonarsource/sonar-scanner-cli:5.0.1
-          script:
-            - git clone -b develop --single-branch https://$BITBUCKET_USERNAME:$BITBUCKET_APP_PASSWORD@bitbucket.org/goldenscent/magnext_config.git
-            - cp magnext_config/magnext_web/sonarqube-dev-project.properties .
-            - sonar-scanner -Dproject.settings=sonarqube-dev-project.properties -Dsonar.token=$SONAR_TOKEN || true
+      #- step:
+      #   name: "Run SonarQube Scan"
+      #  image: sonarsource/sonar-scanner-cli:5.0.1
+      # script:
+      #  - git clone -b develop --single-branch https://$BITBUCKET_USERNAME:$BITBUCKET_APP_PASSWORD@bitbucket.org/goldenscent/magnext_config.git
+      # - cp magnext_config/magnext_web/sonarqube-dev-project.properties .
+      #- sonar-scanner -Dproject.settings=sonarqube-dev-project.properties -Dsonar.token=$SONAR_TOKEN || true
       - step:
           name: "Build Next.js Application"
           image: node:24-alpine
@@ -22,11 +22,17 @@ pipelines:
             - nextcache
           script:
             # Install libc6-compat for better compatibility
-            - apk add --no-cache libc6-compat git
+            - apk add --no-cache libc6-compat git aws-cli jq
 
             # Fetch environment variables first
-            - git clone -b develop --single-branch https://$BITBUCKET_USERNAME:$BITBUCKET_APP_PASSWORD@bitbucket.org/goldenscent/magnext_config.git
-            - cp magnext_config/magnext_web/.env .env
+            #- git clone -b develop --single-branch https://$BITBUCKET_USERNAME:$BITBUCKET_APP_PASSWORD@bitbucket.org/goldenscent/magnext_config.git
+            - |
+              aws secretsmanager get-secret-value \
+                --secret-id "dev-magnext-web" \
+                --region eu-central-1 \
+                --query SecretString \
+                --output text | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' > .env
+            #- cp magnext_config/magnext_web/.env .env
             - cat .env
 
             # Install dependencies
@@ -45,17 +51,21 @@ pipelines:
           caches:
             - docker
           script:
-            - aws ecr get-login-password --region me-south-1 | docker login --username AWS --password-stdin 439413061158.dkr.ecr.me-south-1.amazonaws.com
-
+            #- aws ecr get-login-password --region me-south-1 | docker login --username AWS --password-stdin 439413061158.dkr.ecr.me-south-1.amazonaws.com
+            - aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 439413061158.dkr.ecr.eu-central-1.amazonaws.com
             # Build Docker image (now with pre-built Next.js app)
-            - docker build -t magnext_web .
-
+            #- docker build -t magnext_web .
+            - docker build -t dev_magnext_web .
             # Tag images with latest and build number
-            - docker tag magnext_web:latest 439413061158.dkr.ecr.me-south-1.amazonaws.com/magnext_web:latest
-            - docker tag magnext_web:latest 439413061158.dkr.ecr.me-south-1.amazonaws.com/magnext_web:$BITBUCKET_BUILD_NUMBER
+            #- docker tag magnext_web:latest 439413061158.dkr.ecr.me-south-1.amazonaws.com/magnext_web:latest
+            #- docker tag magnext_web:latest 439413061158.dkr.ecr.me-south-1.amazonaws.com/magnext_web:$BITBUCKET_BUILD_NUMBER
+            - docker tag dev_magnext_web:latest 439413061158.dkr.ecr.eu-central-1.amazonaws.com/dev_magnext_web:latest
+            - docker tag dev_magnext_web:latest 439413061158.dkr.ecr.eu-central-1.amazonaws.com/dev_magnext_web:$BITBUCKET_BUILD_NUMBER
             # Push images to AWS ECR
-            - docker push 439413061158.dkr.ecr.me-south-1.amazonaws.com/magnext_web:latest
-            - docker push 439413061158.dkr.ecr.me-south-1.amazonaws.com/magnext_web:$BITBUCKET_BUILD_NUMBER
+            #- docker push 439413061158.dkr.ecr.me-south-1.amazonaws.com/magnext_web:latest
+            #- docker push 439413061158.dkr.ecr.me-south-1.amazonaws.com/magnext_web:$BITBUCKET_BUILD_NUMBER
+            - docker push 439413061158.dkr.ecr.eu-central-1.amazonaws.com/dev_magnext_web:latest
+            - docker push 439413061158.dkr.ecr.eu-central-1.amazonaws.com/dev_magnext_web:$BITBUCKET_BUILD_NUMBER
       - step:
           name: Refresh ArgoCD App
           image: amazon/aws-cli

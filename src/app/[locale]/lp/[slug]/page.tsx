@@ -26,6 +26,7 @@ import { SeoContentBlock } from "@/lib/models/seo-content-block";
 import { TopTrendsCategoryProducts } from "@/lib/models/top-trends-category-products";
 import { WebsiteBanner } from "@/lib/models/website-banner";
 import { WebsiteMultipleBanners } from "@/lib/models/website-multiple-banners";
+import { cn } from "@/lib/utils";
 import { initializePageLocale } from "@/lib/utils/locale";
 import {
   generateAbsoluteCanonicalUrl,
@@ -201,7 +202,13 @@ export default async function LandingPage({
           case TabContentType.CategoryProducts:
             const categoryProducts = content as CategoryProducts;
             return (
-              <Container className="lg:mt-7.5 mt-5" key={`content-${index}`}>
+              <Container
+                className={cn(
+                  "lg:mt-7.5 mt-5",
+                  "[contain-intrinsic-size:0_540px] [content-visibility:auto] lg:[content-visibility:visible]"
+                )}
+                key={`content-${index}`}
+              >
                 <CategoryProductsCarousel
                   {...categoryProducts}
                   lpRow={index + 1}
@@ -221,17 +228,27 @@ export default async function LandingPage({
             );
           case TabContentType.FlashSale:
             return (
-              <Container key={`content-${index}`}>
+              <Container
+                className="[contain-intrinsic-size:0_640px] [content-visibility:auto] lg:[content-visibility:visible]"
+                key={`content-${index}`}
+              >
                 <FlashSaleSection {...(content as FlashSale)} />
               </Container>
             );
           case TabContentType.RecentlyViewedProducts:
             return (
-              <RecentlyViewedProducts
-                data={content as RecentlyViewedProductsContent}
+              <Container
+                className={cn(
+                  "lg:mt-7.5 mt-5",
+                  "[contain-intrinsic-size:0_540px] [content-visibility:auto] lg:[content-visibility:visible]"
+                )}
                 key={`content-${index}`}
-                lpRow={index + 1}
-              />
+              >
+                <RecentlyViewedProducts
+                  data={content as RecentlyViewedProductsContent}
+                  lpRow={index + 1}
+                />
+              </Container>
             );
           case TabContentType.SeoContentBlock:
             const seoContentBlock = content as SeoContentBlock;
@@ -242,7 +259,13 @@ export default async function LandingPage({
             );
           case TabContentType.TopTrendsCategoryProducts:
             return (
-              <Container className="lg:mt-7.5 mt-5" key={`content-${index}`}>
+              <Container
+                className={cn(
+                  "lg:mt-7.5 mt-5",
+                  "[contain-intrinsic-size:0_820px] [content-visibility:auto]"
+                )}
+                key={`content-${index}`}
+              >
                 <TopTrendsSection
                   bannerColumn={1}
                   bannerLpId={slug}

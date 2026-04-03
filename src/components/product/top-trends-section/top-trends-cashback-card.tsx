@@ -1,8 +1,9 @@
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { BLOCKS, MARKS } from "@contentful/rich-text-types";
 
-import { SignupNowButton } from "@/components/product/signup-now-button";
 import { TopTrendsBannerImage } from "@/components/product/top-trends-section/top-trends-banner-image";
+import { TopTrendsSignupButton } from "@/components/product/top-trends-section/top-trends-signup-button";
+import { ROUTES } from "@/lib/constants/routes";
 import { TopTrendsCategoryProducts } from "@/lib/models/top-trends-category-products";
 
 export const TopTrendsCashbackCard = ({
@@ -38,8 +39,11 @@ export const TopTrendsCashbackCard = ({
           })
         : ""}
     </div>
-    {navigateTo?.includes("/customer/login") && (
-      <SignupNowButton className={buttonClassName} title={buttonText ?? ""} />
+    {navigateTo?.includes(ROUTES.CUSTOMER.LOGIN) && (
+      <TopTrendsSignupButton
+        className={buttonClassName}
+        title={buttonText ?? ""}
+      />
     )}
     <TopTrendsBannerImage
       className={currencyClassName}

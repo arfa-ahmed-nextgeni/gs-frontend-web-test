@@ -5,7 +5,7 @@ import { useRef } from "react";
 import dynamic from "next/dynamic";
 
 import { MobileSearchDialogFallback } from "@/components/search/mobile-search/mobile-search-dialog-fallback";
-import { useSearch } from "@/components/search/search-container";
+import { useSearchUiState } from "@/components/search/search-container";
 
 const MobileSearchDialog = dynamic(
   () =>
@@ -22,7 +22,7 @@ export function DeferredMobileSearchDialog({
 }: {
   isMobile: boolean;
 }) {
-  const { showMobileSearch } = useSearch();
+  const { showMobileSearch } = useSearchUiState();
   const hasOpenedRef = useRef(false);
 
   if (showMobileSearch) {

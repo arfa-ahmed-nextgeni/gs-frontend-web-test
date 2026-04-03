@@ -16,11 +16,11 @@ import { useLocale } from "next-intl";
 
 import { useCookieConsent } from "@/contexts/cookie-consent-context";
 import { useUserProperties } from "@/hooks/analytics/use-user-properties";
-import { getAnalyticsManagerToolsEnabledByCookieConsent } from "@/lib/analytics/analytics-cookie-consent-policy";
 import {
   analyticsManager,
   type TrackOptions,
 } from "@/lib/analytics/analytics-manager";
+import { getAnalyticsManagerToolsEnabledByCookieConsent } from "@/lib/analytics/utils/analytics-cookie-consent";
 import { SessionStorageKey } from "@/lib/constants/session-storage";
 import { removeSessionStorage } from "@/lib/utils/session-storage";
 
@@ -47,10 +47,7 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
   const { cookieConsentStatus } = useCookieConsent();
   const userProperties = useUserProperties();
   const enabledAnalyticsManagerTools = useMemo(
-    () =>
-      getAnalyticsManagerToolsEnabledByCookieConsent({
-        cookieConsentStatus,
-      }),
+    () => getAnalyticsManagerToolsEnabledByCookieConsent(cookieConsentStatus),
     [cookieConsentStatus]
   );
   const enabledAnalyticsManagerToolsKey = useMemo(
@@ -121,17 +118,7 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
     cookieConsentStatus,
   ]);
 
-  useEffect(() => {
-    // Allow analyticsManager.track/page/identify to bootstrap initialization
-    // on first real usage while keeping the public event API unchanged.
-    analyticsManager.setRequestInitialization(initializeAnalytics);
-
-    return () => {
-      analyticsManager.setRequestInitialization(null);
-    };
-  }, [initializeAnalytics]);
-
-  useEffect(() => {
+  const requestAnalyticsInitialization = useCallback(() => {
     if (
       cookieConsentStatus === "loading" ||
       enabledAnalyticsManagerTools.length === 0 ||
@@ -140,27 +127,25 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    // Warm analytics up after hydration when the browser is idle so launch and
-    // user-property flows still work even if the user never triggers an event.
-    if (typeof window.requestIdleCallback === "function") {
-      const idleId = window.requestIdleCallback(initializeAnalytics);
-
-      return () => {
-        window.cancelIdleCallback(idleId);
-      };
-    }
-
-    const timeoutId = window.setTimeout(initializeAnalytics, 1000);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-    };
+    void initializeAnalytics();
   }, [
     cookieConsentStatus,
     enabledAnalyticsManagerTools.length,
-    isReady,
     initializeAnalytics,
+    isReady,
   ]);
+
+  useEffect(() => {
+    analyticsManager.setRequestInitialization(requestAnalyticsInitialization);
+
+    return () => {
+      analyticsManager.setRequestInitialization(null);
+    };
+  }, [requestAnalyticsInitialization]);
+
+  useEffect(() => {
+    requestAnalyticsInitialization();
+  }, [requestAnalyticsInitialization]);
 
   useEffect(() => {
     const handlePageHide = () => {

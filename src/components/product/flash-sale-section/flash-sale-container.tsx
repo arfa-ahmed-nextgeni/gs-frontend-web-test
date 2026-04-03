@@ -2,22 +2,28 @@
 
 import { PropsWithChildren, useLayoutEffect, useState } from "react";
 
-import { getFlashSaleVisibility } from "@/components/product/flash-sale-section/flash-sale-visibility";
-import { FlashSale } from "@/lib/models/flash-sale";
+import {
+  type FlashSaleVisibilityInput,
+  getFlashSaleVisibility,
+} from "@/components/product/flash-sale-section/flash-sale-visibility";
 
 export const FlashSaleContainer = ({
   children,
-  flashSale,
+  visibility,
 }: PropsWithChildren<{
-  flashSale: FlashSale;
+  visibility: FlashSaleVisibilityInput;
 }>) => {
+  const { endTime, hasContent, startTime } = visibility;
   const [shouldRender, setShouldRender] = useState(false);
 
   useLayoutEffect(() => {
     let timeoutId: null | number = null;
 
     const syncVisibility = () => {
-      const nextVisibility = getFlashSaleVisibility(flashSale, Date.now());
+      const nextVisibility = getFlashSaleVisibility(
+        { endTime, hasContent, startTime },
+        Date.now()
+      );
       setShouldRender(nextVisibility.shouldRender);
 
       if (nextVisibility.nextTransitionAt === null) {
@@ -35,13 +41,7 @@ export const FlashSaleContainer = ({
         window.clearTimeout(timeoutId);
       }
     };
-  }, [
-    flashSale,
-    flashSale.endTime,
-    flashSale.products,
-    flashSale.saleProductCategoryId,
-    flashSale.startTime,
-  ]);
+  }, [endTime, hasContent, startTime]);
 
   if (shouldRender) {
     return children;

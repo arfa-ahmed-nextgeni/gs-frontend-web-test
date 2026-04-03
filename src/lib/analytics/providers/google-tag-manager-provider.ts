@@ -2,8 +2,8 @@ import "client-only";
 
 import { sendGTMEvent } from "@next/third-parties/google";
 
-import { ANALYTICS_TOOL } from "@/lib/analytics/analytics-tool";
 import { clickOriginTrackingManager } from "@/lib/analytics/click-origin-tracking-manager";
+import { ANALYTICS_TOOL } from "@/lib/analytics/constants/analytics-tool";
 import { AnalyticsProvider } from "@/lib/analytics/providers/base-provider";
 import { buildMetaProperties } from "@/lib/analytics/utils/build-meta-properties";
 import { flattenGAProperties } from "@/lib/analytics/utils/flatten-ga-properties";

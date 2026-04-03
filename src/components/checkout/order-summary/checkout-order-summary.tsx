@@ -101,7 +101,8 @@ export function CheckoutOrderSummary({
     : (data?.itemCount || 0) > 0;
 
   function CarouselWheelHandler() {
-    const { api } = useCarousel();
+    const { api, canScrollNext, canScrollPrev, scrollNext, scrollPrev } =
+      useCarousel();
     const containerRef = useRef<HTMLElement | null>(null);
 
     useEffect(() => {
@@ -136,10 +137,10 @@ export function CheckoutOrderSummary({
         // Vertical scroll (trackpad) - convert to horizontal carousel scroll
         if (Math.abs(e.deltaY) > 5) {
           e.preventDefault();
-          if (e.deltaY > 0 && api.canScrollNext()) {
-            api.scrollNext();
-          } else if (e.deltaY < 0 && api.canScrollPrev()) {
-            api.scrollPrev();
+          if (e.deltaY > 0 && canScrollNext) {
+            scrollNext();
+          } else if (e.deltaY < 0 && canScrollPrev) {
+            scrollPrev();
           }
         }
       };
@@ -154,7 +155,7 @@ export function CheckoutOrderSummary({
           handleWheel as EventListener
         );
       };
-    }, [api]);
+    }, [api, canScrollNext, canScrollPrev, scrollNext, scrollPrev]);
 
     // Create a hidden div to help find the carousel container
     return (

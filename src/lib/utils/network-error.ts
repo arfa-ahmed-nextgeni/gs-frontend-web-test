@@ -4,6 +4,10 @@ export function createTimeoutError(): Error {
   return timeoutError;
 }
 
+export function isAbortError(error: unknown): boolean {
+  return error instanceof Error && error.name === "AbortError";
+}
+
 /**
  * Detects if an error is a network-related error (no internet, connection issues, etc.)
  */
@@ -26,7 +30,7 @@ export function isNetworkError(error: unknown): boolean {
   }
 
   // Client-side: check navigator.onLine and error types
-  if (!navigator.onLine) {
+  if (typeof navigator !== "undefined" && !navigator.onLine) {
     return true;
   }
 
@@ -43,8 +47,7 @@ export function isNetworkError(error: unknown): boolean {
       message.includes("err_network") ||
       message.includes("err_internet_disconnected") ||
       error.name === "TypeError" ||
-      error.name === "NetworkError" ||
-      error.name === "AbortError"
+      error.name === "NetworkError"
     );
   }
 
@@ -59,9 +62,8 @@ export function isTimeoutError(error: unknown): boolean {
     const message = error.message.toLowerCase();
     return (
       message.includes("timeout") ||
-      message.includes("aborted") ||
-      error.name === "TimeoutError" ||
-      error.name === "AbortError"
+      message.includes("timed out") ||
+      error.name === "TimeoutError"
     );
   }
   return false;

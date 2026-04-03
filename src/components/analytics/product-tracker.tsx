@@ -2,19 +2,16 @@
 
 import { useEffect, useEffectEvent, useRef } from "react";
 
+import { useProductDetails } from "@/contexts/product-details-context";
 import { trackViewProduct } from "@/lib/analytics/events";
 import { buildProductPropertiesFromDetails } from "@/lib/analytics/utils/build-properties";
-import { ProductDetailsModel } from "@/lib/models/product-details-model";
-
-interface ProductTrackerProps {
-  product: ProductDetailsModel;
-}
 
 /**
  * Client component to track product detail page view event
  * Placed in product page to track when users view a product
  */
-export function ProductTracker({ product }: ProductTrackerProps) {
+export function ProductTracker() {
+  const { product, selectedProduct } = useProductDetails();
   const hasTracked = useRef(false);
 
   const trackViewProductEvent = useEffectEvent(() => {
@@ -22,7 +19,9 @@ export function ProductTracker({ product }: ProductTrackerProps) {
       return;
     }
 
-    trackViewProduct(buildProductPropertiesFromDetails(product));
+    trackViewProduct(
+      buildProductPropertiesFromDetails(selectedProduct, product)
+    );
     hasTracked.current = true;
   });
 

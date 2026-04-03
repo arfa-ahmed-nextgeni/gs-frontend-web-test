@@ -1,12 +1,5 @@
-"use client";
-
 import { ArrowDownIcon } from "@/components/icons/arrow-down-icon";
-import { BlurLink } from "@/components/ui/blur-link";
-import { Link } from "@/i18n/navigation";
-import { usePathname } from "@/i18n/navigation";
-import { clickOriginTrackingManager } from "@/lib/analytics/click-origin-tracking-manager";
-import { trackDesktopNavigation } from "@/lib/analytics/events";
-import { ROUTES } from "@/lib/constants/routes";
+import { DesktopNavigationLink } from "@/layouts/header/desktop-navigation/desktop-navigation-link";
 import { ZIndexLevel } from "@/lib/constants/ui";
 import { MainMenuType, SubMenuType } from "@/lib/types/ui-types";
 import { cn } from "@/lib/utils";
@@ -41,12 +34,10 @@ const getCategoryUrl = (path: string): string => {
   return path;
 };
 
-// Track navigation click with Lp and optional Category data
-const handleNavClick = (
+const getTrackingPayload = (
   item: MainMenuType,
   subMenuItem: SubMenuType | undefined,
-  position: number,
-  currentLpId?: string
+  position: number
 ) => {
   const path = subMenuItem ? subMenuItem.path : item.path;
   const urlType = getUrlType(path ?? "");
@@ -56,28 +47,20 @@ const handleNavClick = (
       ? String(subMenuItem?.id ?? item.id)
       : undefined;
 
-  clickOriginTrackingManager.setClickOrigin({
-    lp_id: currentLpId,
-    origin: "top_menu",
-    position,
-  });
-
-  trackDesktopNavigation(
-    {
-      category_id: categoryId,
-      lp_id: String(item.id),
-      lp_name: item.label,
-      title,
-      type: "webview",
-      url_type: urlType,
-    },
-    subMenuItem
+  return {
+    categoryId,
+    categoryMeta: subMenuItem
       ? {
           "category.id": String(subMenuItem.id),
           "category.name": subMenuItem.label,
         }
-      : undefined
-  );
+      : undefined,
+    lpId: String(item.id),
+    lpName: item.label,
+    position,
+    title,
+    urlType,
+  };
 };
 
 export const DesktopNavigationList = ({
@@ -85,24 +68,9 @@ export const DesktopNavigationList = ({
 }: {
   navigationItems: MainMenuType[];
 }) => {
-  const pathname = usePathname();
   const safeNavigationItems = Array.isArray(navigationItems)
     ? navigationItems
     : [];
-
-  // Extract current LP ID from pathname if on a landing page
-  // Landing pages follow pattern: /[locale]/lp/[slug]
-  const getCurrentLpId = (): string | undefined => {
-    const lpMatch = pathname.match(/\/lp\/([^/]+)/);
-    if (lpMatch && lpMatch[1]) {
-      return lpMatch[1];
-    } else if (pathname === ROUTES.HOME) {
-      return "landing page";
-    }
-    return undefined;
-  };
-
-  const currentLpId = getCurrentLpId();
 
   return (
     <nav className="transition-default flex flex-row justify-between">
@@ -113,8 +81,8 @@ export const DesktopNavigationList = ({
 
         const hasSubmenu = Boolean(
           item?.subMenu &&
-            Array.isArray(item.subMenu) &&
-            item.subMenu.length > 0
+          Array.isArray(item.subMenu) &&
+          item.subMenu.length > 0
         );
 
         const finalPath = getCategoryUrl(item.path || "");
@@ -122,36 +90,30 @@ export const DesktopNavigationList = ({
         return (
           <div className="group relative" key={item.id}>
             {hasSubmenu ? (
-              <BlurLink
+              <DesktopNavigationLink
                 className="text-text-primary before:transition-default group-hover:before:bg-bg-success relative inline-flex items-center py-4 text-sm font-medium before:absolute before:bottom-[-1px] before:start-0 before:h-[4px] before:w-0 before:content-[''] group-hover:outline-none group-hover:before:w-full"
                 hoverLevel={ZIndexLevel.z5}
                 href={finalPath}
-                onClick={() =>
-                  handleNavClick(item, undefined, index + 1, currentLpId)
-                }
-                prefetch={false}
                 style={item.style || undefined}
                 title={item.label}
+                tracking={getTrackingPayload(item, undefined, index + 1)}
               >
                 {item.label}
 
                 {hasSubmenu && (
                   <ArrowDownIcon className="transition-default ms-1 group-hover:rotate-180" />
                 )}
-              </BlurLink>
+              </DesktopNavigationLink>
             ) : (
-              <Link
+              <DesktopNavigationLink
                 className="text-text-primary before:transition-default group-hover:before:bg-bg-success relative inline-flex items-center py-4 text-sm font-medium before:absolute before:bottom-[-1px] before:start-0 before:h-[4px] before:w-0 before:content-[''] group-hover:outline-none group-hover:before:w-full"
                 href={finalPath}
-                onClick={() =>
-                  handleNavClick(item, undefined, index + 1, currentLpId)
-                }
-                prefetch={false}
                 style={item.style || undefined}
                 title={item.label}
+                tracking={getTrackingPayload(item, undefined, index + 1)}
               >
                 {item.label}
-              </Link>
+              </DesktopNavigationLink>
             )}
 
             {hasSubmenu && (
@@ -162,7 +124,7 @@ export const DesktopNavigationList = ({
                   }
                   const submenuPath = getCategoryUrl(menu.path || "");
                   return (
-                    <BlurLink
+                    <DesktopNavigationLink
                       className={cn(
                         "text-text-primary border-border-base transition-default hover:bg-bg-surface flex items-center justify-between border-b px-7 py-2 text-sm last:border-none",
                         "hover:pl-10 hover:pr-7 rtl:hover:pl-7 rtl:hover:pr-10"
@@ -170,14 +132,12 @@ export const DesktopNavigationList = ({
                       hoverLevel={ZIndexLevel.z5}
                       href={submenuPath}
                       key={menu.id}
-                      onClick={() =>
-                        handleNavClick(item, menu, index + 1, currentLpId)
-                      }
                       style={menu.style || undefined}
                       title={menu.label}
+                      tracking={getTrackingPayload(item, menu, index + 1)}
                     >
                       {menu.label}
-                    </BlurLink>
+                    </DesktopNavigationLink>
                   );
                 })}
               </div>

@@ -1,0 +1,2039 @@
+{
+  "stores": {
+    "1": {
+      "store_view_id": "1",
+      "store_id": "1",
+      "website_id": "1",
+      "group_id": "1",
+      "website_code": "sa",
+      "store_code": "main_website_store",
+      "storeview_code": "en_sa",
+      "language_name": "English",
+      "sort_order": "7",
+      "is_active": true,
+      "country": "SA",
+      "country_code": "SA",
+      "country_code_prefix": "",
+      "lang_country": "en_US",
+      "contact_number": "+966115101840",
+      "contact_email": "care@goldenscent.com",
+      "checkout_url": "https://dev.web.goldenscent.com/en/en_sa/checkout/",
+      "currencies": {
+        "1": {
+          "symbol": " SAR",
+          "name": "Saudi Riyal",
+          "code": "SAR"
+        }
+      },
+      "fees": {
+        "flatrate": "0",
+        "cashondelivery": null
+      },
+      "free_shipping_base_subtotal": "200",
+      "free_shipping_subtotal": "200",
+      "cashondelivery_max": "600",
+      "cashondelivery_min": null,
+      "shipping_options_banner": "https://gs-euw1-magento-assets-prod.s3-eu-west-1.amazonaws.com/static/2020/07/Checkout/ar_apple_pay_5_off-July20.jpg",
+      "allow_gift_order": "1",
+      "estimated_delivery_days": [
+        {
+          "method": "lambdashipping_flatrate",
+          "days_en": "Delivery in 5-8 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_redboxlocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_fodellocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "gifting",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_express",
+          "days_en": "Delivery in 3 hours",
+          "days_ar": "التوصيل خلال 3 ساعات"
+        }
+      ],
+      "required_version": "2",
+      "force_update": "0",
+      "force_update_title": "New Update Available!",
+      "force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "android_required_version": "2",
+      "android_force_update": "0",
+      "android_force_update_title": "New Update Available!",
+      "android_force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "promo_text": "Checkout B0 Banner",
+      "payment_list_banner": "https://gs-euw1-magento-assets-prod.s3.eu-west-1.amazonaws.com/static/checkout/B0-Pay-smarter-EN.jpg",
+      "checkout_disclaimer": "We provide you 100% secure online payment methods for a unique shopping experience.",
+      "installments_widget_sorting": ["tabby", "tamara"],
+      "tabby_installments_config": {
+        "enabled": 1
+      },
+      "tamara_installments_config": {
+        "enabled": 1
+      },
+      "tamara_pay_later_config": {
+        "enabled": 0
+      },
+      "checkoutPayEnabled": 1,
+      "gs_tamara_installments": {
+        "android": [
+          {
+            "version": "3.16.0",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "ios": [
+          {
+            "version": "6.16",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "web": [
+          {
+            "version": null,
+            "installments": 4,
+            "operator": null
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ]
+      },
+      "gs_tabby_pay_later": 0,
+      "tabby_installment_status": "N/A",
+      "tabby_pay_later_status": "N/A",
+      "whatsapp_number": "N/A",
+      "states_required_in": ["US"],
+      "talon_promo_msg": "Test QA",
+      "extra_text": "N/A",
+      "ksa_address_enabled": "1",
+      "ksa_address_enabled_web": "1",
+      "ksa_address_enabled_app": "1",
+      "loyalty_rules_effect": "5",
+      "loyalty_reward_threshold": 150,
+      "loyalty_reward_tiers": [
+        {
+          "level_name": "1",
+          "above": 150,
+          "percentage": 10,
+          "cap": null
+        },
+        {
+          "level_name": "2",
+          "above": 299,
+          "percentage": 12.5,
+          "cap": 50
+        },
+        {
+          "level_name": "3",
+          "above": 499,
+          "percentage": 15,
+          "cap": 100
+        },
+        {
+          "level_name": "4",
+          "above": 999,
+          "percentage": 30,
+          "cap": 300
+        },
+        {
+          "level_name": "5",
+          "above": 2499,
+          "percentage": 40,
+          "cap": 700
+        }
+      ],
+      "express_delivery": {
+        "pp_text": "Get it within 3 hours in Riyadh!",
+        "cart_banner_text": "Eligible for 3 hour delivery in <u>Riyadh and Mecca</u>",
+        "cities": {
+          "Riyadh": "00:05:00 - 23:59:00",
+          "Jeddah": "00:00:00 - 23:59:59"
+        },
+        "start_hour": "00:05:00",
+        "end_hour": "23:59:00",
+        "cut_off_time": "20:59:00",
+        "cut_off_time_message": "Today's Bullet Delivery time has ended."
+      }
+    },
+    "2": {
+      "store_view_id": "2",
+      "store_id": "2",
+      "website_id": "1",
+      "group_id": "1",
+      "website_code": "sa",
+      "store_code": "main_website_store",
+      "storeview_code": "ar_sa",
+      "language_name": "العربية",
+      "sort_order": "6",
+      "is_active": true,
+      "country": "SA",
+      "country_code": "SA",
+      "country_code_prefix": "",
+      "lang_country": "ar_SA",
+      "contact_number": "+966115101840",
+      "contact_email": "care@goldenscent.com",
+      "checkout_url": "https://dev.web.goldenscent.com/ar_sa/checkout/",
+      "currencies": {
+        "1": {
+          "symbol": " ر.س",
+          "name": "ريال سعودي",
+          "code": "SAR"
+        }
+      },
+      "fees": {
+        "flatrate": "0",
+        "cashondelivery": null
+      },
+      "free_shipping_base_subtotal": "200",
+      "free_shipping_subtotal": "200",
+      "cashondelivery_max": "600",
+      "cashondelivery_min": null,
+      "shipping_options_banner": "https://gs-euw1-magento-assets-prod.s3-eu-west-1.amazonaws.com/static/2020/07/Checkout/ar_apple_pay_5_off-July20.jpg",
+      "allow_gift_order": "1",
+      "estimated_delivery_days": [
+        {
+          "method": "lambdashipping_flatrate",
+          "days_en": "Delivery in 5 - 8 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_redboxlocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_fodellocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "gifting",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_express",
+          "days_en": "Delivery in 3 hours",
+          "days_ar": "التوصيل خلال 3 ساعات"
+        }
+      ],
+      "required_version": "2",
+      "force_update": "0",
+      "force_update_title": "نسخة جديدة متوفرة hello ",
+      "force_update_message": "يرجى تحديث التطبيق إلى النسخة الجديدة. تم إضافة تحسينات مهمة لجعل تجربة التسوق الخاصة بك أكثر متعة. hello ",
+      "android_required_version": "2",
+      "android_force_update": "0",
+      "android_force_update_title": "نسخة جديدة متوفرة hello ",
+      "android_force_update_message": "يرجى تحديث التطبيق إلى النسخة الجديدة. تم إضافة تحسينات مهمة لجعل تجربة التسوق الخاصة بك أكثر متعة. hello ",
+      "promo_text": "Checkout B0 Banner",
+      "payment_list_banner": "https://gs-euw1-magento-assets-prod.s3.eu-west-1.amazonaws.com/static/checkout/B0-Pay-smarter-EN.jpg",
+      "checkout_disclaimer": "We provide you 100% secure online payment methods for a unique shopping experience.",
+      "installments_widget_sorting": ["tabby", "tamara"],
+      "tabby_installments_config": {
+        "enabled": 1
+      },
+      "tamara_installments_config": {
+        "enabled": 1
+      },
+      "tamara_pay_later_config": {
+        "enabled": 0
+      },
+      "checkoutPayEnabled": 1,
+      "gs_tamara_installments": {
+        "android": [
+          {
+            "version": "3.16.0",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "ios": [
+          {
+            "version": "6.16",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "web": [
+          {
+            "version": null,
+            "installments": 4,
+            "operator": null
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ]
+      },
+      "gs_tabby_pay_later": 0,
+      "tabby_installment_status": "N/A",
+      "tabby_pay_later_status": "N/A",
+      "whatsapp_number": "N/A",
+      "states_required_in": ["US"],
+      "talon_promo_msg": "حلّق مع Rewards Talon! اجمع النقاط بسرعة، واحصل على مزايا تفوق التوقعات.",
+      "extra_text": "N/A",
+      "ksa_address_enabled": "1",
+      "ksa_address_enabled_web": "1",
+      "ksa_address_enabled_app": "1",
+      "loyalty_rules_effect": "5",
+      "loyalty_reward_threshold": 150,
+      "loyalty_reward_tiers": [
+        {
+          "level_name": "1",
+          "above": 150,
+          "percentage": 10,
+          "cap": null
+        },
+        {
+          "level_name": "2",
+          "above": 299,
+          "percentage": 12.5,
+          "cap": 50
+        },
+        {
+          "level_name": "3",
+          "above": 499,
+          "percentage": 15,
+          "cap": 100
+        },
+        {
+          "level_name": "4",
+          "above": 999,
+          "percentage": 30,
+          "cap": 300
+        },
+        {
+          "level_name": "5",
+          "above": 2499,
+          "percentage": 40,
+          "cap": 700
+        }
+      ],
+      "express_delivery": {
+        "pp_text": "احصل عليه خلال 3 ساعات في الرياض و مكة",
+        "cart_banner_text": "مؤهّل لتوصيل خلال 3 ساعات في <u> الرياض و مكة</u>",
+        "cities": {
+          "Riyadh": "00:05:00 - 23:59:00"
+        },
+        "start_hour": "00:05:00",
+        "end_hour": "23:59:00",
+        "cut_off_time": "20:59:00",
+        "cut_off_time_message": "انتهى وقت التوصيل السريع لليوم."
+      }
+    },
+    "3": {
+      "store_view_id": "3",
+      "store_id": "3",
+      "website_id": "2",
+      "group_id": "2",
+      "website_code": "kw",
+      "store_code": "kuwait_store",
+      "storeview_code": "ar_kw",
+      "language_name": "العربية",
+      "sort_order": "2",
+      "is_active": true,
+      "country": "KW",
+      "country_code": "KW",
+      "country_code_prefix": "",
+      "lang_country": "ar_SA",
+      "contact_number": "+966115101840",
+      "contact_email": "care@goldenscent.com",
+      "checkout_url": "https://dev-kw.web.goldenscent.com/ar_kw/checkout/",
+      "currencies": {
+        "1": {
+          "symbol": " د.ك",
+          "name": "دينار كويتي",
+          "code": "KWD"
+        }
+      },
+      "fees": {
+        "flatrate": "0",
+        "cashondelivery": null
+      },
+      "free_shipping_base_subtotal": "",
+      "free_shipping_subtotal": "",
+      "cashondelivery_max": "600",
+      "cashondelivery_min": null,
+      "shipping_options_banner": "https://gs-euw1-magento-assets-prod.s3-eu-west-1.amazonaws.com/static/2020/07/Checkout/ar_apple_pay_5_off-July20.jpg",
+      "allow_gift_order": "1",
+      "estimated_delivery_days": [
+        {
+          "method": "lambdashipping_flatrate",
+          "days_en": "Delivery in 5 - 8 Days",
+          "days_ar": "خلال 5 - 8 أيام"
+        },
+        {
+          "method": "lambdashipping_redboxlocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_fodellocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "gifting",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_express",
+          "days_en": "Delivery in 3 hours",
+          "days_ar": "التوصيل خلال 3 ساعات"
+        }
+      ],
+      "required_version": "2",
+      "force_update": "0",
+      "force_update_title": "New Update Available!",
+      "force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "android_required_version": "2",
+      "android_force_update": "0",
+      "android_force_update_title": "New Update Available!",
+      "android_force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "promo_text": "Checkout B0 Banner",
+      "payment_list_banner": "https://gs-euw1-magento-assets-prod.s3.eu-west-1.amazonaws.com/static/checkout/B0-Pay-smarter-EN.jpg",
+      "checkout_disclaimer": "We provide you 100% secure online payment methods for a unique shopping experience.",
+      "installments_widget_sorting": ["tabby", "tamara"],
+      "tabby_installments_config": {
+        "enabled": 1
+      },
+      "tamara_installments_config": {
+        "enabled": 1
+      },
+      "tamara_pay_later_config": {
+        "enabled": 0
+      },
+      "checkoutPayEnabled": 0,
+      "gs_tamara_installments": {
+        "android": [
+          {
+            "version": "3.16.0",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "ios": [
+          {
+            "version": "6.16",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "web": [
+          {
+            "version": null,
+            "installments": 4,
+            "operator": null
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ]
+      },
+      "gs_tabby_pay_later": 0,
+      "tabby_installment_status": "N/A",
+      "tabby_pay_later_status": "N/A",
+      "whatsapp_number": "N/A",
+      "states_required_in": ["US"],
+      "talon_promo_msg": "Loyalty Points message",
+      "extra_text": "N/A",
+      "ksa_address_enabled": "1",
+      "ksa_address_enabled_web": "1",
+      "ksa_address_enabled_app": "1"
+    },
+    "4": {
+      "store_view_id": "4",
+      "store_id": "4",
+      "website_id": "2",
+      "group_id": "2",
+      "website_code": "kw",
+      "store_code": "kuwait_store",
+      "storeview_code": "en_kw",
+      "language_name": "English",
+      "sort_order": "3",
+      "is_active": true,
+      "country": "KW",
+      "country_code": "KW",
+      "country_code_prefix": "",
+      "lang_country": "en_US",
+      "contact_number": "+966115101840",
+      "contact_email": "care@goldenscent.com",
+      "checkout_url": "https://dev-kw.web.goldenscent.com/en/en_kw/checkout/",
+      "currencies": {
+        "1": {
+          "symbol": " KWD",
+          "name": "Kuwaiti Dinar",
+          "code": "KWD"
+        }
+      },
+      "fees": {
+        "flatrate": "0",
+        "cashondelivery": null
+      },
+      "free_shipping_base_subtotal": "",
+      "free_shipping_subtotal": "",
+      "cashondelivery_max": "600",
+      "cashondelivery_min": null,
+      "shipping_options_banner": "https://gs-euw1-magento-assets-prod.s3-eu-west-1.amazonaws.com/static/2020/07/Checkout/ar_apple_pay_5_off-July20.jpg",
+      "allow_gift_order": "1",
+      "estimated_delivery_days": [
+        {
+          "method": "lambdashipping_flatrate",
+          "days_en": "Delivery in 5 - 8 Days",
+          "days_ar": "خلال 5 - 8 أيام"
+        },
+        {
+          "method": "lambdashipping_redboxlocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_fodellocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "gifting",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_express",
+          "days_en": "Delivery in 3 hours",
+          "days_ar": "التوصيل خلال 3 ساعات"
+        }
+      ],
+      "required_version": "2",
+      "force_update": "0",
+      "force_update_title": "New Update Available!",
+      "force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "android_required_version": "2",
+      "android_force_update": "0",
+      "android_force_update_title": "New Update Available!",
+      "android_force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "promo_text": "Checkout B0 Banner",
+      "payment_list_banner": "https://gs-euw1-magento-assets-prod.s3.eu-west-1.amazonaws.com/static/checkout/B0-Pay-smarter-EN.jpg",
+      "checkout_disclaimer": "We provide you 100% secure online payment methods for a unique shopping experience.",
+      "installments_widget_sorting": ["tabby", "tamara"],
+      "tabby_installments_config": {
+        "enabled": 1
+      },
+      "tamara_installments_config": {
+        "enabled": 1
+      },
+      "tamara_pay_later_config": {
+        "enabled": 0
+      },
+      "checkoutPayEnabled": 0,
+      "gs_tamara_installments": {
+        "android": [
+          {
+            "version": "3.16.0",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "ios": [
+          {
+            "version": "6.16",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "web": [
+          {
+            "version": null,
+            "installments": 4,
+            "operator": null
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ]
+      },
+      "gs_tabby_pay_later": 0,
+      "tabby_installment_status": "N/A",
+      "tabby_pay_later_status": "N/A",
+      "whatsapp_number": "N/A",
+      "states_required_in": ["US"],
+      "talon_promo_msg": "Loyalty Points message",
+      "extra_text": "N/A",
+      "ksa_address_enabled": "1",
+      "ksa_address_enabled_web": "1",
+      "ksa_address_enabled_app": "1"
+    },
+    "5": {
+      "store_view_id": "5",
+      "store_id": "5",
+      "website_id": "3",
+      "group_id": "3",
+      "website_code": "ae",
+      "store_code": "emirates_store",
+      "storeview_code": "ar_ae",
+      "language_name": "العربية",
+      "sort_order": "5",
+      "is_active": true,
+      "country": "AE",
+      "country_code": "AE",
+      "country_code_prefix": "",
+      "lang_country": "ar_SA",
+      "contact_number": "+966115101840",
+      "contact_email": "care@goldenscent.com",
+      "checkout_url": "https://dev-ae.web.goldenscent.com/ar_ae/checkout/",
+      "currencies": {
+        "1": {
+          "symbol": " د.إ",
+          "name": "درهم إماراتي",
+          "code": "AED"
+        }
+      },
+      "fees": {
+        "flatrate": "0",
+        "cashondelivery": null
+      },
+      "free_shipping_base_subtotal": "",
+      "free_shipping_subtotal": "",
+      "cashondelivery_max": "600",
+      "cashondelivery_min": null,
+      "shipping_options_banner": "https://gs-euw1-magento-assets-prod.s3-eu-west-1.amazonaws.com/static/2020/07/Checkout/ar_apple_pay_5_off-July20.jpg",
+      "allow_gift_order": "1",
+      "estimated_delivery_days": [
+        {
+          "method": "lambdashipping_flatrate",
+          "days_en": "Delivery in 5 - 8 Days",
+          "days_ar": "خلال 5 - 8 أيام"
+        },
+        {
+          "method": "lambdashipping_redboxlocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_fodellocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "gifting",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_express",
+          "days_en": "Delivery in 3 hours",
+          "days_ar": "التوصيل خلال 3 ساعات"
+        }
+      ],
+      "required_version": "2",
+      "force_update": "0",
+      "force_update_title": "New Update Available!",
+      "force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "android_required_version": "2",
+      "android_force_update": "0",
+      "android_force_update_title": "New Update Available!",
+      "android_force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "promo_text": "Checkout B0 Banner",
+      "payment_list_banner": "https://gs-euw1-magento-assets-prod.s3.eu-west-1.amazonaws.com/static/checkout/B0-Pay-smarter-EN.jpg",
+      "checkout_disclaimer": "We provide you 100% secure online payment methods for a unique shopping experience.",
+      "installments_widget_sorting": ["tabby", "tamara"],
+      "tabby_installments_config": {
+        "enabled": 1
+      },
+      "tamara_installments_config": {
+        "enabled": 1
+      },
+      "tamara_pay_later_config": {
+        "enabled": 0
+      },
+      "checkoutPayEnabled": 0,
+      "gs_tamara_installments": {
+        "android": [
+          {
+            "version": "3.16.0",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "ios": [
+          {
+            "version": "6.16",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "web": [
+          {
+            "version": null,
+            "installments": 4,
+            "operator": null
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ]
+      },
+      "gs_tabby_pay_later": 0,
+      "tabby_installment_status": "N/A",
+      "tabby_pay_later_status": "N/A",
+      "whatsapp_number": "N/A",
+      "states_required_in": ["US"],
+      "talon_promo_msg": "Loyalty Points message",
+      "extra_text": "N/A",
+      "ksa_address_enabled": "1",
+      "ksa_address_enabled_web": "1",
+      "ksa_address_enabled_app": "1",
+      "loyalty_rules_effect": "5",
+      "loyalty_reward_threshold": 150,
+      "loyalty_reward_tiers": [
+        {
+          "level_name": "1",
+          "above": 150,
+          "percentage": 10,
+          "cap": null
+        },
+        {
+          "level_name": "2",
+          "above": 299,
+          "percentage": 12.5,
+          "cap": 50
+        },
+        {
+          "level_name": "3",
+          "above": 499,
+          "percentage": 15,
+          "cap": 100
+        },
+        {
+          "level_name": "4",
+          "above": 999,
+          "percentage": 30,
+          "cap": 300
+        },
+        {
+          "level_name": "5",
+          "above": 2499,
+          "percentage": 40,
+          "cap": 700
+        }
+      ]
+    },
+    "6": {
+      "store_view_id": "6",
+      "store_id": "6",
+      "website_id": "3",
+      "group_id": "3",
+      "website_code": "ae",
+      "store_code": "emirates_store",
+      "storeview_code": "en_ae",
+      "language_name": "English",
+      "sort_order": "4",
+      "is_active": true,
+      "country": "AE",
+      "country_code": "AE",
+      "country_code_prefix": "",
+      "lang_country": "en_US",
+      "contact_number": "+966115101840",
+      "contact_email": "care@goldenscent.com",
+      "checkout_url": "https://dev-ae.web.goldenscent.com/en/en_ae/checkout/",
+      "currencies": {
+        "1": {
+          "symbol": " AED",
+          "name": "United Arab Emirates Dirham",
+          "code": "AED"
+        }
+      },
+      "fees": {
+        "flatrate": "0",
+        "cashondelivery": null
+      },
+      "free_shipping_base_subtotal": "",
+      "free_shipping_subtotal": "",
+      "cashondelivery_max": "600",
+      "cashondelivery_min": null,
+      "shipping_options_banner": "https://gs-euw1-magento-assets-prod.s3-eu-west-1.amazonaws.com/static/2020/07/Checkout/ar_apple_pay_5_off-July20.jpg",
+      "allow_gift_order": "1",
+      "estimated_delivery_days": [
+        {
+          "method": "lambdashipping_flatrate",
+          "days_en": "Delivery in 5 - 8 Days",
+          "days_ar": "خلال 5 - 8 أيام"
+        },
+        {
+          "method": "lambdashipping_redboxlocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_fodellocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "gifting",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_express",
+          "days_en": "Delivery in 3 hours",
+          "days_ar": "التوصيل خلال 3 ساعات"
+        }
+      ],
+      "required_version": "2",
+      "force_update": "0",
+      "force_update_title": "New Update Available!",
+      "force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "android_required_version": "2",
+      "android_force_update": "0",
+      "android_force_update_title": "New Update Available!",
+      "android_force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "promo_text": "Checkout B0 Banner",
+      "payment_list_banner": "https://gs-euw1-magento-assets-prod.s3.eu-west-1.amazonaws.com/static/checkout/B0-Pay-smarter-EN.jpg",
+      "checkout_disclaimer": "We provide you 100% secure online payment methods for a unique shopping experience.",
+      "installments_widget_sorting": ["tabby", "tamara"],
+      "tabby_installments_config": {
+        "enabled": 1
+      },
+      "tamara_installments_config": {
+        "enabled": 1
+      },
+      "tamara_pay_later_config": {
+        "enabled": 0
+      },
+      "checkoutPayEnabled": 0,
+      "gs_tamara_installments": {
+        "android": [
+          {
+            "version": "3.16.0",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "ios": [
+          {
+            "version": "6.16",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "web": [
+          {
+            "version": null,
+            "installments": 4,
+            "operator": null
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ]
+      },
+      "gs_tabby_pay_later": 0,
+      "tabby_installment_status": "N/A",
+      "tabby_pay_later_status": "N/A",
+      "whatsapp_number": "N/A",
+      "states_required_in": ["US"],
+      "talon_promo_msg": "Loyalty Points message",
+      "extra_text": "N/A",
+      "ksa_address_enabled": "1",
+      "ksa_address_enabled_web": "1",
+      "ksa_address_enabled_app": "1",
+      "loyalty_rules_effect": "5",
+      "loyalty_reward_threshold": 150,
+      "loyalty_reward_tiers": [
+        {
+          "level_name": "1",
+          "above": 150,
+          "percentage": 10,
+          "cap": null
+        },
+        {
+          "level_name": "2",
+          "above": 299,
+          "percentage": 12.5,
+          "cap": 50
+        },
+        {
+          "level_name": "3",
+          "above": 499,
+          "percentage": 15,
+          "cap": 100
+        },
+        {
+          "level_name": "4",
+          "above": 999,
+          "percentage": 30,
+          "cap": 300
+        },
+        {
+          "level_name": "5",
+          "above": 2499,
+          "percentage": 40,
+          "cap": 700
+        }
+      ]
+    },
+    "7": {
+      "store_view_id": "7",
+      "store_id": "7",
+      "website_id": "4",
+      "group_id": "7",
+      "website_code": "iq",
+      "store_code": "iraq_store",
+      "storeview_code": "ar_iq",
+      "language_name": "العربية",
+      "sort_order": "0",
+      "is_active": true,
+      "country": "IQ",
+      "country_code": "IQ",
+      "country_code_prefix": "",
+      "lang_country": "en_US",
+      "contact_number": "+966115101840",
+      "contact_email": "care@goldenscent.com",
+      "checkout_url": "https://dev-iq.web.goldenscent.com/ar_iq/checkout/",
+      "currencies": {
+        "1": {
+          "symbol": " USD",
+          "name": "US Dollar",
+          "code": "USD"
+        }
+      },
+      "fees": {
+        "flatrate": "0",
+        "cashondelivery": null
+      },
+      "free_shipping_base_subtotal": "",
+      "free_shipping_subtotal": "",
+      "cashondelivery_max": "600",
+      "cashondelivery_min": null,
+      "shipping_options_banner": "https://gs-euw1-magento-assets-prod.s3-eu-west-1.amazonaws.com/static/2020/07/Checkout/ar_apple_pay_5_off-July20.jpg",
+      "allow_gift_order": "1",
+      "estimated_delivery_days": [
+        {
+          "method": "lambdashipping_flatrate",
+          "days_en": "Delivery in 5 - 8 Days",
+          "days_ar": "خلال 5 - 8 أيام"
+        },
+        {
+          "method": "lambdashipping_redboxlocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_fodellocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "gifting",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_express",
+          "days_en": "Delivery in 3 hours",
+          "days_ar": "التوصيل خلال 3 ساعات"
+        }
+      ],
+      "required_version": "2",
+      "force_update": "0",
+      "force_update_title": "New Update Available!",
+      "force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "android_required_version": "2",
+      "android_force_update": "0",
+      "android_force_update_title": "New Update Available!",
+      "android_force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "promo_text": "Checkout B0 Banner",
+      "payment_list_banner": "https://gs-euw1-magento-assets-prod.s3.eu-west-1.amazonaws.com/static/checkout/B0-Pay-smarter-EN.jpg",
+      "checkout_disclaimer": "We provide you 100% secure online payment methods for a unique shopping experience.",
+      "installments_widget_sorting": ["tabby", "tamara"],
+      "tabby_installments_config": {
+        "enabled": 1
+      },
+      "tamara_installments_config": {
+        "enabled": 1
+      },
+      "tamara_pay_later_config": {
+        "enabled": 0
+      },
+      "checkoutPayEnabled": 1,
+      "gs_tamara_installments": {
+        "android": [
+          {
+            "version": "3.16.0",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "ios": [
+          {
+            "version": "6.16",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "web": [
+          {
+            "version": null,
+            "installments": 4,
+            "operator": null
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ]
+      },
+      "gs_tabby_pay_later": 0,
+      "tabby_installment_status": "N/A",
+      "tabby_pay_later_status": "N/A",
+      "whatsapp_number": "N/A",
+      "states_required_in": ["US"],
+      "talon_promo_msg": "Loyalty Points message",
+      "extra_text": "N/A",
+      "ksa_address_enabled": "1",
+      "ksa_address_enabled_web": "1",
+      "ksa_address_enabled_app": "1",
+      "loyalty_rules_effect": "5",
+      "loyalty_reward_threshold": 150,
+      "loyalty_reward_tiers": [
+        {
+          "level_name": "1",
+          "above": 150,
+          "percentage": 10,
+          "cap": null
+        },
+        {
+          "level_name": "2",
+          "above": 299,
+          "percentage": 12.5,
+          "cap": 50
+        },
+        {
+          "level_name": "3",
+          "above": 499,
+          "percentage": 15,
+          "cap": 100
+        },
+        {
+          "level_name": "4",
+          "above": 999,
+          "percentage": 30,
+          "cap": 300
+        },
+        {
+          "level_name": "5",
+          "above": 2499,
+          "percentage": 40,
+          "cap": 700
+        }
+      ],
+      "express_delivery": {
+        "pp_text": "Get it within 3 hours in Riyadh!",
+        "cart_banner_text": "Eligible for 3 hour delivery in <u>Riyadh</u>",
+        "cities": [],
+        "start_hour": "00:05:00",
+        "end_hour": "23:59:00",
+        "cut_off_time": "20:59:00",
+        "cut_off_time_message": "Today's Bullet Delivery time has ended."
+      }
+    },
+    "8": {
+      "store_view_id": "8",
+      "store_id": "8",
+      "website_id": "4",
+      "group_id": "7",
+      "website_code": "iq",
+      "store_code": "iraq_store",
+      "storeview_code": "en_iq",
+      "language_name": "English",
+      "sort_order": "3",
+      "is_active": true,
+      "country": "IQ",
+      "country_code": "IQ",
+      "country_code_prefix": "",
+      "lang_country": "en_US",
+      "contact_number": "+966115101840",
+      "contact_email": "care@goldenscent.com",
+      "checkout_url": "https://dev-iq.web.goldenscent.com/en/en_iq/checkout/",
+      "currencies": {
+        "1": {
+          "symbol": " USD",
+          "name": "US Dollar",
+          "code": "USD"
+        }
+      },
+      "fees": {
+        "flatrate": "0",
+        "cashondelivery": null
+      },
+      "free_shipping_base_subtotal": "",
+      "free_shipping_subtotal": "",
+      "cashondelivery_max": "600",
+      "cashondelivery_min": null,
+      "shipping_options_banner": "https://gs-euw1-magento-assets-prod.s3-eu-west-1.amazonaws.com/static/2020/07/Checkout/ar_apple_pay_5_off-July20.jpg",
+      "allow_gift_order": "1",
+      "estimated_delivery_days": [
+        {
+          "method": "lambdashipping_flatrate",
+          "days_en": "Delivery in 5 - 8 Days",
+          "days_ar": "خلال 5 - 8 أيام"
+        },
+        {
+          "method": "lambdashipping_redboxlocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_fodellocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "gifting",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_express",
+          "days_en": "Delivery in 3 hours",
+          "days_ar": "التوصيل خلال 3 ساعات"
+        }
+      ],
+      "required_version": "2",
+      "force_update": "0",
+      "force_update_title": "New Update Available!",
+      "force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "android_required_version": "2",
+      "android_force_update": "0",
+      "android_force_update_title": "New Update Available!",
+      "android_force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "promo_text": "Checkout B0 Banner",
+      "payment_list_banner": "https://gs-euw1-magento-assets-prod.s3.eu-west-1.amazonaws.com/static/checkout/B0-Pay-smarter-EN.jpg",
+      "checkout_disclaimer": "We provide you 100% secure online payment methods for a unique shopping experience.",
+      "installments_widget_sorting": ["tabby", "tamara"],
+      "tabby_installments_config": {
+        "enabled": 1
+      },
+      "tamara_installments_config": {
+        "enabled": 1
+      },
+      "tamara_pay_later_config": {
+        "enabled": 0
+      },
+      "checkoutPayEnabled": 1,
+      "gs_tamara_installments": {
+        "android": [
+          {
+            "version": "3.16.0",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "ios": [
+          {
+            "version": "6.16",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "web": [
+          {
+            "version": null,
+            "installments": 4,
+            "operator": null
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ]
+      },
+      "gs_tabby_pay_later": 0,
+      "tabby_installment_status": "N/A",
+      "tabby_pay_later_status": "N/A",
+      "whatsapp_number": "N/A",
+      "states_required_in": ["US"],
+      "talon_promo_msg": "Loyalty Points message",
+      "extra_text": "N/A",
+      "ksa_address_enabled": "1",
+      "ksa_address_enabled_web": "1",
+      "ksa_address_enabled_app": "1",
+      "loyalty_rules_effect": "5",
+      "loyalty_reward_threshold": 150,
+      "loyalty_reward_tiers": [
+        {
+          "level_name": "1",
+          "above": 150,
+          "percentage": 10,
+          "cap": null
+        },
+        {
+          "level_name": "2",
+          "above": 299,
+          "percentage": 12.5,
+          "cap": 50
+        },
+        {
+          "level_name": "3",
+          "above": 499,
+          "percentage": 15,
+          "cap": 100
+        },
+        {
+          "level_name": "4",
+          "above": 999,
+          "percentage": 30,
+          "cap": 300
+        },
+        {
+          "level_name": "5",
+          "above": 2499,
+          "percentage": 40,
+          "cap": 700
+        }
+      ],
+      "express_delivery": {
+        "pp_text": "Get it within 3 hours in Riyadh!",
+        "cart_banner_text": "Eligible for 3 hour delivery in <u>Riyadh</u>",
+        "cities": [],
+        "start_hour": "00:05:00",
+        "end_hour": "23:59:00",
+        "cut_off_time": "20:59:00",
+        "cut_off_time_message": "Today's Bullet Delivery time has ended."
+      }
+    },
+    "10": {
+      "store_view_id": "10",
+      "store_id": "10",
+      "website_id": "7",
+      "group_id": "10",
+      "website_code": "global",
+      "store_code": "global_store",
+      "storeview_code": "ar_global",
+      "language_name": "العربية",
+      "sort_order": "0",
+      "is_active": true,
+      "country": "US",
+      "country_code": "US",
+      "country_code_prefix": "",
+      "lang_country": "ar_SA",
+      "contact_number": "+966115101840",
+      "contact_email": "care@goldenscent.com",
+      "checkout_url": "https://dev-global.web.goldenscent.com/ar_global/checkout/",
+      "currencies": {
+        "1": {
+          "symbol": " USD",
+          "name": "US Dollar",
+          "code": "USD"
+        }
+      },
+      "fees": {
+        "flatrate": "0",
+        "cashondelivery": null
+      },
+      "free_shipping_base_subtotal": "",
+      "free_shipping_subtotal": "",
+      "cashondelivery_max": "600",
+      "cashondelivery_min": null,
+      "shipping_options_banner": "https://gs-euw1-magento-assets-prod.s3-eu-west-1.amazonaws.com/static/2020/07/Checkout/ar_apple_pay_5_off-July20.jpg",
+      "allow_gift_order": "1",
+      "estimated_delivery_days": [
+        {
+          "method": "lambdashipping_flatrate",
+          "days_en": "Delivery in 5 - 8 Days",
+          "days_ar": "خلال 5 - 8 أيام"
+        },
+        {
+          "method": "lambdashipping_redboxlocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_fodellocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "gifting",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_express",
+          "days_en": "Delivery in 3 hours",
+          "days_ar": "التوصيل خلال 3 ساعات"
+        }
+      ],
+      "required_version": "2",
+      "force_update": "0",
+      "force_update_title": "تحديث جديد متاح!",
+      "force_update_message": "لقد أضفنا بعض الميزات الجديدة ونحن متحمسون لسماع ملاحظاتك. قم بتحديث التطبيق واستمتع بتجربتنا!",
+      "android_required_version": "2",
+      "android_force_update": "0",
+      "android_force_update_title": "تحديث جديد متاح!",
+      "android_force_update_message": "لقد أضفنا بعض الميزات الجديدة ونحن متحمسون لسماع ملاحظاتك. قم بتحديث التطبيق واستمتع بتجربتنا!",
+      "promo_text": "Checkout B0 Banner",
+      "payment_list_banner": "https://gs-euw1-magento-assets-prod.s3.eu-west-1.amazonaws.com/static/checkout/B0-Pay-smarter-EN.jpg",
+      "checkout_disclaimer": "We provide you 100% secure online payment methods for a unique shopping experience.",
+      "installments_widget_sorting": [],
+      "tabby_installments_config": {
+        "enabled": 0
+      },
+      "tamara_installments_config": {
+        "enabled": 0
+      },
+      "tamara_pay_later_config": {
+        "enabled": 0
+      },
+      "checkoutPayEnabled": 1,
+      "gs_tamara_installments": {
+        "android": [
+          {
+            "version": "3.16.0",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "ios": [
+          {
+            "version": "6.16",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "web": [
+          {
+            "version": null,
+            "installments": 4,
+            "operator": null
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ]
+      },
+      "gs_tabby_pay_later": 0,
+      "tabby_installment_status": "N/A",
+      "tabby_pay_later_status": "N/A",
+      "whatsapp_number": "N/A",
+      "states_required_in": ["US"],
+      "talon_promo_msg": "Loyalty Points message",
+      "extra_text": "N/A",
+      "ksa_address_enabled": "1",
+      "ksa_address_enabled_web": "1",
+      "ksa_address_enabled_app": "1",
+      "express_delivery": {
+        "pp_text": "Get it within 3 hours in Riyadh!",
+        "cart_banner_text": "Eligible for 3 hour delivery in <u>Riyadh</u>",
+        "cities": [],
+        "start_hour": "00:05:00",
+        "end_hour": "23:59:00",
+        "cut_off_time": "20:59:00",
+        "cut_off_time_message": "Today's Bullet Delivery time has ended."
+      }
+    },
+    "13": {
+      "store_view_id": "13",
+      "store_id": "13",
+      "website_id": "7",
+      "group_id": "10",
+      "website_code": "global",
+      "store_code": "global_store",
+      "storeview_code": "en_global",
+      "language_name": "English",
+      "sort_order": "0",
+      "is_active": true,
+      "country": "US",
+      "country_code": "US",
+      "country_code_prefix": "",
+      "lang_country": "en_US",
+      "contact_number": "+966115101840",
+      "contact_email": "care@goldenscent.com",
+      "checkout_url": "https://dev-global.web.goldenscent.com/en/en_global/checkout/",
+      "currencies": {
+        "1": {
+          "symbol": " USD",
+          "name": "US Dollar",
+          "code": "USD"
+        }
+      },
+      "fees": {
+        "flatrate": "0",
+        "cashondelivery": null
+      },
+      "free_shipping_base_subtotal": "",
+      "free_shipping_subtotal": "",
+      "cashondelivery_max": "600",
+      "cashondelivery_min": null,
+      "shipping_options_banner": "https://gs-euw1-magento-assets-prod.s3-eu-west-1.amazonaws.com/static/2020/07/Checkout/ar_apple_pay_5_off-July20.jpg",
+      "allow_gift_order": "1",
+      "estimated_delivery_days": [
+        {
+          "method": "lambdashipping_flatrate",
+          "days_en": "Delivery in 5 - 8 Days",
+          "days_ar": "خلال 5 - 8 أيام"
+        },
+        {
+          "method": "lambdashipping_redboxlocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_fodellocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "gifting",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_express",
+          "days_en": "Delivery in 3 hours",
+          "days_ar": "التوصيل خلال 3 ساعات"
+        }
+      ],
+      "required_version": "2",
+      "force_update": "0",
+      "force_update_title": "New Update Available!",
+      "force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "android_required_version": "2",
+      "android_force_update": "0",
+      "android_force_update_title": "New Update Available!",
+      "android_force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "promo_text": "Checkout B0 Banner",
+      "payment_list_banner": "https://gs-euw1-magento-assets-prod.s3.eu-west-1.amazonaws.com/static/checkout/B0-Pay-smarter-EN.jpg",
+      "checkout_disclaimer": "We provide you 100% secure online payment methods for a unique shopping experience.",
+      "installments_widget_sorting": [],
+      "tabby_installments_config": {
+        "enabled": 0
+      },
+      "tamara_installments_config": {
+        "enabled": 0
+      },
+      "tamara_pay_later_config": {
+        "enabled": 0
+      },
+      "checkoutPayEnabled": 1,
+      "gs_tamara_installments": {
+        "android": [
+          {
+            "version": "3.16.0",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "ios": [
+          {
+            "version": "6.16",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "web": [
+          {
+            "version": null,
+            "installments": 4,
+            "operator": null
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ]
+      },
+      "gs_tabby_pay_later": 0,
+      "tabby_installment_status": "N/A",
+      "tabby_pay_later_status": "N/A",
+      "whatsapp_number": "N/A",
+      "states_required_in": ["US"],
+      "talon_promo_msg": "Loyalty Points message",
+      "extra_text": "N/A",
+      "ksa_address_enabled": "1",
+      "ksa_address_enabled_web": "1",
+      "ksa_address_enabled_app": "1",
+      "express_delivery": {
+        "pp_text": "Get it within 3 hours in Riyadh!",
+        "cart_banner_text": "Eligible for 3 hour delivery in <u>Riyadh</u>",
+        "cities": [],
+        "start_hour": "00:05:00",
+        "end_hour": "23:59:00",
+        "cut_off_time": "20:59:00",
+        "cut_off_time_message": "Today's Bullet Delivery time has ended."
+      }
+    },
+    "14": {
+      "store_view_id": "14",
+      "store_id": "14",
+      "website_id": "8",
+      "group_id": "11",
+      "website_code": "om",
+      "store_code": "oman_store",
+      "storeview_code": "en_om",
+      "language_name": "English",
+      "sort_order": "0",
+      "is_active": true,
+      "country": "OM",
+      "country_code": "OM",
+      "country_code_prefix": "",
+      "lang_country": "en_US",
+      "contact_number": "+966115101840",
+      "contact_email": "care@goldenscent.com",
+      "checkout_url": "https://dev-om.web.goldenscent.com/en/en_om/checkout/",
+      "currencies": {
+        "1": {
+          "symbol": " OMR",
+          "name": "Omani Riyal",
+          "code": "OMR"
+        }
+      },
+      "fees": {
+        "flatrate": "0",
+        "cashondelivery": null
+      },
+      "free_shipping_base_subtotal": "",
+      "free_shipping_subtotal": "",
+      "cashondelivery_max": "600",
+      "cashondelivery_min": null,
+      "shipping_options_banner": "https://gs-euw1-magento-assets-prod.s3-eu-west-1.amazonaws.com/static/2020/07/Checkout/ar_apple_pay_5_off-July20.jpg",
+      "allow_gift_order": "1",
+      "estimated_delivery_days": [
+        {
+          "method": "lambdashipping_flatrate",
+          "days_en": "Delivery in 5 - 8 Days",
+          "days_ar": "خلال 5 - 8 أيام"
+        },
+        {
+          "method": "lambdashipping_redboxlocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_fodellocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "gifting",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_express",
+          "days_en": "Delivery in 3 hours",
+          "days_ar": "التوصيل خلال 3 ساعات"
+        }
+      ],
+      "required_version": "2",
+      "force_update": "0",
+      "force_update_title": "New Update Available!",
+      "force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "android_required_version": "2",
+      "android_force_update": "0",
+      "android_force_update_title": "New Update Available!",
+      "android_force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "promo_text": "Checkout B0 Banner",
+      "payment_list_banner": "https://gs-euw1-magento-assets-prod.s3.eu-west-1.amazonaws.com/static/checkout/B0-Pay-smarter-EN.jpg",
+      "checkout_disclaimer": "We provide you 100% secure online payment methods for a unique shopping experience.",
+      "installments_widget_sorting": ["tabby", "tamara"],
+      "tabby_installments_config": {
+        "enabled": 1
+      },
+      "tamara_installments_config": {
+        "enabled": 1
+      },
+      "tamara_pay_later_config": {
+        "enabled": 0
+      },
+      "checkoutPayEnabled": 1,
+      "gs_tamara_installments": {
+        "android": [
+          {
+            "version": "3.16.0",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "ios": [
+          {
+            "version": "6.16",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "web": [
+          {
+            "version": null,
+            "installments": 4,
+            "operator": null
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ]
+      },
+      "gs_tabby_pay_later": 0,
+      "tabby_installment_status": "N/A",
+      "tabby_pay_later_status": "N/A",
+      "whatsapp_number": "N/A",
+      "states_required_in": ["US"],
+      "talon_promo_msg": "Loyalty Points message",
+      "extra_text": "N/A",
+      "ksa_address_enabled": "1",
+      "ksa_address_enabled_web": "1",
+      "ksa_address_enabled_app": "1",
+      "loyalty_rules_effect": "5",
+      "loyalty_reward_threshold": 150,
+      "loyalty_reward_tiers": [
+        {
+          "level_name": "1",
+          "above": 150,
+          "percentage": 10,
+          "cap": null
+        },
+        {
+          "level_name": "2",
+          "above": 299,
+          "percentage": 12.5,
+          "cap": 50
+        },
+        {
+          "level_name": "3",
+          "above": 499,
+          "percentage": 15,
+          "cap": 100
+        },
+        {
+          "level_name": "4",
+          "above": 999,
+          "percentage": 30,
+          "cap": 300
+        },
+        {
+          "level_name": "5",
+          "above": 2499,
+          "percentage": 40,
+          "cap": 700
+        }
+      ],
+      "express_delivery": {
+        "pp_text": "Get it within 3 hours in Riyadh!",
+        "cart_banner_text": "Eligible for 3 hour delivery in <u>Riyadh</u>",
+        "cities": [],
+        "start_hour": "00:05:00",
+        "end_hour": "23:59:00",
+        "cut_off_time": "20:59:00",
+        "cut_off_time_message": "Today's Bullet Delivery time has ended."
+      }
+    },
+    "17": {
+      "store_view_id": "17",
+      "store_id": "17",
+      "website_id": "8",
+      "group_id": "11",
+      "website_code": "om",
+      "store_code": "oman_store",
+      "storeview_code": "ar_om",
+      "language_name": "العربية",
+      "sort_order": "0",
+      "is_active": true,
+      "country": "OM",
+      "country_code": "OM",
+      "country_code_prefix": "",
+      "lang_country": "ar_SA",
+      "contact_number": "+966115101840",
+      "contact_email": "care@goldenscent.com",
+      "checkout_url": "https://dev-om.web.goldenscent.com/ar_om/checkout/",
+      "currencies": {
+        "1": {
+          "symbol": " ر.ع",
+          "name": "ريال عماني",
+          "code": "OMR"
+        }
+      },
+      "fees": {
+        "flatrate": "0",
+        "cashondelivery": null
+      },
+      "free_shipping_base_subtotal": "",
+      "free_shipping_subtotal": "",
+      "cashondelivery_max": "600",
+      "cashondelivery_min": null,
+      "shipping_options_banner": "https://gs-euw1-magento-assets-prod.s3-eu-west-1.amazonaws.com/static/2020/07/Checkout/ar_apple_pay_5_off-July20.jpg",
+      "allow_gift_order": "1",
+      "estimated_delivery_days": [
+        {
+          "method": "lambdashipping_flatrate",
+          "days_en": "Delivery in 5 - 8 Days",
+          "days_ar": "خلال 5 - 8 أيام"
+        },
+        {
+          "method": "lambdashipping_redboxlocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_fodellocker",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "gifting",
+          "days_en": "1 - 3 Days",
+          "days_ar": "خلال 1 - 3 أيام"
+        },
+        {
+          "method": "lambdashipping_express",
+          "days_en": "Delivery in 3 hours",
+          "days_ar": "التوصيل خلال 3 ساعات"
+        }
+      ],
+      "required_version": "2",
+      "force_update": "0",
+      "force_update_title": "New Update Available!",
+      "force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "android_required_version": "2",
+      "android_force_update": "0",
+      "android_force_update_title": "New Update Available!",
+      "android_force_update_message": "We have included some new features and we are excited for your feedback. Lets update the app and enjoy our App!",
+      "promo_text": "Checkout B0 Banner",
+      "payment_list_banner": "https://gs-euw1-magento-assets-prod.s3.eu-west-1.amazonaws.com/static/checkout/B0-Pay-smarter-EN.jpg",
+      "checkout_disclaimer": "We provide you 100% secure online payment methods for a unique shopping experience.",
+      "installments_widget_sorting": ["tabby", "tamara"],
+      "tabby_installments_config": {
+        "enabled": 1
+      },
+      "tamara_installments_config": {
+        "enabled": 1
+      },
+      "tamara_pay_later_config": {
+        "enabled": 0
+      },
+      "checkoutPayEnabled": 1,
+      "gs_tamara_installments": {
+        "android": [
+          {
+            "version": "3.16.0",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "ios": [
+          {
+            "version": "6.16",
+            "installments": 4,
+            "operator": ">"
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ],
+        "web": [
+          {
+            "version": null,
+            "installments": 4,
+            "operator": null
+          },
+          {
+            "version": "default",
+            "installments": 4
+          }
+        ]
+      },
+      "gs_tabby_pay_later": 0,
+      "tabby_installment_status": "N/A",
+      "tabby_pay_later_status": "N/A",
+      "whatsapp_number": "N/A",
+      "states_required_in": ["US"],
+      "talon_promo_msg": "Loyalty Points message",
+      "extra_text": "N/A",
+      "ksa_address_enabled": "1",
+      "ksa_address_enabled_web": "1",
+      "ksa_address_enabled_app": "1",
+      "loyalty_rules_effect": "5",
+      "loyalty_reward_threshold": 150,
+      "loyalty_reward_tiers": [
+        {
+          "level_name": "1",
+          "above": 150,
+          "percentage": 10,
+          "cap": null
+        },
+        {
+          "level_name": "2",
+          "above": 299,
+          "percentage": 12.5,
+          "cap": 50
+        },
+        {
+          "level_name": "3",
+          "above": 499,
+          "percentage": 15,
+          "cap": 100
+        },
+        {
+          "level_name": "4",
+          "above": 999,
+          "percentage": 30,
+          "cap": 300
+        },
+        {
+          "level_name": "5",
+          "above": 2499,
+          "percentage": 40,
+          "cap": 700
+        }
+      ],
+      "express_delivery": {
+        "pp_text": "Get it within 3 hours in Riyadh!",
+        "cart_banner_text": "Eligible for 3 hour delivery in <u>Riyadh</u>",
+        "cities": [],
+        "start_hour": "00:05:00",
+        "end_hour": "23:59:00",
+        "cut_off_time": "20:59:00",
+        "cut_off_time_message": "Today's Bullet Delivery time has ended."
+      }
+    }
+  },
+  "mobile_validation": {
+    "SA": {
+      "countryCode": "+966",
+      "couriers": ["5"],
+      "totNumOfDigits": 9,
+      "validationDigits": 1,
+      "phoneNoExample": "0512345678"
+    },
+    "SURRATI": {
+      "countryCode": "+966",
+      "couriers": ["5"],
+      "totNumOfDigits": 9,
+      "validationDigits": 1,
+      "phoneNoExample": "0512345678"
+    },
+    "FABIAN": {
+      "countryCode": "+966",
+      "couriers": ["5"],
+      "totNumOfDigits": 9,
+      "validationDigits": 1,
+      "phoneNoExample": "0512345678"
+    },
+    "KW": {
+      "countryCode": "+965",
+      "couriers": ["5", "6", "9", "4"],
+      "totNumOfDigits": 8,
+      "validationDigits": 1,
+      "phoneNoExample": "051234567"
+    },
+    "AE": {
+      "countryCode": "+971",
+      "couriers": ["50", "52", "54", "55", "56", "58"],
+      "totNumOfDigits": 9,
+      "validationDigits": 2,
+      "phoneNoExample": "0501234567"
+    },
+    "IQ": {
+      "countryCode": "+964",
+      "couriers": ["79", "78", "77", "76", "75", "74", "73"],
+      "totNumOfDigits": 10,
+      "validationDigits": 2,
+      "phoneNoExample": "07912345678"
+    },
+    "INT": {
+      "countryCode": "+000",
+      "couriers": ["0"],
+      "totNumOfDigits": 15,
+      "validationDigits": 2,
+      "phoneNoExample": "07912345678"
+    },
+    "BH": {
+      "countryCode": "+973",
+      "couriers": [
+        "31",
+        "32",
+        "33",
+        "34",
+        "35",
+        "36",
+        "37",
+        "38",
+        "39",
+        "61",
+        "65",
+        "66",
+        "69",
+        "71",
+        "77"
+      ],
+      "totNumOfDigits": 8,
+      "validationDigits": 2,
+      "phoneNoExample": "016670555"
+    },
+    "OM": {
+      "countryCode": "+968",
+      "couriers": [
+        "71",
+        "72",
+        "78",
+        "79",
+        "90",
+        "91",
+        "92",
+        "93",
+        "94",
+        "95",
+        "96",
+        "97",
+        "98",
+        "99"
+      ],
+      "totNumOfDigits": 8,
+      "validationDigits": 2,
+      "phoneNoExample": "095670555"
+    },
+    "GLOBAL": "/\\+(9[976]\\d|8[987530]\\d|6[987]\\d|5[90]\\d|42\\d|3[875]\\d|2[98654321]\\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\\d{4,14}$/"
+  },
+  "europian_countries": [
+    "AT",
+    "BE",
+    "BG",
+    "CY",
+    "CZ",
+    "DK",
+    "EE",
+    "FI",
+    "FR",
+    "DE",
+    "GR",
+    "HU",
+    "IE",
+    "IT",
+    "LV",
+    "LT",
+    "LU",
+    "MT",
+    "NL",
+    "PL",
+    "PT",
+    "RO",
+    "SK",
+    "SI",
+    "ES",
+    "SE",
+    "GB"
+  ]
+}

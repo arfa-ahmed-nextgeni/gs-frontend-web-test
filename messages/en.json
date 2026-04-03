@@ -340,6 +340,8 @@
     "name": "Name",
     "address": "Address",
     "mobile": "Mobile",
+    "verified": "National Address Verified",
+    "notVerified": "Update National Address",
     "edit": "Edit",
     "default": "Default",
     "makeDefault": "Make Default",
@@ -438,7 +440,7 @@
     "additionalInfo": "Building Name, Flat#",
     "postalCode": "Post Code",
     "mobileNumber": "Mobile Number",
-    "receiverPhoneNumber": "Receiver Phone Number",
+    "receiverPhoneNumber": "Recipient Phone Number",
     "senderInformation": "Sender Information",
     "setAsDefaultAddress": "Set as default address",
     "addAddress": "Add Address",
@@ -1681,7 +1683,7 @@
       "firstName": "First Name",
       "lastName": "Last Name",
       "mobileNumber": "Mobile Number",
-      "receiverPhoneNumber": "Receiver Phone Number",
+      "receiverPhoneNumber": "Recipient Phone Number",
       "recipientFirstName": "Recipient First Name",
       "recipientLastName": "Recipient Last Name",
       "city": "City",
@@ -1690,10 +1692,15 @@
       "shortNationalAddress": "Short National Address",
       "confirming": "Confirming...",
       "setAsDefaultAddress": "Set as default address",
-      "incorrectNationalAddressWarning": "Incorrect \"National Address\" may delay delivery.",
+      "incorrectNationalAddressWarning": "An incorrect \"National Address\" may delay delivery.",
       "edit": "Edit",
       "loadingCities": "Loading cities",
+      "noMatchingCity": "No matching city",
+      "noDistrictsFound": "No districts found",
       "validatingAddressLocation": "Validating address location..."
+    },
+    "validationErrors": {
+      "invalidPhoneNumber": "Please enter a valid phone number"
     }
   },
   "BrandsCategoryPage": {

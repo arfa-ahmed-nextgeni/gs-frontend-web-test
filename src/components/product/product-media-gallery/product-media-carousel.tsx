@@ -1,28 +1,28 @@
 "use client";
 
-import { RefObject } from "react";
+import type { RefObject } from "react";
 
 import Image from "next/image";
 
 import { VideoPlayerDialog } from "@/components/dialogs/video-player-dialog";
+import { ProductMediaVideoSlide } from "@/components/product/product-media-gallery/product-media-video-slide";
 import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
 import { CarouselItem } from "@/components/ui/carousel/carousel-item";
 import { useIsMobile } from "@/hooks/use-is-mobile";
-import { ProductMedia } from "@/lib/models/product-details-model";
-import { CarouselHandle } from "@/lib/types/ui-types";
 import { getShimmerPlaceholder } from "@/lib/utils/image";
-import {
-  getVimeoEmbedUrl,
-  getYouTubeEmbedUrl,
-  getYouTubeThumbnail,
-} from "@/lib/utils/video";
+import { getYouTubeThumbnail } from "@/lib/utils/video";
+
+import type { ProductMedia } from "@/lib/models/product-details-model";
+import type { CarouselHandle } from "@/lib/types/ui-types";
 
 export const ProductMediaCarousel = ({
   apiRef,
+  currentIndex,
   items,
   onIndexChangeAction,
 }: {
   apiRef: RefObject<CarouselHandle | null>;
+  currentIndex: number;
   items: ProductMedia[];
   onIndexChangeAction: (index: number) => void;
 }) => {
@@ -34,6 +34,9 @@ export const ProductMediaCarousel = ({
         apiRef,
         className: "size-full",
         onIndexChange: onIndexChangeAction,
+        opts: {
+          ssr: items.map(() => 100),
+        },
       }}
       contentProps={{
         className: "size-full ms-0",
@@ -55,10 +58,7 @@ export const ProductMediaCarousel = ({
     >
       {items.map((media, index) => {
         const isVideo = media.type === "video";
-        const youtubeUrl = isVideo ? getYouTubeEmbedUrl(media.url) : null;
-        const vimeoUrl = isVideo ? getVimeoEmbedUrl(media.url) : null;
-        const videoUrl = youtubeUrl || vimeoUrl;
-        const videoThumbnail = getYouTubeThumbnail(media.url);
+        const videoThumbnail = media.preview || getYouTubeThumbnail(media.url);
 
         return (
           <CarouselItem
@@ -66,22 +66,17 @@ export const ProductMediaCarousel = ({
             key={media.url}
             tabIndex={0}
           >
-            {isVideo && videoUrl ? (
+            {isVideo ? (
               isMobile ? (
                 <VideoPlayerDialog
                   videoThumbnail={videoThumbnail}
-                  videoUrl={videoUrl}
+                  videoUrl={media.url}
                 />
               ) : (
-                <div className="relative size-full">
-                  <iframe
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowFullScreen
-                    className="absolute inset-0 size-full"
-                    src={videoUrl}
-                    title="Product video"
-                  />
-                </div>
+                <ProductMediaVideoSlide
+                  isActive={currentIndex === index}
+                  media={media}
+                />
               )
             ) : (
               <Image

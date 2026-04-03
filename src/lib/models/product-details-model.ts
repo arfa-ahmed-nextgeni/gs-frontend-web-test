@@ -39,6 +39,7 @@ type ReviewRating = {
 };
 
 export class ProductDetailsModel extends Helper {
+  attributeSet?: string;
   averageRating?: number;
   brand: string;
   bulletDelivery = false;
@@ -87,6 +88,8 @@ export class ProductDetailsModel extends Helper {
       "attribute_set",
       ""
     );
+
+    this.attributeSet = attributeSet;
 
     this.type =
       product_type === "giftcard"

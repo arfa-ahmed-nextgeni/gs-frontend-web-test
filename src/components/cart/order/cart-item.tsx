@@ -6,12 +6,12 @@ import Image from "next/image";
 
 import MoveToWishlistIcon from "@/assets/icons/move-to-wishlist-icon.svg";
 import { CartQuantityControl } from "@/components/cart/cart-quantity-control";
-import { ProductCardBulletDelivery } from "@/components/product/product-card/product-card-bullet-delivery";
-import { ProductCardProvider } from "@/components/product/product-card/product-card-context";
+import { useProductCardActionsState } from "@/components/product/product-card/hooks/use-product-card-actions-state";
 import { ProductCardDiscount } from "@/components/product/product-card/product-card-discount";
 import { ProductCardLabel } from "@/components/product/product-card/product-card-label";
 import { ProductCardPrice } from "@/components/product/product-card/product-card-price";
 import { ProductCardWishlistButton } from "@/components/product/product-card/product-card-wishlist-button";
+import { StoreConfiguredProductCardBulletDelivery } from "@/components/product/product-card/store-configured-product-card-bullet-delivery";
 import { useCart } from "@/contexts/use-cart";
 import { useRemoveProductFromCart } from "@/hooks/mutations/cart/use-remove-product-from-cart";
 import { useUpdateCartItemQuantity } from "@/hooks/mutations/cart/use-update-cart-item-quantity";
@@ -21,7 +21,6 @@ import {
   buildProductPropertiesFromCartItem,
 } from "@/lib/analytics/utils/build-properties";
 import { CartItem as CartItemModel } from "@/lib/models/cart";
-import { ProductCardModel } from "@/lib/models/product-card-model";
 import { cn } from "@/lib/utils";
 
 export function CartItem({ item }: { item: CartItemModel }) {
@@ -57,24 +56,13 @@ export function CartItem({ item }: { item: CartItemModel }) {
   const isLoading = isPending || isRemovingItem;
   const selectedOptionLabel = item.options?.choices?.[0]?.label;
   const discountPercent = item.discountPercent ?? null;
-
-  const productContextValue = {
-    currentPrice: item.currentPrice,
-    discountPercent: item.discountPercent,
-    externalId: item.externalId,
-    id: item.id,
-    imageUrl: item.imageUrl,
-    name: item.name,
-    oldPrice: item.oldPrice,
-    options: item.options,
-    priceValue: item.priceValue,
-    sku: item.sku,
-  };
+  const { isConfigurable, isInCart, isWishlisted } =
+    useProductCardActionsState(item);
 
   return (
     <div className="border-border-base bg-bg-default lg:h-37.5 h-52.5 relative flex flex-row gap-5 overflow-hidden rounded-none border-b p-5 first:rounded-t-xl last:rounded-b-xl last:border-none lg:gap-2.5 lg:p-2.5">
       <div className="gap-1.25 absolute right-5 top-5 flex flex-row items-start rtl:left-5 rtl:right-auto">
-        {item.bulletDelivery && <ProductCardBulletDelivery />}
+        {item.bulletDelivery && <StoreConfiguredProductCardBulletDelivery />}
         {discountPercent && <ProductCardDiscount discount={discountPercent} />}
       </div>
 
@@ -159,16 +147,15 @@ export function CartItem({ item }: { item: CartItemModel }) {
               {/* Wishlist Button */}
               {!item.isWrap && (
                 <div className="flex items-center justify-center pb-0 lg:mr-2.5 lg:pb-2 rtl:ml-2.5">
-                  <ProductCardProvider
-                    formatChildren={true}
-                    product={productContextValue as Partial<ProductCardModel>}
-                  >
-                    <ProductCardWishlistButton
-                      addIcon={MoveToWishlistIcon}
-                      className="border-border-base flex h-[50px] w-[50px] items-center justify-center rounded-xl border shadow-none"
-                      size={24}
-                    />
-                  </ProductCardProvider>
+                  <ProductCardWishlistButton
+                    addIcon={MoveToWishlistIcon}
+                    className="border-border-base flex h-[50px] w-[50px] items-center justify-center rounded-xl border shadow-none"
+                    isConfigurable={isConfigurable}
+                    isInCart={isInCart}
+                    isWishlisted={isWishlisted}
+                    product={item}
+                    size={24}
+                  />
                 </div>
               )}
             </div>

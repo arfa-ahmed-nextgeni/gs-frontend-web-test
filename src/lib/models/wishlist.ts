@@ -46,6 +46,9 @@ export class WishlistItem extends ProductCardModel {
     let stockStatus = product?.stock_status || "";
     let bulletDelivery = false;
     let externalId = product?.id ? product?.id.toString() : "";
+    let sku = product?.sku || "";
+    let parentId: string | undefined = undefined;
+    let skuParent: string | undefined = undefined;
 
     if (__typename === "ConfigurableWishlistItem") {
       const configurableProduct = product as ConfigurableProduct;
@@ -68,7 +71,10 @@ export class WishlistItem extends ProductCardModel {
         configurableProduct?.__typename === "ConfigurableProduct" &&
         item.configured_variant?.id
       ) {
+        parentId = externalId;
+        skuParent = sku;
         externalId = item.configured_variant.id.toString();
+        sku = item.configured_variant.sku || sku;
       }
     }
 
@@ -83,9 +89,12 @@ export class WishlistItem extends ProductCardModel {
       name: product?.name || "",
       oldPrice: regularPrice || undefined,
       options,
+      parentId,
       price: finalPrice,
       ratingSummary: product?.rating_summary,
-      sku: product?.sku || "",
+      savedAmount: 0,
+      sku,
+      skuParent,
       stockStatus,
       urlKey: product?.url_key || "",
       variant: ProductCardVariant.Single,

@@ -145,15 +145,22 @@ export interface ProductListProperties extends Record<string, unknown> {
 
 // Product model (extends Category)
 export interface ProductProperties extends CategoryProperties {
+  "product.attribute_set"?: string;
   "product.brand": string;
   "product.brand_id": string;
   "product.color"?: string;
   "product.id": string;
+  "product.image_url"?: string;
   "product.name": string;
+  "product.parent_id"?: string;
   "product.price": number;
+  "product.sale_price"?: number;
   "product.size"?: string;
   "product.sku": string;
+  "product.sku_parent"?: string;
+  "product.stock"?: number;
   "product.type": string;
+  "product.url"?: string;
 }
 
 // Purchase event properties (specific to purchase event)

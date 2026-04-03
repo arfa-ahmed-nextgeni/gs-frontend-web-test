@@ -86,6 +86,25 @@ export function buildCartProperties(
   // Check if cart is bullet eligible (baseline)
   cartProperties.express_delivery_available = isCartBulletEligible(cart);
 
+  // Add product list properties grouped by SKU from cart items
+  cart.items.forEach((item) => {
+    const sku = (item.sku || "").toLowerCase();
+    if (!sku) return;
+
+    cartProperties[`product.${sku}.id`] = item.externalId || "";
+    cartProperties[`product.${sku}.name`] = item.name || "";
+    cartProperties[`product.${sku}.price`] = item.priceValue || 0;
+    cartProperties[`product.${sku}.sku`] = item.sku || "";
+    cartProperties[`product.${sku}.qty_in_cart`] = item.quantity || 0;
+
+    if (item.parentId) {
+      cartProperties[`product.${sku}.parent_id`] = item.parentId;
+    }
+    if (item.skuParent) {
+      cartProperties[`product.${sku}.sku_parent`] = item.skuParent;
+    }
+  });
+
   // If caller provided storeConfig, compute live visibility and override flag.
   // Use current time here and assume checkout usage should skip cutoff check.
   if (options?.storeConfig) {
@@ -344,19 +363,25 @@ export function buildProductPropertiesFromDetails(
     }
 
     return {
+      "product.attribute_set": parentProduct.attributeSet || "",
       "product.brand": parentProduct.brand || "",
       "product.brand_id": parentProduct.brand || "",
+      "product.color": productColor,
       "product.id": variant.externalId || parentProduct.externalId || "",
+      "product.image_url":
+        variant.mediaGallery?.[0]?.url || parentProduct.mediaGallery?.[0]?.url,
       "product.name": parentProduct.name || variant.label || "",
+      "product.parent_id": parentProduct.externalId || "",
       "product.price": variant.priceValue || 0,
+      "product.sale_price": variant.priceValue || 0,
+      "product.size": productSize,
       "product.sku": variant.sku || "",
+      "product.sku_parent": parentProduct.sku || "",
+      "product.stock": variant.inStock ? 1 : 0,
       "product.type": parentProduct.type?.toString() || "",
-      ...(productColor && {
-        "product.color": productColor,
-      }),
-      ...(productSize && {
-        "product.size": productSize,
-      }),
+      "product.url": parentProduct.urlKey
+        ? `/p/${parentProduct.urlKey}`
+        : undefined,
     };
   }
 
@@ -380,19 +405,24 @@ export function buildProductPropertiesFromDetails(
   const productColor = colorVariant?.color || colorVariant?.label;
 
   return {
+    "product.attribute_set": productModel.attributeSet || "",
     "product.brand": productModel.brand || "",
     "product.brand_id": productModel.brand || "",
+    "product.color": productColor,
     "product.id": productModel.externalId || productModel.id?.toString() || "",
+    "product.image_url": productModel.mediaGallery?.[0]?.url,
     "product.name": productModel.name || "",
+    "product.parent_id": productModel.externalId || "",
     "product.price": productPrice,
+    "product.sale_price": productPrice,
+    "product.size": productSize,
     "product.sku": productModel.sku || "",
+    "product.sku_parent": productModel.sku || "",
+    "product.stock": productModel.inStock ? 1 : 0,
     "product.type": productModel.productInfo?.type || "",
-    ...(productColor && {
-      "product.color": productColor,
-    }),
-    ...(productSize && {
-      "product.size": productSize,
-    }),
+    "product.url": productModel.urlKey
+      ? `/p/${productModel.urlKey}`
+      : undefined,
   };
 }
 

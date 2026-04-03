@@ -4,8 +4,8 @@ import Image from "next/image";
 
 import { useTranslations } from "next-intl";
 
-import { ProductCardBulletDelivery } from "@/components/product/product-card/product-card-bullet-delivery";
 import { ProductCardPrice } from "@/components/product/product-card/product-card-price";
+import { StoreConfiguredProductCardBulletDelivery } from "@/components/product/product-card/store-configured-product-card-bullet-delivery";
 import { CartItem } from "@/lib/models/cart";
 
 export const CheckoutProductCard = ({ item }: { item: CartItem }) => {
@@ -51,7 +51,7 @@ export const CheckoutProductCard = ({ item }: { item: CartItem }) => {
       </div>
 
       <div className="absolute start-1.5 top-1.5 flex flex-row gap-0.5">
-        {item.bulletDelivery && <ProductCardBulletDelivery />}
+        {item.bulletDelivery && <StoreConfiguredProductCardBulletDelivery />}
       </div>
     </div>
   );

@@ -2,8 +2,9 @@
 
 import { startTransition, useEffect } from "react";
 
-import { RecentlyViewedProductsSkeleton } from "@/components/product/recently-viewed-products/recently-viewed-products-skeleton";
+import { CategoryProductsCarouselSkeleton } from "@/components/product/category-products-carousel-skeleton";
 import { syncDeviceIdCookie } from "@/lib/actions/cookies/device-id";
+import { ProductCardVariant } from "@/lib/constants/product/product-card";
 import { getClientDeviceId } from "@/lib/utils/device-id";
 
 export function DeviceIdCookieBootstrap({
@@ -32,5 +33,10 @@ export function DeviceIdCookieBootstrap({
     };
   }, []);
 
-  return <RecentlyViewedProductsSkeleton maximumProducts={maximumProducts} />;
+  return (
+    <CategoryProductsCarouselSkeleton
+      maximumProducts={maximumProducts}
+      variant={ProductCardVariant.Single}
+    />
+  );
 }

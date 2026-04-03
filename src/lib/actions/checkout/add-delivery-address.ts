@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { getLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 
@@ -7,7 +9,9 @@ import { getAuthToken } from "@/lib/actions/auth/get-auth-token";
 import { graphqlRequest } from "@/lib/clients/graphql";
 import { CUSTOMER_GRAPHQL_MUTATIONS } from "@/lib/constants/api/graphql/customer";
 import { Locale, LOCALE_TO_STORE } from "@/lib/constants/i18n";
+import { ROUTES } from "@/lib/constants/routes";
 import { getLocaleInfo } from "@/lib/utils/locale";
+import { getLocalePrefix } from "@/lib/utils/seo";
 import { failure, ok } from "@/lib/utils/service-result";
 
 import type {
@@ -17,6 +21,7 @@ import type {
 } from "@/graphql/graphql";
 
 interface AddDeliveryAddressPayload {
+  addressLabel: "gift" | "home";
   city: string;
   district: string;
   firstName: string;
@@ -67,6 +72,7 @@ export const addDeliveryAddress = async (
     ] || "SA") as CountryCodeEnum;
 
     const input: CustomerAddressInput = {
+      address_label: payload.addressLabel,
       city: payload.city,
       country_code: countryCode,
       default_billing: payload.setAsDefault,
@@ -121,6 +127,10 @@ export const addDeliveryAddress = async (
     if (!response.data?.createCustomerAddress) {
       return failure("No data returned from server");
     }
+
+    revalidatePath(
+      `${getLocalePrefix(locale)}${ROUTES.CUSTOMER.PROFILE.ADDRESSES.ROOT}`
+    );
 
     // console.info("[addDeliveryAddress] Address created successfully:", {
     //   address: response.data.createCustomerAddress,

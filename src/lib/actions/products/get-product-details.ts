@@ -2,8 +2,6 @@ import "server-only";
 
 import { cache } from "react";
 
-import { getLocale } from "next-intl/server";
-
 import { getStoreConfig } from "@/lib/actions/config/get-store-config";
 import { catalogServiceGraphqlRequest } from "@/lib/clients/catalog-service-graphql";
 import { CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES } from "@/lib/constants/api/catalog-service-graphql/products";
@@ -11,11 +9,17 @@ import { Locale } from "@/lib/constants/i18n";
 import { ProductDetailsModel } from "@/lib/models/product-details-model";
 import { failure, ok } from "@/lib/utils/service-result";
 
-export const getProductDetails = cache(
-  async ({ urlKey }: { urlKey: string }) => {
-    try {
-      const locale = (await getLocale()) as Locale;
+export const getProductDetails = ({
+  locale,
+  urlKey,
+}: {
+  locale: Locale;
+  urlKey: string;
+}) => getProductDetailsCached(locale, urlKey);
 
+const getProductDetailsCached = cache(
+  async (locale: Locale, urlKey: string) => {
+    try {
       const storeConfig = await getStoreConfig({ locale });
 
       if (!storeConfig.data?.store) {

@@ -1,7 +1,10 @@
 import { use } from "react";
 
+import Image from "next/image";
+
 import { useTranslations } from "next-intl";
 
+import VerifiedIcon from "@/assets/icons/verified-icon.svg";
 import { DeleteCustomerAddressButton } from "@/components/customer/addresses/delete-customer-address-button";
 import { EditCustomerAddressButton } from "@/components/customer/addresses/edit-customer-address-button";
 import { MakeAddressDefaultButton } from "@/components/customer/addresses/make-address-default-button";
@@ -40,14 +43,12 @@ export const CustomerAddressCard = ({
     countryCode,
     formattedAddress,
     id,
+    is_ksa_verified,
     isDefault,
     mobileNumber,
     name,
     regionId,
   } = customerAddress;
-
-  console.info("customerAddress:", customerAddress);
-
   let stateLabel = "";
   let countryLabel = countryCode;
 
@@ -104,19 +105,37 @@ export const CustomerAddressCard = ({
             {t("address")}
           </span>
           <span className="text-text-primary min-w-0 flex-1 break-words text-start text-xs font-normal">
-            {`${countryLabel}, ${stateLabel ? stateLabel + "," : ""} ${formattedAddress}`}
+            {`${customerAddress.ksaShortAddress ? customerAddress.ksaShortAddress + ", " : ""}${countryLabel}, ${stateLabel ? stateLabel + "," : ""} ${formattedAddress}`}
           </span>
         </div>
         <div className="flex flex-row">
           <span className="text-text-tertiary w-20 min-w-20 text-start text-xs font-normal">
             {t("mobile")}
           </span>
-          <span
-            className="text-text-primary flex-1 text-left text-xs font-normal rtl:text-right"
-            dir="ltr"
-            style={{ direction: "ltr", unicodeBidi: "bidi-override" }}
-          >
-            {formattedPhoneNumber}
+          <span className="flex flex-1 items-center justify-between gap-3">
+            <span
+              className="text-text-primary text-left text-xs font-normal rtl:text-right"
+              dir="ltr"
+              style={{ direction: "ltr", unicodeBidi: "bidi-override" }}
+            >
+              {formattedPhoneNumber}
+            </span>
+            {is_ksa_verified ? (
+              <span className="inline-flex items-center gap-1 text-[8px] font-medium text-[#2563EB]">
+                <Image
+                  alt={t("verified")}
+                  className="shrink-0"
+                  height={14}
+                  src={VerifiedIcon}
+                  width={14}
+                />
+                {t("verified")}
+              </span>
+            ) : (
+              <span className="text-[8px] font-medium text-[#F59E0B]">
+                {t("notVerified")}
+              </span>
+            )}
           </span>
         </div>
       </CollapsibleTrigger>

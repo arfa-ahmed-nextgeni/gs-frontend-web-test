@@ -1,23 +1,15 @@
-"use client";
-
-import { useState } from "react";
-
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 
 import Container from "@/components/shared/container";
 
+import type { SeoContentBlock as SeoContentBlockModel } from "@/lib/models/seo-content-block";
+
 interface SeoContentBlockProps {
-  data: {
-    content?: any;
-    contentType: string;
-    internalName?: string;
-  };
+  data: Pick<SeoContentBlockModel, "content" | "contentType" | "internalName">;
 }
 
 export default function SeoContentBlock({ data }: SeoContentBlockProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
   if (!data.content) {
     return null;
   }
@@ -26,32 +18,17 @@ export default function SeoContentBlock({ data }: SeoContentBlockProps) {
 
   return (
     <Container>
-      <div className="w-full rounded-md bg-white">
-        <button
-          aria-expanded={isOpen}
-          className="flex w-full items-center justify-between gap-2 px-5 py-4 text-left md:px-6"
-          onClick={() => setIsOpen((prev) => !prev)}
-          type="button"
-        >
+      <details className="group w-full rounded-md bg-white [&_summary::-webkit-details-marker]:hidden">
+        <summary className="transition-default flex cursor-pointer list-none items-center justify-between gap-2 px-5 py-4 text-left md:px-6">
           <span className="text-brand-muted text-base font-semibold lg:text-lg">
             {title}
           </span>
-          <span
-            className={`inline-block transform text-xl transition-transform ${
-              isOpen ? "rotate-180" : "rotate-0"
-            }`}
-          >
+          <span className="inline-block text-xl transition-transform group-open:rotate-180">
             ▾
           </span>
-        </button>
+        </summary>
 
-        <div
-          className={`border-t border-gray-100 transition-all duration-300 ${
-            isOpen
-              ? "max-h-[9999px] opacity-100"
-              : "max-h-0 overflow-hidden opacity-0"
-          }`}
-        >
+        <div className="border-t border-gray-100">
           <div className="p-5 md:p-10">
             <div className="text-brand-muted lg:text-15px space-y-5 text-sm leading-7">
               {documentToReactComponents(data.content, {
@@ -120,7 +97,7 @@ export default function SeoContentBlock({ data }: SeoContentBlockProps) {
             </div>
           </div>
         </div>
-      </div>
+      </details>
     </Container>
   );
 }

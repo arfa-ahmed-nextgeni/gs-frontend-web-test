@@ -160,6 +160,7 @@ const CustomToast = ({
               className="h-8 w-8 rounded-lg object-cover"
               height={32}
               src={cfg.icon}
+              unoptimized
               width={32}
             />
           </div>

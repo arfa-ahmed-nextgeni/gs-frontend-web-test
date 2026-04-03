@@ -21,6 +21,7 @@ interface CategoryProductsClientWrapperProps {
   categoryPath: string;
   categoryUid: string;
   currentPage: number;
+  isBulletDeliveryEnabled: boolean;
   locale: Locale;
   products: ProductCardModel[];
   searchTerm?: string;
@@ -33,6 +34,7 @@ export function CategoryProductsClientWrapper({
   categoryPath,
   categoryUid,
   currentPage,
+  isBulletDeliveryEnabled,
   locale,
   products,
   searchTerm,
@@ -70,6 +72,7 @@ export function CategoryProductsClientWrapper({
           categoryUid={categoryUid}
           initialPage={currentPage}
           initialProducts={products}
+          isBulletDeliveryEnabled={isBulletDeliveryEnabled}
           locale={locale}
           searchTerm={searchTerm}
           totalPages={totalPages}

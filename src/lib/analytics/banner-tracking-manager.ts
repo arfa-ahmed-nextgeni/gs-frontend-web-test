@@ -1,7 +1,7 @@
 "use client";
 
 import { analyticsManager } from "@/lib/analytics/analytics-manager";
-import { ANALYTICS_TOOL } from "@/lib/analytics/analytics-tool";
+import { ANALYTICS_TOOL } from "@/lib/analytics/constants/analytics-tool";
 import { amplitudeProvider } from "@/lib/analytics/providers/amplitude-provider";
 
 interface BannerClicks {

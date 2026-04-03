@@ -3,7 +3,7 @@
 import { PropsWithChildren } from "react";
 
 import Container from "@/components/shared/container";
-import { useHeaderContext } from "@/layouts/header/header-container";
+import { useHeaderState } from "@/layouts/header/header-container";
 import { ZIndexLevel } from "@/lib/constants/ui";
 import { cn } from "@/lib/utils";
 
@@ -15,7 +15,7 @@ export const DesktopNavigationContainer = ({
   isSticky?: boolean;
   zIndexLevel: ZIndexLevel;
 }>) => {
-  const { showDesktopNavigation } = useHeaderContext();
+  const { showDesktopNavigation } = useHeaderState();
 
   return (
     <Container

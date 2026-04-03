@@ -1,11 +1,13 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
-import SectionHeader from "@/components/common/section-header";
+import { SectionHeader } from "@/components/common/section-header";
 import { ProductCard } from "@/components/product/product-card";
 import Container from "@/components/shared/container";
 import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
 import { CarouselItem } from "@/components/ui/carousel/carousel-item";
+import { getBulletDeliveryEnabled } from "@/lib/actions/config/get-bullet-delivery-enabled";
 import { getLinkProducts } from "@/lib/actions/products/get-link-products";
+import { type Locale } from "@/lib/constants/i18n";
 import {
   ProductLinkType,
   ProductType,
@@ -33,18 +35,21 @@ export async function ProductCarouselSection({
 }: ProductCarouselSectionProps) {
   if (excludeTypes.includes(productType)) return null;
 
-  const t = await getTranslations(`ProductPage.${titleKey}`);
-
-  const response = await getLinkProducts({
-    ...productInfo,
-    linkType,
-  });
+  const locale = (await getLocale()) as Locale;
+  const [isBulletDeliveryEnabled, response, t] = await Promise.all([
+    getBulletDeliveryEnabled({ locale }),
+    getLinkProducts({
+      ...productInfo,
+      linkType,
+    }),
+    getTranslations(`ProductPage.${titleKey}`),
+  ]);
   const products = response.data?.products ?? [];
 
   if (!products.length) return null;
 
   return (
-    <Container className="mb-7.5 !px-0">
+    <Container className="mb-7.5 px-0!">
       <div className="gap-4.5 flex flex-col">
         <SectionHeader
           className="px-2.5 lg:px-0"
@@ -78,7 +83,10 @@ export async function ProductCarouselSection({
         >
           {products.map((product) => (
             <CarouselItem key={product.id}>
-              <ProductCard product={product} />
+              <ProductCard
+                isBulletDeliveryEnabled={isBulletDeliveryEnabled}
+                product={product}
+              />
             </CarouselItem>
           ))}
         </CarouselContainer>

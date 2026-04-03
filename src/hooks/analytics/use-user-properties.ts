@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import { useCustomerQuery } from "@/hooks/queries/use-customer-query";
 import { setSnapCapiUserData } from "@/lib/analytics";
@@ -23,5 +23,5 @@ export function useUserProperties(): Partial<UserProperties> | undefined {
     }
   }, [customer]);
 
-  return buildUserPropertiesFromCustomer(customer);
+  return useMemo(() => buildUserPropertiesFromCustomer(customer), [customer]);
 }

@@ -35,6 +35,11 @@ export const useCheckoutContext = () => {
   return context;
 };
 
+export const useOptionalCheckoutContext = () => {
+  const context = useContext(CheckoutContext);
+  return context;
+};
+
 export const CheckoutProvider = ({
   children,
 }: {

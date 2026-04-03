@@ -57,6 +57,7 @@ export function OrderPerks({ currencyCode, grandTotal }: OrderPerksProps) {
             })}
             right={
               <Icon
+                className="size-5.5"
                 size={22}
                 src={
                   store === "sa"
@@ -70,7 +71,7 @@ export function OrderPerks({ currencyCode, grandTotal }: OrderPerksProps) {
           />
           <PerkItem
             label={t("perks.giftWrap")}
-            right={<Icon size={22} src={GiftIcon} />}
+            right={<Icon className="size-5.5" size={22} src={GiftIcon} />}
           />
           {storeConfig?.tamaraInstallments?.enabled && (
             <PerkItem
@@ -86,8 +87,9 @@ export function OrderPerks({ currencyCode, grandTotal }: OrderPerksProps) {
               })}
               right={
                 <div className="flex flex-col items-center gap-0.5">
-                  <Icon size={28} src={TabbyIcon} />
+                  <Icon className="size-7" size={28} src={TabbyIcon} />
                   <Icon
+                    className="size-7.5"
                     size={30}
                     src={lang === "en" ? TamaraIcon : TamaraArIcon}
                   />

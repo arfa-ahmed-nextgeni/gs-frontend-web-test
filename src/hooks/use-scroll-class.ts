@@ -1,5 +1,8 @@
 import { RefObject, useEffect } from "react";
 
+import { subscribeWindowScroll } from "@/lib/stores/window-scroll-store";
+import { subscribeWindowSize } from "@/lib/stores/window-size-store";
+
 /**
  * Immediately toggles `.is-scrolling` on the element referenced by `ref`
  * based on scroll position (window or optional scroll container).
@@ -39,16 +42,24 @@ export function useScrollClass<T extends HTMLElement = HTMLElement>(
     // run once immediately to ensure initial class state matches current scroll
     readScrollAndUpdate();
 
-    const target: EventTarget =
-      scroller === window ? window : (scroller as HTMLElement);
-    target.addEventListener("scroll", readScrollAndUpdate, { passive: true });
-    // also update on resize because layout change may affect threshold
-    window.addEventListener("resize", readScrollAndUpdate, { passive: true });
+    const cleanupScrollListener =
+      scroller === window
+        ? subscribeWindowScroll(readScrollAndUpdate)
+        : subscribeElementScroll(scroller as HTMLElement, readScrollAndUpdate);
+    const cleanupResizeListener = subscribeWindowSize(readScrollAndUpdate);
 
     return () => {
       if (rafId != null) cancelAnimationFrame(rafId);
-      target.removeEventListener("scroll", readScrollAndUpdate);
-      window.removeEventListener("resize", readScrollAndUpdate);
+      cleanupScrollListener();
+      cleanupResizeListener();
     };
   }, [ref, topOffset, scrollContainer]);
+}
+
+function subscribeElementScroll(element: HTMLElement, listener: () => void) {
+  element.addEventListener("scroll", listener, { passive: true });
+
+  return () => {
+    element.removeEventListener("scroll", listener);
+  };
 }

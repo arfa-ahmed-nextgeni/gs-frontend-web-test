@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
+import { useWindowStorageEvent } from "@/hooks/use-window-storage-event";
+
 /**
  * Custom hook that syncs state with sessionStorage
  * Similar to useState but persists value in sessionStorage
@@ -12,6 +14,8 @@ export function useSessionStorage<T>(
   key: string,
   initialValue: T
 ): [T, (value: ((prev: T) => T) | T) => void] {
+  const storageEvent = useWindowStorageEvent();
+
   // Initialize state with value from sessionStorage or initialValue
   const [storedValue, setStoredValue] = useState<T>(() => {
     if (typeof window === "undefined") {
@@ -56,26 +60,25 @@ export function useSessionStorage<T>(
     [key, storedValue]
   );
 
-  // Listen for storage events from other tabs/windows
   useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === key && e.newValue !== null) {
-        try {
-          setStoredValue(JSON.parse(e.newValue) as T);
-        } catch (error) {
-          console.error(
-            `Failed to parse sessionStorage value for key "${key}":`,
-            error
-          );
-        }
-      }
-    };
+    if (
+      storageEvent.version === 0 ||
+      storageEvent.key !== key ||
+      storageEvent.newValue === null ||
+      storageEvent.storageArea !== "sessionStorage"
+    ) {
+      return;
+    }
 
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, [key]);
+    try {
+      setStoredValue(JSON.parse(storageEvent.newValue) as T);
+    } catch (error) {
+      console.error(
+        `Failed to parse sessionStorage value for key "${key}":`,
+        error
+      );
+    }
+  }, [key, storageEvent]);
 
   return [storedValue, setValue];
 }

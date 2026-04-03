@@ -1,4 +1,4 @@
-import { ProductCardSkeleton } from "@/components/product/product-card/product-card-skeleton";
+import { ProductCardSkeleton } from "@/components/product/product-card/fallbacks/product-card-skeleton";
 import { ProductCardVariant } from "@/lib/constants/product/product-card";
 import { cn } from "@/lib/utils";
 

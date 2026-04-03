@@ -7,6 +7,7 @@ import { CategoryProductGrid } from "@/components/category/products/category-pro
 import { ProductGridSkeleton } from "@/components/category/skeletons/product-grid-skeleton";
 import { ErrorBoundary } from "@/components/common/error-boundary";
 import { PaginationWithSearchParams } from "@/components/shared/pagination-with-search-params";
+import { useBulletDeliveryEnabled } from "@/hooks/use-bullet-delivery-enabled";
 import { usePageQuery } from "@/hooks/use-page-query";
 
 import type { ProductCardModel } from "@/lib/models/product-card-model";
@@ -25,6 +26,7 @@ export function CategoryProductsClientV2({
   totalPages,
 }: CategoryProductsClientV2Props) {
   const { isLoading } = usePageQuery();
+  const isBulletDeliveryEnabled = useBulletDeliveryEnabled();
 
   return (
     <div className="flex flex-col gap-8">
@@ -35,6 +37,7 @@ export function CategoryProductsClientV2({
           ) : (
             <CategoryProductGrid
               categoryId={categoryId}
+              isBulletDeliveryEnabled={isBulletDeliveryEnabled}
               products={products}
               searchTerm={searchTerm}
             />

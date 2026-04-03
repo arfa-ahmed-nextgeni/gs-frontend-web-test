@@ -28,6 +28,13 @@ import { isOk } from "@/lib/utils/service-result";
 
 import type { Locale } from "@/lib/constants/i18n";
 
+const PRODUCT_PAGE_ADDITIONAL_INFO_VISIBILITY_CLASS_NAME =
+  "[contain-intrinsic-size:0_640px] [content-visibility:auto]";
+const PRODUCT_PAGE_PRODUCT_CAROUSEL_VISIBILITY_CLASS_NAME =
+  "[contain-intrinsic-size:0_540px] [content-visibility:auto]";
+const PRODUCT_PAGE_REVIEWS_VISIBILITY_CLASS_NAME =
+  "[contain-intrinsic-size:0_520px] [content-visibility:auto]";
+
 export async function generateMetadata({
   params,
 }: PageProps<"/[locale]/p/[urlKey]">): Promise<Metadata> {
@@ -44,6 +51,7 @@ export async function generateMetadata({
   const decodedUrlKey = decodeURIComponent(urlKey);
 
   const productDetailsResult = await getProductDetails({
+    locale: locale as Locale,
     urlKey: decodedUrlKey,
   });
 
@@ -134,6 +142,7 @@ export default async function ProductPage({
 
   const [productDetailsResult, pageLandingResult] = await Promise.allSettled([
     getProductDetails({
+      locale: locale as Locale,
       urlKey: decodedUrlKey,
     }),
     getPageLandingData({
@@ -167,25 +176,33 @@ export default async function ProductPage({
         {/* Product Schema - enables rich product snippets */}
         <JsonLdScript data={productSchema} id="product-schema" />
 
-        <ProductTracker product={structuredClone(productDetails.data)} />
+        <ProductTracker />
         <AsyncBoundary fallback={null}>
           <ViewedProductTracker productSku={productDetails.data.sku} />
         </AsyncBoundary>
         <div className="pb-22.5">
           {/* <ProductBreadcrumb product={productDetails.data} /> */}
 
-          <Container className="lg:h-148.75 lg:mt-12.5 mb-2.5 grid grid-cols-6 gap-5 !px-0 lg:grid-cols-12 lg:gap-2.5">
+          <Container className="lg:h-148.75 lg:mt-12.5 px-0! mb-2.5 grid grid-cols-6 gap-5 lg:grid-cols-12 lg:gap-2.5">
             <ProductMediaGallery />
             <ProductDetails
               locale={locale as Locale}
               product={productDetails.data}
             />
           </Container>
-          <ProductAdditionalInfo product={productDetails.data} />
+          <div className={PRODUCT_PAGE_ADDITIONAL_INFO_VISIBILITY_CLASS_NAME}>
+            <ProductAdditionalInfo product={productDetails.data} />
+          </div>
           {/* <IngredientPyramid /> */}
-          <ProductReviewsSection product={productDetails.data} />
-          <SimilarProductsSection product={productDetails.data} />
-          <YouMightAlsoLikeProductsSection product={productDetails.data} />
+          <div className={PRODUCT_PAGE_REVIEWS_VISIBILITY_CLASS_NAME}>
+            <ProductReviewsSection product={productDetails.data} />
+          </div>
+          <div className={PRODUCT_PAGE_PRODUCT_CAROUSEL_VISIBILITY_CLASS_NAME}>
+            <SimilarProductsSection product={productDetails.data} />
+          </div>
+          <div className={PRODUCT_PAGE_PRODUCT_CAROUSEL_VISIBILITY_CLASS_NAME}>
+            <YouMightAlsoLikeProductsSection product={productDetails.data} />
+          </div>
           <StickyAddToCart />
         </div>
       </ProductDetailsProvider>

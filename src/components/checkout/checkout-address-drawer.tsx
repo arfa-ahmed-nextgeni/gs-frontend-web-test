@@ -235,7 +235,7 @@ export function CheckoutAddressDrawer({
                         }`}
                       >
                         <span className="inline-block" dir="ltr">
-                          +{address.phoneNumber}
+                          {address.phoneNumber}
                         </span>
                         {hasVerificationStatus &&
                           (isKsaVerified ? (

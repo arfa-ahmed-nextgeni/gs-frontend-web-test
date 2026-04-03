@@ -4,8 +4,8 @@ import React from "react";
 
 import { useTranslations } from "next-intl";
 
-import { TabbyPromoDialog } from "@/components/product/product-details/tabby-promo-dialog";
-import { TamaraPromoDialog } from "@/components/product/product-details/tamara-promo-dialog";
+import { TabbyPromoDialog } from "@/components/product/product-details/product-promo-dialog/tabby-promo-dialog";
+import { TamaraPromoDialog } from "@/components/product/product-details/product-promo-dialog/tamara-promo-dialog";
 import { LocalizedPrice } from "@/components/shared/localized-price";
 import { useProductDetails } from "@/contexts/product-details-context";
 import { useStoreConfig } from "@/contexts/store-config-context";

@@ -18,18 +18,19 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useIsMobile } from "@/hooks/use-is-mobile";
+import { useVisualViewport } from "@/hooks/use-visual-viewport";
 import { cn } from "@/lib/utils";
 
 export const AddPaymentCardDialog = () => {
   const t = useTranslations("CustomerCardsPage.addNewCardDialog");
 
   const isMobile = useIsMobile();
+  const { hasVisualViewport, height: viewportHeight } = useVisualViewport();
 
   const [open, setOpen] = useState(false);
 
   const closeDialog = () => setOpen(false);
 
-  // Handle viewport changes for mobile dialog (e.g., when card scan camera opens/closes)
   useEffect(() => {
     if (!isMobile || !open || typeof window === "undefined") return;
 
@@ -37,10 +38,9 @@ export const AddPaymentCardDialog = () => {
       const dialogContent = document.querySelector(
         '[data-slot="dialog-content"]'
       ) as HTMLElement | null;
-      if (!dialogContent) return;
+      if (!dialogContent) return false;
 
-      if (window.visualViewport) {
-        const viewportHeight = window.visualViewport.height;
+      if (hasVisualViewport) {
         const windowHeight = window.innerHeight;
         const diff = windowHeight - viewportHeight;
         // Only apply offset if difference is significant (keyboard is visible)
@@ -50,33 +50,27 @@ export const AddPaymentCardDialog = () => {
       } else {
         dialogContent.style.bottom = "0px";
       }
+
+      return true;
     };
 
-    // Set initial position after a short delay to ensure dialog is rendered
-    const timeoutId = setTimeout(updateDialogPosition, 0);
-
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener("resize", updateDialogPosition);
-      window.visualViewport.addEventListener("scroll", updateDialogPosition);
-    } else {
-      window.addEventListener("resize", updateDialogPosition);
+    if (updateDialogPosition()) {
+      return;
     }
+
+    const timeoutId = setTimeout(updateDialogPosition, 0);
 
     return () => {
       clearTimeout(timeoutId);
-      if (window.visualViewport) {
-        window.visualViewport.removeEventListener(
-          "resize",
-          updateDialogPosition
-        );
-        window.visualViewport.removeEventListener(
-          "scroll",
-          updateDialogPosition
-        );
-      } else {
-        window.removeEventListener("resize", updateDialogPosition);
-      }
-      // Reset position on cleanup
+    };
+  }, [hasVisualViewport, isMobile, open, viewportHeight]);
+
+  useEffect(() => {
+    if (!isMobile || !open || typeof window === "undefined") {
+      return;
+    }
+
+    return () => {
       const dialogContent = document.querySelector(
         '[data-slot="dialog-content"]'
       ) as HTMLElement | null;

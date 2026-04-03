@@ -2,8 +2,16 @@
 
 import { useEffect } from "react";
 
+import { useWindowFocusWithin } from "@/hooks/use-window-focus-within";
+
 export function useBlurOnScroll() {
+  const isFocusWithin = useWindowFocusWithin();
+
   useEffect(() => {
+    if (!isFocusWithin) {
+      return;
+    }
+
     const handleTouchMove = () => {
       const active = document.activeElement as HTMLElement | null;
       if (
@@ -14,21 +22,10 @@ export function useBlurOnScroll() {
       }
     };
 
-    const handleFocusIn = () => {
-      window.addEventListener("touchmove", handleTouchMove);
-    };
-
-    const handleFocusOut = () => {
-      window.removeEventListener("touchmove", handleTouchMove);
-    };
-
-    window.addEventListener("focusin", handleFocusIn);
-    window.addEventListener("focusout", handleFocusOut);
+    window.addEventListener("touchmove", handleTouchMove);
 
     return () => {
-      window.removeEventListener("focusin", handleFocusIn);
-      window.removeEventListener("focusout", handleFocusOut);
       window.removeEventListener("touchmove", handleTouchMove);
     };
-  }, []);
+  }, [isFocusWithin]);
 }

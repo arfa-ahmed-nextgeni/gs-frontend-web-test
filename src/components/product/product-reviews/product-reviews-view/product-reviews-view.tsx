@@ -10,6 +10,7 @@ import { ProductReviewsSortByFilter } from "@/components/product/product-reviews
 import { ProductReviewsSummary } from "@/components/product/product-reviews/product-reviews-view/product-reviews-summary";
 import { ProductReviewsSummarySkeleton } from "@/components/product/product-reviews/product-reviews-view/product-reviews-summary-skeleton";
 import { getProductDetails } from "@/lib/actions/products/get-product-details";
+import { Locale } from "@/lib/constants/i18n";
 import { QueryParamsKey } from "@/lib/constants/query-params";
 import { cn } from "@/lib/utils";
 
@@ -18,22 +19,26 @@ export const ProductReviewsView = async ({
   searchParams,
 }: {
   params: Promise<{
+    locale: string;
     productId: string;
     urlKey: string;
   }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) => {
-  const { productId, urlKey: urlKayParam } = await params;
+  const { locale, productId, urlKey: urlKeyParam } = await params;
 
   const queryParams = await searchParams;
 
-  const urlKey = decodeURIComponent(urlKayParam);
+  const urlKey = decodeURIComponent(urlKeyParam);
   const currentPage = parseInt(queryParams[QueryParamsKey.Page] as string) || 1;
   const sortBy = (queryParams[QueryParamsKey.Sort] as string) || "";
 
   const t = await getTranslations("ProductReviewsPage");
 
-  const productDetailsPromise = getProductDetails({ urlKey });
+  const productDetailsPromise = getProductDetails({
+    locale: locale as Locale,
+    urlKey,
+  });
 
   return (
     <>

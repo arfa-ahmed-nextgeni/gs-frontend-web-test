@@ -17,6 +17,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useIsMobile } from "@/hooks/use-is-mobile";
+import { useVisualViewport } from "@/hooks/use-visual-viewport";
 import { addCustomerPaymentCard } from "@/lib/actions/customer/add-customer-payment-card";
 import { trackAddCard } from "@/lib/analytics/events";
 import { PaymentCard } from "@/lib/models/payment-card";
@@ -53,6 +54,11 @@ export const CheckoutAddCardModal = ({
 }: CheckoutAddCardModalProps) => {
   const t = useTranslations("CheckoutPage.addCardDialog");
   const isMobile = useIsMobile();
+  const {
+    hasVisualViewport,
+    height: viewportHeight,
+    offsetTop: viewportTop,
+  } = useVisualViewport();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (data: {
@@ -191,7 +197,6 @@ export const CheckoutAddCardModal = ({
     }
   };
 
-  // Handle viewport changes for mobile dialog (e.g., when keyboard appears)
   useEffect(() => {
     if (!isMobile || !open || typeof window === "undefined") return;
 
@@ -199,11 +204,9 @@ export const CheckoutAddCardModal = ({
       const dialogContent = document.querySelector(
         '[data-slot="dialog-content"]'
       ) as HTMLElement | null;
-      if (!dialogContent) return;
+      if (!dialogContent) return false;
 
-      if (window.visualViewport) {
-        const viewportHeight = window.visualViewport.height;
-        const viewportTop = window.visualViewport.offsetTop;
+      if (hasVisualViewport) {
         const windowHeight = window.innerHeight;
         const diff = windowHeight - viewportHeight;
 
@@ -216,6 +219,48 @@ export const CheckoutAddCardModal = ({
           dialogContent.style.height = `${viewportHeight}px`;
         } else {
           // No keyboard, reset to bottom
+          dialogContent.style.bottom = "0px";
+          dialogContent.style.maxHeight = "90dvh";
+          dialogContent.style.height = "auto";
+        }
+      } else {
+        dialogContent.style.bottom = "0px";
+        dialogContent.style.maxHeight = "90dvh";
+        dialogContent.style.height = "auto";
+      }
+
+      return true;
+    };
+
+    if (updateDialogPosition()) {
+      return;
+    }
+
+    const timeoutId = setTimeout(updateDialogPosition, 0);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [hasVisualViewport, isMobile, open, viewportHeight, viewportTop]);
+
+  useEffect(() => {
+    if (!isMobile || !open || typeof window === "undefined") return;
+
+    const updateDialogPosition = () => {
+      const dialogContent = document.querySelector(
+        '[data-slot="dialog-content"]'
+      ) as HTMLElement | null;
+      if (!dialogContent) return;
+
+      if (hasVisualViewport) {
+        const windowHeight = window.innerHeight;
+        const diff = windowHeight - viewportHeight;
+
+        if (diff > 100) {
+          dialogContent.style.bottom = `${windowHeight - viewportHeight - viewportTop}px`;
+          dialogContent.style.maxHeight = `${viewportHeight}px`;
+          dialogContent.style.height = `${viewportHeight}px`;
+        } else {
           dialogContent.style.bottom = "0px";
           dialogContent.style.maxHeight = "90dvh";
           dialogContent.style.height = "auto";
@@ -260,14 +305,6 @@ export const CheckoutAddCardModal = ({
         input.addEventListener("blur", handleInputBlur);
       });
 
-      // Add viewport event listeners
-      if (window.visualViewport) {
-        window.visualViewport.addEventListener("resize", updateDialogPosition);
-        window.visualViewport.addEventListener("scroll", updateDialogPosition);
-      } else {
-        window.addEventListener("resize", updateDialogPosition);
-      }
-
       // Initial position update
       updateDialogPosition();
       return true;
@@ -288,18 +325,6 @@ export const CheckoutAddCardModal = ({
 
     return () => {
       clearTimeout(initialTimeout);
-      if (window.visualViewport) {
-        window.visualViewport.removeEventListener(
-          "resize",
-          updateDialogPosition
-        );
-        window.visualViewport.removeEventListener(
-          "scroll",
-          updateDialogPosition
-        );
-      } else {
-        window.removeEventListener("resize", updateDialogPosition);
-      }
       // Remove input event listeners
       const dialogContentForCleanup = document.querySelector(
         '[data-slot="dialog-content"]'
@@ -323,7 +348,7 @@ export const CheckoutAddCardModal = ({
         dialogContent.style.height = "";
       }
     };
-  }, [isMobile, open]);
+  }, [hasVisualViewport, isMobile, open, viewportHeight, viewportTop]);
 
   if (isMobile) {
     return (

@@ -2,9 +2,9 @@
 
 import { useAuthUI } from "@/contexts/auth-ui-context";
 import { useUI } from "@/contexts/use-ui";
-import { useIsMobile } from "@/hooks/use-is-mobile";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/lib/constants/routes";
+import { isDesktopViewport } from "@/lib/utils/responsive";
 
 export const SignupNowButton = ({
   className,
@@ -15,7 +15,6 @@ export const SignupNowButton = ({
 }) => {
   const { isAuthorized } = useUI();
   const { showOtpLoginPopup } = useAuthUI();
-  const isMobile = useIsMobile();
 
   if (isAuthorized) {
     return null;
@@ -26,7 +25,7 @@ export const SignupNowButton = ({
       className={className}
       href={ROUTES.CUSTOMER.LOGIN}
       onNavigate={(e) => {
-        if (!isMobile) {
+        if (isDesktopViewport()) {
           e.preventDefault();
           showOtpLoginPopup();
         }

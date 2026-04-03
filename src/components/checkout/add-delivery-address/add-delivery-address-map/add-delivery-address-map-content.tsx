@@ -14,9 +14,13 @@ import { extractGoogleAddressData } from "@/lib/utils/google-address";
 
 export const AddDeliveryAddressMapContent = ({
   currentLocation,
+  defaultCenter,
+  isBottomWarningVisible,
   onLocateAction,
 }: {
   currentLocation: google.maps.LatLngLiteral | null;
+  defaultCenter: google.maps.LatLngLiteral;
+  isBottomWarningVisible?: boolean;
   onLocateAction: () => void;
 }) => {
   const t = useTranslations("AddDeliveryAddressPage.map");
@@ -143,8 +147,8 @@ export const AddDeliveryAddressMapContent = ({
     }
   }, [map, selectedLocation]);
 
-  // Determine marker position - prioritize selected location, fallback to current location
-  const markerPosition = selectedLocation || currentLocation;
+  // Determine marker position - prioritize selected location, fallback to current location, then default center
+  const markerPosition = selectedLocation || currentLocation || defaultCenter;
 
   useEffect(() => {
     console.info("[MapContent] selectedLocation changed:", {
@@ -167,23 +171,22 @@ export const AddDeliveryAddressMapContent = ({
       )}
 
       {/* Main draggable marker for selected location */}
-      {markerPosition && (
-        <AdvancedMarker
-          draggable={true}
-          onDragEnd={handleMarkerDragEnd}
-          position={markerPosition}
-          title="Selected Location"
-        >
-          <Image
-            alt="Selected Location"
-            className="size-8 cursor-grab active:cursor-grabbing"
-            draggable={false} // Prevent image drag, let marker handle it
-            height={32}
-            src={LocationPinIcon}
-            width={32}
-          />
-        </AdvancedMarker>
-      )}
+      <AdvancedMarker
+        draggable={true}
+        onDragEnd={handleMarkerDragEnd}
+        position={markerPosition}
+        title="Selected Location"
+      >
+        <Image
+          alt="Selected Location"
+          className="size-8 cursor-grab active:cursor-grabbing"
+          draggable={false} // Prevent image drag, let marker handle it
+          height={32}
+          src={LocationPinIcon}
+          style={{ filter: "hue-rotate(10deg) saturate(150%)" }}
+          width={32}
+        />
+      </AdvancedMarker>
 
       {/* Fixed center crosshair for map-centered location selection - DISABLED */}
       {/* <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
@@ -199,7 +202,10 @@ export const AddDeliveryAddressMapContent = ({
       {/* </div> */}
       {/* </div> */}
 
-      <AddDeliveryAddressMapControls onLocate={handleLocate} />
+      <AddDeliveryAddressMapControls
+        isBottomWarningVisible={isBottomWarningVisible}
+        onLocate={handleLocate}
+      />
     </>
   );
 };

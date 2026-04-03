@@ -1,13 +1,17 @@
 import Container from "@/components/shared/container";
 import { FooterAppLinks } from "@/layouts/footer/footer-nav/footer-app-links";
 import { FooterNavLinks } from "@/layouts/footer/footer-nav/footer-nav-links";
+import { WebsiteFooterLinks } from "@/lib/models/website-footer";
+
+type FooterAppSection = WebsiteFooterLinks["appSection"];
+type FooterNavSection = WebsiteFooterLinks["footerSections"];
 
 export const FooterNav = ({
   appSection,
   navSection,
 }: {
-  appSection: any;
-  navSection: any[];
+  appSection: FooterAppSection;
+  navSection: FooterNavSection;
 }) => {
   return (
     <Container
@@ -18,7 +22,10 @@ export const FooterNav = ({
         <FooterAppLinks appSection={appSection} />
         <div className="col-span-1 hidden lg:block" />
         {navSection.map((data, idx) => (
-          <FooterNavLinks data={data} key={`footer-nav-key${data.id ?? idx}`} />
+          <FooterNavLinks
+            data={data}
+            key={`footer-nav-key${data.title}-${idx}`}
+          />
         ))}
       </Container>
     </Container>

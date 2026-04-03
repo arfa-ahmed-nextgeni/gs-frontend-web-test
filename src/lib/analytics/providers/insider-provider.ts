@@ -1,6 +1,6 @@
 import "client-only";
 
-import { ANALYTICS_TOOL } from "@/lib/analytics/analytics-tool";
+import { ANALYTICS_TOOL } from "@/lib/analytics/constants/analytics-tool";
 import { AnalyticsProvider } from "@/lib/analytics/providers/base-provider";
 import { CustomerProperties } from "@/lib/analytics/utils/build-properties";
 import { buildUserInsiderProperties } from "@/lib/analytics/utils/build-properties";
@@ -20,7 +20,6 @@ const PROPERTY_TO_CUSTOMER_KEY_MAP: Record<string, keyof CustomerProperties> = {
 
 const EVENT_NAME_MAPPING: Record<string, string> = {
   home: "home",
-  view_category: "category",
 };
 
 const STORE_CONFIG: Record<string, { currency: string; lang: string }> = {
@@ -42,6 +41,7 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
   public tool = ANALYTICS_TOOL.INSIDER;
   private currentLocale: null | string = null;
   private isInitialized = false;
+  private lastPushedUserKey: null | string = null;
 
   identify(userId: string, traits?: Record<string, unknown>): void {
     if (!this.isAvailable()) return;
@@ -66,10 +66,15 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
     try {
       if (locale && locale in STORE_CONFIG) {
         this.pushLocaleToQueue(locale);
+      } else {
+        window.InsiderQueue = window.InsiderQueue || [];
       }
 
-      await loadInsiderScript();
       this.isInitialized = true;
+
+      void loadInsiderScript().catch((error) => {
+        console.error("[Insider] Initialization failed:", error);
+      });
     } catch (error) {
       console.error("[Insider] Initialization failed:", error);
     }
@@ -115,6 +120,40 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
     this.currentLocale = locale;
   }
 
+  setUserProperties(
+    userProperties: null | Partial<Record<string, unknown>>
+  ): void {
+    if (!userProperties) {
+      this.lastPushedUserKey = null;
+      return;
+    }
+
+    const key = JSON.stringify(userProperties);
+    if (key === this.lastPushedUserKey) return;
+    this.lastPushedUserKey = key;
+
+    if (!this.isAvailable()) return;
+
+    try {
+      const { customerProperties } = this.splitProperties(
+        userProperties as Record<string, unknown>
+      );
+
+      if (Object.keys(customerProperties).length > 0) {
+        const userEvent = {
+          type: "user",
+          value: buildUserInsiderProperties(
+            customerProperties as CustomerProperties
+          ),
+        };
+
+        window.InsiderQueue?.splice(-2, 0, userEvent);
+      }
+    } catch (error) {
+      console.error("[Insider] setUserProperties error:", error);
+    }
+  }
+
   track(eventName: string, properties?: Record<string, unknown>): void {
     if (!this.isAvailable()) return;
 
@@ -127,12 +166,6 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
       case "langauge_pick":
         this.languageChange(properties);
         break;
-      case "logout":
-        this.resetUser();
-        break;
-      case "view_category":
-        this.pushDefaultEvent(eventName, properties);
-        break;
     }
   }
 
@@ -142,9 +175,32 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
   ): Record<string, unknown> {
     let eventValue = {};
 
+    console.info(properties);
+
     switch (eventName) {
       case "view_category":
         eventValue = { breadcrumb: [properties?.["category.name"] ?? ""] };
+        break;
+      case "view_product":
+        eventValue = {
+          custom: {
+            attribute_set: properties?.["product.attribute_set"] || "",
+            brnd: properties?.["product.brand"] || "",
+            groupcode: properties?.["product.sku_parent"] || "",
+            iis: properties?.["product.stock"] ? true : false,
+            parent_product_integer_id: properties?.["product.parent_id"] || "",
+            product_integer_id: properties?.["product.id"] || "",
+            pt: properties?.["product.type"] || "",
+          },
+          id: properties?.["product.id"] || "",
+          name: properties?.["product.name"] || "",
+          product_image_url: properties?.["product.image_url"] || "",
+          stock: properties?.["product.stock"] || 0,
+          taxonomy: (properties?.["product.taxonomy"] as string[]) || [],
+          unit_price: properties?.["product.price"] || 0,
+          unit_sale_price: properties?.["product.sale_price"] || 0,
+          url: properties?.["product.url"] || "",
+        };
         break;
     }
 

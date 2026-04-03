@@ -30,14 +30,16 @@ export const ProductDetails = ({
         "col-span-6 flex flex-col gap-5 px-2.5 lg:col-span-5 lg:px-0",
         {
           "justify-between":
+            product.type &&
             ![ProductType.EGiftCard, ProductType.GiftCard].includes(
               product.type
-            ) && TABBY_TAMARA_INSTALLMENTS_ENABLED_STORES.includes(storeCode),
+            ) &&
+            TABBY_TAMARA_INSTALLMENTS_ENABLED_STORES.includes(storeCode),
         }
       )}
     >
       <div className="flex flex-col">
-        <ProductDetailsHeader />
+        <ProductDetailsHeader product={product} />
         {product.type !== ProductType.EGiftCard && (
           <div className="flex flex-row justify-between">
             <ProductDetailsPrice containerProps={{ className: "lg:mt-9" }} />
@@ -46,26 +48,29 @@ export const ProductDetails = ({
             />
           </div>
         )}
-        {![ProductType.EGiftCard, ProductType.GiftCard].includes(
-          product.type
-        ) && <ProductDetailsBadges />}
+        {product.type &&
+          ![ProductType.EGiftCard, ProductType.GiftCard].includes(
+            product.type
+          ) && <ProductDetailsBadges />}
 
-        {![ProductType.EGiftCard, ProductType.GiftCard].includes(
-          product.type
-        ) && (
-          <div className="mt-5 flex flex-col gap-2.5 lg:mt-10">
-            <ProductDetailsVariants />
-            <ProductDetailsInfoGrid product={product} />
-          </div>
-        )}
+        {product.type &&
+          ![ProductType.EGiftCard, ProductType.GiftCard].includes(
+            product.type
+          ) && (
+            <div className="mt-5 flex flex-col gap-2.5 lg:mt-10">
+              <ProductDetailsVariants />
+              <ProductDetailsInfoGrid product={product} />
+            </div>
+          )}
       </div>
 
       <div
         className={cn("flex flex-col gap-2.5", {
           "lg:mt-15":
-            [ProductType.GiftCard].includes(product.type) ||
+            (product.type && [ProductType.GiftCard].includes(product.type)) ||
             !TABBY_TAMARA_INSTALLMENTS_ENABLED_STORES.includes(storeCode),
-          "lg:mt-5": [ProductType.EGiftCard].includes(product.type),
+          "lg:mt-5":
+            product.type && [ProductType.EGiftCard].includes(product.type),
         })}
       >
         <ProductActionButtons />

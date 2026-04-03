@@ -19,7 +19,10 @@ export const ProductBreadcrumb = ({
                 title: product.brand,
               },
             ]
-          : [ProductType.EGiftCard, ProductType.GiftCard].includes(product.type)
+          : product.type &&
+              [ProductType.EGiftCard, ProductType.GiftCard].includes(
+                product.type
+              )
             ? [
                 { href: ROUTES.ROOT },
                 { href: ROUTES.CATEGORY.BY_SLUG("new"), title: product.brand },

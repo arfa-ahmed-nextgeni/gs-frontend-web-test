@@ -6,15 +6,12 @@ import HalfStarIcon from "@/assets/icons/half-star-icon.svg";
 import StarIcon from "@/assets/icons/star-icon.svg";
 import { ProductCardBadge } from "@/components/product/product-card/product-card-badge";
 import { useProductDetails } from "@/contexts/product-details-context";
-import { useIsMobile } from "@/hooks/use-is-mobile";
 import { ProductBadgeType } from "@/lib/constants/product/product-card";
 import { ProductType } from "@/lib/constants/product/product-details";
 import { cn } from "@/lib/utils";
 
 export const ProductMediaOverlay = () => {
   const { product, selectedProduct } = useProductDetails();
-
-  const isMobile = useIsMobile();
 
   const isExclusive = selectedProduct?.isExclusive;
   const isNew = selectedProduct?.isNew;
@@ -28,7 +25,7 @@ export const ProductMediaOverlay = () => {
       className={cn(
         "lg:h-25 absolute inset-0 top-0 h-20 bg-[linear-gradient(0deg,rgba(255,255,255,0)_0%,#FFF_50%)]",
         {
-          "bg-none": noAnyBadge && !isMobile,
+          "lg:bg-none": noAnyBadge,
         }
       )}
     >

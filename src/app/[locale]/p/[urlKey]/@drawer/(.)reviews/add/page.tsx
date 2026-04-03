@@ -31,7 +31,8 @@ export default async function AddProductReviewPage({
   }
 
   const productBasicInfoResponse = await getProductDetails({
-    urlKey,
+    locale: locale as Locale,
+    urlKey: decodeURIComponent(urlKey),
   });
 
   const productProperties =

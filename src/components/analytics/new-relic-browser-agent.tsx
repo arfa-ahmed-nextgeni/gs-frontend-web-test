@@ -1,9 +1,18 @@
+"use client";
+
 import Script from "next/script";
 
-const NR_ENABLED = process.env.NEXT_PUBLIC_NEW_RELIC_ENABLED === "true";
+import { useAnalyticsBootTrigger } from "@/hooks/use-analytics-boot-trigger";
+import { INTERACTION_BOOT_POLICY } from "@/lib/boot/config/boot-presets";
+import { NEW_RELIC_ENABLED } from "@/lib/config/client-env";
 
 export function NewRelicBrowserAgent() {
-  if (!NR_ENABLED) return null;
+  const shouldLoad = useAnalyticsBootTrigger(
+    NEW_RELIC_ENABLED,
+    INTERACTION_BOOT_POLICY
+  );
+
+  if (!NEW_RELIC_ENABLED || !shouldLoad) return null;
 
   return (
     <>

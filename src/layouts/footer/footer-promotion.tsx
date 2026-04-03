@@ -1,8 +1,7 @@
 import type { CSSProperties } from "react";
 
-import Image from "next/image";
-
 import Container from "@/components/shared/container";
+import { ContentfulImage } from "@/components/shared/contentful-image";
 import { Link } from "@/i18n/navigation";
 import { WebsiteFooterPromoAndFeatures } from "@/lib/models/website-footer";
 
@@ -45,7 +44,7 @@ export const FooterPromotion = ({
             >
               <span className="flex flex-row items-center gap-2">
                 {feature.iconUrl && (
-                  <Image
+                  <ContentfulImage
                     alt={feature.highlight}
                     className="h-7.5"
                     height={iconHeight}

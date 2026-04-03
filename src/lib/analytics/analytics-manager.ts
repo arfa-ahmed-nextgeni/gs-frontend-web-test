@@ -10,9 +10,9 @@ import {
   SNAP_CAPI_EVENTS,
 } from "@/lib/analytics/utils/snap-capi-params";
 
-import type { AnalyticsTool } from "@/lib/analytics/analytics-tool";
 import type { UserProperties } from "@/lib/analytics/models/event-models";
 import type { AnalyticsProvider } from "@/lib/analytics/providers/base-provider";
+import type { AnalyticsTool } from "@/lib/types/analytics";
 
 /**
  * Events that reset the banner click sequence
@@ -277,6 +277,21 @@ class AnalyticsManager {
 
   setUserProperties(userProperties: null | Partial<UserProperties>): void {
     this.userProperties = userProperties;
+
+    if (!userProperties) return;
+
+    this.providers.forEach((provider) => {
+      if (
+        provider.setUserProperties &&
+        typeof provider.setUserProperties === "function"
+      ) {
+        try {
+          provider.setUserProperties(userProperties);
+        } catch (error) {
+          console.error("Analytics setUserProperties error:", error);
+        }
+      }
+    });
   }
 
   /**

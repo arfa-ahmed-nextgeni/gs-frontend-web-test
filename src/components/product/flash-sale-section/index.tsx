@@ -4,19 +4,21 @@ import { FlashSaleContent } from "@/components/product/flash-sale-section/flash-
 import { FlashSaleContentSkeleton } from "@/components/product/flash-sale-section/flash-sale-content-skeleton";
 import { FlashSale } from "@/lib/models/flash-sale";
 
-export const FlashSaleSection = (
-  props: { delayMs?: number; lpRow?: number } & FlashSale
-) => {
+export const FlashSaleSection = (props: { lpRow?: number } & FlashSale) => {
   return (
-    <FlashSaleContainer flashSale={structuredClone(props)}>
+    <FlashSaleContainer
+      visibility={{
+        endTime: props.endTime,
+        hasContent: Boolean(
+          props.products?.length || props.saleProductCategoryId
+        ),
+        startTime: props.startTime,
+      }}
+    >
       <AsyncBoundary
         loadingFallback={<FlashSaleContentSkeleton variant={props.variant} />}
       >
-        <FlashSaleContent
-          {...props}
-          delayMs={props.delayMs}
-          lpRow={props.lpRow}
-        />
+        <FlashSaleContent {...props} lpRow={props.lpRow} />
       </AsyncBoundary>
     </FlashSaleContainer>
   );

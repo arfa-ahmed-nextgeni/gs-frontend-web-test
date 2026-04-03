@@ -16,7 +16,7 @@ export function CarouselDots({
   idPrefix?: string;
   visible?: boolean;
 } & React.ComponentProps<"div">) {
-  const { api, scrollTo, selectedIndex } = useCarousel();
+  const { scrollTo, selectedIndex, snapList } = useCarousel();
 
   if (!visible) return null;
 
@@ -29,7 +29,7 @@ export function CarouselDots({
       role="tablist"
       {...props}
     >
-      {api?.scrollSnapList().map((_, index) => {
+      {snapList().map((_, index) => {
         const slideId = idPrefix
           ? `${idPrefix}-carousel-item-${index}`
           : `carousel-item-${index}`;

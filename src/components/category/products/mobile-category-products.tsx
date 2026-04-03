@@ -26,6 +26,7 @@ interface MobileCategoryProductsProps {
   categoryUid: string;
   initialPage: number;
   initialProducts: ProductCardModel[];
+  isBulletDeliveryEnabled: boolean;
   locale: Locale;
   searchTerm?: string;
   totalPages: number;
@@ -37,6 +38,7 @@ export function MobileCategoryProducts({
   categoryUid,
   initialPage,
   initialProducts,
+  isBulletDeliveryEnabled,
   locale,
   searchTerm,
   totalPages,
@@ -148,6 +150,7 @@ export function MobileCategoryProducts({
               ? Number.parseInt(categoryUid, 10)
               : undefined
           }
+          isBulletDeliveryEnabled={isBulletDeliveryEnabled}
           products={products}
           searchTerm={searchTerm}
         />

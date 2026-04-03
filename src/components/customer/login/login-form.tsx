@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 
@@ -23,6 +23,7 @@ import { useUI } from "@/contexts/use-ui";
 import { useStoreCode } from "@/hooks/i18n/use-store-code";
 import { getCustomerQueryConfig } from "@/hooks/queries/use-customer-query";
 import { useRouteMatch } from "@/hooks/use-route-match";
+import { useWindowSize } from "@/hooks/use-window-size";
 import { Link, useRouter } from "@/i18n/navigation";
 import { otpLogin, otpVerify, selectAccount } from "@/lib/actions/auth/otp";
 import {
@@ -101,6 +102,8 @@ export function LoginForm() {
   >([]);
   const [selectedEmail, setSelectedEmail] = useState("");
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const initialViewportHeightRef = useRef<null | number>(null);
+  const { height: windowHeight } = useWindowSize();
 
   const resetFormState = useCallback(() => {
     setStep("phone");
@@ -136,21 +139,20 @@ export function LoginForm() {
     }
   }, [step, countdown]);
 
-  // Detect keyboard visibility on mobile
   useEffect(() => {
-    const initialViewportHeight = window.innerHeight;
+    if (!windowHeight) {
+      return;
+    }
 
-    const handleResize = () => {
-      const currentViewportHeight = window.innerHeight;
-      const heightDifference = initialViewportHeight - currentViewportHeight;
+    if (
+      initialViewportHeightRef.current === null ||
+      windowHeight > initialViewportHeightRef.current
+    ) {
+      initialViewportHeightRef.current = windowHeight;
+    }
 
-      // If viewport height decreased by more than 150px, assume keyboard is open
-      setIsKeyboardOpen(heightDifference > 150);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    setIsKeyboardOpen(initialViewportHeightRef.current - windowHeight > 150);
+  }, [windowHeight]);
 
   useEffect(() => {
     setHasBeenFocused(false);

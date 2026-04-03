@@ -1,17 +1,17 @@
 import { getLocale, getTranslations } from "next-intl/server";
 
-import SectionHeader from "@/components/common/section-header";
+import { SectionHeader } from "@/components/common/section-header";
 import { ProductCard } from "@/components/product/product-card";
 import { TopTrendsBannerImage } from "@/components/product/top-trends-section/top-trends-banner-image";
 import { TopTrendsCashbackCard } from "@/components/product/top-trends-section/top-trends-cashback-card";
 import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
 import { CarouselItem } from "@/components/ui/carousel/carousel-item";
+import { getBulletDeliveryEnabled } from "@/lib/actions/config/get-bullet-delivery-enabled";
 import { getProductsByCategory } from "@/lib/actions/products/get-products-by-category";
 import { Locale } from "@/lib/constants/i18n";
 import { ROUTES } from "@/lib/constants/routes";
 import { ProductCardModel } from "@/lib/models/product-card-model";
 import { TopTrendsCategoryProducts } from "@/lib/models/top-trends-category-products";
-import { sleep } from "@/lib/utils/async";
 import { isOk } from "@/lib/utils/service-result";
 
 export const TopTrendsContent = async ({
@@ -25,7 +25,6 @@ export const TopTrendsContent = async ({
   cashbackButtonUrl,
   cashbackCurrencyImage,
   cashbackTitle,
-  delayMs,
   lpRow,
   maximumProducts,
   productsCategoryId,
@@ -37,32 +36,31 @@ export const TopTrendsContent = async ({
   bannerLpId?: string;
   bannerOrigin?: "lp" | "pdp" | "plp";
   bannerRow?: number;
-  delayMs?: number;
   lpRow?: number;
 } & TopTrendsCategoryProducts) => {
-  if (delayMs) {
-    await sleep(delayMs);
-  }
   const locale = (await getLocale()) as Locale;
 
   const carouselIdPrefix = "top-trends";
 
-  let products: ProductCardModel[] = [];
+  const [isBulletDeliveryEnabled, productsByCatergoryResponse, t] =
+    await Promise.all([
+      getBulletDeliveryEnabled({ locale }),
+      getProductsByCategory({
+        category: productsCategoryId,
+        locale,
+        pageSize: maximumProducts,
+        variant,
+      }),
+      getTranslations("HomePage.categoryProducts"),
+    ]);
 
-  const productsByCatergoryResponse = await getProductsByCategory({
-    category: productsCategoryId,
-    locale,
-    pageSize: maximumProducts,
-    variant,
-  });
+  let products: ProductCardModel[] = [];
 
   if (isOk(productsByCatergoryResponse)) {
     products = productsByCatergoryResponse.data.products;
   }
 
   if (!products?.length) return null;
-
-  const t = await getTranslations("HomePage.categoryProducts");
 
   const renderCategoryProducts = () => {
     return products?.map((product, index) => (
@@ -71,6 +69,7 @@ export const TopTrendsContent = async ({
         key={`${product.id}`}
       >
         <ProductCard
+          isBulletDeliveryEnabled={isBulletDeliveryEnabled}
           lpColumn={1}
           lpExtra={{
             row_count: products.length,
@@ -133,6 +132,7 @@ export const TopTrendsContent = async ({
                   delay: autoSliding?.delay,
                   enabled: autoSliding?.enabled,
                 },
+                deferUntilInView: true,
               }}
               nextButtonProps={{
                 className: "-end-9",
@@ -238,6 +238,7 @@ export const TopTrendsContent = async ({
                       delay: autoSliding?.delay,
                       enabled: autoSliding?.enabled,
                     },
+                    deferUntilInView: true,
                   }}
                   dotsProps={{
                     className: "-bottom-10",

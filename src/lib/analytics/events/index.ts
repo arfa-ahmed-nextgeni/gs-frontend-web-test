@@ -1,7 +1,7 @@
 import { analyticsManager } from "@/lib/analytics/analytics-manager";
-import { ANALYTICS_TOOL } from "@/lib/analytics/analytics-tool";
 import { bannerTrackingManager } from "@/lib/analytics/banner-tracking-manager";
 import { clickOriginTrackingManager } from "@/lib/analytics/click-origin-tracking-manager";
+import { ANALYTICS_TOOL } from "@/lib/analytics/constants/analytics-tool";
 import { amplitudeProvider } from "@/lib/analytics/providers/amplitude-provider";
 import { ROUTES } from "@/lib/constants/routes";
 import { ShippingType } from "@/lib/utils/checkout/shipping-type";

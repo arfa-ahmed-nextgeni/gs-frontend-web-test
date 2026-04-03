@@ -5,10 +5,10 @@ import useBodyScroll from "@/hooks/use-body-scroll";
 import { ZIndexLevel } from "@/lib/constants/ui";
 import { cn } from "@/lib/utils";
 
-import { useSearch } from "../search-container";
+import { useSearchUiState } from "../search-container";
 
 export function MobileSearchDialogFallback() {
-  const { showMobileSearch } = useSearch();
+  const { showMobileSearch } = useSearchUiState();
 
   useBodyScroll(showMobileSearch);
 

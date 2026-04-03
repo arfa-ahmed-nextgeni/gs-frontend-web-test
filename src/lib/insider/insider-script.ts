@@ -1,5 +1,7 @@
 import "client-only";
 
+import { waitForAnalyticsToolBoot } from "@/lib/analytics/analytics-boot-trigger";
+import { ANALYTICS_TOOL } from "@/lib/analytics/constants/analytics-tool";
 import {
   INSIDER_PARTNER_ID,
   INSIDER_PARTNER_NAME,
@@ -8,8 +10,8 @@ import {
 /**
  * Injects the Insider vanilla JS snippet into <head> without blocking the UI.
  *
- * Uses `requestIdleCallback` (with `setTimeout` fallback) so the script
- * is loaded only when the browser is idle, preserving LCP / FID scores.
+ * Uses the shared analytics boot trigger so it follows the same loading policy
+ * as the rest of the analytics stack.
  *
  * @returns A promise that resolves once the Insider script has loaded,
  *          or rejects if the script fails to load.
@@ -27,31 +29,30 @@ export function loadInsiderScript(): Promise<void> {
     return Promise.resolve();
   }
 
-  return new Promise<void>((resolve, reject) => {
-    const inject = () => {
-      try {
-        const script = document.createElement("script");
-        script.src = `https://${INSIDER_PARTNER_NAME}.api.useinsider.com/ins.js?id=${INSIDER_PARTNER_ID}`;
-        script.async = true;
-        script.dataset.insider = "insider-script";
+  return waitForAnalyticsToolBoot(ANALYTICS_TOOL.INSIDER).then(
+    () =>
+      new Promise<void>((resolve, reject) => {
+        const inject = () => {
+          try {
+            const script = document.createElement("script");
+            script.src = `https://${INSIDER_PARTNER_NAME}.api.useinsider.com/ins.js?id=${INSIDER_PARTNER_ID}`;
+            script.async = true;
+            script.dataset.insider = "insider-script";
 
-        script.onload = () => resolve();
-        script.onerror = () => {
-          reject(new Error("Failed to load Insider script."));
+            script.onload = () => resolve();
+            script.onerror = () => {
+              reject(new Error("Failed to load Insider script."));
+            };
+
+            document.head.appendChild(script);
+          } catch (error) {
+            reject(error);
+          }
         };
 
-        document.head.appendChild(script);
-      } catch (error) {
-        reject(error);
-      }
-    };
-
-    if (typeof window.requestIdleCallback === "function") {
-      window.requestIdleCallback(inject, { timeout: 3000 });
-    } else {
-      setTimeout(inject, 1000);
-    }
-  });
+        inject();
+      })
+  );
 }
 
 /**

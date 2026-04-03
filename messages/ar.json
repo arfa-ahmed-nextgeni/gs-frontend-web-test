@@ -319,6 +319,8 @@
     "name": "الاسم",
     "address": "العنوان",
     "mobile": "جوال",
+    "verified": "عنوانك الوطني موثق",
+    "notVerified": "حدث عنوانك الوطني",
     "edit": "عدّل",
     "default": "افتراضي",
     "makeDefault": "خله افتراضي",
@@ -1700,7 +1702,7 @@
       "yourCurrentLocation": "موقعك الحالي",
       "moveMapInstructions": "حرك الخريطة أو اسحب العلامة لاختيار الموقع",
       "locateMe": "حدّد موقعي",
-      "enableLocationServices": "حرّك الخريطة عشان تحدد موقعك"
+      "enableLocationServices": "فعل خدمة الموقع لتحديد موقعك"
     },
     "steps": {
       "homeDeliveryTitle": "التوصيل المنزلي",
@@ -1725,10 +1727,15 @@
       "shortNationalAddress": "العنوان الوطني",
       "confirming": "جاري التأكيد...",
       "setAsDefaultAddress": "تعيين كعنوان افتراضي",
-      "incorrectNationalAddressWarning": "العنوان الوطني غير صحيح قد يؤخر التوصيل.",
+      "incorrectNationalAddressWarning": "إدخال 'العنوان الوطني' بشكل غير صحيح قد يؤخر وصول الطلب",
       "edit": "عدّل",
       "loadingCities": "جاري تحميل المدن...",
+      "noMatchingCity": "لم يتم العثور على مدينة مطابقة",
+      "noDistrictsFound": "لم يتم العثور على منطقة",
       "validatingAddressLocation": "جاري التحقق من موقع العنوان..."
+    },
+    "validationErrors": {
+      "invalidPhoneNumber": "يرجى إدخال رقم هاتف صالح"
     }
   },
   "BrandsCategoryPage": {

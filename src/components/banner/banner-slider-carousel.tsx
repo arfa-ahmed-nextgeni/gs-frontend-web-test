@@ -1,4 +1,5 @@
-import { ComponentProps, useId } from "react";
+import { useId } from "react";
+import type { ComponentProps } from "react";
 
 import { BannerTrackerLink } from "@/components/analytics/banner-tracker";
 import { ContentfulImage } from "@/components/shared/contentful-image";
@@ -33,6 +34,22 @@ export const BannerSliderCarousel = ({
   return (
     <CarouselContainer
       {...carouselContainerProps}
+      carouselProps={{
+        ...carouselContainerProps?.carouselProps,
+        opts: {
+          ...carouselContainerProps?.carouselProps?.opts,
+          ssr:
+            carouselContainerProps?.carouselProps?.opts?.ssr ??
+            banners.map(() => 100),
+        },
+      }}
+      contentProps={{
+        ...carouselContainerProps?.contentProps,
+        className: cn(
+          "ms-0 gap-2.5",
+          carouselContainerProps?.contentProps?.className
+        ),
+      }}
       dotsProps={{
         idPrefix: carouselIdPrefix,
         visible: true,
@@ -53,7 +70,7 @@ export const BannerSliderCarousel = ({
       {banners.map((banner, index) => (
         <CarouselItem
           {...carouselItemProps}
-          className={cn("basis-1/1", carouselItemProps?.className)}
+          className={cn("basis-1/1 ps-0", carouselItemProps?.className)}
           id={`${carouselIdPrefix}-carousel-item-${index}`}
           key={`${banner.elementId || banner.id}`}
         >

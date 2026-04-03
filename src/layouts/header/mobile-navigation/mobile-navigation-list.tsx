@@ -1,5 +1,6 @@
 import { MobileNavigationItem } from "@/layouts/header/mobile-navigation/mobile-navigation-item";
-import { MainMenuType } from "@/lib/types/ui-types";
+
+import type { MainMenuType } from "@/lib/types/ui-types";
 
 export const MobileNavigationList = ({
   navigationItems,
@@ -9,11 +10,7 @@ export const MobileNavigationList = ({
   return (
     <div className="flex flex-col items-center gap-3">
       {navigationItems?.map((item, index) => (
-        <MobileNavigationItem
-          item={structuredClone(item)}
-          key={item.id}
-          position={index + 1}
-        />
+        <MobileNavigationItem item={item} key={item.id} position={index + 1} />
       ))}
     </div>
   );

@@ -10,7 +10,7 @@ export const ProductReviewsSection = ({
 }: {
   product: ProductDetailsModel;
 }) => {
-  if ([ProductType.EGiftCard].includes(product.type)) {
+  if (product.type && [ProductType.EGiftCard].includes(product.type)) {
     return null;
   }
 

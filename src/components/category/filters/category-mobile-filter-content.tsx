@@ -30,6 +30,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useFilters } from "@/contexts/category-filter-context";
+import { useVisualViewport } from "@/hooks/use-visual-viewport";
 import { CategorySortKey } from "@/lib/constants/category/category-sort";
 import { cn } from "@/lib/utils";
 import { arraysEqual } from "@/lib/utils/array";
@@ -82,7 +83,7 @@ export const CategoryMobileFilterContent = ({
   const [checkedFilters, setCheckedFilters] = useState(sectionCheckboxes);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
-  const [hasVisualViewport, setHasVisualViewport] = useState(false);
+  const { hasVisualViewport, height: viewportHeight } = useVisualViewport();
 
   const [selectedOption, setSelectedOption] = useState(
     type === "radio" ? sortBy || CategorySortKey.Relevance : sortBy
@@ -133,41 +134,23 @@ export const CategoryMobileFilterContent = ({
       return;
     }
 
-    const viewport = window.visualViewport;
-
-    if (!viewport) {
-      setHasVisualViewport(false);
+    if (!hasVisualViewport) {
+      setIsKeyboardOpen(false);
       return;
     }
 
-    setHasVisualViewport(true);
+    if (
+      initialViewportHeightRef.current === null ||
+      viewportHeight > initialViewportHeightRef.current
+    ) {
+      initialViewportHeightRef.current = viewportHeight;
+    }
 
-    const updateKeyboardState = () => {
-      if (
-        initialViewportHeightRef.current === null ||
-        viewport.height > initialViewportHeightRef.current
-      ) {
-        initialViewportHeightRef.current = viewport.height;
-      }
+    const keyboardHeight = initialViewportHeightRef.current - viewportHeight;
 
-      const keyboardHeight = initialViewportHeightRef.current - viewport.height;
-
-      // Ignore small height changes caused by browser chrome animations.
-      setIsKeyboardOpen(keyboardHeight > 120);
-    };
-
-    updateKeyboardState();
-
-    viewport.addEventListener("resize", updateKeyboardState);
-    viewport.addEventListener("scroll", updateKeyboardState);
-
-    return () => {
-      viewport.removeEventListener("resize", updateKeyboardState);
-      viewport.removeEventListener("scroll", updateKeyboardState);
-      setIsKeyboardOpen(false);
-      initialViewportHeightRef.current = null;
-    };
-  }, [drawerOpen]);
+    // Ignore small height changes caused by browser chrome animations.
+    setIsKeyboardOpen(keyboardHeight > 120);
+  }, [drawerOpen, hasVisualViewport, viewportHeight]);
 
   // Update local state when external price values change
   useEffect(() => {

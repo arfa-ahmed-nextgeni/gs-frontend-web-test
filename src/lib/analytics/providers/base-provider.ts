@@ -1,4 +1,5 @@
-import type { AnalyticsTool } from "@/lib/analytics/analytics-tool";
+import type { UserProperties } from "@/lib/analytics/models/event-models";
+import type { AnalyticsTool } from "@/lib/types/analytics";
 
 /**
  * Base interface for analytics providers
@@ -38,6 +39,13 @@ export interface AnalyticsProvider {
    * Clears all user data from the analytics provider
    */
   resetUser(): void;
+
+  /**
+   * Optional hook called whenever the analytics manager receives updated user
+   * properties. Providers that need to push user identity eagerly (e.g. Insider)
+   * can implement this instead of relying on per-event property merging.
+   */
+  setUserProperties?(userProperties: null | Partial<UserProperties>): void;
 
   /**
    * Stable identifier used for per-tool analytics consent policies

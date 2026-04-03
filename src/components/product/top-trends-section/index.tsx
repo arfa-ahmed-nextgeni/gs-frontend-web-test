@@ -9,7 +9,6 @@ export const TopTrendsSection = (
     bannerLpId?: string;
     bannerOrigin?: "lp" | "pdp" | "plp";
     bannerRow?: number;
-    delayMs?: number;
     lpRow?: number;
   } & TopTrendsCategoryProducts
 ) => {
@@ -22,7 +21,6 @@ export const TopTrendsSection = (
         bannerLpId={props.bannerLpId}
         bannerOrigin={props.bannerOrigin}
         bannerRow={props.bannerRow}
-        delayMs={props.delayMs}
         lpRow={props.lpRow}
         {...props}
       />

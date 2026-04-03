@@ -1,4 +1,8 @@
-import { FlashSale } from "@/lib/models/flash-sale";
+export type FlashSaleVisibilityInput = {
+  endTime?: string;
+  hasContent: boolean;
+  startTime?: string;
+};
 
 type FlashSaleVisibility = {
   nextTransitionAt: null | number;
@@ -6,7 +10,7 @@ type FlashSaleVisibility = {
 };
 
 export function getFlashSaleVisibility(
-  flashSale: FlashSale,
+  flashSale: FlashSaleVisibilityInput,
   nowMs: number
 ): FlashSaleVisibility {
   const startMs = flashSale.startTime ? Date.parse(flashSale.startTime) : NaN;
@@ -16,12 +20,8 @@ export function getFlashSaleVisibility(
     !flashSale.startTime || (Number.isFinite(startMs) && startMs <= nowMs);
   const hasNotEnded =
     !flashSale.endTime || (Number.isFinite(endMs) && endMs > nowMs);
-  const hasProducts =
-    Array.isArray(flashSale.products) && flashSale.products.length > 0;
-  const hasCategoryId = !!flashSale.saleProductCategoryId;
-  const hasContent = hasProducts || hasCategoryId;
 
-  if (!hasContent) {
+  if (!flashSale.hasContent) {
     return { nextTransitionAt: null, shouldRender: false };
   }
 

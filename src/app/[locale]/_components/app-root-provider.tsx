@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, Suspense } from "react";
 
 import { NextIntlClientProvider } from "next-intl";
 import { getLangDir } from "rtl-detect";
@@ -76,7 +76,11 @@ export async function AppRootProvider({
                   promoBanner={promoBanner}
                 />
               }
-              mobileNavigation={<MobileBottomNavigation />}
+              mobileNavigation={
+                <Suspense>
+                  <MobileBottomNavigation />
+                </Suspense>
+              }
             >
               {children}
             </ConditionalHeaderFooter>

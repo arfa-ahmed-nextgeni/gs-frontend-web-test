@@ -14,13 +14,10 @@ const nextConfig: NextConfig = {
   compress: true,
   experimental: {
     authInterrupts: true,
-    browserDebugInfoInTerminal: true,
+    globalNotFound: true,
     inlineCss: true,
     mcpServer: true,
-    staleTimes: {
-      dynamic: 300,
-      static: 1800,
-    },
+    rootParams: true,
   },
   async headers() {
     return [
@@ -61,29 +58,10 @@ const nextConfig: NextConfig = {
         ],
         source: "/:path*/cart",
       },
-      {
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, s-maxage=300, stale-while-revalidate=600",
-          },
-        ],
-        source: "/category/:path*",
-      },
-      {
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, s-maxage=300, stale-while-revalidate=600",
-          },
-        ],
-        source: "/api/categories/:path*",
-      },
     ];
   },
   images: {
     formats: ["image/webp", "image/avif"],
-    minimumCacheTTL: 300,
     remotePatterns: [
       {
         hostname: "*",
@@ -102,6 +80,8 @@ const nextConfig: NextConfig = {
     },
   },
   output: "standalone",
+  productionBrowserSourceMaps:
+    process.env.PRODUCTION_BROWSER_SOURCE_MAPS === "true",
   serverExternalPackages: ["newrelic", "@newrelic/next"],
   trailingSlash: false,
   turbopack: {

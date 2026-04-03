@@ -6,11 +6,12 @@ import { cn } from "@/lib/utils";
 export function CarouselContent({
   className,
   containerProps,
+  id,
   ...props
 }: {
   containerProps?: React.ComponentProps<"div">;
 } & React.ComponentProps<"div">) {
-  const { carouselRef, orientation } = useCarousel();
+  const { carouselRef, containerId, orientation } = useCarousel();
 
   return (
     <div
@@ -25,6 +26,7 @@ export function CarouselContent({
           orientation === "horizontal" ? "-ms-2.5" : "-mt-2.5 flex-col",
           className
         )}
+        id={id ?? containerId}
         {...props}
       />
     </div>

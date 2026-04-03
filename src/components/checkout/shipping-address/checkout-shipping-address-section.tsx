@@ -58,13 +58,38 @@ export function CheckoutShippingAddressSection({
   const formattedAddressWithCountry = (() => {
     if (!selectedAddress) return "";
 
+    const shortCode =
+      (selectedAddress?.customerAddress as any)?.ksa_short_address ||
+      (selectedAddress?.customerAddress as any)?.raw?.ksa_short_address;
+
+    const street =
+      (selectedAddress?.customerAddress as any)?.street ||
+      (selectedAddress?.customerAddress as any)?.raw?.street;
+
+    const district =
+      (selectedAddress?.customerAddress as any)?.region?.region ||
+      (selectedAddress?.customerAddress as any)?.raw?.region?.region ||
+      "";
+
+    const city =
+      (selectedAddress?.customerAddress as any)?.city ||
+      (selectedAddress?.customerAddress as any)?.raw?.city ||
+      "";
+
     const countryName =
       selectedAddress.customerAddress?.countryLabel ??
       selectedAddress.customerAddress?.countryCode ??
       "";
-    return countryName
-      ? `${countryName}, ${selectedAddress.formattedAddress}`
-      : selectedAddress.formattedAddress;
+
+    const addressParts = [
+      shortCode,
+      Array.isArray(street) ? street.filter(Boolean).join(", ") : street,
+      district,
+      city,
+      countryName,
+    ].filter(Boolean);
+
+    return addressParts.join(", ");
   })();
 
   // Determine if address is a gift address

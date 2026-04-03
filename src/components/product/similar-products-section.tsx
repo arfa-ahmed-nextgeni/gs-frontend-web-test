@@ -17,7 +17,7 @@ export const SimilarProductsSection = ({
 }) => (
   <Suspense
     fallback={
-      <Container className="mb-7.5 !px-0">
+      <Container className="mb-7.5 px-0!">
         <CategoryProductsCarouselItemsSkeleton
           maximumProducts={8}
           variant={ProductCardVariant.Single}

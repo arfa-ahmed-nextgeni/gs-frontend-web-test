@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useTransition } from "react";
+import { useTransition } from "react";
 
 import Image, { StaticImageData } from "next/image";
 
@@ -9,9 +9,9 @@ import { useLocale, useTranslations } from "next-intl";
 
 import WishlistFilledIcon from "@/assets/icons/wishlist-filled-icon.svg";
 import WishlistOutlineIcon from "@/assets/icons/wishlist-outline-icon.svg";
-import { useProductCard } from "@/components/product/product-card/product-card-context";
+import { ProductCardWishlistButtonSkeleton } from "@/components/product/product-card/fallbacks/product-card-wishlist-button-skeleton";
+import { setProductCardClickOrigin } from "@/components/product/product-card/utils/product-card-click-origin";
 import { useToastContext } from "@/components/providers/toast-provider";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import { useAuthUI } from "@/contexts/auth-ui-context";
 import { useCart } from "@/contexts/use-cart";
@@ -24,7 +24,6 @@ import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useRouteMatch } from "@/hooks/use-route-match";
 import { useRouter } from "@/i18n/navigation";
 import { removeProductFromCartAction } from "@/lib/actions/cart/remove-product-from-cart";
-import { clickOriginTrackingManager } from "@/lib/analytics/click-origin-tracking-manager";
 import {
   trackAddToWishlist,
   trackCartToWishlist,
@@ -37,8 +36,6 @@ import { Locale } from "@/lib/constants/i18n";
 import { MUTATION_KEYS } from "@/lib/constants/mutation-keys";
 import { QUERY_KEYS } from "@/lib/constants/query-keys";
 import { Cart } from "@/lib/models/cart";
-import { ProductCardModel } from "@/lib/models/product-card-model";
-import { cn } from "@/lib/utils";
 import {
   getLoginUrlWithRedirect,
   saveScrollPosition,
@@ -46,21 +43,79 @@ import {
 } from "@/lib/utils/auth-redirect";
 import { isOk } from "@/lib/utils/service-result";
 
-type ProductCardWishlistButtonProps = {
+import type { ProductCardActionsState } from "@/components/product/product-card/hooks/use-product-card-actions-state";
+import type { ProductCardInteractionProps } from "@/components/product/product-card/types/product-card-click-origin-types";
+
+type ProductCardWishlistButtonContentProps = {
   addIcon?: StaticImageData | string;
   className?: string;
-  loadingComponent?: ReactNode;
+  isInCart: ProductCardActionsState["isInCart"];
+  isWishlisted: ProductCardActionsState["isWishlisted"];
   removeIcon?: StaticImageData | string;
   size?: number;
-};
+} & ProductCardInteractionProps;
+
+type ProductCardWishlistButtonProps = {
+  isConfigurable: ProductCardActionsState["isConfigurable"];
+} & ProductCardWishlistButtonContentProps;
 
 export const ProductCardWishlistButton = ({
   addIcon = WishlistOutlineIcon,
   className = "",
-  loadingComponent,
+  isConfigurable,
+  isInCart,
+  isWishlisted,
+  lpColumn,
+  lpExtra,
+  lpInnerPosition,
+  lpRow,
+  position,
+  product,
   removeIcon = WishlistFilledIcon,
+  searchTerm,
   size = 20,
+  ...restProps
 }: ProductCardWishlistButtonProps) => {
+  if (isConfigurable) {
+    return null;
+  }
+
+  return (
+    <ProductCardWishlistButtonContent
+      addIcon={addIcon}
+      className={className}
+      isInCart={isInCart}
+      isWishlisted={isWishlisted}
+      lpColumn={lpColumn}
+      lpExtra={lpExtra}
+      lpInnerPosition={lpInnerPosition}
+      lpRow={lpRow}
+      position={position}
+      product={product}
+      removeIcon={removeIcon}
+      searchTerm={searchTerm}
+      size={size}
+      {...restProps}
+    />
+  );
+};
+
+const ProductCardWishlistButtonContent = ({
+  addIcon = WishlistOutlineIcon,
+  categoryId,
+  className = "",
+  isInCart,
+  isWishlisted,
+  lpColumn,
+  lpExtra,
+  lpInnerPosition,
+  lpRow,
+  position,
+  product,
+  removeIcon = WishlistFilledIcon,
+  searchTerm,
+  size = 20,
+}: ProductCardWishlistButtonContentProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const locale = useLocale() as Locale;
@@ -68,20 +123,6 @@ export const ProductCardWishlistButton = ({
   const { isAuthorized } = useUI();
   const { showOtpLoginPopup } = useAuthUI();
   const isMobile = useIsMobile();
-  const {
-    categoryId,
-    isConfigurable,
-    isInCart,
-    isWishlisted,
-    lpColumn,
-    lpExtra,
-    lpInnerPosition,
-    lpRow,
-    originalProduct,
-    position,
-    product,
-    searchTerm,
-  } = useProductCard();
   const { cart } = useCart();
   const { isLoading: isWishlistLoading, wishlist } = useWishlist();
   const { isCart } = useRouteMatch();
@@ -132,27 +173,15 @@ export const ProductCardWishlistButton = ({
     isAddingToCart > 0 || isRemovingFromCart > 0 || isMovingToCart > 0;
 
   const setClickOrigin = () => {
-    if (lpRow !== undefined && lpColumn !== undefined) {
-      clickOriginTrackingManager.setClickOrigin({
-        column: lpColumn,
-        extra: lpExtra,
-        inner_position: lpInnerPosition,
-        origin: "lp",
-        row: lpRow,
-      });
-    } else if (categoryId !== undefined && position !== undefined) {
-      clickOriginTrackingManager.setClickOrigin({
-        categoryId,
-        origin: "plp",
-        position,
-      });
-    } else if (searchTerm && position !== undefined) {
-      clickOriginTrackingManager.setClickOrigin({
-        origin: "search",
-        position,
-        term: searchTerm,
-      });
-    }
+    setProductCardClickOrigin({
+      categoryId,
+      lpColumn,
+      lpExtra,
+      lpInnerPosition,
+      lpRow,
+      position,
+      searchTerm,
+    });
   };
 
   const handleWishlistClick = async () => {
@@ -208,9 +237,7 @@ export const ProductCardWishlistButton = ({
     } else {
       setClickOrigin();
 
-      const productProperties = buildProductPropertiesFromCard(
-        originalProduct as ProductCardModel
-      );
+      const productProperties = buildProductPropertiesFromCard(product);
       if (categoryId !== undefined) {
         productProperties["category.id"] = String(categoryId);
       }
@@ -229,17 +256,10 @@ export const ProductCardWishlistButton = ({
     }
   };
 
-  if (isConfigurable) {
-    return null;
-  }
-
   const isLoading = isAdding > 0 || isRemoving > 0 || isAuthPending;
-  const skeletonComponent = loadingComponent || (
-    <Skeleton className={cn("size-10 rounded-xl", className)} />
-  );
 
   if (isWishlistLoading) {
-    return skeletonComponent;
+    return <ProductCardWishlistButtonSkeleton className={className} />;
   }
 
   return (
@@ -250,7 +270,7 @@ export const ProductCardWishlistButton = ({
       onClick={handleWishlistClick}
     >
       {isLoading ? (
-        loadingComponent || <Spinner variant="dark" />
+        <Spinner variant="dark" />
       ) : (
         <Image
           alt={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}

@@ -22,10 +22,9 @@ import { SeoContentBlock } from "@/lib/models/seo-content-block";
 import { TopTrendsCategoryProducts } from "@/lib/models/top-trends-category-products";
 import { WebsiteBanner } from "@/lib/models/website-banner";
 import { WebsiteMultipleBanners } from "@/lib/models/website-multiple-banners";
+import { cn } from "@/lib/utils";
 import { initializePageLocale } from "@/lib/utils/locale";
 import { generateWebsiteSchema } from "@/lib/utils/schema";
-
-const DEFERRED_CATEGORY_PRODUCTS_DELAY_MS = 500;
 
 export default async function Page({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
@@ -41,18 +40,6 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
 
   // Generate WebSite schema for homepage
   const websiteSchema = generateWebsiteSchema(locale as Locale);
-  let deferredProductSectionIndex = 0;
-
-  const getDeferredProductSectionDelayMs = () => {
-    const delayMs =
-      deferredProductSectionIndex === 0
-        ? undefined
-        : DEFERRED_CATEGORY_PRODUCTS_DELAY_MS;
-
-    deferredProductSectionIndex += 1;
-
-    return delayMs;
-  };
 
   return (
     <>
@@ -97,10 +84,15 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
             const categoryProducts = content as CategoryProducts;
             if (categoryProducts.title === "FBT") return null;
             return (
-              <Container className="lg:mt-7.5 mt-5" key={`content-${index}`}>
+              <Container
+                className={cn(
+                  "lg:mt-7.5 mt-5",
+                  "[contain-intrinsic-size:0_540px] [content-visibility:auto] lg:[content-visibility:visible]"
+                )}
+                key={`content-${index}`}
+              >
                 <CategoryProductsCarousel
                   {...categoryProducts}
-                  delayMs={getDeferredProductSectionDelayMs()}
                   lpRow={index + 1}
                 />
               </Container>
@@ -116,21 +108,30 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
             );
           case TabContentType.FlashSale:
             return (
-              <Container key={`content-${index}`}>
+              <Container
+                className="[contain-intrinsic-size:0_640px] [content-visibility:auto] lg:[content-visibility:visible]"
+                key={`content-${index}`}
+              >
                 <FlashSaleSection
                   {...(content as FlashSale)}
-                  delayMs={getDeferredProductSectionDelayMs()}
                   lpRow={index + 1}
                 />
               </Container>
             );
           case TabContentType.RecentlyViewedProducts:
             return (
-              <RecentlyViewedProducts
-                data={content as RecentlyViewedProductsContent}
+              <Container
+                className={cn(
+                  "lg:mt-7.5 mt-5",
+                  "[contain-intrinsic-size:0_540px] [content-visibility:auto] lg:[content-visibility:visible]"
+                )}
                 key={`content-${index}`}
-                lpRow={index + 1}
-              />
+              >
+                <RecentlyViewedProducts
+                  data={content as RecentlyViewedProductsContent}
+                  lpRow={index + 1}
+                />
+              </Container>
             );
           case TabContentType.SeoContentBlock:
             return (
@@ -140,13 +141,18 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
             );
           case TabContentType.TopTrendsCategoryProducts:
             return (
-              <Container className="lg:mt-7.5 mt-5" key={`content-${index}`}>
+              <Container
+                className={cn(
+                  "lg:mt-7.5 mt-5",
+                  "[contain-intrinsic-size:0_820px] [content-visibility:auto]"
+                )}
+                key={`content-${index}`}
+              >
                 <TopTrendsSection
                   bannerColumn={1}
                   bannerLpId="home"
                   bannerOrigin="lp"
                   bannerRow={index + 1}
-                  delayMs={getDeferredProductSectionDelayMs()}
                   lpRow={index + 1}
                   {...(content as TopTrendsCategoryProducts)}
                 />

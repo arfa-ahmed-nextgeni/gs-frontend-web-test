@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 import dynamic from "next/dynamic";
 
 import { AsyncBoundary } from "@/components/common/async-boundary";
 import { useCookieConsent } from "@/contexts/cookie-consent-context";
+import { useBootTrigger } from "@/hooks/use-boot-trigger";
+import { useIsMobile } from "@/hooks/use-is-mobile";
+import { INTERACTION_BOOT_POLICY } from "@/lib/boot/config/boot-presets";
 
 import type { OpenAppPromptModel } from "@/lib/models/open-app-prompt-model";
 
@@ -22,19 +23,26 @@ export function OpenAppSheetContainer({
 }: {
   openAppPrompt?: OpenAppPromptModel;
 }) {
-  const [shouldRender, setShouldRender] = useState(false);
   const { cookieConsentStatus } = useCookieConsent();
+  const isMobile = useIsMobile();
+  const hasStoreUrl = Boolean(
+    openAppPrompt?.appStoreUrl || openAppPrompt?.playStoreUrl
+  );
+  const canAttemptPrompt =
+    isMobile &&
+    Boolean(openAppPrompt) &&
+    hasStoreUrl &&
+    cookieConsentStatus !== "loading" &&
+    cookieConsentStatus !== "pending";
+  const shouldRender = useBootTrigger(
+    canAttemptPrompt,
+    INTERACTION_BOOT_POLICY
+  );
 
-  useEffect(() => {
-    setShouldRender(true);
-  }, []);
-
-  if (
-    !shouldRender ||
-    cookieConsentStatus === "loading" ||
-    cookieConsentStatus === "pending"
-  )
+  if (!canAttemptPrompt || !shouldRender) {
     return null;
+  }
+
   if (!openAppPrompt) return null;
 
   return (

@@ -1,24 +1,25 @@
-"use client";
+import type { ComponentProps } from "react";
 
-import { ComponentProps } from "react";
-
-import { useProductCard } from "@/components/product/product-card/product-card-context";
+import { serializeProductCardClickOrigin } from "@/components/product/product-card/utils/product-card-click-origin-dataset";
 import { Link } from "@/i18n/navigation";
-import { clickOriginTrackingManager } from "@/lib/analytics/click-origin-tracking-manager";
+import { PRODUCT_CARD_CLICK_ORIGIN_DATA_ATTRIBUTE } from "@/lib/constants/tracking-data-attributes";
 
-interface ProductCardImageLinkProps extends ComponentProps<typeof Link> {
-  searchTerm?: string;
-}
+import type { ProductCardClickOriginProps } from "@/components/product/product-card/types/product-card-click-origin-types";
 
-/**
- * Client wrapper component for ProductCardImage link
- * Tracks click origin (PLP or search) when user clicks on product card image
- * Must be used within ProductCardProvider context
- */
-export function ProductCardImageLink(linkProps: ProductCardImageLinkProps) {
-  // useProductCard will throw if not within ProductCardProvider, which is expected
-  // since this component should only be used within ProductCard
-  const {
+interface ProductCardImageLinkProps
+  extends ComponentProps<typeof Link>, ProductCardClickOriginProps {}
+
+export function ProductCardImageLink({
+  categoryId,
+  lpColumn,
+  lpExtra,
+  lpInnerPosition,
+  lpRow,
+  position,
+  searchTerm,
+  ...linkProps
+}: ProductCardImageLinkProps) {
+  const serializedClickOrigin = serializeProductCardClickOrigin({
     categoryId,
     lpColumn,
     lpExtra,
@@ -26,36 +27,14 @@ export function ProductCardImageLink(linkProps: ProductCardImageLinkProps) {
     lpRow,
     position,
     searchTerm,
-  } = useProductCard();
+  });
 
-  const handleClick = () => {
-    // Track LP click origin if row and column are available (landing page/home page)
-    if (lpRow !== undefined && lpColumn !== undefined) {
-      clickOriginTrackingManager.setClickOrigin({
-        column: lpColumn,
-        extra: lpExtra,
-        inner_position: lpInnerPosition,
-        origin: "lp",
-        row: lpRow,
-      });
-    }
-    // Track PLP click origin if categoryId and position are available
-    else if (categoryId !== undefined && position !== undefined) {
-      clickOriginTrackingManager.setClickOrigin({
-        categoryId,
-        origin: "plp",
-        position,
-      });
-    }
-    // Track search click origin if searchTerm and position are available
-    else if (searchTerm && position !== undefined) {
-      clickOriginTrackingManager.setClickOrigin({
-        origin: "search",
-        position,
-        term: searchTerm,
-      });
-    }
-  };
-
-  return <Link {...linkProps} onClick={handleClick} />;
+  return (
+    <Link
+      {...linkProps}
+      {...(serializedClickOrigin
+        ? { [PRODUCT_CARD_CLICK_ORIGIN_DATA_ATTRIBUTE]: serializedClickOrigin }
+        : {})}
+    />
+  );
 }

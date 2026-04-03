@@ -1,4 +1,5 @@
 import { CategoryProductsCarouselItemsSkeleton } from "@/components/product/category-products-carousel-items-skeleton";
+import { FlashSaleCountdownSkeleton } from "@/components/product/flash-sale-section/flash-sale-countdown-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProductCardVariant } from "@/lib/constants/product/product-card";
 
@@ -25,17 +26,7 @@ export const FlashSaleContentSkeleton = ({
               <Skeleton className="h-7 w-80" />
             </div>
             {/* Countdown Timer */}
-            <div className="flex gap-2.5">
-              {[...Array(4)].map((_, index) => (
-                <div
-                  className="bg-bg-brand flex h-[50px] w-[60px] flex-col items-center justify-center rounded-xl"
-                  key={index}
-                >
-                  <Skeleton className="mb-1 h-5 w-8 bg-white/20" />
-                  <Skeleton className="h-3 w-12 bg-white/20" />
-                </div>
-              ))}
-            </div>
+            <FlashSaleCountdownSkeleton layout="desktop" />
           </div>
         </div>
 
@@ -54,17 +45,7 @@ export const FlashSaleContentSkeleton = ({
           <div className="relative flex items-end gap-6">
             {/* Countdown Timer */}
             <div className="w-[50px] flex-shrink-0">
-              <div className="flex flex-col gap-2.5">
-                {[...Array(4)].map((_, index) => (
-                  <div
-                    className="bg-bg-brand flex h-[50px] w-[50px] flex-col items-center justify-center rounded-xl"
-                    key={index}
-                  >
-                    <Skeleton className="mb-1 h-5 w-8 bg-white/20" />
-                    <Skeleton className="h-3 w-10 bg-white/20" />
-                  </div>
-                ))}
-              </div>
+              <FlashSaleCountdownSkeleton layout="mobile" />
             </div>
 
             {/* Products */}

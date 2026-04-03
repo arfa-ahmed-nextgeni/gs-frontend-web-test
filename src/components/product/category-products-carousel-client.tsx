@@ -1,13 +1,14 @@
 "use client";
 
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 
 import { useTranslations } from "next-intl";
 
-import SectionHeader from "@/components/common/section-header";
+import { SectionHeader } from "@/components/common/section-header";
 import { ProductCard } from "@/components/product/product-card";
 import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
 import { CarouselItem } from "@/components/ui/carousel/carousel-item";
+import { useBulletDeliveryEnabled } from "@/hooks/use-bullet-delivery-enabled";
 import { CategoryProducts } from "@/lib/models/category-products";
 
 export const CategoryProductsCarouselClient = ({
@@ -24,6 +25,7 @@ export const CategoryProductsCarouselClient = ({
   sectionHeaderProps?: ComponentProps<typeof SectionHeader>;
 } & CategoryProducts) => {
   const t = useTranslations("HomePage.categoryProducts");
+  const isBulletDeliveryEnabled = useBulletDeliveryEnabled();
 
   return (
     <div className="gap-4.5 flex flex-col">
@@ -63,6 +65,7 @@ export const CategoryProductsCarouselClient = ({
         {products?.map((product, index) => (
           <CarouselItem key={`${product.id}`}>
             <ProductCard
+              isBulletDeliveryEnabled={isBulletDeliveryEnabled}
               lpColumn={1}
               lpExtra={{
                 row_count: products?.length || 0,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { CategoryCheckboxFilterSection } from "@/components/category/filters/category-checkbox-filter/category-checkbox-filter-section";
 import { CategoryClearAllFiltersButton } from "@/components/category/filters/category-clear-all-filters-button";
@@ -8,6 +8,7 @@ import { CategoryPriceRangeFilter } from "@/components/category/filters/category
 import { CategorySortByFilter } from "@/components/category/filters/category-sort-by-filter";
 import Container from "@/components/shared/container";
 import { useFilters } from "@/contexts/category-filter-context";
+import { useWindowScrollThreshold } from "@/hooks/use-window-scroll-threshold";
 import { DynamicCategoryFilter } from "@/lib/types/catalog-service";
 
 interface MobileStickyFiltersWrapperProps {
@@ -19,14 +20,12 @@ export const MobileStickyFiltersWrapper = ({
   dynamicFilters,
   priceBounds,
 }: MobileStickyFiltersWrapperProps) => {
+  const hasScrolledPastStickyThreshold = useWindowScrollThreshold(200);
   const {
     state: { checkboxes },
   } = useFilters();
 
-  const [showStickyFilters, setShowStickyFilters] = useState(false);
-  const throttleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const lastScrollYRef = useRef(0);
-  const isDrawerOpenRef = useRef(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const sortedFilters = useMemo(() => {
     const nonPriceFilters = dynamicFilters.filter(
@@ -42,51 +41,20 @@ export const MobileStickyFiltersWrapper = ({
     });
   }, [dynamicFilters, checkboxes]);
 
-  const throttledScrollHandler = useCallback(() => {
-    if (throttleTimeoutRef.current) {
-      return;
-    }
-
-    throttleTimeoutRef.current = setTimeout(() => {
-      if (isDrawerOpenRef.current) {
-        throttleTimeoutRef.current = null;
-        return;
-      }
-
-      const scrollY = window.scrollY;
-      const threshold = 200;
-
-      const shouldShow = scrollY > threshold;
-      const wasShowing = lastScrollYRef.current > threshold;
-
-      if (shouldShow !== wasShowing) {
-        setShowStickyFilters(shouldShow);
-      }
-
-      lastScrollYRef.current = scrollY;
-      throttleTimeoutRef.current = null;
-    }, 16);
-  }, []);
-
   useEffect(() => {
     const handleDrawerChange = (e: Event) => {
       const customEvent = e as CustomEvent;
-      isDrawerOpenRef.current = customEvent.detail?.open || false;
+      setIsDrawerOpen(customEvent.detail?.open || false);
     };
 
-    window.addEventListener("scroll", throttledScrollHandler, {
-      passive: true,
-    });
     window.addEventListener("drawerStateChange", handleDrawerChange);
 
     return () => {
-      window.removeEventListener("scroll", throttledScrollHandler);
       window.removeEventListener("drawerStateChange", handleDrawerChange);
-      if (throttleTimeoutRef.current) {
-        clearTimeout(throttleTimeoutRef.current);
-      }
     };
-  }, [throttledScrollHandler]);
+  }, []);
+
+  const showStickyFilters = hasScrolledPastStickyThreshold && !isDrawerOpen;
 
   return (
     <>

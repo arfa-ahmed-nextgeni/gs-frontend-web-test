@@ -44,6 +44,7 @@ export class ProductCardModel extends Helper {
   name: string;
   oldPrice?: string;
   options?: ProductOption;
+  parentId?: string;
   priceValue: number;
   productType?: string;
   rating?: number;
@@ -51,6 +52,7 @@ export class ProductCardModel extends Helper {
   savedCurrency?: string;
   savedPrice?: string;
   sku?: string;
+  skuParent?: string;
   stockStatus: StockStatus;
   urlKey: string;
   variant: ProductCardVariant;
@@ -76,6 +78,7 @@ export class ProductCardModel extends Helper {
     name,
     oldPrice,
     options,
+    parentId,
     price,
     productType,
     rating,
@@ -83,6 +86,7 @@ export class ProductCardModel extends Helper {
     savedAmount,
     savedCurrency,
     sku,
+    skuParent,
     stockStatus,
     urlKey,
     variant,
@@ -111,6 +115,7 @@ export class ProductCardModel extends Helper {
       choices: { inStock: boolean; label: string; value: string }[];
       type: string;
     };
+    parentId?: string;
     price: number;
     productType?: string;
     rating?: number;
@@ -118,12 +123,15 @@ export class ProductCardModel extends Helper {
     savedAmount?: number;
     savedCurrency?: string;
     sku?: string;
+    skuParent?: string;
     stockStatus: ProductStockStatus | string;
     urlKey?: string;
     variant?: ProductCardVariant;
   }) {
     super();
     this.sku = sku;
+    this.skuParent = skuParent;
+    this.parentId = parentId;
     this.externalId = externalId;
     this.urlKey = urlKey || "";
     this.productType = productType;

@@ -245,6 +245,17 @@ export const useAddressForm = ({
           shouldTouch: false,
         }
       );
+
+      // Update BuildingName field with sanitized street (remove district)
+      const sanitizedStreet = sanitizeStreetValue({
+        district: ksaAddress.district || "",
+        shortCode: ksaAddress.short_address || "",
+        street: ksaAddress.address1 || ksaAddress.street || "",
+      });
+      addressForm.setValue(AddressFormField.BuildingName, sanitizedStreet, {
+        shouldDirty: false,
+        shouldTouch: false,
+      });
     };
 
     void syncKsaAddress();

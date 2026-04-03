@@ -263,9 +263,21 @@ export class CartItem extends ProductCardModel {
     let options: ProductOption | undefined = undefined;
 
     let bulletDelivery = false;
+    let externalId = `${product.id ?? ""}`;
+    let sku = product?.sku || "";
+    let parentId: string | undefined = undefined;
+    let skuParent: string | undefined = undefined;
 
     if ((item as any).__typename === "ConfigurableCartItem") {
       const confItem = item as ConfigurableCartItem;
+
+      if (confItem.configured_variant) {
+        parentId = externalId;
+        skuParent = sku;
+        externalId = `${confItem.configured_variant.id ?? ""}`;
+        sku = (confItem.configured_variant as any).sku || sku;
+      }
+
       options = {
         choices: confItem.configurable_options.map((opt) => ({
           inStock: true,
@@ -315,7 +327,7 @@ export class CartItem extends ProductCardModel {
       currency,
       description: product?.short_description?.html || "",
       discountPercent,
-      externalId: `${product.id ?? ""}`,
+      externalId,
       id: product?.uid || "",
       imageUrl: product?.thumbnail?.url || "",
       isGwp: isGwp || false,
@@ -324,10 +336,12 @@ export class CartItem extends ProductCardModel {
       oldPrice:
         regularPrice && regularPrice > finalPrice ? regularPrice : undefined,
       options,
+      parentId,
       price: finalPrice,
       ratingSummary: product.rating_summary,
       savedAmount,
-      sku: product?.sku || "",
+      sku,
+      skuParent,
       stockStatus: (product?.stock_status as string) || "",
       urlKey: product?.url_key || "",
       variant: ProductCardVariant.Single,

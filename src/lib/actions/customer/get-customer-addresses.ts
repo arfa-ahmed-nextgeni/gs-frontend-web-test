@@ -23,11 +23,12 @@ export const getCustomerAddresses = cache(async () => {
     }
 
     const locale = (await getLocale()) as Locale;
+    const storeCode = LOCALE_TO_STORE[locale];
 
     const response = await graphqlRequest({
       authToken,
       query: CUSTOMER_GRAPHQL_QUERIES.GET_CUSTOMER_ADDRESSES,
-      storeCode: LOCALE_TO_STORE[locale],
+      storeCode,
     });
 
     if (!response.data?.customer) {

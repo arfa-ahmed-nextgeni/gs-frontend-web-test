@@ -278,7 +278,7 @@ export const AddDeliveryAddressMapSearch = () => {
           />
         </span>
         <input
-          className="bg-bg-default text-text-primary placeholder:text-text-placeholder sm:ps-15 py-2.25 block w-full rounded-3xl border-none pe-5 ps-11 text-sm font-normal shadow-sm focus:outline-none sm:text-base"
+          className="bg-bg-default text-text-primary placeholder:text-text-placeholder sm:ps-15 py-2.25 block w-full rounded-3xl border-none pe-5 ps-11 text-base font-normal shadow-sm focus:outline-none"
           onBlur={handleBlur}
           onChange={handleInputChange}
           onFocus={handleFocus}

@@ -6,8 +6,8 @@ import { useIsMutating } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 
-import { useProductCard } from "@/components/product/product-card/product-card-context";
-import { Skeleton } from "@/components/ui/skeleton";
+import { ProductCardButtonSkeleton } from "@/components/product/product-card/fallbacks/product-card-button-skeleton";
+import { setProductCardClickOrigin } from "@/components/product/product-card/utils/product-card-click-origin";
 import { Spinner } from "@/components/ui/spinner";
 import { useNotifyMe } from "@/contexts/notify-me-context";
 import { useCart } from "@/contexts/use-cart";
@@ -16,41 +16,37 @@ import { useAddProductToCart } from "@/hooks/mutations/cart/use-add-product-to-c
 import { useRemoveProductFromCart } from "@/hooks/mutations/cart/use-remove-product-from-cart";
 import { useAddWishlistItemToCart } from "@/hooks/mutations/wishlist/use-add-wishlist-item-to-cart";
 import { useRouter } from "@/i18n/navigation";
-import { clickOriginTrackingManager } from "@/lib/analytics/click-origin-tracking-manager";
 import { buildProductPropertiesFromCard } from "@/lib/analytics/utils/build-properties";
 import { MUTATION_KEYS } from "@/lib/constants/mutation-keys";
 import { CartAction } from "@/lib/constants/product/product-card";
 import { ROUTES } from "@/lib/constants/routes";
-import { ProductCardModel } from "@/lib/models/product-card-model";
 import { cn } from "@/lib/utils";
 
+import type { ProductCardActionsState } from "@/components/product/product-card/hooks/use-product-card-actions-state";
+import type { ProductCardInteractionProps } from "@/components/product/product-card/types/product-card-click-origin-types";
 import type { Locale } from "@/lib/constants/i18n";
 
-export const ProductCardButton = () => {
+export const ProductCardButton = ({
+  cartAction,
+  categoryId,
+  lpColumn,
+  lpExtra,
+  lpInnerPosition,
+  lpRow,
+  position,
+  product,
+  searchTerm,
+}: Pick<ProductCardActionsState, "cartAction"> &
+  ProductCardInteractionProps) => {
   const router = useRouter();
   const t = useTranslations("productCard.cartAction");
   const locale = useLocale() as Locale;
-
-  const {
-    cartAction,
-    categoryId,
-    lpColumn,
-    lpExtra,
-    lpInnerPosition,
-    lpRow,
-    originalProduct,
-    position,
-    product,
-    searchTerm,
-  } = useProductCard();
   const { wishlist } = useWishlist();
   const { cart, isLoading: isCartLoading } = useCart();
   const { setNotifyMeData } = useNotifyMe();
 
   const { mutate: addProductToCart } = useAddProductToCart({
-    product: buildProductPropertiesFromCard(
-      originalProduct as ProductCardModel
-    ),
+    product: buildProductPropertiesFromCard(product),
     sku: product.sku || "",
   });
   const { mutate: addWishlistItemToCart } = useAddWishlistItemToCart({
@@ -94,33 +90,16 @@ export const ProductCardButton = () => {
   const isWishlistPending =
     isAddingToWishlist > 0 || isRemovingFromWishlist > 0;
 
-  // Helper function to set click origin based on available context
-  // Priority: LP > PLP > Search
   const setClickOrigin = () => {
-    if (lpRow !== undefined && lpColumn !== undefined) {
-      // Track LP click origin
-      clickOriginTrackingManager.setClickOrigin({
-        column: lpColumn,
-        extra: lpExtra,
-        inner_position: lpInnerPosition,
-        origin: "lp",
-        row: lpRow,
-      });
-    } else if (categoryId !== undefined && position !== undefined) {
-      // Track PLP click origin
-      clickOriginTrackingManager.setClickOrigin({
-        categoryId,
-        origin: "plp",
-        position,
-      });
-    } else if (searchTerm && position !== undefined) {
-      // Track search click origin
-      clickOriginTrackingManager.setClickOrigin({
-        origin: "search",
-        position,
-        term: searchTerm,
-      });
-    }
+    setProductCardClickOrigin({
+      categoryId,
+      lpColumn,
+      lpExtra,
+      lpInnerPosition,
+      lpRow,
+      position,
+      searchTerm,
+    });
   };
 
   const handleClick = () => {
@@ -158,7 +137,7 @@ export const ProductCardButton = () => {
         startNavigating(() => {
           setNotifyMeData({
             product: null,
-            productCard: originalProduct as ProductCardModel,
+            productCard: product,
             selectedProduct: null,
           });
           router.push(ROUTES.NOTIFY_ME(product.externalId, product.name), {
@@ -201,7 +180,7 @@ export const ProductCardButton = () => {
   ].includes(cartAction);
 
   if (isCartLoading && isCartAction) {
-    return <Skeleton className="h-8.75 w-25 rounded-xl" />;
+    return <ProductCardButtonSkeleton />;
   }
 
   return (

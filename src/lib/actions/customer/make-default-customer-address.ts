@@ -44,20 +44,29 @@ export const makeDefaultCustomerAddress = async ({
 
     const globalStore = isGlobalStore(storeCode);
 
-    delete rawData.id;
+    // Filter to only include valid CustomerAddressInput fields from the GraphQL schema
+    const validKeys = Object.keys({} as CustomerAddressInput) as Array<
+      keyof CustomerAddressInput
+    >;
+    const filteredRawData: Partial<CustomerAddressInput> = {};
+    validKeys.forEach((key) => {
+      if (key in rawData) {
+        filteredRawData[key] = rawData[key] as any;
+      }
+    });
 
     const input: CustomerAddressInput = {
-      ...rawData,
+      ...filteredRawData,
       country_code: globalStore
-        ? (rawData.country_code as CountryCodeEnum)
+        ? (filteredRawData.country_code as CountryCodeEnum)
         : (region as CountryCodeEnum),
       default_billing: true,
       default_shipping: true,
     };
 
     if (globalStore) {
-      if (rawData.region_id) {
-        input.state_id = +rawData.region_id;
+      if ("region_id" in rawData && rawData.region_id) {
+        input.state_id = +(rawData.region_id as unknown as string);
       }
     }
 

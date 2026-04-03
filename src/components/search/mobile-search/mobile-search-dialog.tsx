@@ -7,7 +7,10 @@ import { useTranslations } from "next-intl";
 
 import { SearchTracker } from "@/components/analytics/search-tracker";
 import { CloseIcon } from "@/components/icons/close-icon";
-import { useSearch } from "@/components/search/search-container";
+import {
+  useSearchActions,
+  useSearchUiState,
+} from "@/components/search/search-container";
 import { SearchForm } from "@/components/search/search-form";
 import { SearchResults } from "@/components/search/search-results";
 import {
@@ -18,42 +21,21 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import useBodyScroll from "@/hooks/use-body-scroll";
-import { trackSearchInit } from "@/lib/analytics/events";
 
 export const MobileSearchDialog = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const {
-    clear,
-    clearRecentSearches,
-    closeMobileSearch,
-    facets,
-    handleAutoSearch,
-    handleBrandClick,
-    handleRecentSearchClick,
-    handleSearch,
-    handleSuggestionClick,
-    handleViewAll,
-    isLoading,
-    queryText,
-    recentSearches,
-    relatedTerms,
-    searchResults,
-    showMobileSearch,
-    suggestions,
-    totalCount,
-  } = useSearch();
-
-  useEffect(() => {
-    if (showMobileSearch) {
-      trackSearchInit();
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
-    }
-  }, [showMobileSearch]);
+  const { closeMobileSearch, handleAutoSearch, handleSearch } =
+    useSearchActions();
+  const { queryText, showMobileSearch } = useSearchUiState();
 
   useBodyScroll(showMobileSearch);
+
+  useEffect(() => {
+    if (showMobileSearch && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [showMobileSearch]);
 
   const t = useTranslations("HomePage.header.search");
 
@@ -89,24 +71,7 @@ export const MobileSearchDialog = () => {
               </button>
             </DialogClose>
           </div>
-          <SearchResults
-            facets={facets}
-            inputFocus={showMobileSearch}
-            isLoading={isLoading}
-            isMobile
-            onBrandClick={handleBrandClick}
-            onClear={clear}
-            onClearRecent={clearRecentSearches}
-            onRecentSearchClick={handleRecentSearchClick}
-            onSuggestionClick={handleSuggestionClick}
-            onViewAll={handleViewAll}
-            queryText={queryText}
-            recentSearches={recentSearches}
-            relatedTerms={relatedTerms}
-            searchResults={searchResults}
-            suggestions={suggestions}
-            totalCount={totalCount}
-          />
+          <SearchResults inputFocus={showMobileSearch} isMobile />
         </DialogContent>
       </Dialog>
     </>

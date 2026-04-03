@@ -8,6 +8,7 @@ import { ProductCardPrice } from "@/components/product/product-card/product-card
 import { ProductCardStatusBadges } from "@/components/product/product-card/product-card-status-badges";
 import { Spinner } from "@/components/ui/spinner";
 import { useAddProductToCart } from "@/hooks/mutations/cart/use-add-product-to-cart";
+import { useBulletDeliveryEnabled } from "@/hooks/use-bullet-delivery-enabled";
 import { Link } from "@/i18n/navigation";
 import { buildProductPropertiesFromCard } from "@/lib/analytics/utils/build-properties";
 import { StockStatus } from "@/lib/constants/product/product-card";
@@ -26,6 +27,7 @@ export const ProductCardMini = ({
   iconContainerClassName: iconButtonClassName,
   product,
 }: ProductCardMiniProps) => {
+  const isBulletDeliveryEnabled = useBulletDeliveryEnabled();
   const { isPending: isMovingToCart, mutate: addProductToCart } =
     useAddProductToCart({
       product: buildProductPropertiesFromCard(product),
@@ -38,6 +40,7 @@ export const ProductCardMini = ({
         <ProductCardStatusBadges
           bulletDelivery={product.bulletDelivery}
           discountPercent={product.discountPercent}
+          isBulletDeliveryEnabled={isBulletDeliveryEnabled}
           stockStatus={
             product.isOutOfStock ? StockStatus.OutOfStock : product.stockStatus
           }

@@ -147,6 +147,8 @@ export const CUSTOMER_GRAPHQL_QUERIES = {
           city_code
           country_code
           firstname
+          is_ksa_verified
+          ksa_short_address
           lastname
           latitude
           longitude

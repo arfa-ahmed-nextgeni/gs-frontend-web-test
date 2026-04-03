@@ -1,8 +1,14 @@
-import Image from "next/image";
-
+import { ContentfulImage } from "@/components/shared/contentful-image";
 import { Link } from "@/i18n/navigation";
+import { WebsiteFooterLinks } from "@/lib/models/website-footer";
 
-export const FooterAppLinks = ({ appSection }: { appSection: any }) => {
+type FooterAppSection = WebsiteFooterLinks["appSection"];
+
+export const FooterAppLinks = ({
+  appSection,
+}: {
+  appSection: FooterAppSection;
+}) => {
   return (
     <div className="border-border-base order-last col-span-1 flex flex-col border-t pt-6 lg:order-first lg:border-0 lg:pt-0">
       <div className="text-text-primary text-base font-extrabold">
@@ -10,7 +16,7 @@ export const FooterAppLinks = ({ appSection }: { appSection: any }) => {
       </div>
       <div className="flex-1/1 mt-6 flex flex-col justify-between gap-2.5">
         <div className="flex flex-row gap-4">
-          {appSection.appLinks.map((appLink: any, index: number) => (
+          {appSection.appLinks.map((appLink, index) => (
             <Link
               href={appLink.url}
               key={`app-link-${index}`}
@@ -18,7 +24,7 @@ export const FooterAppLinks = ({ appSection }: { appSection: any }) => {
               target="_blank"
               title={appLink.label}
             >
-              <Image
+              <ContentfulImage
                 alt={appLink.label}
                 height={40}
                 src={appLink.imageUrl}
@@ -28,9 +34,10 @@ export const FooterAppLinks = ({ appSection }: { appSection: any }) => {
           ))}
         </div>
         <div className="flex flex-wrap gap-1.5 sm:mt-4">
-          {appSection.paymentMethods.map((paymentMethod: any, idx: number) => (
-            <Image
+          {appSection.paymentMethods.map((paymentMethod, idx) => (
+            <ContentfulImage
               alt={paymentMethod.label}
+              className="w-9.25 h-5"
               height={20}
               key={idx}
               src={paymentMethod.imageUrl}

@@ -1,0 +1,1 @@
+export const DEFERRED_CAROUSEL_ROOT_MARGIN = "400px 0px";

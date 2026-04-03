@@ -15,6 +15,7 @@ export type WebsiteFooterContactAndSocialLinks = {
   };
   socialSection: {
     links: {
+      activeIcon?: string;
       iconUrl: string;
       label: string;
       url: string;

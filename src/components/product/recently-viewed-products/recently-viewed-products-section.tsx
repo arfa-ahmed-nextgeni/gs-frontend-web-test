@@ -1,13 +1,13 @@
 import { cacheTag } from "next/cache";
 
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
-import SectionHeader from "@/components/common/section-header";
+import { SectionHeader } from "@/components/common/section-header";
 import { ProductCard } from "@/components/product/product-card";
-import Container from "@/components/shared/container";
 import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
 import { CarouselItem } from "@/components/ui/carousel/carousel-item";
 import { getAuthToken } from "@/lib/actions/auth/get-auth-token";
+import { getBulletDeliveryEnabled } from "@/lib/actions/config/get-bullet-delivery-enabled";
 import { getDeviceIdCookie } from "@/lib/actions/cookies/device-id";
 import { getCustomerByAuthToken } from "@/lib/actions/customer/get-customer-by-auth-token";
 import { getViewedProducts } from "@/lib/actions/products/get-viewed-products";
@@ -15,6 +15,7 @@ import {
   getRecentlyViewedProductsTagByDeviceId,
   getRecentlyViewedProductsTagByMobileNumber,
 } from "@/lib/constants/cache/tags";
+import { type Locale } from "@/lib/constants/i18n";
 import { ROUTES } from "@/lib/constants/routes";
 import { RecentlyViewedProductsContent } from "@/lib/models/recently-viewed-products-content";
 import { isOk } from "@/lib/utils/service-result";
@@ -53,10 +54,14 @@ export async function RecentlyViewedProductsSection({
     cacheTag(cacheIdentityTag);
   }
 
-  const t = await getTranslations("HomePage.recentlyViewedProducts");
-  const tCategoryProducts = await getTranslations("HomePage.categoryProducts");
-
-  const response = await getViewedProducts();
+  const locale = (await getLocale()) as Locale;
+  const [isBulletDeliveryEnabled, response, t, tCategoryProducts] =
+    await Promise.all([
+      getBulletDeliveryEnabled({ locale }),
+      getViewedProducts(),
+      getTranslations("HomePage.recentlyViewedProducts"),
+      getTranslations("HomePage.categoryProducts"),
+    ]);
 
   if (!isOk(response)) {
     return null;
@@ -75,62 +80,64 @@ export async function RecentlyViewedProductsSection({
       : "");
 
   return (
-    <Container className="lg:mt-7.5 mt-5">
-      <div className="gap-4.5 flex flex-col">
-        <SectionHeader
-          lpColumn={1}
-          lpExtra={{
-            type: "recently-viewed-products",
-          }}
-          lpRow={lpRow}
-          richTitle={data.richTitle}
-          sectionHeading={
-            <p className="text-text-primary text-2xl font-normal rtl:font-semibold">
-              {t.rich("title", {
-                b: (chunks) => (
-                  <span className="font-semibold rtl:font-bold">{chunks}</span>
-                ),
-              })}
-            </p>
-          }
-          seeAllButton={{
-            href: seeAllHref,
-            show: data.showViewAll && Boolean(seeAllHref),
-            text: tCategoryProducts("seeAll"),
-          }}
-        />
+    <div className="gap-4.5 flex flex-col">
+      <SectionHeader
+        lpColumn={1}
+        lpExtra={{
+          type: "recently-viewed-products",
+        }}
+        lpRow={lpRow}
+        richTitle={data.richTitle}
+        sectionHeading={
+          <p className="text-text-primary text-2xl font-normal rtl:font-semibold">
+            {t.rich("title", {
+              b: (chunks) => (
+                <span className="font-semibold rtl:font-bold">{chunks}</span>
+              ),
+            })}
+          </p>
+        }
+        seeAllButton={{
+          href: seeAllHref,
+          show: data.showViewAll && Boolean(seeAllHref),
+          text: tCategoryProducts("seeAll"),
+        }}
+      />
 
-        <CarouselContainer
-          nextButtonProps={{
-            className: "xl:translate-x-15 xl:rtl:-translate-x-15",
-          }}
-          nextIconProps={{
-            fill: "#374957",
-          }}
-          previousButtonProps={{
-            className: "xl:-translate-x-15 xl:rtl:translate-x-15",
-          }}
-          previousIconProps={{
-            fill: "#374957",
-          }}
-        >
-          {products.map((product, index) => (
-            <CarouselItem key={`${product.id}-${index}`}>
-              <ProductCard
-                lpColumn={1}
-                lpExtra={{
-                  row_count: products.length,
-                  style: "horizontal",
-                  type: "recently-viewed-products",
-                }}
-                lpInnerPosition={index + 1}
-                lpRow={lpRow}
-                product={product}
-              />
-            </CarouselItem>
-          ))}
-        </CarouselContainer>
-      </div>
-    </Container>
+      <CarouselContainer
+        carouselProps={{
+          deferUntilInView: true,
+        }}
+        nextButtonProps={{
+          className: "xl:translate-x-15 xl:rtl:-translate-x-15",
+        }}
+        nextIconProps={{
+          fill: "#374957",
+        }}
+        previousButtonProps={{
+          className: "xl:-translate-x-15 xl:rtl:translate-x-15",
+        }}
+        previousIconProps={{
+          fill: "#374957",
+        }}
+      >
+        {products.map((product, index) => (
+          <CarouselItem key={`${product.id}-${index}`}>
+            <ProductCard
+              isBulletDeliveryEnabled={isBulletDeliveryEnabled}
+              lpColumn={1}
+              lpExtra={{
+                row_count: products.length,
+                style: "horizontal",
+                type: "recently-viewed-products",
+              }}
+              lpInnerPosition={index + 1}
+              lpRow={lpRow}
+              product={product}
+            />
+          </CarouselItem>
+        ))}
+      </CarouselContainer>
+    </div>
   );
 }

@@ -2,10 +2,14 @@
 
 import { CloseIcon } from "@/components/icons/close-icon";
 import { MenuIcon } from "@/components/icons/menu-icon";
-import { useHeaderContext } from "@/layouts/header/header-container";
+import {
+  useHeaderActions,
+  useHeaderState,
+} from "@/layouts/header/header-container";
 
 export const DesktopNavigationToggleButton = () => {
-  const { showDesktopNavigation, toggleDesktopNavigation } = useHeaderContext();
+  const { showDesktopNavigation } = useHeaderState();
+  const { toggleDesktopNavigation } = useHeaderActions();
 
   return (
     <button

@@ -1,5 +1,3 @@
-import type { SwiperOptions } from "swiper/types";
-
 export type AccordionGroupProps = {
   items: AccordionItem[];
   variant?: "transparent" | "underline";
@@ -48,11 +46,6 @@ export type Blog = {
 export type BreakpointKey = "2xl" | "lg" | "md" | "sm" | "xl";
 
 export type BreakpointMap = Record<BreakpointKey, number>;
-
-export type BreakpointsType = {
-  [ratio: string]: SwiperOptions;
-  [width: number]: SwiperOptions;
-};
 
 export type CarouselHandle = {
   scrollNext: () => void;

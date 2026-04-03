@@ -2,26 +2,25 @@ import { ComponentProps } from "react";
 
 import { getLocale, getTranslations } from "next-intl/server";
 
-import FlashSaleCountdown from "@/components/product/flash-sale-section/flash-sale-countdown";
+import { FlashSaleResponsiveCountdown } from "@/components/product/flash-sale-section/flash-sale-responsive-countdown";
 import { ProductCard } from "@/components/product/product-card";
 import { ContentfulImage } from "@/components/shared/contentful-image";
 import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
 import { CarouselItem } from "@/components/ui/carousel/carousel-item";
 import { Link } from "@/i18n/navigation";
+import { getBulletDeliveryEnabled } from "@/lib/actions/config/get-bullet-delivery-enabled";
 import { getProductsByCategory } from "@/lib/actions/products/get-products-by-category";
 import { Locale } from "@/lib/constants/i18n";
 import { ROUTES } from "@/lib/constants/routes";
 import { FlashSale } from "@/lib/models/flash-sale";
 import { ProductCardModel } from "@/lib/models/product-card-model";
 import { cn } from "@/lib/utils";
-import { sleep } from "@/lib/utils/async";
 import { isOk } from "@/lib/utils/service-result";
 
 export const FlashSaleContent = async ({
   autoSlideDelay,
   autoSliding,
   countdownContainerProps,
-  delayMs,
   desktopCarouselContainerProps,
   endTime,
   lpRow,
@@ -35,25 +34,24 @@ export const FlashSaleContent = async ({
   variant,
 }: {
   countdownContainerProps?: ComponentProps<"div">;
-  delayMs?: number;
   desktopCarouselContainerProps?: ComponentProps<"div">;
   lpRow?: number;
 } & FlashSale) => {
-  if (delayMs) {
-    await sleep(delayMs);
-  }
   const locale = (await getLocale()) as Locale;
 
-  const t = await getTranslations("HomePage.categoryProducts");
+  const [isBulletDeliveryEnabled, productsByCatergoryResponse, t] =
+    await Promise.all([
+      getBulletDeliveryEnabled({ locale }),
+      getProductsByCategory({
+        category: productsCategoryId,
+        locale,
+        pageSize: maximumProducts,
+        variant,
+      }),
+      getTranslations("HomePage.categoryProducts"),
+    ]);
 
   let products: ProductCardModel[] = [];
-
-  const productsByCatergoryResponse = await getProductsByCategory({
-    category: productsCategoryId,
-    locale,
-    pageSize: maximumProducts,
-    variant,
-  });
 
   if (isOk(productsByCatergoryResponse)) {
     products = productsByCatergoryResponse.data.products;
@@ -106,7 +104,14 @@ export const FlashSaleContent = async ({
               </div>
             </div>
             {/* Countdown Timer */}
-            <div>{endTime && <FlashSaleCountdown endTime={endTime} />}</div>
+            <div>
+              {endTime && (
+                <FlashSaleResponsiveCountdown
+                  endTime={endTime}
+                  visibleOn="desktop"
+                />
+              )}
+            </div>
           </div>
         </div>
 
@@ -138,7 +143,12 @@ export const FlashSaleContent = async ({
           <div className="relative flex items-end gap-6">
             {/* Countdown Timer */}
             <div className="w-[50px] flex-shrink-0">
-              {endTime && <FlashSaleCountdown endTime={endTime} />}
+              {endTime && (
+                <FlashSaleResponsiveCountdown
+                  endTime={endTime}
+                  visibleOn="mobile"
+                />
+              )}
             </div>
 
             {/* Products */}
@@ -150,6 +160,7 @@ export const FlashSaleContent = async ({
                       delay: autoSlideDelay,
                       enabled: autoSliding,
                     },
+                    deferUntilInView: true,
                   }}
                   contentProps={{
                     className: "gap-3",
@@ -167,6 +178,7 @@ export const FlashSaleContent = async ({
                       key={product.id}
                     >
                       <ProductCard
+                        isBulletDeliveryEnabled={isBulletDeliveryEnabled}
                         lpColumn={1}
                         lpExtra={{
                           row_count: products.length,
@@ -218,6 +230,7 @@ export const FlashSaleContent = async ({
                   delay: autoSlideDelay,
                   enabled: autoSliding,
                 },
+                deferUntilInView: true,
               }}
               nextButtonProps={{
                 className:
@@ -241,6 +254,7 @@ export const FlashSaleContent = async ({
                   key={product.id}
                 >
                   <ProductCard
+                    isBulletDeliveryEnabled={isBulletDeliveryEnabled}
                     lpColumn={1}
                     lpExtra={{
                       row_count: products.length,

@@ -9,11 +9,13 @@ import { ProductCardModel } from "@/lib/models/product-card-model";
 
 export const CategoryProductGridClient = ({
   categoryId,
+  isBulletDeliveryEnabled,
   lpRow,
   products,
   searchTerm,
 }: {
   categoryId?: number;
+  isBulletDeliveryEnabled: boolean;
   lpRow?: number;
   products: ProductCardModel[];
   searchTerm?: string;
@@ -43,6 +45,7 @@ export const CategoryProductGridClient = ({
         return (
           <ProductCard
             categoryId={categoryId}
+            isBulletDeliveryEnabled={isBulletDeliveryEnabled}
             key={`${product.id}-${idx}`}
             lpColumn={lpRow ? gridColumn : undefined}
             lpRow={lpRow ? lpRow + gridRow - 1 : undefined}

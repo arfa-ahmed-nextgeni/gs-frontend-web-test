@@ -6,12 +6,14 @@ import { cn } from "@/lib/utils";
 export const CategoryProductGrid = ({
   categoryId,
   desktopColumns = 5,
+  isBulletDeliveryEnabled,
   lpRow,
   products,
   searchTerm,
 }: {
   categoryId?: number;
   desktopColumns?: 5 | 6;
+  isBulletDeliveryEnabled: boolean;
   lpRow?: number;
   products: ProductCardModel[];
   searchTerm?: string;
@@ -42,6 +44,7 @@ export const CategoryProductGrid = ({
         return (
           <ProductCard
             categoryId={categoryId}
+            isBulletDeliveryEnabled={isBulletDeliveryEnabled}
             key={product.id || product.sku || `product-${index}`}
             lpColumn={lpRow ? gridColumn : undefined}
             lpRow={lpRow ? lpRow + gridRow - 1 : undefined}

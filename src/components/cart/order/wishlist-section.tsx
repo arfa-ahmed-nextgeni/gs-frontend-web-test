@@ -6,7 +6,6 @@ import AddToBagIcon from "@/assets/icons/add-to-bag-icon.svg";
 import { CategoryProductsCarouselClient } from "@/components/product/category-products-carousel-client";
 import { CategoryProductsCarouselItemsSkeleton } from "@/components/product/category-products-carousel-items-skeleton";
 import { ProductCardMini } from "@/components/product/product-card-mini";
-import { ProductCardProvider } from "@/components/product/product-card/product-card-context";
 import { useWishlistPaginatedQuery } from "@/hooks/queries/wishlist/use-wishlist-paginated-query";
 import { useHorizontalScroll } from "@/hooks/use-horizontal-scroll";
 import {
@@ -15,7 +14,6 @@ import {
 } from "@/lib/constants/product/product-card";
 import { ROUTES } from "@/lib/constants/routes";
 import { TabContentType } from "@/lib/models/page-landing";
-import { ProductCardModel } from "@/lib/models/product-card-model";
 
 export const WishListSection = () => {
   const t = useTranslations("CartPage.wishlistSection");
@@ -60,17 +58,12 @@ export const WishListSection = () => {
         </p>
         <div className="flex flex-row gap-2.5 overflow-x-auto" ref={scrollRef}>
           {wishlistProducts.map((product) => (
-            <ProductCardProvider
-              formatChildren={true}
+            <ProductCardMini
+              icon={AddToBagIcon}
+              iconContainerClassName="bg-bg-primary"
               key={product.id}
-              product={product as Partial<ProductCardModel>}
-            >
-              <ProductCardMini
-                icon={AddToBagIcon}
-                iconContainerClassName="bg-bg-primary"
-                product={product}
-              />
-            </ProductCardProvider>
+              product={product}
+            />
           ))}
         </div>
       </div>

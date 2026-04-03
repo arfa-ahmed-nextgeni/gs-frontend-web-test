@@ -61,15 +61,19 @@ export function OpenAppSheet({
     if (!playStoreUrl && !appStoreUrl) return;
     if (getStoredPopupState()) return;
 
-    const openPopup = () => {
-      markPopupAsSeen();
-      setIsOpen(true);
-    };
+    let firstAnimationFrameId = 0;
+    let secondAnimationFrameId = 0;
 
-    const timeoutId = window.setTimeout(openPopup, 800);
+    firstAnimationFrameId = window.requestAnimationFrame(() => {
+      secondAnimationFrameId = window.requestAnimationFrame(() => {
+        markPopupAsSeen();
+        setIsOpen(true);
+      });
+    });
 
     return () => {
-      window.clearTimeout(timeoutId);
+      window.cancelAnimationFrame(firstAnimationFrameId);
+      window.cancelAnimationFrame(secondAnimationFrameId);
     };
   }, [playStoreUrl, appStoreUrl, isMobile]);
 

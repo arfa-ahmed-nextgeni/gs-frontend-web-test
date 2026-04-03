@@ -11,6 +11,7 @@ import {
 import type {
   OptionChoice,
   ProductBadge,
+  ProductCardModel,
   ProductOption,
 } from "@/lib/models/product-card-model";
 
@@ -47,10 +48,12 @@ const OverflowCount = ({
 
 export const ProductCardBadges = ({
   badges,
+  countdownTimer,
   options,
   variant,
 }: {
   badges?: ProductBadge[];
+  countdownTimer?: ProductCardModel["countdownTimer"];
   options?: ProductOption;
   variant: ProductCardVariant;
 }) => {
@@ -99,11 +102,17 @@ export const ProductCardBadges = ({
     return null;
   };
 
+  const badgesContent = renderBadgesContent();
+
   return (
     <div className="transition-default mt-3 flex flex-row gap-0.5 overflow-hidden px-5 opacity-100 group-focus-within:opacity-0 group-hover:opacity-0 group-has-[button[data-loading=true]]:opacity-0">
-      <ProductCardCountdownBadge>
-        {renderBadgesContent()}
-      </ProductCardCountdownBadge>
+      {countdownTimer?.enabled ? (
+        <ProductCardCountdownBadge countdownTimer={countdownTimer}>
+          {badgesContent}
+        </ProductCardCountdownBadge>
+      ) : (
+        badgesContent
+      )}
     </div>
   );
 };

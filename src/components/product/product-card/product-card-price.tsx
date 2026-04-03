@@ -1,12 +1,11 @@
-"use client";
-
 import { ComponentProps } from "react";
 
-import { CountdownTimerIcon } from "@/components/icons/countdown-timer-icon";
+import { ProductCardPriceCountdownIndicator } from "@/components/product/product-card/product-card-price-countdown-indicator";
 import { LocalizedPrice } from "@/components/shared/localized-price";
-import { useProductCountdownTimer } from "@/hooks/product/use-product-countdown-timer";
 import { CountdownTimer } from "@/lib/types/product/countdown-timer";
 import { cn } from "@/lib/utils";
+
+import type { ProductCardPriceCountdownIndicatorIconProps } from "@/components/product/product-card/product-card-price-countdown-indicator-content";
 
 export const ProductCardPrice = ({
   containerProps,
@@ -19,16 +18,12 @@ export const ProductCardPrice = ({
 }: {
   containerProps?: ComponentProps<"div">;
   countdownTimer?: CountdownTimer | null;
-  countdownTimerIconProps?: ComponentProps<typeof CountdownTimerIcon>;
+  countdownTimerIconProps?: ProductCardPriceCountdownIndicatorIconProps;
   oldPrice?: string;
   oldPriceClassName?: string;
   price: string;
   priceClassName?: string;
 }) => {
-  const { countdownData } = useProductCountdownTimer({
-    countdownTimer,
-  });
-
   return (
     <div
       {...containerProps}
@@ -37,15 +32,12 @@ export const ProductCardPrice = ({
         containerProps?.className
       )}
     >
-      {countdownTimer?.enabled && !!countdownData && (
-        <CountdownTimerIcon
-          {...countdownTimerIconProps}
-          className={cn(
-            "size-3.5 flex-shrink-0",
-            countdownTimerIconProps?.className
-          )}
+      {countdownTimer?.enabled ? (
+        <ProductCardPriceCountdownIndicator
+          countdownTimer={countdownTimer}
+          iconProps={countdownTimerIconProps}
         />
-      )}
+      ) : null}
       <LocalizedPrice
         containerProps={{
           className: cn(

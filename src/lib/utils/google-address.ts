@@ -49,10 +49,11 @@ export const sanitizeStreetValue = ({
   const normalizedShortCode = (shortCode || "").trim();
   const normalizedDistrict = (district || "").trim();
 
+  // Remove short code from street
   if (normalizedStreet && normalizedShortCode) {
     const shortCodePattern = new RegExp(
       `(?:^|[\\s,\\-:/#])${escapeRegExp(normalizedShortCode)}(?=$|[\\s,\\-:/#])`,
-      "i"
+      "gi"
     );
     normalizedStreet = normalizedStreet.replace(shortCodePattern, " ").trim();
     normalizedStreet = normalizedStreet.replace(/\s{2,}/g, " ");
@@ -61,17 +62,30 @@ export const sanitizeStreetValue = ({
     normalizedStreet = normalizedStreet.replace(/^,\s*|\s*,$/g, "").trim();
   }
 
+  // Remove district from street - more comprehensive approach
   if (normalizedStreet && normalizedDistrict) {
-    const districtPattern = new RegExp(
-      `(?:^|,\\s*)${escapeRegExp(normalizedDistrict)}(?:\\s*,\\s*|$)`,
-      "i"
+    // Try multiple patterns to remove district
+    // Pattern 1: district with surrounding commas or spaces
+    let districtPattern = new RegExp(
+      `\\s*,?\\s*${escapeRegExp(normalizedDistrict)}\\s*,?\\s*`,
+      "gi"
     );
-    normalizedStreet = normalizedStreet.replace(districtPattern, " ").trim();
+    normalizedStreet = normalizedStreet.replace(districtPattern, " ");
+    // Pattern 2: district at the beginning with trailing separator
+    districtPattern = new RegExp(
+      `^${escapeRegExp(normalizedDistrict)}\\s*[,\\-]?\\s*`,
+      "gi"
+    );
+    normalizedStreet = normalizedStreet.replace(districtPattern, "");
+    // Clean up multiple spaces and commas
     normalizedStreet = normalizedStreet.replace(/\s{2,}/g, " ");
     normalizedStreet = normalizedStreet.replace(/\s+,/g, ",").trim();
     normalizedStreet = normalizedStreet.replace(/,\s*,/g, ",").trim();
     normalizedStreet = normalizedStreet.replace(/^,\s*|\s*,$/g, "").trim();
   }
+
+  // Remove trailing hyphens and clean up
+  normalizedStreet = normalizedStreet.replace(/[\s\-,]+$/g, "").trim();
 
   return normalizedStreet;
 };

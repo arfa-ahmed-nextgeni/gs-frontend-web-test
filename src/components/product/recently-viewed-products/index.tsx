@@ -1,8 +1,8 @@
 import { AsyncBoundary } from "@/components/common/async-boundary";
+import { CategoryProductsCarouselSkeleton } from "@/components/product/category-products-carousel-skeleton";
+import { RecentlyViewedProductsSection } from "@/components/product/recently-viewed-products/recently-viewed-products-section";
+import { ProductCardVariant } from "@/lib/constants/product/product-card";
 import { RecentlyViewedProductsContent } from "@/lib/models/recently-viewed-products-content";
-
-import { RecentlyViewedProductsSection } from "./recently-viewed-products-section";
-import { RecentlyViewedProductsSkeleton } from "./recently-viewed-products-skeleton";
 
 export function RecentlyViewedProducts({
   data,
@@ -18,8 +18,9 @@ export function RecentlyViewedProducts({
   return (
     <AsyncBoundary
       fallback={
-        <RecentlyViewedProductsSkeleton
+        <CategoryProductsCarouselSkeleton
           maximumProducts={data.maximumProducts}
+          variant={ProductCardVariant.Single}
         />
       }
     >

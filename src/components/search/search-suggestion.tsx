@@ -1,8 +1,6 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useLocale } from "next-intl";
 
-import { Button } from "@/components/ui/button";
-
 export const SearchSuggestion = ({
   buttonProps,
   list,
@@ -20,6 +18,7 @@ export const SearchSuggestion = ({
 }) => {
   const locale = useLocale();
   const ChevronIcon = locale.includes("ar") ? ChevronLeft : ChevronRight;
+
   return (
     <div className="flex flex-col">
       <h3 className="text-text-primary mx-4 mb-2 text-sm font-semibold">
@@ -59,13 +58,13 @@ export const SearchSuggestion = ({
       </div>
       {buttonProps?.visible && (
         <div className="px-4 py-2">
-          <Button
-            className="text-text-danger hover:text-text-danger !text-xs !font-normal"
+          <button
+            className="text-text-danger hover:text-text-danger text-xs font-normal underline-offset-4 hover:underline"
             onClick={buttonProps.onClick}
-            variant="link"
+            type="button"
           >
             {buttonProps.text}
-          </Button>
+          </button>
         </div>
       )}
     </div>

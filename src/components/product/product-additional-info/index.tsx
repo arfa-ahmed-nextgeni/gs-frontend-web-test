@@ -13,7 +13,10 @@ export const ProductAdditionalInfo = ({
 }) => {
   const t = useTranslations("ProductPage.additionalInfo");
 
-  if ([ProductType.EGiftCard, ProductType.GiftCard].includes(product.type)) {
+  if (
+    product.type &&
+    [ProductType.EGiftCard, ProductType.GiftCard].includes(product.type)
+  ) {
     return null;
   }
 

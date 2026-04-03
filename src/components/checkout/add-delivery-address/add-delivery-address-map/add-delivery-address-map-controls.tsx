@@ -3,16 +3,24 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 import CurrentLocationIcon from "@/assets/icons/current-location-icon.svg";
+import { cn } from "@/lib/utils";
 
 export const AddDeliveryAddressMapControls = ({
+  isBottomWarningVisible,
   onLocate,
 }: {
+  isBottomWarningVisible?: boolean;
   onLocate: () => void;
 }) => {
   const t = useTranslations("AddDeliveryAddressPage.map");
 
   return (
-    <div className="absolute bottom-5 end-5 z-10">
+    <div
+      className={cn(
+        "absolute end-5 z-10",
+        isBottomWarningVisible ? "bottom-20" : "bottom-5"
+      )}
+    >
       <button
         aria-label="Locate current position"
         className="transition-default flex h-[30px] max-w-[150px] items-center justify-center gap-2 rounded-lg border border-[#F3F3F3] bg-white px-4 py-2 text-blue-500 hover:bg-blue-50"

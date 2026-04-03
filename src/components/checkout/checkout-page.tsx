@@ -2623,9 +2623,8 @@ function CheckoutPage({
           if (isCartGoneError) {
             // Delete the cart ID to force a fresh cart
             try {
-              const { deleteCartId } = await import(
-                "@/lib/actions/cookies/cart"
-              );
+              const { deleteCartId } =
+                await import("@/lib/actions/cookies/cart");
               await deleteCartId();
             } catch (deleteError) {
               console.error(

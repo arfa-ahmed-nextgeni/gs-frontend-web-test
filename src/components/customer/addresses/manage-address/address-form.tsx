@@ -189,6 +189,7 @@ export const AddressForm = () => {
                   name={AddressFormField.FirstName}
                   render={({ field, fieldState }) => (
                     <FloatingLabelInput
+                      alwaysShowLabel
                       error={!!fieldState.error}
                       helperText={
                         formErrorMessages.has(fieldState.error?.message as any)
@@ -210,6 +211,7 @@ export const AddressForm = () => {
                     name={AddressFormField.MiddleName}
                     render={({ field, fieldState }) => (
                       <FloatingLabelInput
+                        alwaysShowLabel
                         error={!!fieldState.error}
                         helperText={
                           formErrorMessages.has(
@@ -235,6 +237,7 @@ export const AddressForm = () => {
                   name={AddressFormField.LastName}
                   render={({ field, fieldState }) => (
                     <FloatingLabelInput
+                      alwaysShowLabel
                       error={!!fieldState.error}
                       helperText={
                         formErrorMessages.has(fieldState.error?.message as any)
@@ -273,6 +276,7 @@ export const AddressForm = () => {
 
                         return (
                           <FloatingLabelInput
+                            alwaysShowLabel
                             containerProps={{
                               className: "col-span-2",
                             }}
@@ -295,6 +299,7 @@ export const AddressForm = () => {
                       name={AddressFormField.City}
                       render={({ field, fieldState }) => (
                         <FloatingLabelInput
+                          alwaysShowLabel
                           error={!!fieldState.error}
                           helperText={
                             formErrorMessages.has(
@@ -337,6 +342,7 @@ export const AddressForm = () => {
 
                             return (
                               <FloatingLabelInput
+                                alwaysShowLabel
                                 containerProps={{
                                   className: "col-span-2",
                                 }}
@@ -357,6 +363,7 @@ export const AddressForm = () => {
                       name={AddressFormField.Area}
                       render={({ field, fieldState }) => (
                         <FloatingLabelInput
+                          alwaysShowLabel
                           containerProps={{
                             className: "col-span-2",
                           }}
@@ -385,6 +392,7 @@ export const AddressForm = () => {
                       name={AddressFormField.Street}
                       render={({ field, fieldState }) => (
                         <FloatingLabelInput
+                          alwaysShowLabel
                           containerProps={{
                             className: "col-span-2",
                           }}
@@ -411,6 +419,7 @@ export const AddressForm = () => {
                   render={({ field, fieldState }) =>
                     isGlobal ? (
                       <FloatingLabelInput
+                        alwaysShowLabel
                         containerProps={{
                           className: "col-span-2",
                         }}
@@ -464,6 +473,7 @@ export const AddressForm = () => {
                       render={({ field, fieldState }) => (
                         <>
                           <FloatingLabelInput
+                            alwaysShowLabel
                             error={!!fieldState.error}
                             helperText={
                               formErrorMessages.has(
@@ -502,6 +512,7 @@ export const AddressForm = () => {
                     name={AddressFormField.PostalCode}
                     render={({ field, fieldState }) => (
                       <FloatingLabelInput
+                        alwaysShowLabel
                         containerProps={{
                           className: "col-span-2",
                         }}
@@ -554,6 +565,7 @@ export const AddressForm = () => {
                         name={AddressFormField.SenderFirstName}
                         render={({ field, fieldState }) => (
                           <FloatingLabelInput
+                            alwaysShowLabel
                             error={!!fieldState.error}
                             helperText={
                               formErrorMessages.has(
@@ -579,6 +591,7 @@ export const AddressForm = () => {
                         name={AddressFormField.SenderLastName}
                         render={({ field, fieldState }) => (
                           <FloatingLabelInput
+                            alwaysShowLabel
                             error={!!fieldState.error}
                             helperText={
                               formErrorMessages.has(

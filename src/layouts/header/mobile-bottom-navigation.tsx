@@ -1,24 +1,25 @@
 "use client";
 
-import Image from "next/image";
-
-import SelectedBagMobileIcon from "@/assets/icons/bag-icon-active.svg";
-import BagMobileIcon from "@/assets/icons/bag-icon.svg";
-import SelectedCategoryMobileIcon from "@/assets/icons/category-icon-active.svg";
-import CategoryMobileIcon from "@/assets/icons/category-icon.svg";
-import SelectedHomeMobileIcon from "@/assets/icons/home-icon-active.svg";
-import HomeMobileIcon from "@/assets/icons/home-icon.svg";
-import SelectedProfileMobileIcon from "@/assets/icons/profile-icon-active.svg";
-import ProfileMobileIcon from "@/assets/icons/profile-icon.svg";
 import { useMobileModal } from "@/contexts/mobile-modal-context";
 import { useIsMobileBottomNavHidden } from "@/hooks/use-is-mobile-bottom-nav-hidden";
 import { useRouteMatch } from "@/hooks/use-route-match";
 import { Link } from "@/i18n/navigation";
 import { CartButton } from "@/layouts/header/cart-button";
+import {
+  MobileBottomNavigationBagIcon,
+  MobileBottomNavigationCategoryIcon,
+  MobileBottomNavigationHomeIcon,
+  MobileBottomNavigationProfileIcon,
+} from "@/layouts/header/mobile-bottom-navigation-icons";
 import { trackMenuClick } from "@/lib/analytics/events";
 import { ROUTES } from "@/lib/constants/routes";
 import { ZIndexLevel } from "@/lib/constants/ui";
 import { cn } from "@/lib/utils";
+
+const ACTIVE_NAV_ICON_COLOR = "#6543f5";
+const DEFAULT_NAV_ICON_COLOR = "#374957";
+const navIconClassName =
+  "h-[clamp(1.25rem,7.634vw,1.75rem)] w-[clamp(1.25rem,7.634vw,1.75rem)]";
 
 export function MobileBottomNavigation() {
   const { isCart, isCategory, isCustomer, isHome } = useRouteMatch();
@@ -68,12 +69,12 @@ export function MobileBottomNavigation() {
           prefetch={false}
           title="Home"
         >
-          <Image
-            alt="Home"
-            className="h-[clamp(1.25rem,7.634vw,1.75rem)] w-[clamp(1.25rem,7.634vw,1.75rem)]"
-            height={30}
-            src={activeStates.home ? SelectedHomeMobileIcon : HomeMobileIcon}
-            width={30}
+          <MobileBottomNavigationHomeIcon
+            aria-hidden="true"
+            className={navIconClassName}
+            color={
+              activeStates.home ? ACTIVE_NAV_ICON_COLOR : DEFAULT_NAV_ICON_COLOR
+            }
           />
         </Link>
 
@@ -90,16 +91,14 @@ export function MobileBottomNavigation() {
           prefetch={false}
           title="Menu"
         >
-          <Image
-            alt="Menu"
-            className="h-[clamp(1.25rem,7.634vw,1.75rem)] w-[clamp(1.25rem,7.634vw,1.75rem)]"
-            height={30}
-            src={
+          <MobileBottomNavigationCategoryIcon
+            aria-hidden="true"
+            className={navIconClassName}
+            color={
               activeStates.category
-                ? SelectedCategoryMobileIcon
-                : CategoryMobileIcon
+                ? ACTIVE_NAV_ICON_COLOR
+                : DEFAULT_NAV_ICON_COLOR
             }
-            width={30}
           />
         </Link>
 
@@ -112,12 +111,12 @@ export function MobileBottomNavigation() {
           )}
           onClick={() => trackMenuClick("cart")}
         >
-          <Image
-            alt="Cart"
-            className="h-[clamp(1.25rem,7.634vw,1.75rem)] w-[clamp(1.25rem,7.634vw,1.75rem)]"
-            height={30}
-            src={activeStates.cart ? SelectedBagMobileIcon : BagMobileIcon}
-            width={30}
+          <MobileBottomNavigationBagIcon
+            aria-hidden="true"
+            className={navIconClassName}
+            color={
+              activeStates.cart ? ACTIVE_NAV_ICON_COLOR : DEFAULT_NAV_ICON_COLOR
+            }
           />
         </CartButton>
 
@@ -134,16 +133,14 @@ export function MobileBottomNavigation() {
           prefetch={false}
           title="Profile"
         >
-          <Image
-            alt="Profile"
-            className="h-[clamp(1.25rem,7.634vw,1.75rem)] w-[clamp(1.25rem,7.634vw,1.75rem)]"
-            height={30}
-            src={
+          <MobileBottomNavigationProfileIcon
+            aria-hidden="true"
+            className={navIconClassName}
+            color={
               activeStates.account
-                ? SelectedProfileMobileIcon
-                : ProfileMobileIcon
+                ? ACTIVE_NAV_ICON_COLOR
+                : DEFAULT_NAV_ICON_COLOR
             }
-            width={30}
           />
         </Link>
       </div>

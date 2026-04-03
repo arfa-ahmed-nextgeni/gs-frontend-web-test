@@ -1,7 +1,10 @@
 import type { CSSProperties } from "react";
 
 import type { Metadata, Viewport } from "next";
+import { notFound } from "next/navigation";
+import { locale as rootLocale } from "next/root-params";
 
+import { hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { getLangDir } from "rtl-detect";
 import { Toaster } from "sonner";
@@ -16,6 +19,8 @@ import { SpinnerAssetsPreloader } from "@/components/ui/spinner-assets-preloader
 import { routing } from "@/i18n/routing";
 import { getStoresConfig } from "@/lib/actions/config/get-stores-config";
 import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
+import { PROTOCOL } from "@/lib/constants/environment";
+import { LOCALE_TO_DOMAIN } from "@/lib/constants/i18n";
 import { Stores } from "@/lib/models/stores";
 import { getLocaleInfo, initializePageLocale } from "@/lib/utils/locale";
 import { generateOrganizationSchema } from "@/lib/utils/schema";
@@ -25,10 +30,12 @@ import type { Locale } from "@/lib/constants/i18n";
 
 import "../globals.css";
 
-export async function generateMetadata({
-  params,
-}: LayoutProps<"/[locale]">): Promise<Metadata> {
-  const { locale } = await params;
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await rootLocale();
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
 
   const t = await getTranslations({
     locale,
@@ -43,6 +50,11 @@ export async function generateMetadata({
   const seo = pageLandingData?.seo;
   const title = seo?.pageTitle?.trim() || t("title");
   const description = seo?.pageDescription?.trim() || t("description");
+  const localeDomain = LOCALE_TO_DOMAIN[locale as Locale];
+  const metadataBaseUrl =
+    localeDomain && localeDomain.length > 0
+      ? `${PROTOCOL}://${localeDomain}`
+      : (process.env.NEXT_PUBLIC_WEBSITE_URL ?? "http://localhost:3000");
 
   const shareImages =
     seo?.shareImageUrls?.length &&
@@ -81,6 +93,7 @@ export async function generateMetadata({
       ],
     },
     keywords: t("keywords"),
+    metadataBase: new URL(metadataBaseUrl),
     openGraph: {
       description,
       images: shareImages,
@@ -139,9 +152,8 @@ export default async function RootLayout({
   children,
   dialog,
   drawer,
-  params,
 }: LayoutProps<"/[locale]">) {
-  const { locale } = await params;
+  const locale = await rootLocale();
   initializePageLocale(locale);
 
   const { language } = getLocaleInfo(locale);

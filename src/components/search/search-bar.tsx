@@ -1,47 +1,70 @@
 "use client";
 
+import dynamic from "next/dynamic";
+
 import { useTranslations } from "next-intl";
 
 import { SearchTracker } from "@/components/analytics/search-tracker";
-import { useSearch } from "@/components/search/search-container";
+import {
+  useSearchActions,
+  useSearchUiState,
+} from "@/components/search/search-container";
 import { SearchForm } from "@/components/search/search-form";
-import { SearchResults } from "@/components/search/search-results";
 import { BlurOverlay } from "@/components/ui/blur-overlay";
 import useBodyScroll from "@/hooks/use-body-scroll";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { ZIndexLevel } from "@/lib/constants/ui";
 import { cn } from "@/lib/utils";
 
+const loadSearchResults = () =>
+  import("@/components/search/search-results").then(
+    (module) => module.SearchResults
+  );
+
+const SearchResults = dynamic(loadSearchResults, {
+  loading: () => null,
+});
+
+const DesktopSearchChrome = ({
+  inputFocus,
+  onClear,
+}: {
+  inputFocus: boolean;
+  onClear: () => void;
+}) => {
+  useBodyScroll(inputFocus);
+
+  return (
+    <>
+      <SearchTracker trackInit={inputFocus} />
+      <BlurOverlay
+        onClick={onClear}
+        visible={inputFocus}
+        zIndexClass={ZIndexLevel.z20}
+      />
+    </>
+  );
+};
+
 export const SearchBar = ({ isSticky }: { isSticky?: boolean }) => {
   const {
     clear,
-    clearRecentSearches,
-    facets,
     handleAutoSearch,
-    handleBrandClick,
-    handleRecentSearchClick,
     handleSearch,
-    handleSuggestionClick,
-    handleViewAll,
-    isLoading,
     openMobileSearch,
     openStaticDesktopSearch,
     openStickyDesktopSearch,
+  } = useSearchActions();
+  const {
+    hasDropdownContent: hasSearchDropdownContent,
     queryText,
-    recentSearches,
-    relatedTerms,
-    searchResults,
     showStaticDesktopSearch,
     showStickyDesktopSearch,
-    suggestions,
-    totalCount,
-  } = useSearch();
+  } = useSearchUiState();
 
   const inputFocus = isSticky
     ? showStickyDesktopSearch
     : showStaticDesktopSearch;
-
-  useBodyScroll(inputFocus);
 
   const t = useTranslations("HomePage.header.search");
 
@@ -54,26 +77,23 @@ export const SearchBar = ({ isSticky }: { isSticky?: boolean }) => {
     : openStaticDesktopSearch;
 
   const handleFocus = () => {
-    if (isMobile) openMobileSearch();
-    else enableInputFocus();
+    if (isMobile) {
+      openMobileSearch();
+      return;
+    }
+
+    loadSearchResults();
+    enableInputFocus();
   };
 
-  const hasDropdownContent =
-    inputFocus &&
-    (isLoading ||
-      (searchResults && searchResults.length > 0) ||
-      (recentSearches && recentSearches.length > 0));
+  const hasDropdownContent = inputFocus && hasSearchDropdownContent;
 
   return (
     <>
-      <SearchTracker trackInit={inputFocus} />
+      {!isMobile ? (
+        <DesktopSearchChrome inputFocus={inputFocus} onClear={clear} />
+      ) : null}
       <div className="flex-1">
-        <BlurOverlay
-          onClick={clear}
-          visible={inputFocus}
-          zIndexClass={ZIndexLevel.z20}
-        />
-
         <div className="relative z-30 mx-auto flex w-full shrink-0 flex-col justify-center">
           <SearchForm
             inputProps={{
@@ -90,23 +110,7 @@ export const SearchBar = ({ isSticky }: { isSticky?: boolean }) => {
             value={queryText}
           />
 
-          <SearchResults
-            facets={facets}
-            inputFocus={inputFocus}
-            isLoading={isLoading}
-            onBrandClick={handleBrandClick}
-            onClear={clear}
-            onClearRecent={clearRecentSearches}
-            onRecentSearchClick={handleRecentSearchClick}
-            onSuggestionClick={handleSuggestionClick}
-            onViewAll={handleViewAll}
-            queryText={queryText}
-            recentSearches={recentSearches}
-            relatedTerms={relatedTerms}
-            searchResults={searchResults}
-            suggestions={suggestions}
-            totalCount={totalCount}
-          />
+          {inputFocus ? <SearchResults inputFocus={inputFocus} /> : null}
         </div>
       </div>
     </>

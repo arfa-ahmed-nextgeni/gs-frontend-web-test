@@ -1,7 +1,5 @@
 "use client";
 
-import { ReactNode, useEffect, useRef } from "react";
-
 import Image from "next/image";
 
 import BackIcon from "@/assets/icons/back-icon.svg";
@@ -12,76 +10,46 @@ import TrashIcon from "@/assets/icons/trash-icon.svg";
 import VerifiedIcon from "@/assets/icons/verified-icon.svg";
 import SearchIcon from "@/components/icons/search-icon";
 import { ProductShareButton } from "@/components/product/product-details/product-share-button";
-import { useSearch } from "@/components/search/search-container";
+import { useSearchActions } from "@/components/search/search-container";
 import { RouteTitle } from "@/components/shared/route-title";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMobileTopBarContext } from "@/contexts/mobile-top-bar-context";
 import { useProductReviews } from "@/contexts/product-reviews-context";
-import { useIsMobile } from "@/hooks/use-is-mobile";
-import { useRouteMatch } from "@/hooks/use-route-match";
 import { Link } from "@/i18n/navigation";
 import { useRouter } from "@/i18n/navigation";
 import { CartButton } from "@/layouts/header/cart-button";
 import { ROUTES } from "@/lib/constants/routes";
 
-export const MobileTopBar = ({ fallback }: { fallback?: ReactNode }) => {
+export type MobileTopBarRouteProps = {
+  isAddAddress: boolean;
+  isAddProductReview: boolean;
+  isCategory: boolean;
+  isCustomer: boolean;
+  isOrderDetails: boolean;
+  isProduct: boolean;
+  isProductReviews: boolean;
+  isProductRoot: boolean;
+  isProfileRoot: boolean;
+};
+
+export const MobileTopBar = ({
+  isAddAddress,
+  isAddProductReview,
+  isCategory,
+  isCustomer,
+  isOrderDetails,
+  isProduct,
+  isProductReviews,
+  isProductRoot,
+  isProfileRoot,
+}: MobileTopBarRouteProps) => {
   const router = useRouter();
 
-  const isMobile = useIsMobile();
-
-  const { openMobileSearch } = useSearch();
-
-  const {
-    isAddAddress,
-    isAddProductReview,
-    isCategory,
-    isCustomer,
-    isHome,
-    isOrderDetails,
-    isProduct,
-    isProductReviews,
-    isProductRoot,
-    isProfileRoot,
-  } = useRouteMatch();
+  const { openMobileSearch } = useSearchActions();
 
   const { handleBack, mobileTopBarTitle, productInfo } =
     useMobileTopBarContext();
   const { toggleSortByFilter } = useProductReviews();
-
-  const originalHeightRef = useRef<null | string>(null);
-
-  useEffect(() => {
-    if (originalHeightRef.current === null) {
-      const computedStyle = getComputedStyle(document.documentElement);
-      originalHeightRef.current = computedStyle
-        .getPropertyValue("--mobile-header-height")
-        .trim();
-    }
-
-    if (isProductRoot && isMobile) {
-      document.documentElement.style.setProperty(
-        "--mobile-header-height",
-        "60px"
-      );
-    } else {
-      document.documentElement.style.setProperty(
-        "--mobile-header-height",
-        originalHeightRef.current
-      );
-    }
-
-    return () => {
-      if (originalHeightRef.current) {
-        document.documentElement.style.setProperty(
-          "--mobile-header-height",
-          originalHeightRef.current
-        );
-      }
-    };
-  }, [isProductRoot, isMobile]);
-
-  // Hide top bar on desktop or when effective route is home (including overlay from home)
-  if (!isMobile || (!isCategory && !isCustomer && isHome)) return fallback;
 
   const backHref = isCategory
     ? ROUTES.ROOT
@@ -113,7 +81,7 @@ export const MobileTopBar = ({ fallback }: { fallback?: ReactNode }) => {
           </Link>
         )}
         {isProductRoot ? (
-          <div className="gap-0.25 flex max-w-[55vw] flex-col">
+          <div className="flex max-w-[55vw] flex-col gap-px">
             <div className="gap-1.25 flex flex-row items-center">
               {productInfo?.brand ? (
                 <>

@@ -2,7 +2,7 @@ import "server-only";
 
 import { cache } from "react";
 
-import { cacheTag } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 
 import { contentfulClient } from "@/lib/clients/contentful";
 import { CacheTags } from "@/lib/constants/cache/tags";
@@ -32,6 +32,7 @@ export const getPageLandingData = ({
 
 const getPageLandingDataCached = cache(async (locale: string, slug: string) => {
   "use cache";
+  cacheLife("max");
   cacheTag(CacheTags.Contentful);
 
   const { language, region } = getLocaleInfo(locale);

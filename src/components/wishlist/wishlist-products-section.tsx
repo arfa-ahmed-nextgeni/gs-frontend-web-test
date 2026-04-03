@@ -7,10 +7,12 @@ import { PaginationWithSearchParams } from "@/components/shared/pagination-with-
 import { WishlistEmptyState } from "@/components/wishlist/wishlist-empty-state";
 import { WishlistProductsSectionSkeleton } from "@/components/wishlist/wishlist-products-section-skeleton";
 import { useWishlistPaginatedQuery } from "@/hooks/queries/wishlist/use-wishlist-paginated-query";
+import { useBulletDeliveryEnabled } from "@/hooks/use-bullet-delivery-enabled";
 import { usePageQuery } from "@/hooks/use-page-query";
 
 export const WishlistProductsSection = () => {
   const { currentPage, setCurrentPage } = usePageQuery();
+  const isBulletDeliveryEnabled = useBulletDeliveryEnabled();
 
   const { data, isFetching, isLoading } = useWishlistPaginatedQuery({
     page: currentPage,
@@ -58,6 +60,7 @@ export const WishlistProductsSection = () => {
             containerProps={{
               className: "max-[400px]:w-auto",
             }}
+            isBulletDeliveryEnabled={isBulletDeliveryEnabled}
             key={`${wishlistProduct.id}-${index}`}
             product={wishlistProduct}
           />

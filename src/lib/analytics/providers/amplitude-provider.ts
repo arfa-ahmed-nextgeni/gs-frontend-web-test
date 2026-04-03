@@ -1,6 +1,6 @@
 import "client-only";
 
-import { ANALYTICS_TOOL } from "@/lib/analytics/analytics-tool";
+import { ANALYTICS_TOOL } from "@/lib/analytics/constants/analytics-tool";
 import { AnalyticsProvider } from "@/lib/analytics/providers/base-provider";
 import { buildMetaProperties } from "@/lib/analytics/utils/build-meta-properties";
 import { SNAP_CAPI_CDID_KEY } from "@/lib/analytics/utils/snap-capi-params";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
 import { useLocale, useTranslations } from "next-intl";
@@ -37,6 +37,7 @@ const isPermissionDeniedError = (error: Error | null): boolean => {
 export const AddDeliveryAddressMap = () => {
   const locale = useLocale();
   const t = useTranslations("AddDeliveryAddressPage.map");
+  const [isDismissed, setIsDismissed] = useState(false);
 
   const {
     initialSelectedLocation,
@@ -62,6 +63,40 @@ export const AddDeliveryAddressMap = () => {
       mapId: GOOGLE_MAPS_MAP_ID,
     });
   }, []);
+
+  // Wrapper for refetchLocation that resets dismissed state
+  const handleRefetchLocation = useCallback(() => {
+    setIsDismissed(false);
+    refetchLocation();
+  }, [refetchLocation]);
+
+  // Listen for permission changes and refetch location when user enables it
+  useEffect(() => {
+    if (!navigator?.permissions?.query) return;
+
+    navigator.permissions
+      .query({ name: "geolocation" })
+      .then((permission) => {
+        const handlePermissionChange = () => {
+          if (
+            permission.state === "granted" &&
+            !position &&
+            isPermissionDeniedError(geolocationError)
+          ) {
+            handleRefetchLocation();
+          }
+        };
+
+        permission.addEventListener("change", handlePermissionChange);
+
+        return () => {
+          permission.removeEventListener("change", handlePermissionChange);
+        };
+      })
+      .catch(() => {
+        // Silently handle browsers that don't support Permissions API
+      });
+  }, [position, geolocationError, handleRefetchLocation]);
 
   // Convert GeolocationPosition to LatLngLiteral
   const currentLocation = useMemo<google.maps.LatLngLiteral | null>(() => {
@@ -120,8 +155,9 @@ export const AddDeliveryAddressMap = () => {
   }
 
   if (
-    (isPermissionDenied && !initialSelectedLocation) ||
-    (!hasPermission && locationError)
+    !isDismissed &&
+    ((isPermissionDenied && !initialSelectedLocation) ||
+      (!hasPermission && locationError))
   ) {
     return (
       <div className={containerClassName}>
@@ -140,13 +176,35 @@ export const AddDeliveryAddressMap = () => {
           >
             <AddDeliveryAddressMapContent
               currentLocation={currentLocation}
-              onLocateAction={refetchLocation}
+              defaultCenter={RIYADH_CENTER}
+              isBottomWarningVisible={false}
+              onLocateAction={handleRefetchLocation}
             />
           </Map>
           <AddDeliveryAddressMapSearch />
           <div className="pointer-events-none absolute inset-x-0 top-1/2 z-10 flex -translate-y-1/2 justify-center px-4">
-            <div className="rounded-[8px] bg-[rgba(55,73,87,0.90)] p-[15px] shadow-lg">
-              <p className="text-sm text-white">
+            <div className="relative min-w-96 rounded-lg bg-[rgba(55,73,87,0.90)] px-2.5 py-5 shadow-lg">
+              <button
+                aria-label="Close"
+                className="pointer-events-auto absolute right-1 top-1 rounded p-1 text-white transition-colors hover:bg-white/20 rtl:left-1 rtl:right-auto"
+                onClick={() => setIsDismissed(true)}
+                type="button"
+              >
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M6 18L18 6M6 6l12 12"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                  />
+                </svg>
+              </button>
+              <p className="text-center text-sm text-white">
                 {t("enableLocationServices")}
               </p>
             </div>
@@ -173,14 +231,20 @@ export const AddDeliveryAddressMap = () => {
         >
           <AddDeliveryAddressMapContent
             currentLocation={currentLocation}
-            onLocateAction={refetchLocation}
+            defaultCenter={defaultCenter}
+            isBottomWarningVisible={
+              selectedLocation && isSelectedLocationInSaudiArabia === false
+                ? true
+                : undefined
+            }
+            onLocateAction={handleRefetchLocation}
           />
         </Map>
         <AddDeliveryAddressMapSearch />
         {selectedLocation && isSelectedLocationInSaudiArabia === false && (
           <div className="pointer-events-none absolute inset-x-0 bottom-5 z-10 flex justify-center px-4">
             <div className="w-full max-w-md rounded-2xl border border-red-200 bg-red-50/95 px-4 py-3 shadow-lg backdrop-blur-sm">
-              <p className="text-sm font-medium text-red-700">
+              <p className="text-center text-sm font-medium text-red-700">
                 {t("locationOutsideSaudiArabia")}
               </p>
             </div>

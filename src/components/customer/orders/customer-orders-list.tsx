@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/pagination";
 import { useMobileModal } from "@/contexts/mobile-modal-context";
 import { useOrdersContext } from "@/contexts/orders-context";
+import { useIsMobile } from "@/hooks/use-is-mobile";
+import { useWindowScrollY } from "@/hooks/use-window-scroll-y";
 import { PAGINATION_ELLIPSIS } from "@/lib/constants/pagination";
 import { getPaginationRange } from "@/lib/utils/pagination";
 
@@ -75,17 +77,8 @@ export const CustomerOrdersList = ({
   // ];
 
   const totalPages = pageInfo.total_pages;
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-
-    checkIsMobile();
-    window.addEventListener("resize", checkIsMobile);
-    return () => window.removeEventListener("resize", checkIsMobile);
-  }, []);
+  const isMobile = useIsMobile();
+  const scrollY = useWindowScrollY();
 
   const currentOrders = orders;
 
@@ -116,20 +109,13 @@ export const CustomerOrdersList = ({
   useEffect(() => {
     if (!isMobile) return;
 
-    const handleScroll = () => {
-      const scrollTop =
-        window.pageYOffset || document.documentElement.scrollTop;
-      const windowHeight = window.innerHeight;
-      const docHeight = document.documentElement.scrollHeight;
+    const windowHeight = window.innerHeight;
+    const docHeight = document.documentElement.scrollHeight;
 
-      if (scrollTop + windowHeight >= docHeight - 100) {
-        handleLoadMore();
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isMobile, handleLoadMore]);
+    if (scrollY + windowHeight >= docHeight - 100) {
+      void handleLoadMore();
+    }
+  }, [handleLoadMore, isMobile, scrollY]);
 
   const handleSortChange = (option: string) => {
     setSortBy(option);

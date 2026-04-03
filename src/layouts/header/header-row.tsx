@@ -1,14 +1,17 @@
+import { Suspense } from "react";
+
 import { AsyncBoundary } from "@/components/common/async-boundary";
 import { CartIcon } from "@/components/icons/cart-icon";
 import { GoldenScentLogo } from "@/components/icons/golden-scent-logo";
+import { MenuIcon } from "@/components/icons/menu-icon";
+import { ProfileIcon } from "@/components/icons/profile-icon";
 import { SearchBar } from "@/components/search/search-bar";
 import Container from "@/components/shared/container";
 import { Link } from "@/i18n/navigation";
-import { AuthDropdown } from "@/layouts/header/auth-dropdown";
-import { CartButton } from "@/layouts/header/cart-button";
-import { DesktopNavigationToggleButton } from "@/layouts/header/desktop-navigation-toggle-button";
+import { DeferredDesktopHeaderActions } from "@/layouts/header/deferred-desktop-header-actions";
+import { DeferredMobileTopBar } from "@/layouts/header/deferred-mobile-top-bar";
+import { HeaderRowShell } from "@/layouts/header/header-row-shell";
 import { MobileMenuButton } from "@/layouts/header/mobile-menu-button";
-import { MobileTopBar } from "@/layouts/header/mobile-top-bar";
 import { RegionLanguageSwitcher } from "@/layouts/header/region-language-switcher";
 import { RegionLanguageSwitcherSkeleton } from "@/layouts/header/region-language-switcher-skeleton";
 import { ROUTES } from "@/lib/constants/routes";
@@ -29,8 +32,24 @@ export const HeaderRow = ({
       <Link aria-label="Home" href={ROUTES.ROOT} title="Go to homepage">
         <GoldenScentLogo />
       </Link>
-      <SearchBar isSticky={isSticky} />
+      <Suspense>
+        <SearchBar isSticky={isSticky} />
+      </Suspense>
     </>
+  );
+
+  const desktopHeaderActionsFallback = (
+    <div aria-hidden="true" className="flex flex-row items-center gap-5">
+      <div className="relative flex h-auto shrink-0 transform items-center justify-center">
+        <CartIcon />
+      </div>
+      <div className="relative">
+        <div className="cart-button">
+          <ProfileIcon />
+        </div>
+      </div>
+      {isSticky ? <MenuIcon /> : null}
+    </div>
   );
 
   return (
@@ -41,24 +60,22 @@ export const HeaderRow = ({
       )}
       variant="FullWidth"
     >
-      <Container className="flex h-[var(--mobile-header-height)] flex-row items-center gap-5 lg:h-[var(--desktop-header-height)] lg:gap-7">
-        <MobileTopBar fallback={defaultHeaderContent} />
+      <HeaderRowShell>
+        <DeferredMobileTopBar fallback={defaultHeaderContent} />
 
         <div className="hidden h-full flex-row gap-7 lg:flex">
           <AsyncBoundary fallback={<RegionLanguageSwitcherSkeleton />}>
             <RegionLanguageSwitcher hoverZIndexLevel={hoverZIndexLevel} />
           </AsyncBoundary>
-          <div className="flex flex-row items-center gap-5">
-            <CartButton>
-              <CartIcon />
-            </CartButton>
-            <AuthDropdown hoverZIndexLevel={hoverZIndexLevel} />
-            {isSticky && <DesktopNavigationToggleButton />}
-          </div>
+          <DeferredDesktopHeaderActions
+            fallback={desktopHeaderActionsFallback}
+            hoverZIndexLevel={hoverZIndexLevel}
+            isSticky={isSticky}
+          />
         </div>
 
         <MobileMenuButton isSticky={isSticky} />
-      </Container>
+      </HeaderRowShell>
     </Container>
   );
 };

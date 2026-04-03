@@ -1,38 +1,47 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+import {
+  getServerWindowLastScrollAt,
+  getWindowLastScrollAt,
+  subscribeWindowScroll,
+} from "@/lib/stores/window-scroll-store";
 
 export function useIsScrolling(idleMs = 200) {
   const [isScrolling, setIsScrolling] = useState(false);
-  const rafRef = useRef<null | number>(null);
+  const hasSyncedInitialScrollRef = useRef(false);
   const timeoutRef = useRef<null | ReturnType<typeof setTimeout>>(null);
+  const lastScrollAt = useSyncExternalStore(
+    subscribeWindowScroll,
+    getWindowLastScrollAt,
+    getServerWindowLastScrollAt
+  );
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (!hasSyncedInitialScrollRef.current) {
+      hasSyncedInitialScrollRef.current = true;
+      return;
+    }
 
-    const onScroll = () => {
-      if (!isScrolling) setIsScrolling(true);
+    setIsScrolling(true);
 
-      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
 
-      rafRef.current = requestAnimationFrame(() => {
-        rafRef.current = null;
-      });
+    timeoutRef.current = setTimeout(() => {
+      setIsScrolling(false);
+      timeoutRef.current = null;
+    }, idleMs);
+  }, [idleMs, lastScrollAt]);
 
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => {
-        setIsScrolling(false);
-        timeoutRef.current = null;
-      }, idleMs);
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [idleMs]); // don't include isScrolling in deps — we only call setIsScrolling
+  useEffect(
+    () => () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    },
+    []
+  );
 
   return isScrolling;
 }

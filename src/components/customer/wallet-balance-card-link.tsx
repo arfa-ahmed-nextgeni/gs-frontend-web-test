@@ -7,8 +7,10 @@ import { trackSettingsOpen } from "@/lib/analytics/events";
 import { ROUTES } from "@/lib/constants/routes";
 import { cn } from "@/lib/utils";
 
-interface WalletBalanceCardLinkProps
-  extends Omit<ComponentProps<typeof Link>, "href"> {
+interface WalletBalanceCardLinkProps extends Omit<
+  ComponentProps<typeof Link>,
+  "href"
+> {
   disableNavigation?: boolean;
 }
 

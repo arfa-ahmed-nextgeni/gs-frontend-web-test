@@ -17,6 +17,8 @@ import utc from "dayjs/plugin/utc";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { AnalyticsLaunchTracker } from "@/components/analytics/analytics-launch-tracker";
+import { BannerTrackingListener } from "@/components/analytics/banner-tracking-listener";
+import { ClickOriginListener } from "@/components/analytics/click-origin-listener";
 import { GlobalCartDrawer } from "@/components/cart/cart-drawer/global-cart-drawer";
 import { ToastProvider } from "@/components/providers/toast-provider";
 import { AnalyticsProvider } from "@/contexts/analytics-context";
@@ -104,6 +106,8 @@ function Providers({
                             <StoreConfigProvider>
                               <CartProvider>
                                 <WishlistProvider>
+                                  <BannerTrackingListener />
+                                  <ClickOriginListener />
                                   <PendingWishlistProvider>
                                     <NotifyMeProvider>
                                       <CartDrawerProvider>

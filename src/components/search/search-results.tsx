@@ -1,14 +1,24 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 
 import RecentSearches from "@/components/search/recent-searches";
 import SearchBrandPills from "@/components/search/search-brand-pills";
+import {
+  useSearchActions,
+  useSearchUiState,
+} from "@/components/search/search-container";
 import SearchResultItem from "@/components/search/search-result-item";
 import { SearchSuggestion } from "@/components/search/search-suggestion";
-import { type ProductCardModel } from "@/lib/models/product-card-model";
+import {
+  clearStoredRecentSearches,
+  getStoredRecentSearches,
+} from "@/components/search/utils/search-storage";
+import { useSearchAutocomplete } from "@/hooks/product/use-search-client";
+import { type Locale } from "@/lib/constants/i18n";
 import { cn } from "@/lib/utils";
 
 const extractBrandsFromFacets = (facets: any[]): string[] => {
@@ -26,53 +36,60 @@ const extractBrandsFromFacets = (facets: any[]): string[] => {
 };
 
 export const SearchResults = ({
-  facets = [],
   inputFocus,
-  isLoading,
   isMobile,
-  onBrandClick,
-  onClear,
-  onClearRecent,
-  onRecentSearchClick,
-  onSuggestionClick,
-  onViewAll,
-  queryText,
-  recentSearches = [],
-  searchResults,
-  suggestions = [],
-  totalCount = 0,
 }: {
-  facets?: any[];
   inputFocus: boolean;
-  isLoading: boolean;
   isMobile?: boolean;
-  onBrandClick?: (brand: string) => void;
-  onClear: () => void;
-  onClearRecent: () => void;
-  onRecentSearchClick: (searchTerm: string) => void;
-  onSuggestionClick?: (suggestion: string) => void;
-  onViewAll?: () => void;
-  queryText?: string;
-  recentSearches?: string[];
-  relatedTerms?: string[];
-  searchResults?: ProductCardModel[];
-  suggestions?: string[];
-  totalCount?: number;
 }) => {
+  const {
+    clear,
+    handleBrandClick,
+    handleRecentSearchClick,
+    handleSuggestionClick,
+    handleViewAll,
+    setHasDropdownContent,
+  } = useSearchActions();
+  const { hasDropdownContent, queryText } = useSearchUiState();
+  const locale = useLocale() as Locale;
+  const [recentSearches, setRecentSearches] = useState<string[]>(() =>
+    getStoredRecentSearches()
+  );
+
+  const { data: searchData, isLoading } = useSearchAutocomplete(
+    { locale, text: queryText },
+    inputFocus
+  );
+  const searchResults = searchData?.products;
+  const suggestions = searchData?.suggestions || [];
+  const totalCount = searchData?.totalCount || 0;
+
   const t = useTranslations("HomePage.header.search");
+  const nextHasDropdownContent =
+    isLoading || !!searchResults?.length || !!recentSearches.length;
 
   const brands = useMemo(() => {
+    const facets = searchData?.facets || [];
+
     return facets.length > 0 ? extractBrandsFromFacets(facets) : [];
-  }, [facets]);
+  }, [searchData?.facets]);
+
+  useEffect(() => {
+    setHasDropdownContent(nextHasDropdownContent);
+
+    return () => {
+      setHasDropdownContent(false);
+    };
+  }, [nextHasDropdownContent, setHasDropdownContent]);
 
   if (!inputFocus) return null;
 
-  const hasContent =
-    isLoading ||
-    (searchResults && searchResults.length > 0) ||
-    (recentSearches && recentSearches.length > 0);
+  if (!hasDropdownContent) return null;
 
-  if (!hasContent) return null;
+  const handleClearRecentSearches = () => {
+    clearStoredRecentSearches();
+    setRecentSearches([]);
+  };
 
   return (
     <div
@@ -93,7 +110,7 @@ export const SearchResults = ({
                 return (
                   <div key={product.id || Math.random()}>
                     <SearchResultItem
-                      onClick={onClear}
+                      onClick={clear}
                       position={index + 1}
                       product={product}
                       searchTerm={queryText}
@@ -107,11 +124,11 @@ export const SearchResults = ({
             </div>
           </div>
 
-          {onViewAll && (
+          {searchResults.length > 0 && (
             <div className="mb-5 mt-2 bg-[#F9F9F9] py-1 text-center">
               <button
                 className="text-xs font-semibold text-gray-700 hover:text-gray-900"
-                onClick={onViewAll}
+                onClick={handleViewAll}
               >
                 {t("viewAllProducts", { count: totalCount.toString() })}
               </button>
@@ -122,23 +139,21 @@ export const SearchResults = ({
             <div className="pb-4">
               <SearchSuggestion
                 list={suggestions}
-                onSuggestionClick={(suggestion) => {
-                  onSuggestionClick?.(suggestion);
-                }}
+                onSuggestionClick={handleSuggestionClick}
                 title={t("suggestions")}
               />
             </div>
           )}
 
-          {onBrandClick && brands.length > 0 && (
-            <SearchBrandPills brands={brands} onBrandClick={onBrandClick} />
+          {brands.length > 0 && (
+            <SearchBrandPills brands={brands} onBrandClick={handleBrandClick} />
           )}
         </div>
       ) : (
         <div className="p-4">
           <RecentSearches
-            onClearRecent={onClearRecent}
-            onSearchClick={onRecentSearchClick}
+            onClearRecent={handleClearRecentSearches}
+            onSearchClick={handleRecentSearchClick}
             recentSearches={recentSearches}
           />
         </div>

@@ -1,16 +1,13 @@
-"use client";
-
 import Image from "next/image";
 
 import ArrowDownIcon from "@/assets/icons/arrow-down.svg";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { ContentfulImage } from "@/components/shared/contentful-image";
 import { Link } from "@/i18n/navigation";
-import { trackFaqPageOpen } from "@/lib/analytics/events";
+import { FAQ_TRACKING_DATA_ATTRIBUTE } from "@/lib/constants/tracking-data-attributes";
+import { WebsiteFooterLinks } from "@/lib/models/website-footer";
+
+type FooterNavSectionItem = WebsiteFooterLinks["footerSections"][number];
+type FooterVerifiedBadge = FooterNavSectionItem["verifiedBadge"];
 
 const isFaqLink = (link: { url: string }) =>
   typeof link.url === "string" && link.url.includes("faq.");
@@ -20,9 +17,9 @@ const NavLinks = ({
   text,
   verifiedBadge,
 }: {
-  links?: { label: string; url: string }[];
-  text?: string[];
-  verifiedBadge?: { imageUrl: string; label: string; url: string };
+  links?: FooterNavSectionItem["links"];
+  text?: FooterNavSectionItem["text"];
+  verifiedBadge?: FooterVerifiedBadge;
 }) => {
   return (
     <>
@@ -32,17 +29,12 @@ const NavLinks = ({
             <li key={idx}>
               <a
                 className="transition-default text-text-secondary hover:text-text-brand focus:text-text-brand active:text-text-brand text-[13px] font-medium hover:font-semibold hover:underline focus:font-semibold focus:underline focus:outline-none focus:ring-0 active:font-semibold active:underline"
-                href={link.url}
-                onClick={() => {
-                  try {
-                    if (isFaqLink(link)) {
-                      trackFaqPageOpen({ section: link.label });
+                {...(isFaqLink(link)
+                  ? {
+                      [FAQ_TRACKING_DATA_ATTRIBUTE]: link.label,
                     }
-                  } catch (e) {
-                    // don't break navigation on analytics errors
-                    console.error("FAQ analytics error:", e);
-                  }
-                }}
+                  : {})}
+                href={link.url}
                 rel={isFaqLink(link) ? "noopener noreferrer" : undefined}
                 target={isFaqLink(link) ? "_blank" : undefined}
                 title={link.label}
@@ -71,7 +63,7 @@ const NavLinks = ({
                 target="_blank"
                 title={verifiedBadge.label}
               >
-                <Image
+                <ContentfulImage
                   alt={verifiedBadge.label}
                   height={50}
                   src={verifiedBadge.imageUrl}
@@ -96,34 +88,26 @@ const NavLinks = ({
   );
 };
 
-export const FooterNavLinks = ({ data }: { data: any }) => {
+export const FooterNavLinks = ({ data }: { data: FooterNavSectionItem }) => {
   const { links, text, title, verifiedBadge } = data;
 
   return (
     <>
-      <div className="col-span-1 lg:hidden">
-        <Accordion className="w-full" collapsible type="single">
-          <AccordionItem value={title}>
-            <AccordionTrigger className="group flex w-full items-center justify-between p-0 hover:no-underline [&>svg]:hidden">
-              <div className="text-text-primary text-base font-extrabold">
-                {title}
-              </div>
-              <Image
-                alt="arrow down"
-                className="transition-default group-data-[state=open]:rotate-180"
-                src={ArrowDownIcon}
-              />
-            </AccordionTrigger>
-            <AccordionContent className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-              <NavLinks
-                links={links}
-                text={text}
-                verifiedBadge={verifiedBadge}
-              />
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </div>
+      <details className="group col-span-1 lg:hidden [&_summary::-webkit-details-marker]:hidden">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-0">
+          <div className="text-text-primary text-base font-extrabold">
+            {title}
+          </div>
+          <Image
+            alt="arrow down"
+            className="transition-default group-open:rotate-180"
+            src={ArrowDownIcon}
+          />
+        </summary>
+        <div className="pt-1">
+          <NavLinks links={links} text={text} verifiedBadge={verifiedBadge} />
+        </div>
+      </details>
       <div className="col-span-1 hidden lg:block">
         <div className="text-text-primary text-base font-extrabold">
           {title}

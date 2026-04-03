@@ -1,10 +1,11 @@
 "use client";
 
-import React, { startTransition, useCallback, useEffect } from "react";
+import React, { startTransition, useEffect, useEffectEvent } from "react";
 
 import Cookies from "js-cookie";
 
 import { useIsMobile } from "@/hooks/use-is-mobile";
+import { useWindowStorageEvent } from "@/hooks/use-window-storage-event";
 import { useRouter } from "@/i18n/navigation";
 import { trackFilterClose, trackFilterOpen } from "@/lib/analytics/events";
 
@@ -21,35 +22,36 @@ export const UIProvider: React.FC<React.PropsWithChildren<object>> = ({
   const [state, dispatch] = React.useReducer(uiReducer, initialState);
 
   const isMobile = useIsMobile();
+  const storageEvent = useWindowStorageEvent();
 
-  const checkAuthStatus = useCallback(() => {
-    const authToken = Cookies.get("auth_token");
-    if (authToken) {
-      dispatch({ type: "SET_AUTHORIZED" });
-    } else {
-      dispatch({ type: "SET_UNAUTHORIZED" });
+  const syncAuthStatus = useEffectEvent(() => {
+    const hasAuthToken = Boolean(Cookies.get("auth_token"));
+
+    if (hasAuthToken === state.isAuthorized) {
+      return;
     }
+
+    dispatch({ type: hasAuthToken ? "SET_AUTHORIZED" : "SET_UNAUTHORIZED" });
+  });
+
+  useEffect(() => {
+    syncAuthStatus();
+
+    // Also check periodically to catch any cookie changes (less frequent)
+    const interval = setInterval(syncAuthStatus, 5000);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   useEffect(() => {
-    // Check on mount
-    checkAuthStatus();
+    if (storageEvent.version === 0) {
+      return;
+    }
 
-    // Listen for storage events (when cookie changes in other tabs/windows)
-    const handleStorageChange = () => {
-      checkAuthStatus();
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-
-    // Also check periodically to catch any cookie changes (less frequent)
-    const interval = setInterval(checkAuthStatus, 5000);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      clearInterval(interval);
-    };
-  }, [checkAuthStatus]);
+    syncAuthStatus();
+  }, [storageEvent.version]);
 
   const value = React.useMemo(
     () => ({

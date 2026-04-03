@@ -42523,7 +42523,11 @@ export type GetCustomerAddressesQuery = {
       city_code?: string | null;
       country_code?: CountryCodeEnum | null;
       firstname?: string | null;
+      is_ksa_verified?: boolean | null;
+      ksa_short_address?: string | null;
       lastname?: string | null;
+      latitude?: string | null;
+      longitude?: string | null;
       middlename?: string | null;
       prefix?: string | null;
       postcode?: string | null;
@@ -60926,7 +60930,11 @@ export const GetCustomerAddressesDocument = new TypedDocumentString(`
       city_code
       country_code
       firstname
+      is_ksa_verified
+      ksa_short_address
       lastname
+      latitude
+      longitude
       middlename
       prefix
       postcode

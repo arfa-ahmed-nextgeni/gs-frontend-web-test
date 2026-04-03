@@ -3,7 +3,7 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 
 import AddIcon from "@/assets/icons/add-icon.svg";
-import SectionHeader from "@/components/common/section-header";
+import { SectionHeader } from "@/components/common/section-header";
 import { ProductReviewCard } from "@/components/product/product-reviews/product-review-card";
 import { ProductReviewWriteLink } from "@/components/product/product-reviews/product-review-write-link";
 import Container from "@/components/shared/container";

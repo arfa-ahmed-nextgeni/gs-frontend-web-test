@@ -1,24 +1,23 @@
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { CategoryProductGrid } from "@/components/category/products/category-product-grid";
-import SectionHeader from "@/components/common/section-header";
+import { SectionHeader } from "@/components/common/section-header";
 import { ProductCard } from "@/components/product/product-card";
 import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
 import { CarouselItem } from "@/components/ui/carousel/carousel-item";
+import { getBulletDeliveryEnabled } from "@/lib/actions/config/get-bullet-delivery-enabled";
 import { getProductsByCategory } from "@/lib/actions/products/get-products-by-category";
 import { Locale } from "@/lib/constants/i18n";
 import { ProductCardVariant } from "@/lib/constants/product/product-card";
 import { ROUTES } from "@/lib/constants/routes";
 import { CategoryProducts } from "@/lib/models/category-products";
 import { ProductCardModel } from "@/lib/models/product-card-model";
-import { sleep } from "@/lib/utils/async";
 import { isOk } from "@/lib/utils/service-result";
 
 export const CategoryProductsCarouselContent = async ({
   carouselContainerProps,
-  delayMs,
   grid,
   lpRow,
   maximumProducts,
@@ -30,26 +29,24 @@ export const CategoryProductsCarouselContent = async ({
   variant,
 }: {
   carouselContainerProps?: ComponentProps<typeof CarouselContainer>;
-  delayMs?: number;
   lpRow?: number;
   sectionHeaderProps?: ComponentProps<typeof SectionHeader>;
 } & CategoryProducts) => {
-  if (delayMs) {
-    await sleep(delayMs);
-  }
-
   const locale = (await getLocale()) as Locale;
 
-  const t = await getTranslations("HomePage.categoryProducts");
+  const [isBulletDeliveryEnabled, productsByCatergoryResponse, t] =
+    await Promise.all([
+      getBulletDeliveryEnabled({ locale }),
+      getProductsByCategory({
+        category: productsCategoryId,
+        locale,
+        pageSize: maximumProducts,
+        variant,
+      }),
+      getTranslations("HomePage.categoryProducts"),
+    ]);
 
   let products: ProductCardModel[] = [];
-
-  const productsByCatergoryResponse = await getProductsByCategory({
-    category: productsCategoryId,
-    locale,
-    pageSize: maximumProducts,
-    variant,
-  });
 
   if (isOk(productsByCatergoryResponse)) {
     products = productsByCatergoryResponse.data.products;
@@ -82,12 +79,17 @@ export const CategoryProductsCarouselContent = async ({
       {grid ? (
         <CategoryProductGrid
           desktopColumns={desktopGridColumns}
+          isBulletDeliveryEnabled={isBulletDeliveryEnabled}
           lpRow={lpRow}
           products={products}
         />
       ) : (
         <CarouselContainer
           {...carouselContainerProps}
+          carouselProps={{
+            ...carouselContainerProps?.carouselProps,
+            deferUntilInView: true,
+          }}
           nextButtonProps={{
             className: "xl:translate-x-15 xl:rtl:-translate-x-15",
           }}
@@ -104,6 +106,7 @@ export const CategoryProductsCarouselContent = async ({
           {products.map((product, index) => (
             <CarouselItem key={`${product.id}-${index}`}>
               <ProductCard
+                isBulletDeliveryEnabled={isBulletDeliveryEnabled}
                 lpColumn={1}
                 lpExtra={{
                   row_count: products.length,

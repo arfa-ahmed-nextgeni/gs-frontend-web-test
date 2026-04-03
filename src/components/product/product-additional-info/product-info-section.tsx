@@ -1,6 +1,4 @@
-"use client";
-
-import React, { PropsWithChildren, useState } from "react";
+import type { PropsWithChildren } from "react";
 
 import Image from "next/image";
 
@@ -8,12 +6,14 @@ import { useTranslations } from "next-intl";
 
 import MinusIcon from "@/assets/icons/minus-icon.svg";
 import PlusIcon from "@/assets/icons/plus-icon.svg";
+import { ProductInfoSectionContent } from "@/components/product/product-additional-info/product-info-section-content";
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useIsMobile } from "@/hooks/use-is-mobile";
+
+const MOBILE_COLLAPSE_TEXT_LENGTH_THRESHOLD = 260;
 
 export const ProductInfoSection = ({
   children,
@@ -26,15 +26,7 @@ export const ProductInfoSection = ({
   value: string;
 }>) => {
   const t = useTranslations("ProductPage.additionalInfo");
-
-  const isMobile = useIsMobile();
-
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const visibleParagraphs =
-    isMobile && !isExpanded && paragraphs.length > 2
-      ? paragraphs.slice(0, 2)
-      : paragraphs;
+  const shouldAllowMobileCollapse = shouldEnableMobileCollapse(paragraphs);
 
   return (
     <AccordionItem className="border-border-base" value={value}>
@@ -52,26 +44,26 @@ export const ProductInfoSection = ({
         />
       </AccordionTrigger>
       <AccordionContent className="border-border-base text-text-primary border-t p-5 text-sm font-normal">
-        {children ||
-          visibleParagraphs.map((text, index) => (
-            <div key={`paragraph-${index}`}>
-              <p dangerouslySetInnerHTML={{ __html: text }} />
-              {isMobile &&
-                paragraphs.length > 2 &&
-                index === visibleParagraphs.length - 1 && (
-                  <>
-                    {isExpanded ? " " : ".."}
-                    <button
-                      className="text-text-info"
-                      onClick={() => setIsExpanded(!isExpanded)}
-                    >
-                      {isExpanded ? t("showLess") : t("seeMore")}
-                    </button>
-                  </>
-                )}
-            </div>
-          ))}
+        {children ?? (
+          <ProductInfoSectionContent
+            paragraphs={paragraphs}
+            shouldAllowMobileCollapse={shouldAllowMobileCollapse}
+            showLessLabel={t("showLess")}
+            showMoreLabel={t("seeMore")}
+          />
+        )}
       </AccordionContent>
     </AccordionItem>
   );
 };
+
+function shouldEnableMobileCollapse(paragraphs: string[]) {
+  return paragraphs.some((paragraph) => {
+    const plainText = paragraph
+      .replaceAll(/<[^>]*>/g, " ")
+      .replaceAll(/\s+/g, " ")
+      .trim();
+
+    return plainText.length > MOBILE_COLLAPSE_TEXT_LENGTH_THRESHOLD;
+  });
+}

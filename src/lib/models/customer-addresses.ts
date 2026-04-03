@@ -7,8 +7,12 @@ export class CustomerAddress {
   firstName: string;
   formattedAddress: string;
   id: string;
+  is_ksa_verified?: boolean;
   isDefault: boolean;
+  ksaShortAddress?: string;
   lastName: string;
+  latitude?: string;
+  longitude?: string;
   middleName?: string;
   mobileNumber: string;
   name: string;
@@ -24,8 +28,12 @@ export class CustomerAddress {
     countryCode,
     firstname,
     id,
+    is_ksa_verified,
     isDefault,
+    ksaShortAddress,
     lastname,
+    latitude,
+    longitude,
     middleName,
     postcode,
     raw,
@@ -39,8 +47,12 @@ export class CustomerAddress {
     countryCode: string;
     firstname: string;
     id: string;
+    is_ksa_verified?: boolean;
     isDefault: boolean;
+    ksaShortAddress?: string;
     lastname: string;
+    latitude?: string;
+    longitude?: string;
     middleName?: string;
     postcode: string;
     raw: Record<string, unknown>;
@@ -52,6 +64,9 @@ export class CustomerAddress {
     this.id = id;
     this.firstName = firstname;
     this.lastName = lastname;
+    this.is_ksa_verified = is_ksa_verified;
+    this.latitude = latitude;
+    this.longitude = longitude;
     this.middleName = middleName;
     this.street = street;
     this.mobileNumber = telephone;
@@ -63,6 +78,7 @@ export class CustomerAddress {
     this.regionId = regionId;
     this.raw = raw;
     this.cityCode = cityCode;
+    this.ksaShortAddress = ksaShortAddress;
 
     this.name = [this.firstName, this.middleName, this.lastName]
       .filter(Boolean)
@@ -99,10 +115,14 @@ export class CustomerAddresses {
               countryCode: address?.country_code || "",
               firstname: address?.firstname || "",
               id: `${address?.id}`,
+              is_ksa_verified: address?.is_ksa_verified || false,
               isDefault:
                 dto.customer?.default_billing === `${address?.id}` &&
                 dto.customer?.default_shipping === `${address?.id}`,
+              ksaShortAddress: (address as any)?.ksa_short_address || "",
               lastname: address?.lastname || "",
+              latitude: address?.latitude || "",
+              longitude: address?.longitude || "",
               middleName: address?.middlename || "",
               postcode: address?.postcode || "",
               raw: address ?? {},
