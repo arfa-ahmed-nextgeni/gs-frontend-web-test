@@ -1,0 +1,135 @@
+"use client";
+
+import type { ReactNode } from "react";
+
+import Image from "next/image";
+
+import {
+  documentToReactComponents,
+  type Options,
+} from "@contentful/rich-text-react-renderer";
+import { BLOCKS, type Document, INLINES } from "@contentful/rich-text-types";
+
+import CookieIcon from "@/assets/icons/cookie-icon.svg";
+import { Link } from "@/i18n/navigation";
+import { cn } from "@/lib/utils";
+
+type CookieConsentBannerProps = {
+  allowButtonLabel: string;
+  className?: string;
+  declineButtonLabel: string;
+  description: Document;
+  onAllowAction?: () => void;
+  onDeclineAction?: () => void;
+};
+
+export function CookieConsentBanner({
+  allowButtonLabel,
+  className,
+  declineButtonLabel,
+  description,
+  onAllowAction,
+  onDeclineAction,
+}: CookieConsentBannerProps) {
+  return (
+    <section
+      className={cn(
+        "bg-bg-primary gap-4.25 px-7.5 pb-7.5 pt-7.25 lg:px-7.5 flex flex-col overflow-hidden rounded-2xl shadow-[0px_12px_24px_-6px_rgba(96,96,96,0.15),0px_0px_1px_0px_rgba(96,96,96,0.1)] lg:flex-row lg:items-center lg:gap-2.5 lg:py-4",
+        className
+      )}
+      data-slot="cookie-consent-banner"
+    >
+      <div className="flex min-w-0 items-start gap-2.5 lg:flex-1 lg:items-center">
+        <div className="bg-bg-success flex size-9 shrink-0 items-center justify-center rounded-xl">
+          <Image
+            alt=""
+            aria-hidden
+            className="rtl:rotate-270 size-5"
+            height={20}
+            src={CookieIcon}
+            width={20}
+          />
+        </div>
+
+        <div className="text-text-inverse min-w-0 flex-1 text-start text-sm font-medium leading-5 tracking-[0.02em] rtl:text-xs rtl:leading-4 lg:rtl:text-sm lg:rtl:leading-5 [&_p]:m-0">
+          {documentToReactComponents(
+            description,
+            getCookieConsentRenderOptions()
+          )}
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2.5">
+        <button
+          className="transition-default bg-bg-default text-text-primary min-w-25 lg:min-w-auto h-7 rounded-lg px-2.5 text-xs font-semibold tracking-[0.02em] transition-colors hover:bg-[#ececec] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c5e86c] rtl:font-bold"
+          onClick={onDeclineAction}
+          type="button"
+        >
+          {declineButtonLabel}
+        </button>
+        <button
+          className="transition-default bg-bg-success text-text-primary min-w-25 lg:min-w-auto h-7 rounded-lg px-2.5 text-xs font-semibold tracking-[0.02em] transition-colors hover:bg-[#b8db60] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f9f9f9] rtl:font-bold"
+          onClick={onAllowAction}
+          type="button"
+        >
+          {allowButtonLabel}
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function getCookieConsentRenderOptions(): Options {
+  return {
+    renderNode: {
+      [BLOCKS.PARAGRAPH]: (_node, children) => <p>{children}</p>,
+      [INLINES.HYPERLINK]: (node, children) =>
+        renderCookieConsentLink(node.data.uri, children),
+    },
+  };
+}
+
+function isInternalHref(href: string) {
+  if (href.startsWith("/") || href.startsWith("#")) {
+    return true;
+  }
+
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  try {
+    return new URL(href).origin === window.location.origin;
+  } catch {
+    return false;
+  }
+}
+
+function normalizeInternalHref(href: string) {
+  if (
+    typeof window !== "undefined" &&
+    href.startsWith(window.location.origin)
+  ) {
+    return href.slice(window.location.origin.length) || "/";
+  }
+
+  return href;
+}
+
+function renderCookieConsentLink(href: string, children: ReactNode) {
+  const className = "text-text-success no-underline hover:underline";
+
+  if (isInternalHref(href)) {
+    return (
+      <Link className={className} href={normalizeInternalHref(href)}>
+        {children}
+      </Link>
+    );
+  }
+
+  return (
+    <a className={className} href={href}>
+      {children}
+    </a>
+  );
+}

@@ -1,0 +1,2894 @@
+schema {
+  query: Query
+}
+
+directive @defer(
+  if: Boolean! = true
+  label: String
+) on FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+"""
+A bucket that contains information for each filterable option
+"""
+type Aggregation {
+  """
+  The attribute code of the filter item
+  """
+  attribute: String!
+  """
+  A container that divides the data into manageable groups. For example, attributes that can have numeric values might have buckets that define price ranges
+  """
+  buckets: [Bucket]!
+  """
+  The filter name displayed in layered navigation
+  """
+  title: String!
+  """
+  Identifies the data type of the aggregation
+  """
+  type: AggregationType
+}
+
+"""
+Identifies the data type of the aggregation
+"""
+enum AggregationType {
+  INTELLIGENT
+  PINNED
+  POPULAR
+}
+
+"""
+The rule that was applied to this product
+"""
+type AppliedQueryRule {
+  """
+  An enum that defines the type of rule that was applied
+  """
+  action_type: AppliedQueryRuleActionType
+  """
+  The ID assigned to the rule
+  """
+  rule_id: String
+  """
+  The name of the applied rule
+  """
+  rule_name: String
+}
+
+"""
+The type of rule that was applied to a product during search (optional)
+"""
+enum AppliedQueryRuleActionType {
+  BOOST
+  BURY
+  PIN
+}
+
+"""
+Contains the output of the `attributeMetadata` query
+"""
+type AttributeMetadataResponse {
+  """
+  An array of product attributes that can be used for filtering in a `productSearch` query
+  """
+  filterableInSearch: [FilterableInSearchAttribute!]
+  """
+  An array of product attributes that can be used for sorting in a `productSearch` query
+  """
+  sortable: [SortableAttribute!]
+}
+
+"""
+An interface for bucket contents
+"""
+interface Bucket {
+  """
+  A human-readable name of a bucket
+  """
+  title: String!
+}
+
+"""
+Defines features of a bundle product
+"""
+type BundleProduct implements PhysicalProductInterface & ProductInterface {
+  """
+  Boolean indicating whether a product can be added to cart. Field reserved for future use.
+  Currently, will default to true
+  """
+  add_to_cart_allowed: Boolean
+  """
+  The attribute set assigned to the product
+  """
+  attribute_set_id: Int
+  """
+  Relative canonical URL
+  """
+  canonical_url: String
+  """
+  Timestamp indicating when the product was created
+  """
+  created_at: String
+  """
+  An array of custom product attributes
+  """
+  custom_attributes: [CustomAttribute]
+  """
+  Detailed information about the product. The value can include simple HTML tags
+  """
+  description: ComplexTextValue
+  """
+  Indicates whether a gift message is available
+  """
+  gift_message_available: String
+  """
+  id
+  """
+  id: Int
+    @deprecated(
+      reason: "Magento 2.4 has not yet deprecated the `ProductInterface.id` field"
+    )
+  """
+  The relative path to the main image on the product page
+  """
+  image: ProductImage
+  """
+  An array of Media Gallery objects
+  """
+  media_gallery: [MediaGalleryInterface]
+  """
+  A brief overview of the product for search results listings, maximum 255 characters
+  """
+  meta_description: String
+  """
+  A comma-separated list of keywords that are visible only to search engines
+  """
+  meta_keyword: String
+  """
+  A string that is displayed in the title bar and tab of the browser and in search results lists
+  """
+  meta_title: String
+  """
+  The product name. Customers use this name to identify the product
+  """
+  name: String
+  """
+  The beginning date for new product listings, and determines if the product is featured as a new product
+  """
+  new_from_date: String
+  """
+  The end date for new product listings
+  """
+  new_to_date: String
+  """
+  A PriceRange object, indicating the range of prices for the product
+  """
+  price_range: PriceRange!
+  """
+  A short description of the product. Its use depends on the theme
+  """
+  short_description: ComplexTextValue
+  """
+  A number or code assigned to a product to identify the product, options, price, and manufacturer
+  """
+  sku: String
+  """
+  The relative path to the small image, which is used on catalog pages
+  """
+  small_image: ProductImage
+  """
+  The relative path to the product's thumbnail image
+  """
+  thumbnail: ProductImage
+  """
+  The unique ID for a `ProductInterface` object
+  """
+  uid: ID!
+  """
+  Timestamp indicating when the product was updated
+  """
+  updated_at: String
+  """
+  The weight of the item, in units defined by the store
+  """
+  weight: Float
+}
+
+"""
+Represents a category. Contains information about a category, including the category ID, the category name, the category path, the category URL key, the category URL path, and the category roles.
+"""
+type CategoryView implements Bucket & CategoryViewInterface {
+  """
+  List of available sort by options. For example, `name`, `position` or `size`.
+  """
+  availableSortBy: [String]
+  """
+  List of child category IDs. For example, `123`, `456` or `789`.
+  """
+  children: [String!]
+  count: Int!
+  """
+  Default sort by option. For example, `name`, `position` or `size`.
+  """
+  defaultSortBy: String
+  """
+  Category ID. For example, `123`, `456` or `789`.
+  """
+  id: ID!
+  """
+  The level of the category. The root category is a level 1 category. For example, men -> level 1, men/clothing -> level 2, men/clothing/shorts -> level 3
+  """
+  level: Int
+  """
+  Category name. For example, `Electronics`, `Clothing` or `Books`.
+  """
+  name: String
+  """
+  Parent category ID. For example, `123`, `456` or `789`.
+  """
+  parentId: String!
+  """
+  Category path. For example, `/electronics/laptops`, `/clothing/shirts` or `/books/fiction`.
+  """
+  path: String
+  """
+  List of roles for the category. For example, `show_on_plp`, `show_in_pdp` or `show_in_search`.
+  """
+  roles: [String!]!
+  title: String!
+  """
+  Category URL key. For example, `electronics`, `clothing` or `books`.
+  """
+  urlKey: String
+  """
+  Category URL path. For example, `/electronics/laptops`, `/clothing/shirts` or `/books/fiction`.
+  """
+  urlPath: String
+}
+
+"""
+Base interface defining essential category fields shared across all category views.
+"""
+interface CategoryViewInterface {
+  """
+  List of available sort by options. For example, `name`, `size` or `position`.
+  """
+  availableSortBy: [String]
+  """
+  Default sort by option. For example, `name`, `size` or `position`.
+  """
+  defaultSortBy: String
+  """
+  Category ID. For example, `123`, `456` or `789`.
+  """
+  id: ID!
+  """
+  The level of the category. The root category is a level 1 category. For example, men -> level 1, men/clothing -> level 2, men/clothing/shorts -> level 3
+  """
+  level: Int
+  """
+  Category name. For example, `Electronics`, `Clothing` or `Books`.
+  """
+  name: String
+  """
+  Category path. For example, `/electronics/laptops`, `/clothing/shirts` or `/books/fiction`.
+  """
+  path: String
+  """
+  List of roles for the category. For example, `show_on_plp`, `show_in_pdp` or `show_in_search`.
+  """
+  roles: [String]
+  """
+  Category URL key. For example, `electronics`, `clothing` or `books`.
+  """
+  urlKey: String
+  """
+  Category URL path. For example, `/electronics/laptops`, `/clothing/shirts` or `/books/fiction`.
+  """
+  urlPath: String
+}
+
+"""
+Represents all product types, except simple products. Complex product prices are returned as a price range, because price values can vary based on selected options.
+"""
+type ComplexProductView implements ProductView {
+  """
+  A flag stating if the product can be added to cart
+  """
+  addToCartAllowed: Boolean
+  """
+  A list of merchant-defined attributes designated for the storefront. They can be filtered by roles and names.
+  """
+  attributes(
+    """
+    List of names to filter the attributes by. For example, `color`, `size` or `material`.
+    """
+    names: [String]
+    """
+    List of roles to filter the attributes by. For example, `show_on_plp`, `show_in_pdp` or `show_in_search`.
+    """
+    roles: [String]
+  ): [ProductViewAttribute]
+  """
+  List of categories to which the product belongs
+  """
+  categories: [String]
+    @deprecated(
+      reason: "This field is deprecated and will be removed after Sep 1, 2025."
+    )
+  """
+  The detailed description of the product.
+  """
+  description: String
+  """
+  External Id
+  """
+  externalId: String
+  """
+  The product ID, generated as a composite key, unique per locale.
+  """
+  id: ID!
+  """
+  A list of images defined for the product.
+  """
+  images(
+    """
+    List of roles to filter the images by. For example, `image`, `small_image` or `thumbnail`.
+    """
+    roles: [String]
+  ): [ProductViewImage]
+  """
+  A flag stating if the product is in stock
+  """
+  inStock: Boolean
+  """
+  A list of input options.
+  """
+  inputOptions: [ProductViewInputOption]
+  """
+  Date and time when the product was last updated.
+  """
+  lastModifiedAt: DateTime
+  """
+  A list of product links
+  """
+  links(
+    """
+    Contains details about product links for related products and cross selling.
+    """
+    linkTypes: [String!]
+  ): [ProductViewLink]
+  """
+  Indicates whether the remaining quantity of the product has reached the Only X Left threshold.
+  """
+  lowStock: Boolean
+  """
+  A brief overview of the product for search results listings.
+  """
+  metaDescription: String
+  """
+  A comma-separated list of keywords that are visible only to search engines.
+  """
+  metaKeyword: String
+  """
+  A string that is displayed in the title bar and tab of the browser and in search results lists.
+  """
+  metaTitle: String
+  """
+  Product name.
+  """
+  name: String
+  """
+  A list of selectable options.
+  """
+  options: [ProductViewOption]
+  """
+  A range of possible prices for a complex product.
+  """
+  priceRange: ProductViewPriceRange
+  """
+  Indicates if the product was retrieved from the primary or the backup query
+  """
+  queryType: String
+    @deprecated(
+      reason: "This field is deprecated and will be removed after Sep 1, 2025."
+    )
+  """
+  Rank given to a product
+  """
+  rank: Int
+    @deprecated(
+      reason: "This field is deprecated and will be removed after Sep 1, 2025."
+    )
+  """
+  Score indicating relevance of the product to the recommendation type
+  """
+  score: Float
+    @deprecated(
+      reason: "This field is deprecated and will be removed after Sep 1, 2025."
+    )
+  """
+  A summary of the product.
+  """
+  shortDescription: String
+  """
+  A unique code used for identification of a product.
+  """
+  sku: String
+  """
+  Canonical URL of the product.
+  """
+  url: String
+  """
+  The URL key of the product.
+  """
+  urlKey: String
+  """
+  A list of videos defined for the product.
+  """
+  videos: [ProductViewVideo]
+  """
+  Visibility setting of the product
+  """
+  visibility: String
+    @deprecated(
+      reason: "This field is deprecated and will be removed after Sep 1, 2025."
+    )
+}
+
+"""
+Text that can contain HTML tags
+"""
+type ComplexTextValue {
+  """
+  Text that can contain HTML tags
+  """
+  html: String!
+}
+
+"""
+Basic features of a configurable product and its simple product variants
+"""
+type ConfigurableProduct implements PhysicalProductInterface & ProductInterface {
+  """
+  Boolean indicating whether a product can be added to cart. Field reserved for future use.
+  Currently, will default to true
+  """
+  add_to_cart_allowed: Boolean
+  """
+  The attribute set assigned to the product
+  """
+  attribute_set_id: Int
+  """
+  A relative canonical URL
+  """
+  canonical_url: String
+  """
+  Timestamp indicating when the product was created
+  """
+  created_at: String
+  """
+  An array of custom product attributes
+  """
+  custom_attributes: [CustomAttribute]
+  """
+  Detailed information about the product. The value can include simple HTML tags
+  """
+  description: ComplexTextValue
+  """
+  Indicates whether a gift message is available
+  """
+  gift_message_available: String
+  """
+  id
+  """
+  id: Int
+    @deprecated(
+      reason: "Magento 2.4 has not yet deprecated the `ProductInterface.id` field"
+    )
+  """
+  The relative path to the main image on the product page
+  """
+  image: ProductImage
+  """
+  An array of Media Gallery objects
+  """
+  media_gallery: [MediaGalleryInterface]
+  """
+  A brief overview of the product for search results listings, maximum 255 characters
+  """
+  meta_description: String
+  """
+  A comma-separated list of keywords that are visible only to search engines
+  """
+  meta_keyword: String
+  """
+  A string that is displayed in the title bar and tab of the browser and in search results lists
+  """
+  meta_title: String
+  """
+  The product name. Customers use this name to identify the product
+  """
+  name: String
+  """
+  The beginning date for new product listings, and determines if the product is featured as a new product
+  """
+  new_from_date: String
+  """
+  The end date for new product listings
+  """
+  new_to_date: String
+  """
+  A PriceRange object, indicating the range of prices for the product
+  """
+  price_range: PriceRange!
+  """
+  A short description of the product. Its use depends on the theme
+  """
+  short_description: ComplexTextValue
+  """
+  A number or code assigned to a product to identify the product, options, price, and manufacturer
+  """
+  sku: String
+  """
+  The relative path to the small image, which is used on catalog pages
+  """
+  small_image: ProductImage
+  """
+  The relative path to the product's thumbnail image
+  """
+  thumbnail: ProductImage
+  """
+  The unique ID for a `ProductInterface` object
+  """
+  uid: ID!
+  """
+  Timestamp indicating when the product was updated
+  """
+  updated_at: String
+  """
+  The weight of the item, in units defined by the store
+  """
+  weight: Float
+}
+
+enum CurrencyEnum {
+  AED
+  AFN
+  ALL
+  AMD
+  ANG
+  AOA
+  ARS
+  AUD
+  AWG
+  AZM
+  AZN
+  BAM
+  BBD
+  BDT
+  BGN
+  BHD
+  BIF
+  BMD
+  BND
+  BOB
+  BRL
+  BSD
+  BTN
+  BUK
+  BWP
+  BYN
+  BZD
+  CAD
+  CDF
+  CHE
+  CHF
+  CHW
+  CLP
+  CNY
+  COP
+  CRC
+  CUP
+  CVE
+  CZK
+  DJF
+  DKK
+  DOP
+  DZD
+  EEK
+  EGP
+  ERN
+  ETB
+  EUR
+  FJD
+  FKP
+  GBP
+  GEK
+  GEL
+  GHS
+  GIP
+  GMD
+  GNF
+  GQE
+  GTQ
+  GYD
+  HKD
+  HNL
+  HRK
+  HTG
+  HUF
+  IDR
+  ILS
+  INR
+  IQD
+  IRR
+  ISK
+  JMD
+  JOD
+  JPY
+  KES
+  KGS
+  KHR
+  KMF
+  KPW
+  KRW
+  KWD
+  KYD
+  KZT
+  LAK
+  LBP
+  LKR
+  LRD
+  LSL
+  LSM
+  LTL
+  LVL
+  LYD
+  MAD
+  MDL
+  MGA
+  MKD
+  MMK
+  MNT
+  MOP
+  MRO
+  MUR
+  MVR
+  MWK
+  MXN
+  MYR
+  MZN
+  NAD
+  NGN
+  NIC
+  NOK
+  NONE
+  NPR
+  NZD
+  OMR
+  PAB
+  PEN
+  PGK
+  PHP
+  PKR
+  PLN
+  PYG
+  QAR
+  RHD
+  ROL
+  RON
+  RSD
+  RUB
+  RWF
+  SAR
+  SBD
+  SCR
+  SDG
+  SEK
+  SGD
+  SHP
+  SKK
+  SLL
+  SOS
+  SRD
+  STD
+  SVC
+  SYP
+  SZL
+  THB
+  TJS
+  TMM
+  TND
+  TOP
+  TRL
+  TRY
+  TTD
+  TWD
+  TZS
+  UAH
+  UGX
+  USD
+  UYU
+  UZS
+  VEB
+  VEF
+  VND
+  VUV
+  WST
+  XCD
+  XOF
+  XPF
+  YER
+  ZAR
+  ZMK
+  ZWD
+}
+
+"""
+A product attribute defined by the merchant
+"""
+type CustomAttribute {
+  """
+  The unique identifier for an attribute code
+  """
+  code: String!
+  """
+  The value assigned to the custom attribute
+  """
+  value: String!
+}
+
+"""
+A slightly refined version of RFC-3339 compliant DateTime Scalar
+"""
+scalar DateTime
+
+"""
+A product that the shopper downloads
+"""
+type DownloadableProduct implements ProductInterface {
+  """
+  Boolean indicating whether a product can be added to cart. Field reserved for future use.
+  Currently, will default to true
+  """
+  add_to_cart_allowed: Boolean
+  """
+  The attribute set assigned to the product
+  """
+  attribute_set_id: Int
+  """
+  A relative canonical URL
+  """
+  canonical_url: String
+  """
+  Timestamp indicating when the product was created
+  """
+  created_at: String
+  """
+  An array of custom product attributes
+  """
+  custom_attributes: [CustomAttribute]
+  """
+  Detailed information about the product. The value can include simple HTML tags
+  """
+  description: ComplexTextValue
+  """
+  Indicates whether a gift message is available.
+  """
+  gift_message_available: String
+  """
+  id
+  """
+  id: Int
+    @deprecated(
+      reason: "Magento 2.4 has not yet deprecated the `ProductInterface.id` field"
+    )
+  """
+  The relative path to the main image on the product page
+  """
+  image: ProductImage
+  """
+  An array of Media Gallery objects.
+  """
+  media_gallery: [MediaGalleryInterface]
+  """
+  A brief overview of the product for search results listings, maximum 255 characters
+  """
+  meta_description: String
+  """
+  A comma-separated list of keywords that are visible only to search engines
+  """
+  meta_keyword: String
+  """
+  A string that is displayed in the title bar and tab of the browser and in search results lists
+  """
+  meta_title: String
+  """
+  The product name. Customers use this name to identify the product
+  """
+  name: String
+  """
+  The beginning date for new product listings, and determines if the product is featured as a new product
+  """
+  new_from_date: String
+  """
+  The end date for new product listings
+  """
+  new_to_date: String
+  """
+  A PriceRange object, indicating the range of prices for the product
+  """
+  price_range: PriceRange!
+  """
+  A short description of the product. Its use depends on the theme
+  """
+  short_description: ComplexTextValue
+  """
+  A number or code assigned to a product to identify the product, options, price, and manufacturer
+  """
+  sku: String
+  """
+  The relative path to the small image, which is used on catalog pages
+  """
+  small_image: ProductImage
+  """
+  The relative path to the product's thumbnail image
+  """
+  thumbnail: ProductImage
+  """
+  The unique ID for a `ProductInterface` object
+  """
+  uid: ID!
+  """
+  Timestamp indicating when the product was updated
+  """
+  updated_at: String
+}
+
+"""
+Contains product attributes that can be used for filtering in a `productSearch` query
+"""
+type FilterableInSearchAttribute {
+  """
+  The unique identifier for an attribute code. This value should be in lowercase letters and without spaces
+  """
+  attribute: String!
+  """
+  Indicates how field rendered on storefront
+  """
+  frontendInput: String
+  """
+  The display name assigned to the attribute
+  """
+  label: String
+  """
+  Indicates whether this attribute has a numeric value, such as a price or integer
+  """
+  numeric: Boolean
+}
+
+"""
+A single FPT that can be applied to a product price
+"""
+type FixedProductTax {
+  """
+  Amount of the FPT as a money object
+  """
+  amount: Money
+  """
+  The label assigned to the FPT to be displayed on the frontend
+  """
+  label: String
+}
+
+"""
+Defines properties of a gift card, including the minimum and maximum values and an array that contains the current and past values on the specific gift card
+"""
+type GiftCardProduct implements PhysicalProductInterface & ProductInterface {
+  """
+  Boolean indicating whether a product can be added to cart. Field reserved for future use.
+  Currently, will default to true
+  """
+  add_to_cart_allowed: Boolean
+  """
+  The attribute set assigned to the product
+  """
+  attribute_set_id: Int
+  """
+  Relative canonical URL
+  """
+  canonical_url: String
+  """
+  Timestamp indicating when the product was created
+  """
+  created_at: String
+  """
+  An array of custom product attributes
+  """
+  custom_attributes: [CustomAttribute]
+  """
+  Detailed information about the product. The value can include simple HTML tags
+  """
+  description: ComplexTextValue
+  """
+  Indicates whether a gift message is available
+  """
+  gift_message_available: String
+  """
+  id
+  """
+  id: Int
+    @deprecated(
+      reason: "Magento 2.4 has not yet deprecated the `ProductInterface.id` field"
+    )
+  """
+  The relative path to the main image on the product page
+  """
+  image: ProductImage
+  """
+  An array of Media Gallery objects
+  """
+  media_gallery: [MediaGalleryInterface]
+  """
+  A brief overview of the product for search results listings, maximum 255 characters
+  """
+  meta_description: String
+  """
+  A comma-separated list of keywords that are visible only to search engines
+  """
+  meta_keyword: String
+  """
+  A string that is displayed in the title bar and tab of the browser and in search results lists
+  """
+  meta_title: String
+  """
+  The product name. Customers use this name to identify the product
+  """
+  name: String
+  """
+  The beginning date for new product listings, and determines if the product is featured as a new product
+  """
+  new_from_date: String
+  """
+  The end date for new product listings
+  """
+  new_to_date: String
+  """
+  A PriceRange object, indicating the range of prices for the product
+  """
+  price_range: PriceRange!
+  """
+  A short description of the product. Its use depends on the theme
+  """
+  short_description: ComplexTextValue
+  """
+  A number or code assigned to a product to identify the product, options, price, and manufacturer
+  """
+  sku: String
+  """
+  The relative path to the small image, which is used on catalog pages
+  """
+  small_image: ProductImage
+  """
+  The relative path to the product's thumbnail image
+  """
+  thumbnail: ProductImage
+  """
+  The unique ID for a `ProductInterface` object
+  """
+  uid: ID!
+  """
+  Timestamp indicating when the product was updated
+  """
+  updated_at: String
+  """
+  The weight of the item, in units defined by the store
+  """
+  weight: Float
+}
+
+"""
+Consists of simple standalone products that are presented as a group
+"""
+type GroupedProduct implements PhysicalProductInterface & ProductInterface {
+  """
+  Boolean indicating whether a product can be added to cart. Field reserved for future use.
+  Currently, will default to true
+  """
+  add_to_cart_allowed: Boolean
+  """
+  The attribute set assigned to the product
+  """
+  attribute_set_id: Int
+  """
+  Relative canonical URL
+  """
+  canonical_url: String
+  """
+  Timestamp indicating when the product was created
+  """
+  created_at: String
+  """
+  An array of custom product attributes
+  """
+  custom_attributes: [CustomAttribute]
+  """
+  Detailed information about the product. The value can include simple HTML tags
+  """
+  description: ComplexTextValue
+  """
+  Indicates whether a gift message is available
+  """
+  gift_message_available: String
+  """
+  id
+  """
+  id: Int
+    @deprecated(
+      reason: "Magento 2.4 has not yet deprecated the `ProductInterface.id` field"
+    )
+  """
+  The relative path to the main image on the product page
+  """
+  image: ProductImage
+  """
+  An array of Media Gallery objects
+  """
+  media_gallery: [MediaGalleryInterface]
+  """
+  A brief overview of the product for search results listings, maximum 255 characters
+  """
+  meta_description: String
+  """
+  A comma-separated list of keywords that are visible only to search engines
+  """
+  meta_keyword: String
+  """
+  A string that is displayed in the title bar and tab of the browser and in search results lists
+  """
+  meta_title: String
+  """
+  The product name. Customers use this name to identify the product
+  """
+  name: String
+  """
+  The beginning date for new product listings, and determines if the product is featured as a new product
+  """
+  new_from_date: String
+  """
+  The end date for new product listings
+  """
+  new_to_date: String
+  """
+  A PriceRange object, indicating the range of prices for the product
+  """
+  price_range: PriceRange!
+  """
+  A short description of the product. Its use depends on the theme
+  """
+  short_description: ComplexTextValue
+  """
+  A number or code assigned to a product to identify the product, options, price, and manufacturer
+  """
+  sku: String
+  """
+  The relative path to the small image, which is used on catalog pages
+  """
+  small_image: ProductImage
+  """
+  The relative path to the product's thumbnail image
+  """
+  thumbnail: ProductImage
+  """
+  The unique ID for a `ProductInterface` object
+  """
+  uid: ID!
+  """
+  Timestamp indicating when the product was updated
+  """
+  updated_at: String
+  """
+  The weight of the item, in units defined by the store
+  """
+  weight: Float
+}
+
+"""
+An object that provides highlighted text for matched words
+"""
+type Highlight {
+  """
+  The product attribute that contains a match for the search phrase
+  """
+  attribute: String!
+  """
+  An array of strings
+  """
+  matched_words: [String]!
+  """
+  The matched text, enclosed within emphasis tags
+  """
+  value: String!
+}
+
+"""
+A JSON scalar
+"""
+scalar JSON
+
+"""
+Contains basic information about a product image or video
+"""
+interface MediaGalleryInterface {
+  """
+  Whether the image is hidden from PDP gallery
+  """
+  disabled: Boolean
+  """
+  The label of the product image or video
+  """
+  label: String
+  """
+  The media item's position after it has been sorted
+  """
+  position: Int
+  """
+  The URL of the product image or video
+  """
+  url: String
+}
+
+"""
+A monetary value, including a numeric value and a currency code
+"""
+type Money {
+  """
+  A three-letter currency code, such as USD or EUR
+  """
+  currency: CurrencyEnum
+  """
+  A number expressing a monetary value
+  """
+  value: Float
+}
+
+"""
+Type of page on which recommendations are requested
+"""
+enum PageType {
+  CMS
+  Cart
+  Category
+  Checkout
+  PageBuilder
+  Product
+}
+
+"""
+Contains attributes specific to tangible products
+"""
+interface PhysicalProductInterface {
+  """
+  The weight of the item, in units defined by the store
+  """
+  weight: Float
+}
+
+"""
+Defines the price of a simple product or a part of a price range for a complex product. It can include a list of price adjustments.
+"""
+type Price {
+  """
+  The signed value of the price adjustment (positive for markup, negative for markdown).
+  """
+  adjustments: [PriceAdjustment]
+  """
+  Contains the monetary value and currency code of a product.
+  """
+  amount: ProductViewMoney
+}
+
+"""
+Specifies the amount and type of price adjustment.
+"""
+type PriceAdjustment {
+  """
+  The amount of the price adjustment. For example, `10.00` for a 10% markup, or `-10.00` for a 10% markdown.
+  """
+  amount: Float
+  """
+  Identifies the type of price adjustment.
+  """
+  code: String
+}
+
+"""
+Price range for a product. If the product has a single price, the minimum and maximum price will be the same
+"""
+type PriceRange {
+  """
+  The highest possible price for the product
+  """
+  maximum_price: ProductPrice
+  """
+  The lowest possible price for the product
+  """
+  minimum_price: ProductPrice!
+}
+
+"""
+A discount applied to a product price
+"""
+type ProductDiscount {
+  """
+  The actual value of the discount
+  """
+  amount_off: Float
+  """
+  The discount expressed a percentage
+  """
+  percent_off: Float
+}
+
+"""
+Product image information. Contains the image URL and label
+"""
+type ProductImage implements MediaGalleryInterface {
+  """
+  Whether the image is hidden from PDP gallery
+  """
+  disabled: Boolean
+  """
+  The label of the product image or video
+  """
+  label: String
+  """
+  The media item's position after it has been sorted
+  """
+  position: Int
+  """
+  The URL of the product image or video
+  """
+  url: String
+}
+
+"""
+Contains attributes that are common to all types of products
+"""
+interface ProductInterface {
+  """
+  Boolean indicating whether a product can be added to cart. Field reserved for future use.
+  Currently, will default to true
+  """
+  add_to_cart_allowed: Boolean
+  """
+  The attribute set assigned to the product
+  """
+  attribute_set_id: Int
+  """
+  A relative canonical URL
+  """
+  canonical_url: String
+  """
+  Timestamp indicating when the product was created
+  """
+  created_at: String
+  """
+  An array of custom product attributes
+  """
+  custom_attributes: [CustomAttribute]
+  """
+  Detailed information about the product. The value can include simple HTML tags
+  """
+  description: ComplexTextValue
+  """
+  Indicates whether a gift message is available
+  """
+  gift_message_available: String
+  """
+  id
+  """
+  id: Int
+    @deprecated(
+      reason: "Magento 2.4 has not yet deprecated the `ProductInterface.id` field"
+    )
+  """
+  The relative path to the main image on the product page
+  """
+  image: ProductImage
+  """
+  An array of Media Gallery objects
+  """
+  media_gallery: [MediaGalleryInterface]
+  """
+  A brief overview of the product for search results listings, maximum 255 characters
+  """
+  meta_description: String
+  """
+  A comma-separated list of keywords that are visible only to search engines
+  """
+  meta_keyword: String
+  """
+  A string that is displayed in the title bar and tab of the browser and in search results lists
+  """
+  meta_title: String
+  """
+  The product name. Customers use this name to identify the product
+  """
+  name: String
+  """
+  The beginning date for new product listings, and determines if the product is featured as a new product
+  """
+  new_from_date: String
+  """
+  The end date for new product listings
+  """
+  new_to_date: String
+  """
+  A PriceRange object, indicating the range of prices for the product
+  """
+  price_range: PriceRange!
+  """
+  A short description of the product. Its use depends on the theme
+  """
+  short_description: ComplexTextValue
+  """
+  A number or code assigned to a product to identify the product, options, price, and manufacturer
+  """
+  sku: String
+  """
+  The relative path to the small image, which is used on catalog pages
+  """
+  small_image: ProductImage
+  """
+  The relative path to the product's thumbnail image
+  """
+  thumbnail: ProductImage
+  """
+  The unique ID for a `ProductInterface` object
+  """
+  uid: ID!
+  """
+  Timestamp indicating when the product was updated
+  """
+  updated_at: String
+}
+
+"""
+Product price
+"""
+type ProductPrice {
+  """
+  The price discount. Represents the difference between the regular and final price
+  """
+  discount: ProductDiscount
+  """
+  The final price of the product after discounts applied
+  """
+  final_price: Money!
+  """
+  The multiple FPTs that can be applied to a product price
+  """
+  fixed_product_taxes: [FixedProductTax]
+  """
+  The regular price of the product
+  """
+  regular_price: Money!
+}
+
+"""
+A single product returned by the query
+"""
+type ProductSearchItem {
+  """
+  The query rule type that was applied to this product, if any (in preview mode only, returns null otherwise)
+  """
+  applied_query_rule: AppliedQueryRule
+  """
+  An object that provides highlighted text for matched words
+  """
+  highlights: [Highlight]
+  """
+  Contains details about the product
+  """
+  product: ProductInterface!
+  """
+  Contains a product view
+  """
+  productView: ProductView
+}
+
+"""
+Contains the output of a `productSearch` query
+"""
+type ProductSearchResponse {
+  """
+  Details about the static and dynamic facets relevant to the search
+  """
+  facets: [Aggregation]
+  """
+  An array of products returned by the query
+  """
+  items: [ProductSearchItem]
+  """
+  Information for rendering pages of search results
+  """
+  page_info: SearchResultPageInfo
+  """
+  An array of strings that might include merchant-defined synonyms
+  """
+  related_terms: [String]
+  """
+  An array of strings that include the names of products and categories that exist in the catalog that are similar to the search query
+  """
+  suggestions: [String]
+  """
+  The total number of products returned that matched the query
+  """
+  total_count: Int
+  """
+  An array of warning messages for validation issues (e.g., sort parameter ignored due to missing categoryPath)
+  """
+  warnings: [ProductSearchWarning]
+}
+
+"""
+The product attribute to sort on
+"""
+input ProductSearchSortInput {
+  """
+  The attribute code of a product attribute
+  """
+  attribute: String!
+  """
+  ASC (ascending) or DESC (descending)
+  """
+  direction: SortEnum!
+}
+
+"""
+Structured warning with code and message for easier client handling
+"""
+type ProductSearchWarning {
+  """
+  Error code for programmatic handling (e.g., EMPTY_CATEGORY_PATH)
+  """
+  code: String!
+  """
+  Human-readable message describing the warning
+  """
+  message: String!
+}
+
+"""
+Defines the product fields available to the SimpleProductView and ComplexProductView types.
+"""
+interface ProductView {
+  """
+  A flag stating if the product can be added to cart
+  """
+  addToCartAllowed: Boolean
+  """
+  A list of merchant-defined attributes designated for the storefront. They can be filtered by roles and names.
+  """
+  attributes(
+    """
+    List of names to filter the attributes by.
+    """
+    names: [String]
+    """
+    List of roles to filter the attributes by. For example, `show_on_plp`, `show_in_pdp` or `show_in_search`.
+    """
+    roles: [String]
+  ): [ProductViewAttribute]
+  """
+  List of categories to which the product belongs
+  """
+  categories: [String]
+    @deprecated(
+      reason: "This field is deprecated and will be removed after Feb 1, 2024."
+    )
+  """
+  The detailed description of the product.
+  """
+  description: String
+  """
+  External Id
+  """
+  externalId: String
+  """
+  The product ID, generated as a composite key, unique per locale.
+  """
+  id: ID!
+  """
+  A list of images defined for the product.
+  """
+  images(
+    """
+    List of roles to filter the images by. For example, `image`, `small_image` or `thumbnail`.
+    """
+    roles: [String]
+  ): [ProductViewImage]
+  """
+  A flag stating if the product is in stock
+  """
+  inStock: Boolean
+  """
+  A list of input options.
+  """
+  inputOptions: [ProductViewInputOption]
+  """
+  Date and time when the product was last updated.
+  """
+  lastModifiedAt: DateTime
+  """
+  A list of product links.
+  """
+  links(
+    """
+    Contains details about product links for related products and cross selling. For example, `related`, `up-sell` or `cross-sell`.
+    """
+    linkTypes: [String!]
+  ): [ProductViewLink]
+  """
+  Indicates whether the remaining quantity of the product has reached the Only X Left threshold.
+  """
+  lowStock: Boolean
+  """
+  A brief overview of the product for search results listings.
+  """
+  metaDescription: String
+  """
+  A comma-separated list of keywords that are visible only to search engines.
+  """
+  metaKeyword: String
+  """
+  A string that is displayed in the title bar and tab of the browser and in search results lists.
+  """
+  metaTitle: String
+  """
+  Product name.
+  """
+  name: String
+  """
+  Indicates if the product was retrieved from the primary or the backup query
+  """
+  queryType: String
+  """
+  Rank given to a product
+  """
+  rank: Int
+    @deprecated(
+      reason: "This field is deprecated and will be removed after Feb 1, 2024."
+    )
+  """
+  Score indicating relevance of the product to the recommendation type
+  """
+  score: Float
+    @deprecated(
+      reason: "This field is deprecated and will be removed after Feb 1, 2024."
+    )
+  """
+  A summary of the product.
+  """
+  shortDescription: String
+  """
+  A unique code used for identification of a product.
+  """
+  sku: String
+  """
+  Canonical URL of the product.
+  """
+  url: String
+  """
+  The URL key of the product.
+  """
+  urlKey: String
+  """
+  A list of videos defined for the product.
+  """
+  videos: [ProductViewVideo]
+  """
+  Visibility setting of the product
+  """
+  visibility: String
+}
+
+"""
+A container for customer-defined attributes that are displayed the storefront.
+"""
+type ProductViewAttribute {
+  """
+  Label of the attribute.
+  """
+  label: String
+  """
+  Name of an attribute code. For example, `color`, `size` or `material`.
+  """
+  name: String!
+  """
+  Roles designated for an attribute on the storefront, such as "Show on PLP", "Show in PDP", or "Show in Search". For example, `show_on_plp`, `show_in_pdp` or `show_in_search`.
+  """
+  roles: [String]
+  """
+  Attribute value, arbitrary of type. For example, `red`, `blue` or `green`.
+  """
+  value: JSON
+}
+
+"""
+The list of supported currency codes.
+"""
+enum ProductViewCurrency {
+  AED
+  AFN
+  ALL
+  AMD
+  ANG
+  AOA
+  ARS
+  AUD
+  AWG
+  AZM
+  AZN
+  BAM
+  BBD
+  BDT
+  BGN
+  BHD
+  BIF
+  BMD
+  BND
+  BOB
+  BRL
+  BSD
+  BTN
+  BUK
+  BWP
+  BYN
+  BZD
+  CAD
+  CDF
+  CHE
+  CHF
+  CHW
+  CLP
+  CNY
+  COP
+  CRC
+  CUP
+  CVE
+  CZK
+  DJF
+  DKK
+  DOP
+  DZD
+  EEK
+  EGP
+  ERN
+  ETB
+  EUR
+  FJD
+  FKP
+  GBP
+  GEK
+  GEL
+  GHS
+  GIP
+  GMD
+  GNF
+  GQE
+  GTQ
+  GYD
+  HKD
+  HNL
+  HRK
+  HTG
+  HUF
+  IDR
+  ILS
+  INR
+  IQD
+  IRR
+  ISK
+  JMD
+  JOD
+  JPY
+  KES
+  KGS
+  KHR
+  KMF
+  KPW
+  KRW
+  KWD
+  KYD
+  KZT
+  LAK
+  LBP
+  LKR
+  LRD
+  LSL
+  LSM
+  LTL
+  LVL
+  LYD
+  MAD
+  MDL
+  MGA
+  MKD
+  MMK
+  MNT
+  MOP
+  MRO
+  MUR
+  MVR
+  MWK
+  MXN
+  MYR
+  MZN
+  NAD
+  NGN
+  NIC
+  NOK
+  NONE
+  NPR
+  NZD
+  OMR
+  PAB
+  PEN
+  PGK
+  PHP
+  PKR
+  PLN
+  PYG
+  QAR
+  RHD
+  ROL
+  RON
+  RSD
+  RUB
+  RWF
+  SAR
+  SBD
+  SCR
+  SDG
+  SEK
+  SGD
+  SHP
+  SKK
+  SLL
+  SOS
+  SRD
+  STD
+  SVC
+  SYP
+  SZL
+  THB
+  TJS
+  TMM
+  TND
+  TOP
+  TRL
+  TRY
+  TTD
+  TWD
+  TZS
+  UAH
+  UGX
+  USD
+  UYU
+  UZS
+  VEB
+  VEF
+  VND
+  VUV
+  WST
+  XCD
+  XOF
+  XPF
+  YER
+  ZAR
+  ZMK
+  ZWD
+}
+
+"""
+Contains details about a product image.
+"""
+type ProductViewImage {
+  """
+  The display label of the product image. For example, `Main Image`, `Small Image` or `Thumbnail Image`.
+  """
+  label: String
+  """
+  A list that describes how the image is used. Can be image, small_image, or thumbnail. For example, `image`, `small_image` or `thumbnail`.
+  """
+  roles: [String]
+  """
+  The URL to the product image. For example, `https://example.com/image.jpg`.
+  """
+  url: String!
+}
+
+"""
+Product options provide a way to configure products by making selections of particular option values. Selecting one or many options will point to a simple product.
+"""
+type ProductViewInputOption {
+  """
+  The file extensions allowed for the image.
+  """
+  fileExtensions: String
+  """
+  The ID of an option value
+  """
+  id: ID
+  """
+  The size of the image. For example, `100x100` or `200x200`.
+  """
+  imageSize: ProductViewInputOptionImageSize
+  """
+  Price markup or markdown
+  """
+  markupAmount: Float
+  range: ProductViewInputOptionRange
+  """
+  Wether this option is required or not
+  """
+  required: Boolean
+  """
+  Sort order
+  """
+  sortOrder: Int
+  """
+  SKU suffix to add to the product
+  """
+  suffix: String
+  """
+  The display name of the option value
+  """
+  title: String
+  """
+  The type of data entry
+  """
+  type: String
+}
+
+"""
+Represents the size of the image for an input option.
+"""
+type ProductViewInputOptionImageSize {
+  """
+  The height of the image, in pixels. For example, `100` for a 100px height.
+  """
+  height: Int
+  """
+  The width of the image in pixels. For example, `100` for a 100px width.
+  """
+  width: Int
+}
+
+"""
+Lists the value range associated with a `ProductViewInputOption`. For example, if the input option is a text field, the range represents the number of characters.
+"""
+type ProductViewInputOptionRange {
+  """
+  The starting value of the range. For example, if the input option is a text field, the starting value represents the minimum number of characters.
+  """
+  from: Float
+  """
+  The ending value of the range. For example, if the input option is a text field, the ending value represents the maximum number of characters.
+  """
+  to: Float
+}
+
+"""
+The product link type. Contains details about product links for related products and cross selling. For example, `related`, `up_sell` or `cross_sell`.
+"""
+type ProductViewLink {
+  """
+  Stores the types of the links with this product.
+  """
+  linkTypes: [String!]!
+  """
+  Contains the details of the product found in the link.
+  """
+  product: ProductView!
+}
+
+"""
+Defines a monetary value, including a numeric value and a currency code.
+"""
+type ProductViewMoney {
+  """
+  A three-letter currency code, such as USD or EUR.
+  """
+  currency: ProductViewCurrency
+  """
+  A number expressing a monetary value.
+  """
+  value: Float
+}
+
+"""
+Product options provide a way to configure products by making selections of particular option values. Selecting one or many options will point to a simple product.
+"""
+type ProductViewOption {
+  """
+  The ID of the option.
+  """
+  id: ID
+  """
+  Indicates whether the option allows multiple choices.
+  """
+  multi: Boolean
+  """
+  Indicates whether the option must be selected.
+  """
+  required: Boolean
+  """
+  The display name of the option.
+  """
+  title: String
+  """
+  List of available option values.
+  """
+  values: [ProductViewOptionValue!]
+}
+
+"""
+Defines the product fields available to the ProductViewOptionValueProduct and ProductViewOptionValueConfiguration types.
+"""
+interface ProductViewOptionValue {
+  """
+  The ID of an option value.
+  """
+  id: ID
+  """
+  Indicates if the option is in stock.
+  """
+  inStock: Boolean
+  """
+  The display name of the option value.
+  """
+  title: String
+}
+
+"""
+An implementation of ProductViewOptionValue for configuration values.
+"""
+type ProductViewOptionValueConfiguration implements ProductViewOptionValue {
+  """
+  The ID of an option value.
+  """
+  id: ID
+  """
+  Indicates if the option is in stock.
+  """
+  inStock: Boolean
+  """
+  The display name of the option value.
+  """
+  title: String
+}
+
+"""
+An implementation of ProductViewOptionValue that adds details about a simple product.
+"""
+type ProductViewOptionValueProduct implements ProductViewOptionValue {
+  """
+  Indicates if the associated product is enabled.
+  """
+  enabled: Boolean
+  """
+  The ID of an option value.
+  """
+  id: ID
+  """
+  Indicates if the option is in stock.
+  """
+  inStock: Boolean
+  """
+  States if the option value is default or not.
+  """
+  isDefault: Boolean
+  """
+  Details about a simple product.
+  """
+  product: SimpleProductView
+  """
+  Default quantity of an option value.
+  """
+  quantity: Float
+  """
+  The display name of the option value.
+  """
+  title: String
+}
+
+"""
+An implementation of ProductViewOptionValueSwatch for swatches.
+"""
+type ProductViewOptionValueSwatch implements ProductViewOptionValue {
+  """
+  The ID of an option value.
+  """
+  id: ID
+  """
+  Indicates if the option is in stock.
+  """
+  inStock: Boolean
+  """
+  The display name of the option value.
+  """
+  title: String
+  """
+  Indicates the type of the swatch.
+  """
+  type: SwatchType
+  """
+  The value of the swatch depending on the type of the swatch.
+  """
+  value: String
+}
+
+"""
+Base product price view, inherent for simple products.
+"""
+type ProductViewPrice {
+  """
+  Price value after discounts, excluding personalized promotions.
+  """
+  final: Price
+  """
+  Base product price specified by the merchant.
+  """
+  regular: Price
+  """
+  Price roles, stating if the price should be visible or hidden.
+  """
+  roles: [String]
+  """
+  A list of tiered prices for a product.
+  """
+  tiers: [ProductViewTierPrice]
+}
+
+"""
+The minimum and maximum price of a complex product.
+"""
+type ProductViewPriceRange {
+  """
+  Maximum price.
+  """
+  maximum: ProductViewPrice
+  """
+  Minimum price.
+  """
+  minimum: ProductViewPrice
+}
+
+union ProductViewTierCondition = ProductViewTierRangeCondition
+
+"""
+The discounted price that applies when the quantity conditions in `quantity` are satisfied. Contains the monetary amount and any price adjustments applied to this tier.
+"""
+type ProductViewTierPrice {
+  """
+  The quantity conditions that must be met to activate the tier price. For example, `10` for a quantity of 10 or `20` for a quantity of 20.
+  """
+  quantity: [ProductViewTierCondition!]!
+  """
+  The discounted price that applies when the quantity conditions in `quantity` are satisfied. Contains the monetary amount and any price adjustments applied to this tier.
+  """
+  tier: Price
+}
+
+"""
+Represents an inclusive/exclusive quantity range condition for tier pricing.
+"""
+type ProductViewTierRangeCondition {
+  """
+  Minimum quantity (inclusive) required to activate this tier price. For example, a value of `10` means this tier applies when 10 or more items are purchased.
+  """
+  gte: Float
+  """
+  Maximum quantity (exclusive) for this tier price. For example, a value of `20` means this tier applies only when fewer than 20 items are purchased.
+  """
+  lt: Float
+}
+
+"""
+Represents a product variant.
+"""
+type ProductViewVariant {
+  """
+  Product corresponding to the variant.
+  """
+  product: ProductView
+  """
+  List of option values that make up the variant.
+  """
+  selections: [String!]
+}
+
+"""
+Represents the results of a product variant search.
+"""
+type ProductViewVariantResults {
+  """
+  Pagination cursor
+  """
+  cursor: String
+  """
+  List of product variants.
+  """
+  variants: [ProductViewVariant]!
+}
+
+"""
+Contains details about a product video. For example, a video of the product being used, or a video of the product being assembled.
+"""
+type ProductViewVideo {
+  """
+  Description of the product video. For example, `A video of the product being used` or `A video of the product being assembled`.
+  """
+  description: String
+  """
+  Preview image for the video. For example, a screenshot of the video.
+  """
+  preview: ProductViewImage
+  """
+  The title of the product video. For example, `Product Video` or `Product Assembly Video`.
+  """
+  title: String
+  """
+  The URL to the product video. For example, `https://example.com/video.mp4` or `https://example.com/video.webm`.
+  """
+  url: String!
+}
+
+"""
+User purchase history
+"""
+input PurchaseHistory {
+  date: DateTime
+  items: [String]!
+}
+
+type Query {
+  """
+  Return a list of product attribute codes that can be used for sorting or filtering in a `productSearch` query
+  """
+  attributeMetadata: AttributeMetadataResponse!
+  """
+  Return category views by IDs, with optional role filters and subtree scopes. In Adobe Commerce as a Cloud Service, this query replaces the `categories` query defined in the Commerce Foundation.
+  """
+  categories(
+    """
+    List of category IDs to retrieve. For example, `123`, `456` or `789`.
+    """
+    ids: [String!]
+    """
+    List of roles to filter the categories by. For example, `show_on_plp`, `show_in_pdp` or `show_in_search`.
+    """
+    roles: [String!]
+    """
+    Subtree of the categories to retrieve. `startLevel` uses absolute category levels (root = 1). For example, `depth: 1`, `startLevel: 1`.
+    """
+    subtree: Subtree
+  ): [CategoryView]
+  """
+  Search products using Live Search
+  """
+  productSearch(
+    """
+    The query context
+    """
+    context: QueryContextInput
+    """
+    Specifies which page of results to return. The default value is 1
+    """
+    current_page: Int = 1
+    """
+    Identifies product attributes and conditions to filter on
+    """
+    filter: [SearchClauseInput!]
+    """
+    The maximum number of results to return at once
+    """
+    page_size: Int = 20
+    """
+    Phrase to search for in product catalog
+    """
+    phrase: String!
+    """
+    Attributes and direction to sort on
+    """
+    sort: [ProductSearchSortInput!]
+  ): ProductSearchResponse!
+  """
+  Search for products that match the specified SKU values. In Adobe Commerce as a Cloud Service, this query replaces the `products` query defined in the Commerce Foundation.
+  """
+  products(
+    """
+    List of SKUs to search for. For example, `123`, `456` or `789`.
+    """
+    skus: [String]
+  ): [ProductView]
+  """
+  Get Recommendations
+  """
+  recommendations(
+    """
+    SKUs of products in the cart
+    """
+    cartSkus: [String]
+    """
+    Category currently being viewed
+    """
+    category: String
+    """
+    SKU of the product currently being viewed on PDP
+    """
+    currentSku: String
+    """
+    Type of page on which recommendations are requested
+    """
+    pageType: PageType
+    """
+    User purchase history with timestamp
+    """
+    userPurchaseHistory: [PurchaseHistory]
+    """
+    User view history with timestamp
+    """
+    userViewHistory: [ViewHistory]
+  ): Recommendations
+  recommendationsByUnitIds(
+    """
+    SKUs of products in the cart
+    """
+    cartSkus: [String]
+    """
+    SKU of the product currently being viewed on PDP
+    """
+    currentSku: String
+    """
+    List unit IDs of preconfigured units
+    """
+    unitIds: [String!]!
+    """
+    User purchase history with timestamp
+    """
+    userPurchaseHistory: [PurchaseHistory]
+    """
+    User view history with timestamp
+    """
+    userViewHistory: [ViewHistory]
+  ): Recommendations
+  """
+  Narrow down the results of a `products` query that was run against a complex product. Specify option IDs and SKUs to refine the product.
+  """
+  refineProduct(
+    """
+    List of option IDs to refine the product by. For example, `123`, `456` or `789`.
+    """
+    optionIds: [String!]!
+    """
+    SKU of the product to refine. For example, `123`, `456` or `789`.
+    """
+    sku: String!
+  ): ProductView
+  """
+  Get variants for a product by SKU, option IDs, page size, and cursor.
+  """
+  variants(
+    """
+    Pagination cursor. For example, `123` for the first variant or `456` for the second variant.
+    """
+    cursor: String
+    """
+    List of option IDs to get variants for. For example, `123`, `456` or `789`.
+    """
+    optionIds: [String!]
+    """
+    Page size for pagination. For example, `10` for a page size of 10 or `20` for a page size of 20.
+    """
+    pageSize: Int
+    """
+    SKU of the product to get variants for. For example, `123`, `456` or `789`.
+    """
+    sku: String!
+  ): ProductViewVariantResults
+}
+
+input QueryContextInput {
+  """
+  The customer group code. Field reserved for future use.
+  Currently, passing this field will have no impact on search results, that is, the search
+  results will be for "Not logged in" customer
+  """
+  customerGroup: String!
+  """
+  User view history with timestamp
+  """
+  userViewHistory: [ViewHistoryInput!]
+}
+
+"""
+For use on numeric product fields
+"""
+type RangeBucket implements Bucket {
+  """
+  The number of items in the bucket
+  """
+  count: Int!
+  """
+  The minimum amount in a price range
+  """
+  from: Float!
+  """
+  The display text defining the price range
+  """
+  title: String!
+  """
+  The maximum amount in a price range
+  """
+  to: Float
+}
+
+"""
+Recommendation Unit containing product and other details
+"""
+type RecommendationUnit {
+  """
+  Order in which recommendation units are displayed
+  """
+  displayOrder: Int
+  """
+  Page type
+  """
+  pageType: String
+  """
+  List of product view
+  """
+  productsView: [ProductView]
+  """
+  Storefront label to be displayed on the storefront
+  """
+  storefrontLabel: String
+  """
+  Total products returned in recommedations
+  """
+  totalProducts: Int
+  """
+  Type of recommendation
+  """
+  typeId: String
+  """
+  Id of the preconfigured unit
+  """
+  unitId: String
+  """
+  Name of the preconfigured unit
+  """
+  unitName: String
+}
+
+"""
+Recommendations response
+"""
+type Recommendations {
+  """
+  List of rec units with products recommended
+  """
+  results: [RecommendationUnit]
+  """
+  total number of rec units for which recommendations are returned
+  """
+  totalResults: Int
+}
+
+"""
+For use on string and other scalar product fields
+"""
+type ScalarBucket implements Bucket {
+  """
+  The number of items in the bucket
+  """
+  count: Int!
+  """
+  An identifier that can be used for filtering. It may contain non-human readable data
+  """
+  id: ID!
+  """
+  The display text for the scalar value
+  """
+  title: String!
+}
+
+"""
+A product attribute to filter on
+"""
+input SearchClauseInput {
+  """
+  The attribute code of a product attribute
+  """
+  attribute: String!
+  """
+  Attribute value should contain the specified string
+  """
+  contains: String
+  """
+  A string value to filter on
+  """
+  eq: String
+  """
+  An array of string values to filter on
+  """
+  in: [String]
+  """
+  A range of numeric values to filter on
+  """
+  range: SearchRangeInput
+  """
+  Attribute value should start with the specified string
+  """
+  startsWith: String
+}
+
+"""
+A range of numeric values for use in a search
+"""
+input SearchRangeInput {
+  """
+  The minimum value to filter on. If not specified, the value of `0` is applied
+  """
+  from: Float
+  """
+  The maximum value to filter on
+  """
+  to: Float
+}
+
+type SearchResultPageInfo {
+  """
+  Specifies which page of results to return
+  """
+  current_page: Int
+  """
+  Specifies the maximum number of items to return
+  """
+  page_size: Int
+  """
+  Specifies the total number of pages returned
+  """
+  total_pages: Int
+}
+
+"""
+A simple product is tangible and is usually sold in single units or in fixed quantities
+"""
+type SimpleProduct implements PhysicalProductInterface & ProductInterface {
+  """
+  Boolean indicating whether a product can be added to cart. Field reserved for future use.
+  Currently, will default to true
+  """
+  add_to_cart_allowed: Boolean
+  """
+  The attribute set assigned to the product
+  """
+  attribute_set_id: Int
+  """
+  A relative canonical URL
+  """
+  canonical_url: String
+  """
+  Timestamp indicating when the product was created
+  """
+  created_at: String
+  custom_attributes: [CustomAttribute]
+  """
+  Detailed information about the product. The value can include simple HTML tags
+  """
+  description: ComplexTextValue
+  """
+  Indicates whether a gift message is available
+  """
+  gift_message_available: String
+  """
+  id
+  """
+  id: Int
+    @deprecated(
+      reason: "Magento 2.4 has not yet deprecated the `ProductInterface.id` field"
+    )
+  """
+  The relative path to the main image on the product page
+  """
+  image: ProductImage
+  """
+  An array of Media Gallery objects
+  """
+  media_gallery: [MediaGalleryInterface]
+  """
+  A brief overview of the product for search results listings, maximum 255 characters
+  """
+  meta_description: String
+  """
+  A comma-separated list of keywords that are visible only to search engines
+  """
+  meta_keyword: String
+  """
+  A string that is displayed in the title bar and tab of the browser and in search results lists
+  """
+  meta_title: String
+  """
+  The product name. Customers use this name to identify the product
+  """
+  name: String
+  """
+  The beginning date for new product listings, and determines if the product is featured as a new product
+  """
+  new_from_date: String
+  """
+  The end date for new product listings
+  """
+  new_to_date: String
+  """
+  A PriceRange object, indicating the range of prices for the product
+  """
+  price_range: PriceRange!
+  """
+  A short description of the product. Its use depends on the theme
+  """
+  short_description: ComplexTextValue
+  """
+  A number or code assigned to a product to identify the product, options, price, and manufacturer
+  """
+  sku: String
+  """
+  The relative path to the small image, which is used on catalog pages
+  """
+  small_image: ProductImage
+  """
+  The relative path to the product's thumbnail image
+  """
+  thumbnail: ProductImage
+  """
+  The unique ID for a `ProductInterface` object
+  """
+  uid: ID!
+  """
+  Timestamp indicating when the product was updated
+  """
+  updated_at: String
+  """
+  The weight of the item, in units defined by the store
+  """
+  weight: Float
+}
+
+"""
+Represents a single-SKU product without selectable variants. Because there are no variant combinations, pricing is returned as a single price (not a price range).
+"""
+type SimpleProductView implements ProductView {
+  """
+  A flag stating if the product can be added to cart
+  """
+  addToCartAllowed: Boolean
+  """
+  A list of merchant-defined attributes designated for the storefront. They can be filtered by roles and names.
+  """
+  attributes(
+    """
+    List of names to filter the attributes by.
+    """
+    names: [String]
+    """
+    List of roles to filter the attributes by. For example, `show_on_plp`, `show_in_pdp` or `show_in_search`.
+    """
+    roles: [String]
+  ): [ProductViewAttribute]
+  """
+  List of categories to which the product belongs
+  """
+  categories: [String]
+    @deprecated(
+      reason: "This field is deprecated and will be removed after Feb 1, 2024."
+    )
+  """
+  The detailed description of the product.
+  """
+  description: String
+  """
+  External Id
+  """
+  externalId: String
+  """
+  The product ID, generated as a composite key, unique per locale.
+  """
+  id: ID!
+  """
+  A list of images defined for the product.
+  """
+  images(
+    """
+    List of roles to filter the images by. For example, `image`, `small_image` or `thumbnail`.
+    """
+    roles: [String]
+  ): [ProductViewImage]
+  """
+  A flag stating if the product is in stock
+  """
+  inStock: Boolean
+  """
+  A list of input options.
+  """
+  inputOptions: [ProductViewInputOption]
+  """
+  Date and time when the product was last updated.
+  """
+  lastModifiedAt: DateTime
+  """
+  A list of product links
+  """
+  links(
+    """
+    Contains details about product links for related products and cross selling.
+    """
+    linkTypes: [String!]
+  ): [ProductViewLink]
+  """
+  Indicates whether the remaining quantity of the product has reached the Only X Left threshold.
+  """
+  lowStock: Boolean
+  """
+  A brief overview of the product for search results listings.
+  """
+  metaDescription: String
+  """
+  A comma-separated list of keywords that are visible only to search engines.
+  """
+  metaKeyword: String
+  """
+  A string that is displayed in the title bar and tab of the browser and in search results lists.
+  """
+  metaTitle: String
+  """
+  Product name.
+  """
+  name: String
+  """
+  Base product price view.
+  """
+  price: ProductViewPrice
+  """
+  Indicates if the product was retrieved from the primary or the backup query
+  """
+  queryType: String
+  """
+  Rank given to a product
+  """
+  rank: Int
+    @deprecated(
+      reason: "This field is deprecated and will be removed after Feb 1, 2024."
+    )
+  """
+  Score indicating relevance of the product to the recommendation type
+  """
+  score: Float
+    @deprecated(
+      reason: "This field is deprecated and will be removed after Feb 1, 2024."
+    )
+  """
+  A summary of the product.
+  """
+  shortDescription: String
+  """
+  A unique code used for identification of a product.
+  """
+  sku: String
+  """
+  Canonical URL of the product.
+  """
+  url: String
+  """
+  The URL key of the product.
+  """
+  urlKey: String
+  """
+  A list of videos defined for the product.
+  """
+  videos: [ProductViewVideo]
+  """
+  Visibility setting of the product
+  """
+  visibility: String
+}
+
+enum SortEnum {
+  ASC
+  DESC
+}
+
+"""
+Contains product attributes that be used for sorting in a `productSearch` query
+"""
+type SortableAttribute {
+  """
+  The unique identifier for an attribute code. This value should be in lowercase letters and without space
+  """
+  attribute: String!
+  """
+  Indicates how field rendered on storefront
+  """
+  frontendInput: String
+  """
+  The display name assigned to the attribute
+  """
+  label: String
+  """
+  Indicates whether this attribute has a numeric value, such as a price or integer
+  """
+  numeric: Boolean
+}
+
+"""
+For retrieving statistics across multiple buckets
+"""
+type StatsBucket implements Bucket {
+  """
+  The maximum value
+  """
+  max: Float!
+  """
+  The minimum value
+  """
+  min: Float!
+  """
+  The display text for the bucket
+  """
+  title: String!
+}
+
+"""
+Represents the subtree of the categories to retrieve.
+"""
+input Subtree {
+  """
+  The depth of the subcategories to retrieve. For example, a value of `2` returns two levels of subcategories beneath the value specified in `startLevel`.
+  """
+  depth: Int!
+  """
+  The level of the category tree to use as the starting point of the query. For example, `1` indicates the topmost category is the starting point.
+  """
+  startLevel: Int!
+}
+
+enum SwatchType {
+  COLOR_HEX
+  CUSTOM
+  IMAGE
+  TEXT
+}
+
+"""
+User view history
+"""
+input ViewHistory {
+  date: DateTime
+  sku: String!
+}
+
+"""
+User view history
+"""
+input ViewHistoryInput {
+  dateTime: DateTime
+  sku: String!
+}
+
+"""
+A non-tangible product that does not require shipping and is not kept in inventory
+"""
+type VirtualProduct implements ProductInterface {
+  """
+  Boolean indicating whether a product can be added to cart. Field reserved for future use.
+  Currently, will default to true
+  """
+  add_to_cart_allowed: Boolean
+  """
+  The attribute set assigned to the product
+  """
+  attribute_set_id: Int
+  """
+  Relative canonical URL
+  """
+  canonical_url: String
+  """
+  Timestamp indicating when the product was created
+  """
+  created_at: String
+  """
+  An array of custom product attributes
+  """
+  custom_attributes: [CustomAttribute]
+  """
+  Detailed information about the product. The value can include simple HTML tags
+  """
+  description: ComplexTextValue
+  """
+  Indicates whether a gift message is available
+  """
+  gift_message_available: String
+  """
+  id
+  """
+  id: Int
+    @deprecated(
+      reason: "Magento 2.4 has not yet deprecated the `ProductInterface.id` field"
+    )
+  """
+  The relative path to the main image on the product page
+  """
+  image: ProductImage
+  """
+  An array of Media Gallery objects
+  """
+  media_gallery: [MediaGalleryInterface]
+  """
+  A brief overview of the product for search results listings, maximum 255 characters
+  """
+  meta_description: String
+  """
+  A comma-separated list of keywords that are visible only to search engines
+  """
+  meta_keyword: String
+  """
+  A string that is displayed in the title bar and tab of the browser and in search results lists
+  """
+  meta_title: String
+  """
+  The product name. Customers use this name to identify the product
+  """
+  name: String
+  """
+  The beginning date for new product listings, and determines if the product is featured as a new product
+  """
+  new_from_date: String
+  """
+  The end date for new product listings
+  """
+  new_to_date: String
+  """
+  A PriceRange object, indicating the range of prices for the product
+  """
+  price_range: PriceRange!
+  """
+  A short description of the product. Its use depends on the theme
+  """
+  short_description: ComplexTextValue
+  """
+  A number or code assigned to a product to identify the product, options, price, and manufacturer
+  """
+  sku: String
+  """
+  The relative path to the small image, which is used on catalog pages
+  """
+  small_image: ProductImage
+  """
+  The relative path to the product's thumbnail image
+  """
+  thumbnail: ProductImage
+  """
+  The unique ID for a `ProductInterface` object
+  """
+  uid: ID!
+  """
+  Timestamp indicating when the product was updated
+  """
+  updated_at: String
+}

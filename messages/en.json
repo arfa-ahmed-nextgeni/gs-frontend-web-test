@@ -1,0 +1,1780 @@
+{
+  "HomePage": {
+    "metaData": {
+      "title": "Perfumes On Sale and more at Golden Scent",
+      "description": "Get Up To 70% Off on Best Selling Perfumes. ✯100% Original ✯Great Deals 🚚Free Shipping ✯Secure Payments✯Easy Returns.",
+      "keywords": "Offers, Perfume Offers, Deals"
+    },
+    "header": {
+      "banner": "TODAY ONLY! 50SAR OFF ON 400SAR | USE CODE: JUNE | T&CS APPLY",
+      "navigation": {
+        "brands": "Brands",
+        "newIn": "New in",
+        "fragnances": "Fragnances",
+        "beautyWorld": "Beauty world",
+        "niche": "Niche",
+        "newExclusive": "New & Exclusive",
+        "arabic": "Arabic",
+        "bestSellers": "Best sellers",
+        "homeScents": "Home scents",
+        "bakhoor": "Bakhoor",
+        "roomScents": "Room scents",
+        "diffuser": "Diffuser",
+        "candles": "Candles",
+        "boulevard": "Boulevard",
+        "giftShop": "Gift shop"
+      },
+      "search": {
+        "placeholder": "Search scents, brands, or notes",
+        "mobilePlaceholder": "Search all brands...",
+        "trendingNow": "Trending Now",
+        "ourPicks": "Our Picks for You",
+        "recentSearches": "Recent Searches",
+        "clear": "Clear",
+        "bestResults": "Best Results",
+        "relevantBrands": "Relevant Brands",
+        "suggestions": "Suggestions",
+        "viewAllProducts": "View All Products ({count})",
+        "noResultsFound": "No results found for \"{query}\""
+      },
+      "countryNames": {
+        "SA": "Saudi",
+        "AE": "Emirates",
+        "KW": "Kuwait",
+        "OM": "Oman",
+        "GLOBAL": "Global"
+      },
+      "authDropdown": {
+        "orders": "Orders",
+        "address": "Addresses",
+        "myCards": "My Cards",
+        "profile": "Profile",
+        "customerService": "Customer Service",
+        "logout": "Log out",
+        "logoutToast": "You're logged out"
+      },
+      "otpLogin": {
+        "title": "Marhaba 👋",
+        "phoneStep": {
+          "description": "We need your phone number to process your order.",
+          "phoneLabel": "Phone Number:",
+          "phonePlaceholder": "50 123 4567",
+          "otpDescription": "An OTP (5-digit) verification code will be sent to your mobile number via text message.",
+          "sendButton": "Request OTP",
+          "sendingButton": "Sending..."
+        },
+        "otpStep": {
+          "description": "Enter the 5-digit OTP sent to your mobile phone via text message at",
+          "codeLabel": "Verification Code:",
+          "codePlaceholder": "1234",
+          "verifyButton": "Verify OTP",
+          "verifyingButton": "Verifying...",
+          "verifyingDescription": "This can take a few seconds.\nPlease keep this window open.",
+          "changeNumberButton": "Change Phone Number",
+          "resendText": "Haven't received the code?",
+          "resendButton": "Resend"
+        },
+        "errors": {
+          "phoneRequired": "Please enter your phone number",
+          "otpRequired": "Please enter the OTP code",
+          "sendFailed": "Failed to send OTP",
+          "verifyFailed": "Invalid OTP code",
+          "generalError": "Something went wrong. Please try again."
+        },
+        "successMessage": "You have successfully logged in.",
+        "successGreeting": "Hayyak Allah, {name}!",
+        "happyShopping": "Happy shopping!"
+      },
+      "mobileOtpLogin": {
+        "title": "Log in or Sign up",
+        "greeting": "Marhaba 👋",
+        "phoneStep": {
+          "description": "We need your mobile number to complete your request.",
+          "phoneLabel": "Phone Number:",
+          "phonePlaceholder": "50 123 4567",
+          "otpDescription": "An OTP (5-digit) verification code will be sent to your mobile number via text message.",
+          "sendButton": "Request OTP",
+          "sendingButton": "Sending..."
+        },
+        "otpStep": {
+          "description": "Enter the 5-digit OTP sent to your mobile phone via text message at",
+          "codeLabel": "Verification Code:",
+          "codePlaceholder": "1234",
+          "verifyButton": "Verify OTP",
+          "verifyingButton": "Verifying...",
+          "verifyingDescription": "This can take a few seconds.\nPlease keep this screen open.",
+          "changeNumberButton": "Change Phone Number",
+          "resendText": "Haven't received the code?",
+          "resendButton": "Resend"
+        },
+        "emailSelection": {
+          "pageTitle": "Default email",
+          "title": "Only once!",
+          "description": "Please choose one email as your default option to protect your information",
+          "warning": "Using this email will unlink all other emails associated with your number, and you'll lose access to them.",
+          "confirmButton": "Make it default"
+        },
+        "errors": {
+          "phoneRequired": "Please enter your phone number",
+          "otpRequired": "Please enter the OTP code",
+          "sendFailed": "Failed to send OTP",
+          "verifyFailed": "Invalid OTP code",
+          "generalError": "Something went wrong. Please try again."
+        },
+        "successMessage": "You have successfully logged in.",
+        "successGreeting": "Hayyak Allah, {name}!",
+        "happyShopping": "Happy shopping!"
+      },
+      "registrationForm": {
+        "title": "Hala Wala 😍",
+        "successMessage": "Your account has been successfully created!",
+        "completeProfileMessage": "Please complete your profile",
+        "firstNamePlaceholder": "First Name",
+        "lastNamePlaceholder": "Last Name",
+        "emailPlaceholder": "Email",
+        "loyaltyProgramText": "Enter your email to join our loyalty program",
+        "completeProfileButton": "Complete Profile",
+        "completingButton": "Completing...",
+        "updateSuccessToast": "Customer data updated successfully",
+        "resetButton": "Reset Form"
+      },
+      "legalConsent": {
+        "text": "I declare that I have read and accepted the Golden Scent <terms>Terms</terms> and <privacy>Privacy</privacy>."
+      },
+      "errors": {
+        "required": "This field is required",
+        "invalidEmail": "Please enter a valid email address"
+      }
+    },
+    "categoryProducts": {
+      "seeAll": "See All",
+      "clearHistory": "Clear History",
+      "getCashback": "<container>Get {percentage}% cashback<br></br><subtext>in your wallet</subtext></container>",
+      "days": "Days",
+      "hours": "Hours",
+      "minutes": "Minutes",
+      "seconds": "Seconds"
+    },
+    "recentlyViewedProducts": {
+      "title": "<b>Recently</b> Viewed"
+    },
+    "signUp": "Sign-up",
+    "saleDescription": "Get your favorite scents at the lowest price!"
+  },
+  "AccountPage": {
+    "title": "Account",
+    "guest": {
+      "title": "Hi, Guest!",
+      "description": "Log in or sign up to explore more scents, unlock exclusive offers, and enjoy seamless shopping.",
+      "loginButton": "Log in or Sign up"
+    },
+    "user": {
+      "title": "Welcome back! 🫡",
+      "subtitle": "Manage your account and preferences",
+      "editProfile": "Edit Profile",
+      "logout": "Logout",
+      "logOut": "Log out"
+    },
+    "userMenu": {
+      "profile": "Profile",
+      "profileSubtitle": "Complete your profile",
+      "orders": "Orders",
+      "address": "Addresses",
+      "myCards": "My Cards"
+    },
+    "userInfo": {
+      "greeting": "Hi, {name}!",
+      "greetingUnknown": "Hi there!",
+      "loyaltyPoints": "Redeem {points} points on purchases <price1></price1>+ or {points2} points on <price2></price2>+",
+      "points": "points"
+    },
+    "menu": {
+      "profile": "Profile",
+      "profileSubtitle": "Complete your profile",
+      "orders": "Orders",
+      "address": "Addresses",
+      "cards": "My Cards",
+      "wishlist": "Wishlist",
+      "wallet": "Wallet",
+      "tickets": "Tickets",
+      "returns": "Returns",
+      "country": "Country",
+      "language": "Switch Language",
+      "saudiArabia": "Saudi Arabia",
+      "businessInquiries": "Business Inquiries",
+      "customerService": "Customer Service",
+      "aboutGoldenScent": "About GoldenScent",
+      "inviteFriends": "Invite your friends",
+      "logOut": "Log out"
+    },
+    "deleteAccountButton": {
+      "title": "Delete Account",
+      "description": "You can still access the account for 30 days."
+    },
+    "footer": {
+      "copyright": "— GoldenScent LLC",
+      "legal": "CR No: 2050116033 – VAT No: 310428442600003"
+    },
+    "logoutToast": "You're logged out",
+    "logoutSuccessMessage": "You have been successfully logged out",
+    "logoutThankYouMessage": "Thank you for using GoldenScent"
+  },
+  "Toast": {
+    "success": {
+      "message": "Welcome!",
+      "description": "You have successfully logged in, happy shopping!"
+    },
+    "info": {
+      "message": "Congratulations!",
+      "description": "Your account has been successfully created."
+    },
+    "warning": {
+      "message": "You will receive notifications!",
+      "description": "We will notify you as soon as the product is available."
+    },
+    "error": {
+      "message": "An error occurred!",
+      "description": "We couldn't connect to the server currently."
+    },
+    "resend": {
+      "message": "The verification code has been sent again!",
+      "description": "It has been sent to your mobile number."
+    },
+    "send": {
+      "message": "The verification code has been sent!",
+      "description": "It has been sent to your mobile number."
+    },
+    "wishlistAdd": {
+      "message": "Added to wishlist!",
+      "description": "Product has been added to your wishlist."
+    },
+    "wishlistRemove": {
+      "message": "Removed from wishlist!",
+      "description": "Product has been removed from your wishlist."
+    },
+    "wishlistPending": {
+      "message": "Please login to add to wishlist",
+      "description": "We'll add this item to your wishlist after you login."
+    },
+    "wishlistPendingExecuted": {
+      "message": "Items added to wishlist!",
+      "description": "Item have been added to your wishlist."
+    },
+    "updateSuccessToast": "Customer data updated successfully",
+    "updateErrorToast": "Failed to update customer",
+    "A customer with the same email address already exists in an associated website": "A customer with the same email address already exists in an associated website."
+  },
+  "CustomerProfilePage": {
+    "completeProfileAlert": "Complete your profile so we can personalize your experience and better assist you",
+    "accountInfo": "Account Info",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "contactsInfo": "Contacts Info",
+    "emailAddress": "Email Address",
+    "birthday": "Birthday",
+    "birthdayPlaceholder": "Please enter your date of birth",
+    "gender": "Gender",
+    "female": "Female",
+    "male": "Male",
+    "updateProfile": "Update Profile",
+    "updated": "Updated",
+    "messages": {
+      "requiredField": "This field is required",
+      "invalidDate": "Please enter a valid date",
+      "notFutureDate": "Date of birth cannot be in the future",
+      "invalidEmail": "Please enter a valid email address",
+      "profileUpdated": "Profile updated successfully",
+      "profileUpdateFailed": "Failed to update customer profile",
+      "unAuthorized": "Authentication required",
+      "maxFiftyCharsAllowed": "Maximum 50 characters allowed",
+      "alphanumericAllowed": "Only letters and numbers are allowed",
+      "specialCharsNotAllowed": "Special characters are not allowed",
+      "accountDeleteFailed": "Failed to delete account",
+      "accountDeleteSuccess": "Account deleted successfully"
+    }
+  },
+  "CustomerCardsPage": {
+    "cardEndingIn": "Card ending with",
+    "expiry": "Expiry",
+    "expired": "Expired",
+    "default": "Default",
+    "makeDefault": "Make Default",
+    "delete": "Delete",
+    "messages": {
+      "Card deleted successfully": "Card deleted successfully.",
+      "Card not found or does not belong to you": "Card not found or does not belong to you.",
+      "cardDeleteFailed": "Failed to delete card",
+      "Card updated successfully": "Card updated successfully.",
+      "makeDefaultCardFailed": "Failed to set card as default"
+    },
+    "addNewCardDialog": {
+      "triggerTitle": "Add new card",
+      "title": "Add New Card",
+      "description": "Your card details are secure and encrypted. We never store sensitive information.",
+      "cardNumberInput": {
+        "label": "Card Number",
+        "placeholder": "XXXX XXXX XXXX XXXX"
+      },
+      "cardExpiryInput": {
+        "label": "Card Expiry",
+        "placeholder": "MM/YY"
+      },
+      "setAsDefaultCard": "Set as Default Card",
+      "submitButton": {
+        "label": "Add Card"
+      },
+      "messages": {
+        "requiredField": "This field is required",
+        "invalidDate": "Please enter a valid date",
+        "invalidCardNumber": "Please enter a valid card number",
+        "unAuthorized": "Authentication required",
+        "Card saved successfully": "Card saved successfully.",
+        "Missing required card data": "Missing required card data.",
+        "addCardFailed": "Failed to add card",
+        "request_invalid - token_invalid": "request_invalid - token_invalid",
+        "unsupportedCardType": "Only Mastercard and Visa allowed"
+      }
+    }
+  },
+  "CustomerAddressesPage": {
+    "name": "Name",
+    "address": "Address",
+    "mobile": "Mobile",
+    "edit": "Edit",
+    "default": "Default",
+    "makeDefault": "Make Default",
+    "delete": "Delete",
+    "addNewAddress": "Add new address",
+    "messages": {
+      "addressDeleteFailed": "Failed to delete address",
+      "addressDeleteSuccess": "Address deleted successfully",
+      "defaultAddressCannotBeDeleted": "Default address cannot be deleted"
+    }
+  },
+  "CustomerViewOrderPage": {
+    "title": "Order Details",
+    "orderDetails": "Order Details",
+    "orderNumber": "Order",
+    "orderPlacedOn": "Placed on",
+    "shippedOn": "Shipped on",
+    "orderNotFound": "Order Not Found",
+    "orderNotFoundDescription": "The order you're looking for doesn't exist",
+    "orderedProducts": "Ordered Products",
+    "items": "items",
+    "paymentSummary": "Payment Summary",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "shippingFee": "Shipping Fee",
+    "free": "FREE",
+    "grandTotal": "GRAND TOTAL",
+    "paymentMethods": "Mode of Payment",
+    "applePay": "Apple Pay",
+    "rajhiMokafaa": "Al Rajhi Mokafaa",
+    "deliveryInfo": "Delivery Info",
+    "name": "Name",
+    "address": "Address",
+    "mobile": "Mobile",
+    "whatWouldYouLikeToDo": "What would you like to do?",
+    "downloadInvoice": "Download Invoice",
+    "trackOrder": "Track Order",
+    "returnProduct": "Return Item",
+    "reorder": "Reorder",
+    "edit": "Edit",
+    "cancelOrder": "Cancel",
+    "refund": "Refund",
+    "whereIsMyOrder": "Where is my order?",
+    "rateOrder": "Rate the Order",
+    "quantity": "QTY",
+    "loading": "Loading order details...",
+    "status": {
+      "confirmed": "Confirmed",
+      "processed": "Processed",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "returned": "Returned",
+      "cancelled": "Cancelled"
+    }
+  },
+  "WalletBalanceCard": {
+    "title": "Wallet balance"
+  },
+  "CustomerAddAddressPage": {
+    "title": "Add New Address",
+    "editTitle": "Edit Address",
+    "shopperInformation": "Shopper Information",
+    "country": {
+      "title": "Select your country",
+      "shortTitle": "Country",
+      "searchPlaceholder": "Search for your country"
+    },
+    "state": {
+      "title": "Select your state",
+      "shortTitle": "State",
+      "searchPlaceholder": "Search for your state"
+    },
+    "province": {
+      "title": "Select your province",
+      "shortTitle": "Province",
+      "searchPlaceholder": "Search for your province"
+    },
+    "city": {
+      "title": "Select your city",
+      "shortTitle": "City",
+      "searchPlaceholder": "Search for your city"
+    },
+    "area": {
+      "title": "Select your area",
+      "shortTitle": "Area",
+      "searchPlaceholder": "Search for your area"
+    },
+    "topCities": "Top Cities",
+    "firstName": "First Name",
+    "middleName": "Middle Name",
+    "lastName": "Last Name",
+    "emailAddress": "Email Address",
+    "cityName": "City",
+    "areaName": "Area",
+    "street": "Address / Street",
+    "additionalInfo": "Building Name, Flat#",
+    "postalCode": "Post Code",
+    "mobileNumber": "Mobile Number",
+    "receiverPhoneNumber": "Receiver Phone Number",
+    "senderInformation": "Sender Information",
+    "setAsDefaultAddress": "Set as default address",
+    "addAddress": "Add Address",
+    "saveChanges": "Save Changes",
+    "messages": {
+      "addressAddFailed": "Failed to add address",
+      "addressAddSuccess": "Address added successfully",
+      "addressUpdateFailed": "Failed to update address",
+      "addressUpdateSuccess": "Address updated successfully"
+    }
+  },
+  "CustomerOrdersPage": {
+    "sortBy": "Sort by:",
+    "sortByMobile": "Sort by",
+    "status": "Status:",
+    "statusMobile": "Status",
+    "sortOptions": {
+      "newest": "Newest First",
+      "oldest": "Oldest First"
+    },
+    "statusOptions": {
+      "allOrders": "All Orders",
+      "delivered": "Delivered",
+      "processed": "Processed",
+      "cancelled": "Cancelled",
+      "shipped": "Shipped",
+      "returned": "Returned"
+    },
+    "orderCard": {
+      "orderDate": "Order Date",
+      "total": "Total",
+      "orderNumber": "Order #",
+      "actions": {
+        "delete": "Delete",
+        "edit": "Edit",
+        "track": "Track",
+        "repeatOrder": "Reorder",
+        "invoice": "Invoice",
+        "cancel": "Cancel"
+      }
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "showing": "Showing",
+      "of": "of",
+      "orders": "orders"
+    },
+    "emptyState": {
+      "title": "No orders found",
+      "description": "You haven't placed any orders yet.",
+      "startShopping": "Start Shopping"
+    },
+    "loading": "Loading orders...",
+    "clear": "Clear",
+    "apply": "Apply"
+  },
+  "CustomerWishlistPage": {
+    "emptyState": {
+      "title": "No favorites yet!",
+      "message": "Add products to your wishlist to come back and buy them later."
+    },
+    "messages": {
+      "removedFromWishlist": "Product removed from wishlist successfully",
+      "failedToRemoveFromWishlist": "Failed to remove product from wishlist",
+      "addToWishlistSuccess": "Product added to wishlist successfully",
+      "addToWishlistFailed": "Failed to add product to wishlist"
+    }
+  },
+  "WalletPage": {
+    "title": "Wallet",
+    "tabs": {
+      "all": "All",
+      "earned": "Earned Credit",
+      "used": "Used Credit"
+    },
+    "cashbackHistory": "Cashback history",
+    "infoMessage": "The cashback amount you've earned will be credited to your wallet after your order is delivered.",
+    "howItWorks": "How it works?",
+    "viewTerms": "View T&C's",
+    "expiresOn": "Expires on",
+    "expiredOn": "Expired on",
+    "usedOn": "Used on",
+    "orderNumber": "Order #{orderId}"
+  },
+  "LanguagePage": {
+    "languages": "Languages",
+    "languageNames": {
+      "en": "English",
+      "ar": "العربية"
+    },
+    "confirm": "Confirm"
+  },
+  "RegionPage": {
+    "countries": "Countries",
+    "countryNames": {
+      "SA": "Saudi Arabia",
+      "AE": "United Arab Emirates",
+      "KW": "Kuwait",
+      "OM": "Oman",
+      "IQ": "Iraq",
+      "BH": "Bahrain",
+      "GLOBAL": "Global"
+    },
+    "confirm": "Confirm"
+  },
+  "DeleteAccountPage": {
+    "warning": {
+      "title": "Sad to see you go!",
+      "message": "Deleting your account will remove all your data. This can’t be undone."
+    },
+    "reasons": {
+      "no_matching_fragrances": "Can’t find matching fragrances",
+      "prices_too_high": "Prices are too high",
+      "issues_with_orders_delivery": "Issues with orders/delivery",
+      "did_not_benefit_from_offers": "Didn’t benefit from offers",
+      "prefer_in_store_shopping": "Prefer in-store shopping",
+      "favorite_brand_not_available": "Favorite brand not available",
+      "not_sure_about_authenticity": "Not sure about authenticity"
+    },
+    "confirm": "Yes, delete my account",
+    "cancel": "No, keep my account"
+  },
+  "productCard": {
+    "bundleProductTitle": "<price></price> Saved 🎉",
+    "cartAction": {
+      "add": "Add",
+      "added": "Added",
+      "notify_me": "Notify Me",
+      "remove": "Remove",
+      "options": "Options",
+      "move_to_bag": "Move to Bag"
+    },
+    "badges": {
+      "b1g1": "B1G1",
+      "best_sellers": "Best Sellers",
+      "bundles_saving": "Bundles Saving",
+      "discount": "Discount",
+      "exclusive": "Exclusive",
+      "flash_sale": "Flash Sale",
+      "free_gift": "Free Gift",
+      "gift_voucher": "Gift Voucher",
+      "hot_seller": "Hot Seller",
+      "influencers_picks": "Influencers Picks",
+      "max_saving": "Max Saving",
+      "new_arrival": "New Arrival",
+      "sale": "Sale",
+      "sale_ends_in": "{hasTitle, select, yes {{title} {countdown}} other {Sale Ends in {countdown}}}",
+      "hour_delivery": "{hours}-Hour Delivery",
+      "trending": "Trending",
+      "use_code": "Use Code <u>{code}</u>",
+      "out_of_stock": "Out of Stock"
+    }
+  },
+  "category": {
+    "previous": "Previous",
+    "emptyState": {
+      "title": "No products found",
+      "description": "We couldn't find any products matching your criteria. Try adjusting your filters or browse our other categories.",
+      "browseAll": "Browse all products",
+      "goBack": "Go back",
+      "suggestions": "Suggestions",
+      "checkSpelling": "Check your spelling",
+      "tryDifferentKeywords": "Try different or more general keywords",
+      "removeFilters": "Remove some filters to see more results"
+    },
+    "endOfProducts": "You've reached the end of the products",
+    "loadingMore": "Loading more products...",
+    "sortDropdown": {
+      "title": "Sort by",
+      "shortTitle": "Sort",
+      "options": {
+        "relevance": "Relevance",
+        "new": "New",
+        "offers": "Offers",
+        "priceLowToHigh": "Price low to high",
+        "priceHighToLow": "Price high to low"
+      },
+      "dialog": {
+        "title": "Sort by",
+        "shortTitle": "Sort",
+        "options": {
+          "relevance": "Relevance",
+          "new": "New",
+          "offers": "Offers",
+          "priceLowToHigh": "Price low to high",
+          "priceHighToLow": "Price high to low"
+        }
+      }
+    },
+    "categoryFilter": {
+      "options": {
+        "allProducts": "All Products",
+        "exclusive": "Exclusive",
+        "forHim": "For Him",
+        "forHer": "For Her",
+        "arabicScents": "Arabic Scents",
+        "niche": "Niche",
+        "homeFragrances": "Home Fragrances",
+        "oud": "Oud",
+        "body": "Body",
+        "top12Brands": "Top 12 Brands"
+      }
+    },
+    "filtersSection": {
+      "filterBy": "Filter by",
+      "clear": "Clear",
+      "apply": "Apply",
+      "searchInputPlaceholder": "Search for",
+      "dialogSearchInputPlaceholder": "Search for",
+      "noResultsFor": "No Results For",
+      "priceRangeFilter": {
+        "title": "Price",
+        "dialogTitle": "Price",
+        "minInputLabel": "Min:",
+        "maxInputLabel": "Max:",
+        "minInputShortLabel": "Min:",
+        "maxInputShortLabel": "Max:",
+        "errors": {
+          "minRequired": "Please enter min value",
+          "maxRequired": "Please enter max value",
+          "maxSmallerThanMin": "Max value is smaller than min"
+        }
+      },
+      "filters": {
+        "relevance": "Relevance",
+        "new": "New",
+        "offers": "Offers",
+        "priceLowToHigh": "Price low to high",
+        "priceHighToLow": "Price high to low",
+
+        "shopByNotes": "Shop By Notes",
+        "perfumeNotes": "Perfume Notes",
+        "oriental": "Oriental",
+        "floral": "Floral",
+        "woody": "Woody",
+        "floralOriental": "Floral Oriental",
+        "citrus": "Citrus",
+        "fruity": "Fruity",
+        "oud": "Oud",
+        "aromatic": "Aromatic",
+        "woodyOriental": "Woody Oriental",
+        "leather": "Leather",
+        "character": "Character",
+        "shopByCharacter": "Shop by Character",
+        "charismatic": "Charismatic",
+        "sensual": "Sensual",
+        "natural": "Natural",
+        "extravagant": "Extravagant",
+        "dynamic": "Dynamic",
+        "sophisticated": "Sophisticated",
+        "romantic": "Romantic",
+        "classical": "Classical",
+        "glamorous": "Glamorous",
+        "modern": "Modern",
+        "concentration": "Concentration",
+        "eauDeParfum": "Eau de Parfum",
+        "eauDeToilette": "Eau de Toilette",
+        "perfumeOil": "Perfume Oil",
+        "parfum": "Parfum",
+        "extraitDeParfum": "Extrait de Parfum",
+        "eauDeCologne": "Eau de Cologne",
+        "eauDeParfumIntense": "Eau de Parfum Intense",
+        "eauDeSenteur": "Eau de Senteur",
+        "parfumIntense": "Parfum Intense",
+        "essenceDeParfum": "Essence de Parfum",
+        "productCategory": "Product Category",
+        "eyes": "Eyes",
+        "face": "Face",
+        "cleansersAndToners": "Cleansers & Toners",
+        "bathAndBody": "Bath & Body",
+        "nichePerfume": "Niche Perfume",
+        "moisturizers": "Moisturizers",
+        "exfoliators": "Exfoliators",
+        "luxuryProducts": "Luxury Products",
+        "oilsAndSerums": "Oils & Serums",
+        "bestSeller": "Best Seller",
+        "makeUpColor": "Make Up Color",
+        "black": "Black",
+        "multiColor": "Multi Color",
+        "clear": "Clear",
+        "bronze": "Bronze",
+        "brown": "Brown",
+        "pink": "Pink",
+        "beige": "Beige",
+        "goldBronze": "Gold, Bronze",
+        "red": "Red",
+        "makeUpType": "Make Up Type",
+        "luminizer": "Luminizer",
+        "concealer": "Concealer",
+        "foundation": "Foundation",
+        "mascara": "Mascara",
+        "areaOfApplication": "Area Of Application",
+        "body": "Body",
+        "hair": "Hair",
+        "lips": "Lips",
+        "hands": "Hands",
+        "nails": "Nails",
+        "feet": "Feet",
+        "mouth": "Mouth",
+        "faceBody": "Face & Body",
+        "shopByGender": "Shop By Gender",
+        "gender": "Gender",
+        "unisex": "Unisex",
+        "women": "Women",
+        "men": "Men",
+        "kids": "Kids",
+        "others": "Others",
+        "shopByBrand": "Shop By Brand",
+        "brands": "Brands",
+        "areon": "Areon",
+        "smellAndSmile": "Smell & Smile",
+        "alMajedForOud": "Al Majed For Oud",
+        "exclusiveBundles": "Exclusive Bundles",
+        "ajmal": "Ajmal",
+        "xerjoff": "Xerjoff",
+        "alDakheelOud": "Al Dakheel Oud",
+        "dior": "Dior",
+        "ibraheemAlQurashi": "Ibraheem Al.Qurashi",
+        "azraqAlOud": "Azraq Al Oud",
+        "arabianOud": "Arabian Oud",
+        "benefit": "Benefit",
+        "guerlain": "Guerlain",
+        "jad": "Jad",
+        "giorgioArmani": "Giorgio Armani",
+        "bathAndBodyWorks": "Bath & Body Works",
+        "joyScent": "Joy Scent",
+        "ahmedPerfume": "Ahmed Perfume",
+        "surrati": "Surrati",
+        "fabian": "Fabian",
+        "productType": "Product Type",
+        "type": "Type",
+        "shopByType": "Shop By Type",
+        "perfume": "Perfume",
+        "perfumeSet": "Perfume Set",
+        "bakhoor": "Bakhoor",
+        "bundles": "Bundles",
+        "roomSpray": "Room Spray",
+        "essentialOil": "Essential Oil",
+        "candle": "Candle",
+        "hairMist": "Hair Mist",
+        "diffuser": "Diffuser"
+      }
+    },
+    "productsList": {
+      "useFiltersSuggestion": "Consider using the filters to help you find what you're looking for."
+    }
+  },
+  "search": {
+    "title": "Search",
+    "showingResults": "Showing {count} results",
+    "breadcrumb": {
+      "home": "Home",
+      "search": "Search"
+    }
+  },
+  "footer": {
+    "socialSectionTitle": "Follow us",
+    "promotionSection": {
+      "twoToneTitle": {
+        "firstText": "Interest-free payment plans",
+        "secondText": " - Buy now, pay later!"
+      }
+    },
+    "downloadOurApp": "Download Our App",
+    "customerService": "Customer Service",
+    "faq": "FAQ",
+    "paymentMethods": "Payment Methods",
+    "delivery": "Delivery",
+    "returnPolicy": "Return policy",
+    "trackYourOrder": "Track your order",
+    "aboutGoldenScent": "About GoldenScent",
+    "aboutUs": "About us",
+    "joinUs": "Join us",
+    "privacyPolicy": "Privacy policy",
+    "termsAndConditions": "Terms and conditions*",
+    "customerServiceAvailability": "Customer Service Availability",
+    "workingHours": "Working hours (KSA time):",
+    "workingHoursDescription": "Thursday: 10:00 AM – 6:00 PM Friday: 2:00 PM – 10:00 PM",
+    "verifiedOnSBC": "Verified on SBC",
+    "goldenScentCo": "Golden Scent Co. — A One Person Company  •  VAT No. 310428442600003  •  CR No. 2050116033 issued by the Ministry of Commerce and Investment"
+  },
+  "breadcrumbTitles": {
+    "/": "Home",
+    "/customer": "Customer",
+    "/customer/account": "Account",
+    "/customer/login": "Login",
+    "/customer/profile": "Profile",
+    "/customer/profile/wishlist": "Wishlist",
+    "/customer/profile/addresses": "Addresses",
+    "/customer/profile/addresses/add": "Add New Address",
+    "/customer/profile/addresses/edit/:id": "Edit Address",
+    "/customer/orders": "Orders",
+    "/customer/orders/view/:id": "Order Details",
+    "/customer/cards": "Cards",
+    "/customer/wallet": "Wallet",
+    "/customer/tickets": "Tickets",
+    "/customer/returns": "Returns",
+    "/customer/delete-account": "Delete Account",
+    "/customer/language": "Language",
+    "/customer/region": "Country",
+    "/search": "Search",
+    "/track-order": "Track Your Order",
+    "/c/brands": "Brands",
+    "/c/new-in": "New in",
+    "/c/fragrances": "Fragrances",
+    "/c/beauty-world": "Beauty world",
+    "/c/gift-shop": "Gift Shop",
+    "/p/:id/reviews/:id": "Reviews",
+    "/p/:id/reviews/add": "Add New Review"
+  },
+  "CustomerServiceActionSheet": {
+    "title": "Need Help?",
+    "description": "Got questions? Need help?\nContact us anytime!",
+    "whatsAppUs": "WhatsApp us",
+    "callUs": "Call us",
+    "emailUs": "Email us",
+    "boulevard": "Boulevard"
+  },
+  "ContactForm": {
+    "title": "Contact Us",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "mobile": "Mobile",
+    "message": "Message",
+    "messagePlaceholder": "Write your message here...",
+    "submitButton": "SEND REQUEST",
+    "submittingButton": "SENDING..."
+  },
+  "TrackOrder": {
+    "title": "Track Your Order",
+    "orderNumber": "Order Number",
+    "incrementId": "Increment ID",
+    "trackingNumber": "Tracking Number",
+    "phoneCode": "Phone Code",
+    "phoneNumberPlaceholder": "Phone Number",
+    "trackingTypeLabel": "Tracking Method",
+    "trackByOrderId": "Track by Order ID",
+    "trackByIncrementId": "Track by Increment ID",
+    "instructions": "Enter your order number and tracking number to track your shipment",
+    "atLeastOneFieldRequired": "Please enter either Order Number or Tracking Number",
+    "bothFieldsRequired": "Please enter both Order Number and Tracking Number",
+    "trackButton": "Track Order",
+    "orderNumberTitle": "ORDER NUMBER",
+    "shipmentCreated": "SHIPMENT CREATED",
+    "inProgress": "IN PROGRESS",
+    "delivered": "DELIVERED",
+    "orderDetails": "ORDER DETAILS",
+    "grandTotal": "Grand Total",
+    "carrier": "Carrier",
+    "trackingNumberLabel": "Tracking number",
+    "trackAnotherOrder": "Track Another Order",
+    "trackingTimeline": "Tracking Timeline",
+    "assistanceTitle": "Need Assistance?",
+    "assistanceText1": "If you need help tracking your order, please contact our customer service team through your",
+    "assistanceText2": "Or by contacting our premium customer service team",
+    "goldenScentAccount": "Golden Scent account",
+    "customerServicePhone": "+966114407335",
+    "deliveryStatus": "Delivery Status",
+    "returned": "Returned",
+    "shipmentCreatedCaps": "SHIPMENT CREATED"
+  },
+  "StaticPages": {
+    "aboutUs": "About us",
+    "trackOrder": "Track your order",
+    "privacyPolicy": "Privacy policy",
+    "termsConditions": "Terms and conditions",
+    "accountDeletePolicy": "Account Delete Policy"
+  },
+  "CartPage": {
+    "drawer": {
+      "title": "Added to Bag",
+      "freeShippingSuggestion": "You are just <b><price></price></b> short of <b>Free Shipping</b>",
+      "freeShippingSuccess": "Congrats! 🎉 You’ve unlocked <b>Free Standard Shipping.</b>",
+      "lastAddedItem": {
+        "name": "Giorgio Armani",
+        "description": "SÌ Passione Eau de Parfum a chypre scent reinvented."
+      },
+      "alreadyInBagSection": {
+        "title": "Already in Your Bag",
+        "versace": "Versace",
+        "description": "Eros For Men — Eau de Parfum",
+        "quantity": "QTY: {count}"
+      },
+      "suggestedItemsSection": {
+        "title": "You Might Also Like"
+      },
+      "subtotal": "Subtotal",
+      "numberOfItems": "{count} items",
+      "viewCart": "View Cart",
+      "continueShopping": "Continue Shopping",
+      "viewBag": "View Bag",
+      "keepShopping": "Keep Shopping"
+    },
+    "wishlistSection": {
+      "title": "<b>Your</b> Wishlist",
+      "seeAll": "See All"
+    },
+    "orderSummary": {
+      "title": "Order Summary",
+      "subtotal": "Subtotal",
+      "serviceFee": "Service Fee",
+      "shippingFee": "Shipping Fee",
+      "free": "FREE",
+      "grandTotal": "Grand Total",
+      "walletBalance": "Wallet Balance",
+      "rajhiMokafaa": "Rajhi Mokafaa",
+      "freeDeliverySuccess": "Congrats! 🎉 You’ve unlocked <b>Free Standard Delivery</b>",
+      "actions": {
+        "redeemMokafaa": "Redeem <b>Alrajhi Mokafaa</b> Points",
+        "mokafaaUsed": "Using <b><amount></amount></b> from Mokafaa Points",
+        "spendAdditionalToUnlock": "Spend an additional <amount></amount> to unlock your cashback wallet",
+        "useWallet": "Use <amount></amount> from Wallet ",
+        "usedWallet": "<amount></amount> Used from Wallet"
+      },
+      "perks": {
+        "cashback": "You Will Earn <b><amount></amount></b> Cashback",
+        "giftWrap": "Gift Wrap Available at Checkout",
+        "installments": "4 Interest-Free of <b><amount></amount></b> each"
+      },
+      "applyCoupon": {
+        "trigger": "Apply Coupon",
+        "title": "Add Coupon",
+        "description": "If you have a coupon code, please apply it below. Only one coupon can be used at a time.",
+        "inputLabel": "Coupon Code",
+        "inputPlaceholder": "Enter your coupon code",
+        "apply": "Apply",
+        "cancel": "Cancel",
+        "invalid": "Enter a valid coupon code"
+      },
+      "mokafaa": {
+        "trigger": "Redeem <b>Alrajhi Mokafaa</b> Points",
+        "title": "Redeem points",
+        "description": "Enter your Al Rajhi phone number to get the OTP.",
+        "requestOtp": "Request OTP",
+        "applied": "<b><points></points></b> used from mokafaa",
+        "otpDescription": "Enter the OTP sent to your mobile number at <phoneNumber></phoneNumber>, then enter the amount you wish to use.",
+        "pointsToRedeem": "Points to redeem",
+        "otpDidNotReceive": "Haven't received the code?",
+        "otpResend": "Resend",
+        "verifyOtp": "Use Points",
+        "mobileNumberlabel": "Mobile Number",
+        "otpPlaceholder": "Enter OTP",
+        "otpLabel": "OTP",
+        "amountLabel": "Amount",
+        "amountPlaceholder": "XXXX",
+        "errors": {
+          "required": "Phone number is required.",
+          "invalid": "Please enter a valid phone number.",
+          "generic": "Something went wrong. Please try again.",
+          "otpRequired": "Please enter the OTP code",
+          "verifyFailed": "Invalid OTP code",
+          "generalError": "Something went wrong. Please try again.",
+          "amountExceedsTotal": "Redemption amount cannot exceed the cart total."
+        },
+        "removeAmountTitle": "Remove Amount",
+        "removeAmountConfirm": "Are you sure you want to remove your Mokafaa amount?",
+        "removeConfirmYes": "Yes",
+        "removeConfirmNo": "No"
+      }
+    },
+    "giftItems": {
+      "orderIncludesFreeGift": "🥳 Your order includes <strong>FREE GIFT</strong> items",
+      "freeGiftLabel": "{count, plural, one {# Free Gift} other {# Free Gifts}}"
+    },
+    "proceedToCheckout": "Proceed to Checkout",
+    "shoppingBag": "Shopping Bag",
+    "itemCount": "{count, plural, one {# item in your bag} other {# items in your bag}}",
+    "giftsCount": "(including {giftsCount, plural, one {# gift item} other {# gift items}})",
+    "emptyBag": "Your bag is empty!",
+    "continueShopping": "← Continue Shopping",
+    "suggestions": "Here are a few suggestions to start your shopping!",
+    "successfullyAddedToCart": "Product is added to the cart",
+    "errors": {
+      "cartNotActive": "Your cart is no longer active. We created a new cart for you, please try again.",
+      "failedToAddItem": "Failed to add item to cart",
+      "failedToResolveCart": "Failed to resolve cart"
+    }
+  },
+  "ProductPage": {
+    "breadcrumbTitles": {
+      "mensPerfumes": "Mens Perfumes",
+      "creed": "Creed",
+      "slug": "Absolu Aventus",
+      "beauty": "Eight Hour Cream Lip Protectant....",
+      "elizabethArden": "Elizabeth Arden",
+      "giftCard": "Gift Cards",
+      "eGiftCard": "eGift Card"
+    },
+    "header": {
+      "beauty": {
+        "brand": "Elizabeth Arden",
+        "name": "Eight Hour Cream Lip Protectant Stick Sheer Tint SPF 15 Lip Balm"
+      },
+      "fragrance": {
+        "brand": "Creed",
+        "name": "Absolu Aventus"
+      },
+      "gift-card": {
+        "brand": "Gift Cards",
+        "name": "Gift Card Name"
+      },
+      "e-gift-card": {
+        "brand": "eGift Card",
+        "name": "Please view this on the app, as it is not available on the website.",
+        "mobileName": "Gift Shop"
+      },
+      "rating": "4.7",
+      "reviews": "{count} Reviews",
+      "writeAReview": "Write a review",
+      "originalProduct": "100% Original"
+    },
+    "badges": {
+      "savedPrice": "Whoo! You saved <price></price>",
+      "earnCashback": "Earn <price></price>+ Cashback",
+      "bulletDelivery": {
+        "3hourDelivery": "3-Hour delivery in Riyadh!",
+        "orderIn": "Order in {countdown}",
+        "days": "{count, plural, =1 {day} other {days}}",
+        "hours": "{count, plural, =1 {hr} other {hrs}}",
+        "minutes": "{count, plural, =1 {min} other {mins}}"
+      },
+      "flashSale": {
+        "endsIn": "{hasTitle, select, yes {{title} {countdown}} other {Ends in {countdown}}}"
+      },
+      "itemsLeft": "{count} items left"
+    },
+    "variants": {
+      "50ml": "50ml",
+      "100ml": "100ml",
+      "200ml": "200ml",
+      "250ml": "250ml",
+      "colorCode": "Color Code:",
+      "blush": "Blush",
+      "nude": "Nude",
+      "rose": "Rose",
+      "peach": "Peach",
+      "coral": "Coral",
+      "bronze": "Bronze",
+      "gold": "Gold",
+      "copper": "Copper",
+      "chocolate": "Chocolate",
+      "cinnamon": "Cinnamon",
+      "mocha": "Mocha"
+    },
+    "info": {
+      "type": "type",
+      "perfume": "perfume",
+      "intensity": "intensity",
+      "edp": "edp",
+      "gender": "gender",
+      "men": "men",
+      "year": "year",
+      "2025": "2025",
+      "concealer": "concealer",
+      "area": "area",
+      "face": "face",
+      "skinType": "skin type",
+      "allTypes": "all types",
+      "coverage": "coverage",
+      "natural": "natural"
+    },
+    "actions": {
+      "addToBag": "Add to Bag",
+      "installApp": "Click here to install the app",
+      "notifyMe": "Notify Me"
+    },
+    "installmensts": {
+      "message": "Pay as low as <price></price> in 4 interest-free installments."
+    },
+    "additionalInfo": {
+      "seeMore": "See more",
+      "showLess": "Show less",
+      "information": {
+        "title": "Product Information"
+      },
+      "aboutThisFragrance": {
+        "title": "About This Fragrance",
+        "p1": "A fragrance that sparkles with the freshness of citrus fruits, radiating vitality and energy.",
+        "p2": "A vibrant blend of grapefruit, bergamot, and citron unfolds, filling your heart with pure enthusiasm.",
+        "p3": "The scent grows more radiant and captivating with notes of sandalwood, warmed by cinnamon and highlighted with bright ginger.",
+        "p4": "Embrace every special moment of your day and leave a lasting impression with a luxurious fragrance that makes your presence unforgettable."
+      },
+      "aboutTheProduct": {
+        "title": "About The Product",
+        "p1": "A fragrance that sparkles with the freshness of citrus fruits, radiating vitality and energy.",
+        "p2": "A vibrant blend of grapefruit, bergamot, and citron unfolds, filling your heart with pure enthusiasm.",
+        "p3": "The scent grows more radiant and captivating with notes of sandalwood, warmed by cinnamon and highlighted with bright ginger.",
+        "p4": "Embrace every special moment of your day and leave a lasting impression with a luxurious fragrance that makes your presence unforgettable."
+      },
+      "aboutTheBrand": {
+        "title": "About The Brand",
+        "p1": "A fragrance that sparkles with the freshness of citrus fruits, radiating vitality and energy.",
+        "p2": "A vibrant blend of grapefruit, bergamot, and citron unfolds, filling your heart with pure enthusiasm.",
+        "p3": "The scent grows more radiant and captivating with notes of sandalwood, warmed by cinnamon and highlighted with bright ginger.",
+        "p4": "Embrace every special moment of your day and leave a lasting impression with a luxurious fragrance that makes your presence unforgettable."
+      },
+      "ingredients": {
+        "title": "Ingredients",
+        "p1": "Aqua/Water/Eau, Dimethicone, Glycerin, Butylene Glycol, Propanediol, Ammonium Acryloyldimethyltaurate/Beheneth-25 Methacrylate Crosspolymer, Vinyl Dimethicone/Methicone Silsesquioxane Crosspolymer, Ammonium Polyacryloyldimethyl Taurate, C12-15 Alkyl Benzoate."
+      }
+    },
+    "ingredientPyramid": {
+      "title": "Ingredient Pyramid",
+      "description": "Delve into the fragrance pyramid to see how top, heart, and base notes come together to create the scent’s full character.",
+      "badges": {
+        "top": "Top",
+        "heart": "Heart",
+        "base": "Base"
+      },
+      "ingredients": {
+        "blackCurrant": {
+          "badge": "top",
+          "name": "Black Currant",
+          "description": "A very important note for creating green, minty and fruity notes in perfumes."
+        },
+        "pineapple": {
+          "badge": "top",
+          "name": "Pineapple",
+          "description": "A fresh and juicy fruity note, fresh and slightly metallic."
+        },
+        "grapefruit": {
+          "badge": "top",
+          "name": "Grapefruit",
+          "description": "A bitter aromatic citrus scent with a 'dirty' undertone reminiscent of black currant."
+        },
+        "pinkPepper": {
+          "badge": "top",
+          "name": "Pink Pepper",
+          "description": "A fresh spicy floral and herbal top note with rosy nuance."
+        },
+        "bergamot": {
+          "badge": "top",
+          "name": "Bergamot",
+          "description": "Citrusy, tart, and elegant with a hint of spice, known for flavoring Earl Grey tea."
+        },
+        "patchouli": {
+          "badge": "heart",
+          "name": "Patchouli",
+          "description": "An exotic Indian bush whose leaves yield patchouli oil sweet, earthy, and woody."
+        },
+        "cardamom": {
+          "badge": "heart",
+          "name": "Cardamom",
+          "description": "A sweet resinous aromatic and spicy note with a bitter aftertaste."
+        },
+        "ginger": {
+          "badge": "heart",
+          "name": "Ginger",
+          "description": "A spicy fizzy top note, with a pronounced fresh citrus facet and piney nuance."
+        },
+        "cinnamon": {
+          "badge": "heart",
+          "name": "Cinnamon",
+          "description": "A sweet and warm, powdery tenacious spicy note."
+        },
+        "ambroxan": {
+          "badge": "base",
+          "name": "Ambroxan",
+          "description": "A modern synthetic compound with a dry amber musky smell."
+        },
+        "patchouliBase": {
+          "badge": "base",
+          "name": "Patchouli",
+          "description": "An exotic Indian bush whose leaves yield patchouli oil sweet, earthy, and woody."
+        },
+        "vetiver": {
+          "badge": "base",
+          "name": "Vetiver",
+          "description": "Vetiver ranges from clean to smoky but is generally earthy, woody, and green."
+        }
+      }
+    },
+    "reviewsSection": {
+      "title": "<b>Recent</b> Reviews",
+      "seeAll": "See All",
+      "writeAReview": "Write a review",
+      "noReviews": "No reviews available"
+    },
+    "similarProductsSection": {
+      "title": "<b>Similar</b> Products",
+      "seeAll": "See All"
+    },
+    "youMightAlsoLikeSection": {
+      "title": "<b>You</b> might also like",
+      "seeAll": "See All"
+    },
+    "notFound": {
+      "title": "Product Not Found",
+      "description": "We're sorry, but the product you're looking for doesn't exist or is no longer available.",
+      "goHome": "Go to Homepage"
+    },
+    "originalProductsDialog": {
+      "title": "100% Original Product",
+      "heading": "Golden Scent : The House of the Originals",
+      "description": "One destination... unlimited fragrances & beauty choices! Your first beauty platform for authentic & best quality products from more than 700 brands to choose from. Indulge in this exceptional online shopping experience, loved & favored by millions of users in the Middle East.",
+      "whyChooseTitle": "Why choose Golden Scent?",
+      "whyChooseDescription1": "A platform you can count on, as we continuously thrive to deliver the highest standards and best quality for a great purchasing journey.",
+      "whyChooseDescription2": "For any questions our premium Customer Service will be happy to assist you."
+    },
+    "messages": {
+      "loginToAddToWishlist": "Please login to add products to wishlist"
+    }
+  },
+  "ProductReviewsPage": {
+    "title": "Reviews",
+    "sortByFilters": {
+      "newest-first": "Newest First",
+      "oldest-first": "Oldest First",
+      "rating-low-to-high": "Rating Low to High",
+      "rating-high-to-low": "Rating High to Low"
+    },
+    "reviews": "{count} Reviews",
+    "writeAReview": "Write a Review",
+    "reportReview": "Report",
+    "messages": {
+      "reviewVoteFailed": "Failed to vote review",
+      "reviewVoteSuccess": "Vote added successfully",
+      "loginToReviewProducts": "Please login to review products",
+      "reviewReportFailed": "Failed to report review",
+      "reviewReportSuccess": "Review reported successfully",
+      "loginToReportReview": "Please login to report review",
+      "loginToVoteReview": "Please login to vote review"
+    }
+  },
+  "AddProductReviewPage": {
+    "title": "Add New Review",
+    "reviewProduct": {
+      "label": "Review the product"
+    },
+    "firstName": { "label": "First Name" },
+    "lastName": { "label": "Last Name" },
+    "reviewTitle": {
+      "label": "Review title"
+    },
+    "writeComment": {
+      "label": "Write your comment",
+      "placeholder": "This message will appear on the product review page"
+    },
+    "allowName": {
+      "label": "I allow my name to be seen"
+    },
+    "submitReview": "Submit Review",
+    "messages": {
+      "reviewAddFailed": "Failed to add product review",
+      "reviewAddSuccess": "Review added successfully"
+    }
+  },
+  "NotifyMeDialog": {
+    "title": "Notify Me",
+    "description": "Enter your email, and we’ll let you know the moment <productName></productName> is back in stock.",
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter your email"
+    },
+    "sendAlert": "Send Alert",
+    "errors": {
+      "subscriptionFailed": "Failed to subscribe to stock notifications. Please try again."
+    },
+    "success": {
+      "message": "You've been successfully subscribed to stock notifications!"
+    }
+  },
+  "formErrorMessages": {
+    "requiredField": "This field is required",
+    "invalidDate": "Please enter a valid date",
+    "notFutureDate": "Date of birth cannot be in the future",
+    "invalidEmail": "Please enter a valid email address",
+    "maxFiftyCharsAllowed": "Maximum 50 characters allowed",
+    "alphanumericAllowed": "Only letters and numbers are allowed",
+    "specialCharsNotAllowed": "Special characters are not allowed",
+    "invalidPostalCode": "Post code can only contain letters, numbers, spaces, and hyphens",
+    "invalidPhoneNumber": "Please enter a valid phone number",
+    "invalidCity": "This city is not supported"
+  },
+  "errors": {
+    "productLoad": {
+      "title": "Unable to load products",
+      "description": "We're having trouble loading products right now. Please try again.",
+      "tryAgain": "Try again",
+      "goHome": "Go to homepage"
+    },
+    "infiniteScroll": {
+      "title": "Failed to load more products",
+      "tryAgain": "Try again"
+    },
+    "general": {
+      "title": "Something went wrong",
+      "description": "We encountered an error while loading this content.",
+      "goHome": "Go to homepage",
+      "reload": "Reload page"
+    },
+    "noInternetFallback": {
+      "title": "Connect to the Internet",
+      "description": "It appears that the internet connection is offline",
+      "retry": "Retry"
+    },
+    "offline": {
+      "title": "You're offline",
+      "description": "Please check your internet connection and try again."
+    },
+    "maintenance": {
+      "title": "We'll be back in a bit",
+      "description": "We're currently undergoing some system maintenance",
+      "retry": "Retry"
+    }
+  },
+  "CheckoutPage": {
+    "header": {
+      "secureCheckout": "Secure Checkout",
+      "trustText": "Safe & Secure payments, Easy <br /> Returns, 100% Authentic products",
+      "joinHere": "Join HERE",
+      "joinBannerText": "Join Golden Scent family to get cashback, track orders & more!"
+    },
+    "editBag": "Edit Bag",
+    "shippingAddress": {
+      "title": "Shipping Address",
+      "addNewAddress": "Add New Address",
+      "nameLabel": "Name",
+      "lockerNameLabel": "Locker Name",
+      "addressLabel": "Address",
+      "mobileLabel": "Mobile",
+      "editAddress": "Edit",
+      "addOrChange": "Add / Change Address"
+    },
+    "addressDrawer": {
+      "title": "Add / Change Address",
+      "addNew": "Add New Address",
+      "tabs": {
+        "home": "Saved Home Address",
+        "gifting": "Saved Gifting Address"
+      },
+      "empty": "No saved addresses yet.",
+      "name": "Name",
+      "address": "Address",
+      "country": "Country",
+      "mobile": "Mobile",
+      "default": "Default",
+      "makeDefault": "Make Default",
+      "selected": "Selected",
+      "selectAddress": "Select address",
+      "verified": "National Address Verified",
+      "notVerified": "Update National Address",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "shippingMethodsDrawer": {
+      "title": "Shipping Methods",
+      "deliverySection": {
+        "title": "Shipping Methods",
+        "options": {
+          "home": {
+            "title": "Home Delivery",
+            "description": "Get your order delivered to your home or office!",
+            "eta": "2 - 4 Days"
+          },
+          "gift": {
+            "title": "Sending a Gift?",
+            "description": "Get it delivered straight to your loved ones!",
+            "eta": "2 - 4 Days"
+          }
+        }
+      },
+      "pickupSection": {
+        "title": "Locker / Pickup Point",
+        "options": {
+          "redbox": {
+            "title": "Collect from RedBox lockers",
+            "description": "Find the nearest locker for contactless order pickup!",
+            "eta": "1 - 2 Days"
+          },
+          "fodel": {
+            "title": "Fodel Pick-Up from Stores",
+            "description": "Collect from the nearest store at your convenient time!",
+            "eta": "1 - 2 Days"
+          }
+        }
+      },
+      "confirmButton": "Add New Address",
+      "proceedButton": "Proceed",
+      "noShippingMethodsAvailable": "No shipping methods available"
+    },
+    "delivery": {
+      "title": "Delivery & Extras",
+      "threeHourDelivery": "3-Hour Delivery",
+      "orderWithin": "Order in {hours} hrs {mins} mins",
+      "standardDelivery": "Standard Delivery",
+      "days": "{days} Days",
+      "free": "FREE",
+      "giftWrapping": "Gift Wrapping",
+      "freeGiftLabel": "Free Gift",
+      "waitingForMoreInfo": "Waiting for more information"
+    },
+    "bulletDelivery": {
+      "qualifiedToast": "Your order is qualified for bullet delivery.",
+      "clickToApply": "Click to apply shipping",
+      "standardApplied": "Standard delivery applies to your cart.",
+      "orderWithin": "Order within {remainingTime}",
+      "orderInShort": "Order in {time}",
+      "hours": "{count, plural, =1 {hour} other {hours}}",
+      "minutes": "{count, plural, =1 {minute} other {minutes}}"
+    },
+    "payment": {
+      "title": "Payment Method",
+      "applePay": "Apple Pay",
+      "madaCard": "Mada Bank Card / Credit Card",
+      "tabby": "Tabby",
+      "tabbyDescription": "{count} Interest-Free of <b><amount></amount></b> Each",
+      "tamara": "Tamara",
+      "tamaraDescription": "{count} payments of <b><amount></amount></b>, Zero Interest",
+      "cashOnDelivery": "Cash on Delivery",
+      "waitingForMoreInfo": "Waiting for more information"
+    },
+    "applePay": {
+      "displayName": "Golden Scent",
+      "notAvailable": "Apple Pay is not available on this device. Please use a different payment method.",
+      "ready": "Apple Pay is ready. Click the \"Pay\" button below to complete your purchase.",
+      "errors": {
+        "notAvailable": "Apple Pay is not available on this device",
+        "paymentCanceled": "Payment canceled by Apple Pay",
+        "errorPlacingOrder": "Error placing order with Apple Pay",
+        "noActiveCart": "No active cart found",
+        "failedToPlaceOrder": "Failed to place order",
+        "failedToCreateToken": "Failed to create checkout token",
+        "failedToValidateMerchant": "Failed to validate merchant"
+      }
+    },
+    "addCardDialog": {
+      "title": "Add New Card",
+      "description": "Your card details are secure and encrypted. We never store sensitive information.",
+      "cardNumberInput": {
+        "label": "Card Number",
+        "placeholder": "XXXX XXXX XXXX XXXX"
+      },
+      "cardExpiryInput": {
+        "label": "Card Expiry",
+        "placeholder": "MM/YY"
+      },
+      "cvvInput": {
+        "label": "CVV",
+        "placeholder": "XXX"
+      },
+      "setAsDefaultCard": "Set as default card",
+      "cancelButton": "Cancel",
+      "submitButton": {
+        "label": "Add Card"
+      },
+      "messages": {
+        "requiredField": "This field is required",
+        "invalidDate": "Please enter a valid date",
+        "invalidCardNumber": "Please enter a valid card number",
+        "invalidCvv": "Please enter a valid CVV",
+        "unsupportedCardType": "Only Mastercard and Visa allowed"
+      }
+    },
+    "savedCardsDialog": {
+      "title": "Manage Cards",
+      "description": "Choose a saved card or add a new one",
+      "cardEndingIn": "Card ending in",
+      "expiry": "Expiry",
+      "expires": "Expires",
+      "default": "Default",
+      "delete": "Delete",
+      "empty": "No saved cards",
+      "cvvLabel": "CVV",
+      "cvvPlaceholder": "CVV",
+      "cancelButton": "Cancel",
+      "selectButton": "Use This Card",
+      "processing": "Processing...",
+      "addNewCard": "Add New Card",
+      "errorCreatingToken": "Failed to create payment token. Please try again.",
+      "makeDefault": "Make Default",
+      "makeDefaultSuccess": "Card set as default successfully",
+      "deleteSuccess": "Card deleted successfully"
+    },
+    "cardPaymentSection": {
+      "addNewCard": "Add new card",
+      "changeCard": "Change Card",
+      "delete": "Delete",
+      "edit": "Edit",
+      "remove": "Remove",
+      "expires": "Expires on"
+    },
+    "discounts": {
+      "applyCoupon": "Apply Coupon",
+      "redeemPoints": "Redeem Alrajhi Mokafaa Points",
+      "useWallet": "Use",
+      "fromWallet": "from Wallet"
+    },
+    "orderSummary": {
+      "title": "Order Summary",
+      "itemsInBag": "{count} items in your bag (including {gifts} gift items)",
+      "itemsInBagNoGifts": "{count} items in your bag",
+      "quantity": "QTY: {qty}",
+      "subtotal": "Subtotal",
+      "serviceFee": "Service Fee",
+      "shippingFee": "Shipping Fee",
+      "grandTotal": "GRAND TOTAL",
+      "includingTaxes": "Including taxes/duties",
+      "discount": "Discount",
+      "rajhiMokafaa": "Rajhi Mokafaa",
+      "walletBalance": "Wallet Balance",
+      "youSaved": "Yayyyy 🎉 You saved",
+      "youUsed": "Yayyyy 🎉 You used",
+      "inThisOrder": "in this order",
+      "totalDue": "Total Due",
+      "cashback": "Cashback"
+    },
+    "button": {
+      "selectAddress": "Select an Address",
+      "placeOrder": "Place Order",
+      "placingOrder": "Placing Order...",
+      "proceedToTabby": "Proceed to Tabby",
+      "proceedToTamara": "Proceed to Tamara",
+      "selectDeliveryMethod": "Select a Delivery Method",
+      "selectPaymentMethod": "Select a Payment Method",
+      "addChangeAddress": "Add / Change Address",
+      "enterCvv": "Enter CVV",
+      "pleaseAddCard": "Please add card",
+      "pay": "Pay"
+    },
+    "AddGiftWrappingDrawer": {
+      "add": "Add",
+      "skip": "Skip",
+      "title": "Add Gift Wrapping",
+      "giftItemSuccessfullyAddedToCart": "Gift item successfully added to cart",
+      "writeMessage": "Write your message",
+      "messagePlaceholder": "This message will be printed on the card",
+      "standardBox": "Standard Box",
+      "infoMessage": "Your message will be privately printed on a card and sent with the gift.",
+      "readMore": "read more",
+      "readLess": "read less",
+      "expandedMessage": "One card per order. Each item comes in a Golden Scent box, with no invoice or sender details inside.",
+      "free": "FREE",
+      "sections": {
+        "wrapping-with-gift": "Wrapping with a gift",
+        "wrapping-only": "Wrapping only"
+      }
+    },
+    "errors": {
+      "selectShippingAddress": "Please select a shipping address",
+      "selectDeliveryMethod": "Please select a delivery method",
+      "selectPaymentMethod": "Please select a payment method",
+      "selectCardForPayment": "Please add or select a payment card",
+      "paymentMethodsUnavailable": "Payment methods are not available. Please try again.",
+      "failedToPlaceOrder": "Failed to place order",
+      "invalidPaymentMethod": "Invalid payment method selected",
+      "failedToSetPaymentMethod": "Failed to set payment method",
+      "failedToUpdatePaymentMethod": "Failed to update payment method",
+      "failedToSetShippingMethod": "Failed to set shipping method",
+      "failedToUpdateShippingMethod": "Failed to update shipping method",
+      "failedToSetBillingAddress": "Failed to set billing address",
+      "failedToUpdateShippingAddress": "Failed to update shipping address",
+      "signInToManageAddresses": "Please sign in to manage addresses",
+      "failedToRefreshAddresses": "Failed to refresh addresses",
+      "paymentCancelled": "Payment was cancelled. Your cart has been restored. Please try again.",
+      "paymentFailed": "Payment failed. Your cart has been restored. Please try again.",
+      "lockerMethodUnavailable": "The selected pickup point delivery method is no longer available. Please select a different delivery method.",
+      "networkError": "Connection error. Please check your internet connection and try again.",
+      "timeoutError": "Request timed out. Please try again.",
+      "bulletDeliveryMethodUnavailable": "{carrierTitle} is not available."
+    },
+    "messages": {
+      "orderPlacedSuccess": "Order {orderNumber} placed successfully",
+      "orderPlacedSuccessNoNumber": "Order placed successfully",
+      "addressDeleted": "Address deleted"
+    }
+  },
+  "AddPickupPointPage": {
+    "title": "Add Pickup Point",
+    "lockerLocations": "Locker locations",
+    "lockerLocation": "Locker location",
+    "selectPickUpLocation": "Select Pick Up Location",
+    "distance": "{distance} Km",
+    "distanceMeters": "{distance} m",
+    "pickUpWithin": "Pick-up within",
+    "operatingHours": "Operating hours",
+    "selectLockerButton": "Select",
+    "selectedLocker": "Selected locker",
+    "firstName": { "label": "First Name" },
+    "lastName": { "label": "Last Name" },
+    "mobileNumber": { "label": "Mobile Number" },
+    "email": { "label": "Email" },
+    "submitButton": "Add Locker",
+    "loadingLockerLocations": "Loading locker locations...",
+    "noLockerLocationsFound": "No locker locations found nearby.",
+    "map": {
+      "yourCurrentLocation": "Current location",
+      "gettingYourLocation": "Getting your location...",
+      "locationPermissionRequired": "Location permission required",
+      "pleaseAllowLocationAccess": "Please enable location permission from settings and try again",
+      "tryAgain": "Try Again",
+      "searchLocation": "Search location"
+    },
+    "messages": {
+      "lockerAddressAddedSuccessfully": "Locker address added successfully",
+      "failedToAddLockerAddressToCart": "Failed to add locker address to cart"
+    },
+    "manualGeolocation": {
+      "title": "Set Manual Location (QA Testing)",
+      "description": "Enter latitude and longitude coordinates to manually set your location for testing purposes.",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "latitudeHelper": "Enter a value between -90 and 90",
+      "longitudeHelper": "Enter a value between -180 and 180",
+      "invalidCoordinates": "Please enter valid numeric coordinates",
+      "invalidLatitude": "Latitude must be between -90 and 90",
+      "invalidLongitude": "Longitude must be between -180 and 180",
+      "save": "Save",
+      "clear": "Clear"
+    }
+  },
+  "AddDeliveryAddressPage": {
+    "title": "Add Delivery Address",
+    "giftTitle": "Add Gift Delivery Address",
+    "map": {
+      "gettingYourLocation": "Getting your location...",
+      "locationPermissionRequired": "Location permission required",
+      "locationOutsideSaudiArabia": "Selected Address not available",
+      "pleaseAllowLocationAccess": "Please enable location permissions to continue",
+      "tryAgain": "Try Again",
+      "searchAddress": "Search for a National Address or location",
+      "yourCurrentLocation": "Your current location",
+      "moveMapInstructions": "Move map or drag marker to select location",
+      "locateMe": "Locate me",
+      "enableLocationServices": "Enable location services to find your address"
+    },
+    "steps": {
+      "homeDeliveryTitle": "Home Delivery",
+      "giftDeliveryTitle": "Gift Delivery",
+      "homeInstructions": "Search and select your delivery address",
+      "giftInstructions": "Search and select the gift delivery address",
+      "selectedAddress": "Selected Address",
+      "selectAddressFromMap": "Select an address from the map",
+      "useSearchToSelectAddress": "Use the search box above to find and select an address",
+      "confirmAddress": "Confirm Address",
+      "confirmDeliveryAddress": "Confirm Delivery Address",
+      "enterAddressManually": "Enter Address Manually",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "mobileNumber": "Mobile Number",
+      "receiverPhoneNumber": "Receiver Phone Number",
+      "recipientFirstName": "Recipient First Name",
+      "recipientLastName": "Recipient Last Name",
+      "city": "City",
+      "district": "District",
+      "buildingNameOptional": "Building Name, Flat# (Optional)",
+      "shortNationalAddress": "Short National Address",
+      "confirming": "Confirming...",
+      "setAsDefaultAddress": "Set as default address",
+      "incorrectNationalAddressWarning": "Incorrect \"National Address\" may delay delivery.",
+      "edit": "Edit",
+      "loadingCities": "Loading cities",
+      "validatingAddressLocation": "Validating address location..."
+    }
+  },
+  "BrandsCategoryPage": {
+    "metaData": {
+      "title": "Buy Best Brands - Shop Online at Golden Scent",
+      "description": "Choose Perfumes, Makeup, Skincare, Haircare and Personal Care Products over 700 Best Brands Online. ✯100% Original ✯Great Offers ✯Free Shipping",
+      "keywords": "Exclusive Brands, Best Brands, Top Brands, Perfume Brands"
+    },
+    "title": "Brands A-Z"
+  },
+  "OrderConfirmation": {
+    "heroTitle": "Thank You!",
+    "heroSubtitle": "Your order is on its way! Get ready to smell fantastic!",
+    "smsNotice": "Order details and communication will be sent to {phone} via SMS.",
+    "emptyState": "Order details will be available shortly.",
+    "rateIt": "Rate it",
+    "orderTitle": "Order #{id}",
+    "paymentMethod": "Payment Method",
+    "additionalPaymentMethod": "Additional Payment Method",
+    "delivery": "Delivery",
+    "breakdownTitle": "Order Breakdown",
+    "subtotal": "Subtotal",
+    "serviceFee": "Service Fee",
+    "shippingFee": "Shipping Fee",
+    "shippingFree": "FREE",
+    "discount": "Discount",
+    "rajhiMokafaa": "Rajhi Mokafaa",
+    "grandTotal": "Grand Total",
+    "deliveryAddress": "Delivery Address",
+    "fallbackDeliveryEstimate": "1 - 3 working days",
+    "fallbackAddress": "UAE, Dubai, Dubai Internet City Al Falak St, Al Shatha Tower, Office 1209",
+    "quantityPrefix": "x{count}",
+    "homeCta": "Home",
+    "backToHome": "Back to Home",
+    "includingTaxes": "Including taxes/duties",
+    "joinHere": "Join HERE",
+    "joinBannerText": "Join Golden Scent family to get cashback, track orders & more!"
+  },
+  "JoinModal": {
+    "title": "Join Golden Scent!",
+    "description": "Add your email to join our family! You'll be able to track your orders, earn cashback, and use it for discounts!",
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter your email address"
+    },
+    "mobileNumber": {
+      "label": "Mobile Number",
+      "placeholder": "Enter your mobile number"
+    },
+    "joinButton": "Join",
+    "joining": "Joining..."
+  },
+  "RedirectPage": {
+    "redirecting": "Redirecting...",
+    "redirectingToOrderConfirmation": "Redirecting to your order confirmation...",
+    "redirectingToCheckout": "Redirecting to checkout...",
+    "ifNotRedirected": "If you are not redirected automatically,",
+    "clickHere": "click here",
+    "badRequest": "Bad Request",
+    "orderInfoMissing": "Order information is missing or invalid."
+  },
+  "NotFoundPage": {
+    "title": "Sorry! The page you're looking for cannot be found.",
+    "description": "Use the search bar or visit our homepage to continue shopping.",
+    "backToHome": "Back to home",
+    "continueShopping": "Continue Shopping"
+  },
+  "UnauthorizedPage": {
+    "message": "You are not authorized to view this page.",
+    "redirecting": "Redirecting you to a home page..."
+  },
+  "CommonErrors": {
+    "backendUnavailable": "Service is temporarily unavailable. Please try again shortly.",
+    "networkError": "Connection error. Please check your internet connection and try again.",
+    "timeoutError": "Request timed out. Please try again.",
+    "unknownError": "Something went wrong. Please try again."
+  },
+  "CookieConsent": {
+    "title": "Cookie preferences"
+  },
+  "common": {
+    "countdownDaySuffix": "d"
+  }
+}

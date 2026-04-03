@@ -1,0 +1,23 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.goldenscent.c3po",
+      "sha256_cert_fingerprints": [
+        "A1:AC:DF:12:65:36:93:F1:B8:51:4B:E4:30:D3:70:21:B5:C3:85:C1:40:6E:53:5E:7D:A3:C5:74:2B:87:91:30",
+        "45:49:50:F4:D1:68:8D:26:ED:75:21:A7:B5:12:F5:B5:CC:AD:DB:C5:20:38:12:37:3C:36:A1:CD:FC:59:C9:87"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.goldenscent.c3po.dev",
+      "sha256_cert_fingerprints": [
+        "45:49:50:F4:D1:68:8D:26:ED:75:21:A7:B5:12:F5:B5:CC:AD:DB:C5:20:38:12:37:3C:36:A1:CD:FC:59:C9:87"
+      ]
+    }
+  }
+]

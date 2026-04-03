@@ -1,0 +1,27 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "NTYX82CF4J.com.goldenscent.app",
+        "paths": [
+          "NOT /*/customer/account/resetpassword*",
+          "NOT /*/customer/account/login*",
+          "NOT /sample*",
+          "NOT /pub/sf*",
+          "NOT /pub/optout*",
+          "NOT /f/no-app/*",
+          "/",
+          "*"
+        ]
+      },
+      { "appID": "NTYX82CF4J.com.goldenscent.dev", "paths": ["*"] }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["NTYX82CF4J.com.goldenscent.app", "NTYX82CF4J.com.goldenscent.dev"]
+  },
+  "activitycontinuation": {
+    "apps": ["NTYX82CF4J.com.goldenscent.app", "NTYX82CF4J.com.goldenscent.dev"]
+  }
+}

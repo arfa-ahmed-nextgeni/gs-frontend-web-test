@@ -1,0 +1,1815 @@
+{
+  "HomePage": {
+    "metaData": {
+      "title": "عطور للبيع وأكثر في جولدن سنت",
+      "description": "احصل على خصم يصل إلى 70% على أفضل العطور مبيعاً. ✯100% أصلية ✯عروض رائعة 🚚شحن مجاني ✯مدفوعات آمنة✯إرجاع سهل.",
+      "keywords": "عروض, عروض العطور, صفقات"
+    },
+    "header": {
+      "banner": "اليوم فقط! خصم 50 ريال على مشتريات 400 ريال | استخدم الكود: JUNE | الشروط والأحكام تطبق",
+      "navigation": {
+        "brands": "العلامات التجارية",
+        "newIn": "جديدنا",
+        "fragnances": "عطور عالمية",
+        "beautyWorld": "عالم الجمال",
+        "niche": "نيتش",
+        "newExclusive": "جديد وحصري",
+        "arabic": "عربية",
+        "bestSellers": "الأفضل مبيعاً",
+        "homeScents": "عطور المنزل",
+        "bakhoor": "بخور",
+        "roomScents": "عطور الغرف",
+        "diffuser": "معطر",
+        "candles": "شموع",
+        "boulevard": "البوليفارد",
+        "giftShop": "متجر الهدايا"
+      },
+      "search": {
+        "placeholder": "ابحث عن العطور والعلامات التجارية أو النوتات",
+        "mobilePlaceholder": "فتّش عن عطور أو ماركات..",
+        "trendingNow": "الأكثر رواجاً الآن",
+        "ourPicks": "اختياراتنا لك",
+        "recentSearches": "عمليات البحث الأخيرة",
+        "clear": "مسح",
+        "bestResults": "أفضل النتائج",
+        "relevantBrands": "براندات ذات الصلة",
+        "suggestions": "اقتراحات",
+        "viewAllProducts": "عرض جميع المنتجات ({count})",
+        "noResultsFound": "لم يتم العثور على نتائج لـ \"{query}\""
+      },
+      "countryNames": {
+        "SA": "السعودية",
+        "AE": "الإمارات",
+        "KW": "الكويت",
+        "OM": "عمان",
+        "GLOBAL": "عالمي"
+      },
+      "authDropdown": {
+        "orders": "الطلبات",
+        "address": "العناوين",
+        "myCards": "البطاقات",
+        "profile": "الملف الشخصي",
+        "customerService": "خدمة الزبائن",
+        "logout": "تسجيل خروج",
+        "logoutToast": "تم تسجيل خروجك"
+      },
+      "otpLogin": {
+        "title": "مرحبا 👋",
+        "phoneStep": {
+          "description": "نحتاج رقم جوالك علشان نكمل طلبك.",
+          "phoneLabel": "رقم الهاتف:",
+          "phonePlaceholder": "50 123 4567",
+          "otpDescription": "سيتم إرسال رمز تحقق OTP (مكون من 5 أرقام) على جوالك برسالة نصية.",
+          "sendButton": "أرسل رمز تحقق",
+          "sendingButton": "جاري الإرسال..."
+        },
+        "otpStep": {
+          "description": "الرجاء إدخال رمز التحقق (المكون من 5 أرقام) المرسل إلى",
+          "codeLabel": "رمز التحقق:",
+          "codePlaceholder": "1234",
+          "verifyButton": "تحقق من OTP",
+          "verifyingButton": "جاري التحقق...",
+          "verifyingDescription": "قد يستغرق هذا بضع ثوانٍ.\nيرجى إبقاء هذه النافذة مفتوحة.",
+          "changeNumberButton": "تغيير رقم الهاتف",
+          "resendText": "لم تستلم الرمز؟",
+          "resendButton": "إعادة إرسال"
+        },
+        "errors": {
+          "phoneRequired": "يرجى إدخال رقم هاتفك",
+          "otpRequired": "يرجى إدخال رمز OTP",
+          "sendFailed": "فشل في إرسال OTP",
+          "verifyFailed": "رمز OTP غير صحيح",
+          "generalError": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+        },
+        "successMessage": "تم إنشاء حسابك بنجاح"
+      },
+      "mobileOtpLogin": {
+        "title": "تسجيل الدخول أو إنشاء حساب",
+        "greeting": "مرحبا 👋",
+        "phoneStep": {
+          "description": "نحتاج رقم جوالك علشان نكمل طلبك.",
+          "phoneLabel": "رقم الهاتف:",
+          "phonePlaceholder": "50 123 4567",
+          "otpDescription": "سيتم إرسال رمز تحقق OTP (مكون من 5 أرقام) على جوالك برسالة نصية.",
+          "sendButton": "أرسل رمز تحقق",
+          "sendingButton": "جاري الإرسال..."
+        },
+        "otpStep": {
+          "description": "الرجاء إدخال رمز التحقق (المكون من 5 أرقام) المرسل إلى",
+          "codeLabel": "رمز التحقق:",
+          "codePlaceholder": "1234",
+          "verifyButton": "تحقق من OTP",
+          "verifyingButton": "جاري التحقق...",
+          "verifyingDescription": "قد يستغرق هذا بضع ثوانٍ.\nيرجى إبقاء هذه الشاشة مفتوحة.",
+          "changeNumberButton": "تغيير رقم الهاتف",
+          "resendText": "لم تستلم الرمز؟",
+          "resendButton": "إعادة إرسال"
+        },
+        "emailSelection": {
+          "pageTitle": "الإيميل الافتراضي",
+          "title": "مرة واحدة بس!",
+          "description": "رجاء اختر إيميل واحد كإيميل افتراضي عشان تحمي معلوماتك",
+          "warning": "لو استخدمت هالإيميل، يتم فصل كل الإيميلات الثانية المرتبطة برقمك، وتفقد الوصول لها!",
+          "confirmButton": "خله افتراضي"
+        },
+        "errors": {
+          "phoneRequired": "يرجى إدخال رقم هاتفك",
+          "otpRequired": "يرجى إدخال رمز OTP",
+          "sendFailed": "فشل في إرسال OTP",
+          "verifyFailed": "رمز OTP غير صحيح",
+          "generalError": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+        },
+        "successMessage": "لقد تم تسجيل دخولك بنجاح.",
+        "successGreeting": "حيّاك الله، {name}!",
+        "happyShopping": "تسوّق سعيد!"
+      },
+      "registrationForm": {
+        "title": "هلا والله 😍",
+        "successMessage": "تم إنشاء حسابك بنجاح!",
+        "completeProfileMessage": "يرجى إكمال ملفك الشخصي",
+        "firstNamePlaceholder": "الأسم الأول",
+        "lastNamePlaceholder": "الأسم الأخير",
+        "emailPlaceholder": "إيميل",
+        "loyaltyProgramText": "أدخل إيميلك للانضمام إلى برنامج الولاء الخاص بنا",
+        "completeProfileButton": "أكمل الملف الشخصي",
+        "completingButton": "جاري الإكمال...",
+        "updateSuccessToast": "تم تحديث بيانات العميل بنجاح",
+        "resetButton": "إعادة تعيين النموذج"
+      },
+      "legalConsent": {
+        "text": "أقر بأنني قرأت ووافقت على <terms>الشروط والأحكام</terms> و<privacy>سياسة الخصوصية</privacy> الخاصة بـ Golden Scent."
+      },
+      "errors": {
+        "required": "هذا الحقل مطلوب",
+        "invalidEmail": "يرجى إدخال عنوان بريد إلكتروني صحيح"
+      }
+    },
+    "categoryProducts": {
+      "seeAll": "عرض الكل",
+      "clearHistory": "مسح السجل",
+      "getCashback": "<container>{percentage}% إسترداد نقــدي<br></br><subtext>في محفظتك</subtext></container>",
+      "signUp": "سجل الأن",
+      "saleDescription": "احصل على عطورك المفضلة بأقل سعر ممكن!",
+      "days": "يوم",
+      "hours": "ساعة",
+      "minutes": "دقيقة",
+      "seconds": "ثانية"
+    },
+    "recentlyViewedProducts": {
+      "title": "شوفت <b>مؤخراً</b>"
+    },
+    "signUp": "سجل الأن",
+    "saleDescription": "احصل على عطورك المفضلة بأقل سعر ممكن!"
+  },
+  "AccountPage": {
+    "title": "الملف الشخصي",
+    "guest": {
+      "title": "هلا ومرحب",
+      "description": "سجّل دخولك أو أنشئ حسابك عشان تستكشف عطور أكثر، تستفيد من العروض الحصرية، وتسوّق بكل سهولة",
+      "loginButton": "سجّل دخول أو أنشئ حساب"
+    },
+    "user": {
+      "title": "مرحباً بعودتك! 🫡",
+      "subtitle": "إدارة حسابك وتفضيلاتك",
+      "editProfile": "تعديل الملف الشخصي",
+      "logout": "تسجيل خروج",
+      "logOut": "تسجيل خروج"
+    },
+    "userMenu": {
+      "profile": "الملف الشخصي",
+      "profileSubtitle": "أكمل ملفك الشخصي",
+      "orders": "الطلبات",
+      "address": "العناوين",
+      "myCards": "بطاقاتي"
+    },
+    "userInfo": {
+      "greeting": "ياهلا، {name}!",
+      "greetingUnknown": "أهلًا!",
+      "loyaltyPoints": "استبدل {points} نقطة عند الشراء بـ <price1></price1>+ أو {points2} نقطة عند الشراء بـ  <price2></price2>+",
+      "points": "نقاط"
+    },
+    "menu": {
+      "profile": "الملف الشخصي",
+      "profileSubtitle": "أكمل ملفك الشخصي",
+      "orders": "الطلبات",
+      "address": "العناوين",
+      "cards": "بطاقاتي",
+      "wishlist": "قائمة الأمنيات",
+      "wallet": "المحفظة",
+      "tickets": "التذاكر",
+      "returns": "المسترجع",
+      "country": "الدولة",
+      "language": "تبديل اللغة",
+      "saudiArabia": "المملكة العربية السعودية",
+      "businessInquiries": "إستفسارات حول الأعمال",
+      "customerService": "خدمة الزبائن",
+      "aboutGoldenScent": "حول قولدن سنت",
+      "inviteFriends": "إدع اصدقائك",
+      "logOut": "تسجيل خروج"
+    },
+    "deleteAccountButton": {
+      "title": "احذف الحساب",
+      "description": "تقدر تدخل على حسابك بعد الحذف لمدة 30 يوم"
+    },
+    "footer": {
+      "socialSectionTitle": "تابعنا على",
+      "promotionSection": {
+        "twoToneTitle": {
+          "firstText": "قسطها ولاتشيل هم!  –",
+          "secondText": "  اشترِ الآن بدون فوائد أو رسوم"
+        }
+      },
+      "downloadOurApp": "نزّل التطبيق الحين",
+      "customerService": "للشكاوى والمقترحات",
+      "faq": "الأسئلة الأكثر تكراراً",
+      "paymentMethods": "طرق الدفع",
+      "delivery": "التوصيل",
+      "returnPolicy": "سياسة الاسترجاع",
+      "trackYourOrder": "تتبع طلبك",
+      "aboutGoldenScent": "عن قولدن سنت",
+      "aboutUs": "من نحن",
+      "joinUs": "انضم إلينا",
+      "privacyPolicy": "سياسة الخصوصية",
+      "termsAndConditions": "الشروط والأحكام*",
+      "customerServiceAvailability": "أوقات عمل فريق خدمة العملاء",
+      "workingHours": "ساعات العمل (بتوقيت السعودية):",
+      "workingHoursDescription": "من السبت إلى الخميس: 10:00 صباحًا – 6:00 مساءً الجمعة: 2:00 ظهرًا – 10:00 مساءً",
+      "verifiedOnSBC": "موّثق لدى منصة الأعمال",
+      "goldenScentCo": "شركة قولدن سنت – مؤسسة فردية • الرقم الضريبي: 310428442600003 • السجل التجاري: 2050116033 صادر عن وزارة التجارة والاستثمار",
+      "copyright": "— قولدن سنت ذ م م",
+      "legal": "السجل التجاري: 2050116033 — السجل الضريبي 310428442600003"
+    },
+    "logoutToast": "تم تسجيل خروجك",
+    "logoutSuccessMessage": "تم تسجيل خروجك بنجاح",
+    "logoutThankYouMessage": "شكراً لاستخدامك قولدن سنت"
+  },
+  "CustomerProfilePage": {
+    "completeProfileAlert": "أكمل ملفك الشخصي حتى نتمكن من تخصيص تجربتك ومساعدتك بشكل أفضل",
+    "accountInfo": "معلومات الحساب",
+    "firstName": "الأسم الأول",
+    "lastName": "الإسم الأخير",
+    "contactsInfo": "معلومات الاتصال",
+    "emailAddress": "الإيميل",
+    "birthday": "تاريخ الميلاد",
+    "birthdayPlaceholder": "أدخل تاريخ ميلادك",
+    "gender": "الجنس",
+    "female": "أنثى",
+    "male": "ذكر",
+    "updateProfile": "حدث البيانات",
+    "updated": "تم التحديث",
+    "messages": {
+      "requiredField": "هذا الحقل مطلوب",
+      "invalidDate": "يرجى إدخال تاريخ صالح",
+      "notFutureDate": "لا يمكن أن يكون تاريخ الميلاد في المستقبل",
+      "invalidEmail": "يرجى إدخال بريد إلكتروني صالح",
+      "profileUpdated": "تم تحديث الملف الشخصي بنجاح",
+      "profileUpdateFailed": "فشل في تحديث ملف العميل الشخصي",
+      "unAuthorized": "مطلوب تسجيل الدخول",
+      "maxFiftyCharsAllowed": "الحد الأقصى المسموح هو 50 حرفًا",
+      "alphanumericAllowed": "مسموح فقط بالأحرف والأرقام",
+      "specialCharsNotAllowed": "مسموح فقط بالأحرف والأرقام",
+      "accountDeleteFailed": "فشل في حذف الحساب",
+      "accountDeleteSuccess": "تم حذف الحساب بنجاح"
+    }
+  },
+  "CustomerCardsPage": {
+    "cardEndingIn": "بطاقة تنتهي بـ",
+    "expiry": "تاريخ الانتهاء",
+    "expired": "منتهية الصلاحية",
+    "default": "افتراضي",
+    "makeDefault": "خله افتراضي",
+    "delete": "احذف",
+    "messages": {
+      "Card deleted successfully": "تم حذف البطاقة بنجاح.",
+      "Card not found or does not belong to you": "البطاقة غير موجودة أو لا تخصك.",
+      "cardDeleteFailed": "فشل في حذف البطاقة",
+      "Card updated successfully": "تم تحديث البطاقة بنجاح.",
+      "makeDefaultCardFailed": "فشل في تعيين البطاقة كبطاقة افتراضية"
+    },
+    "addNewCardDialog": {
+      "triggerTitle": "أضف بطاقة جديدة",
+      "title": "أضف بطاقة جديدة",
+      "description": "بيانات بطاقتك آمنة ومشفرة، نحن لا نقوم أبداً بتخزين أي معلومات حساسة.",
+      "cardNumberInput": {
+        "label": "رقم البطاقة",
+        "placeholder": "XXXX XXXX XXXX XXXX"
+      },
+      "cardExpiryInput": {
+        "label": "تاريخ انتهاء البطاقة",
+        "placeholder": "MM/YY"
+      },
+      "setAsDefaultCard": "خلها كبطاقة رئيسية",
+      "submitButton": {
+        "label": "أضف البطاقة"
+      },
+      "messages": {
+        "requiredField": "هذا الحقل مطلوب",
+        "invalidDate": "يرجى إدخال تاريخ صالح",
+        "invalidCardNumber": "يرجى إدخال رقم بطاقة صالح",
+        "unAuthorized": "مطلوب تسجيل الدخول",
+        "Card saved successfully": "تم حفظ البطاقة بنجاح.",
+        "Missing required card data": "بيانات البطاقة المطلوبة مفقودة.",
+        "addCardFailed": "فشل في إضافة البطاقة",
+        "request_invalid - token_invalid": "طلب غير صالح - رمز غير صالح",
+        "unsupportedCardType": "مسموح فقط ببطاقات ماستركارد وفيزا"
+      }
+    }
+  },
+  "CustomerAddressesPage": {
+    "name": "الاسم",
+    "address": "العنوان",
+    "mobile": "جوال",
+    "edit": "عدّل",
+    "default": "افتراضي",
+    "makeDefault": "خله افتراضي",
+    "delete": "احذف",
+    "addNewAddress": "أضف عنوان جديد",
+    "messages": {
+      "addressDeleteFailed": "فشل في حذف العنوان",
+      "addressDeleteSuccess": "تم حذف العنوان بنجاح",
+      "defaultAddressCannotBeDeleted": "لا يمكن حذف العنوان الافتراضي"
+    }
+  },
+  "CustomerViewOrderPage": {
+    "title": "تفاصيل الطلب",
+    "orderDetails": "تفاصيل الطلب",
+    "orderNumber": "رقم الطلب",
+    "orderPlacedOn": "تم الطلب في",
+    "shippedOn": "تم الشحن في",
+    "orderNotFound": "الطلب غير موجود",
+    "orderNotFoundDescription": "الطلب الذي تبحث عنه غير موجود",
+    "orderedProducts": "المنتجات المطلوبة",
+    "items": "قطعة",
+    "paymentSummary": "ملخص الدفع",
+    "subtotal": "المجموع",
+    "discount": "خصم",
+    "shippingFee": "رسوم الشحن",
+    "free": "مجاني",
+    "grandTotal": "المجموع الكلي",
+    "paymentMethods": "طرق الدفع",
+    "applePay": "Apple Pay",
+    "rajhiMokafaa": "مكافأة الراجحي",
+    "deliveryInfo": "معلومات التوصيل",
+    "name": "الاسم",
+    "address": "العنوان",
+    "mobile": "جوال",
+    "whatWouldYouLikeToDo": "وش ودك تسوي؟",
+    "downloadInvoice": "تحميل الفاتورة",
+    "trackOrder": "تتبع الطلب",
+    "returnProduct": "ارجع منتج",
+    "reorder": "كرر الطلب",
+    "edit": "عدل",
+    "cancelOrder": "الغ الطلب",
+    "refund": "استرداد",
+    "whereIsMyOrder": "وين طلبي؟",
+    "rateOrder": "قيم الطلب",
+    "quantity": "الكمية",
+    "loading": "جاري تحميل تفاصيل الطلب...",
+    "status": {
+      "confirmed": "تأكد طلبك",
+      "processed": "تم التجهيز",
+      "shipped": "تم الشحن",
+      "delivered": "تم التوصيل",
+      "returned": "تم الإرجاع",
+      "cancelled": "تم الإلغاء"
+    }
+  },
+  "WalletBalanceCard": {
+    "title": "رصيد المحفظة"
+  },
+  "CustomerAddAddressPage": {
+    "title": "أضف عنوان جديد",
+    "editTitle": "تعديل العنوان",
+    "shopperInformation": "معلومات المتسوق",
+    "country": {
+      "title": "اختر دولتك",
+      "shortTitle": "الدولة",
+      "searchPlaceholder": "ابحث عن دولتك"
+    },
+    "state": {
+      "title": "اختر ولايتك",
+      "shortTitle": "الولاية",
+      "searchPlaceholder": "ابحث عن ولايتك"
+    },
+    "province": {
+      "title": "اختر محافظتك",
+      "shortTitle": "المحافظة",
+      "searchPlaceholder": "ابحث عن محافظتك"
+    },
+    "city": {
+      "title": "اختر مدينتك",
+      "shortTitle": "المدينة",
+      "searchPlaceholder": "ابحث عن مدينتك"
+    },
+    "area": {
+      "title": "اختر منطقتك",
+      "shortTitle": "المنطقة",
+      "searchPlaceholder": "ابحث عن منطقتك"
+    },
+    "topCities": "أفضل المدن",
+    "firstName": "الأسم الأول",
+    "middleName": "الاسم الأوسط",
+    "lastName": "الإسم الأخير",
+    "emailAddress": "الإيميل",
+    "cityName": "المدينة",
+    "areaName": "المنطقة",
+    "street": "العنوان / الشارع",
+    "additionalInfo": "اسم المبنى، رقم الشقة",
+    "postalCode": "الرمز البريدي",
+    "mobileNumber": "رقم الجوال",
+    "receiverPhoneNumber": "رقم هاتف المستلم",
+    "senderInformation": "معلومات المرسل",
+    "setAsDefaultAddress": "خلّه العنوان الافتراضي",
+    "addAddress": "أضف عنوان",
+    "saveChanges": "حفظ التغيرات",
+    "messages": {
+      "addressAddFailed": "فشل في إضافة العنوان",
+      "addressAddSuccess": "تمت إضافة العنوان بنجاح",
+      "addressUpdateFailed": "فشل في تحديث العنوان",
+      "addressUpdateSuccess": "تم تحديث العنوان بنجاح"
+    }
+  },
+  "CustomerOrdersPage": {
+    "sortBy": "ترتيب حسب:",
+    "sortByMobile": "فرز حسب",
+    "status": "الحالة:",
+    "statusMobile": "الحالة",
+    "sortOptions": {
+      "newest": "الأحدث أولاً",
+      "oldest": "الأقدم أولاً"
+    },
+    "statusOptions": {
+      "allOrders": "كل الطلبات",
+      "delivered": "تم التوصيل",
+      "processed": "تم التجهيز",
+      "cancelled": "ملغي",
+      "shipped": "تم الشحن",
+      "returned": "مُسترد"
+    },
+    "orderCard": {
+      "orderDate": "تاريخ الطلب",
+      "total": "المجموع",
+      "orderNumber": "رقم الطلب #",
+      "actions": {
+        "delete": "احذف",
+        "edit": "عدل",
+        "track": "تتبع",
+        "repeatOrder": "كرر الطلب",
+        "invoice": "الفاتورة",
+        "cancel": "إلغاء"
+      }
+    },
+    "pagination": {
+      "previous": "السابق",
+      "next": "التالي",
+      "showing": "عرض",
+      "of": "من",
+      "orders": "طلبات"
+    },
+    "emptyState": {
+      "title": "لم يتم العثور على طلبات",
+      "description": "لم تقم بوضع أي طلبات بعد.",
+      "startShopping": "ابدأ التسوق"
+    },
+    "loading": "جاري تحميل الطلبات...",
+    "clear": "مسح",
+    "apply": "عرض"
+  },
+  "CustomerWishlistPage": {
+    "emptyState": {
+      "title": "ما عندك أمنيات للحين!",
+      "message": "أضف المنتجات لقائمة الأمنيات عشان ترجع وتشتريها لاحقًا."
+    },
+    "messages": {
+      "removedFromWishlist": "تمت إزالة المنتج من قائمة الأمنيات",
+      "failedToRemoveFromWishlist": "فشل في إزالة المنتج من قائمة الأمنيات",
+      "addToWishlistSuccess": "تمت إضافة المنتج إلى قائمة الأمنيات",
+      "addToWishlistFailed": "فشل في إضافة المنتج إلى قائمة الأمنيات"
+    }
+  },
+  "WalletPage": {
+    "title": "المحفظة",
+    "tabs": {
+      "all": "الكل",
+      "earned": "الرصيد المكتسب",
+      "used": "الرصيد المستخدم"
+    },
+    "cashbackHistory": "سجيل الرصيد المسترجع",
+    "infoMessage": "مبلغ الاسترجاع اللي كسبته رح يُضاف لمحفظتك بعد ما يتم توصيل طلبك.",
+    "howItWorks": "كيف يشتغل؟",
+    "viewTerms": "عرض الشروط والأحكام",
+    "expiresOn": "تنتهي في",
+    "expiredOn": "انتهت في",
+    "usedOn": "استخدم في",
+    "orderNumber": "طلب #{orderId}"
+  },
+  "LanguagePage": {
+    "languages": "اللغة",
+    "languageNames": {
+      "en": "English",
+      "ar": "العربية"
+    },
+    "confirm": "تأكيد"
+  },
+  "RegionPage": {
+    "countries": "الدولة",
+    "countryNames": {
+      "SA": "السعودية",
+      "AE": "الإمارات",
+      "KW": "الكويت",
+      "OM": "عُمان",
+      "IQ": "العراق",
+      "BH": "البحرين",
+      "GLOBAL": "Global"
+    },
+    "confirm": "تأكيد"
+  },
+  "DeleteAccountPage": {
+    "warning": {
+      "title": "زعلنا إنك تحذف حسابك!",
+      "message": "إذا حذفت حسابك، بينمسح كل بياناتك مثل النقاط، الطلبات، والتفضيلات، وما تقدر ترجّعها بعدين."
+    },
+    "reasons": {
+      "no_matching_fragrances": "ما لقيت العطور اللي تناسبني",
+      "prices_too_high": "الأسعار غالية",
+      "issues_with_orders_delivery": "واجهت مشاكل بالطلبات/التوصيل",
+      "did_not_benefit_from_offers": "ما استفدت من العروض",
+      "prefer_in_store_shopping": "أفضل أشتري من المتجر الفعلي",
+      "favorite_brand_not_available": "الماركة المفضلة غير متوفرة",
+      "not_sure_about_authenticity": "مو متأكد من أصالة المنتجات"
+    },
+    "confirm": "نعم، احذف حسابي",
+    "cancel": "لا، أبقي حسابي"
+  },
+  "Toast": {
+    "success": {
+      "message": "حياك الله!",
+      "description": "سجلت دخولك بنجاح، تسوق سعيد!"
+    },
+    "info": {
+      "message": "مبروك!",
+      "description": "تم إنشاء حسابك بنجاح."
+    },
+    "warning": {
+      "message": "راح توصلك تنبيهات!",
+      "description": "راح نبلغك أول ما يتوفر المنتج."
+    },
+    "error": {
+      "message": "صار خطأ!",
+      "description": "ما قدرنا نتصل بالسيرفر حالياً."
+    },
+    "resend": {
+      "message": "تم إرسال رمز التحقق من جديد!",
+      "description": "تم الإرسال إلى رقم جوالك."
+    },
+    "send": {
+      "message": "تم إرسال رمز التحقق!",
+      "description": "تم الإرسال إلى رقم جوالك."
+    },
+    "wishlistAdd": {
+      "message": "تمت الإضافة لقائمة الأمنيات!",
+      "description": "تم إضافة المنتج لقائمة أمنياتك."
+    },
+    "wishlistRemove": {
+      "message": "تم الحذف من قائمة الأمنيات!",
+      "description": "تم حذف المنتج من قائمة أمنياتك."
+    },
+    "wishlistPending": {
+      "message": "يرجى تسجيل الدخول لإضافة لقائمة الأمنيات",
+      "description": "سنقوم بإضافة هذا العنصر لقائمة أمنياتك بعد تسجيل الدخول."
+    },
+    "wishlistPendingExecuted": {
+      "message": "تم إضافة العناصر لقائمة الأمنيات!",
+      "description": "تم إضافة العنصر لقائمة أمنياتك."
+    },
+    "updateSuccessToast": "تم تحديث بيانات العميل بنجاح",
+    "updateErrorToast": "فشل في تحديث بيانات العميل",
+    "A customer with the same email address already exists in an associated website": "يوجد عميل بنفس عنوان البريد الإلكتروني في موقع مرتبط."
+  },
+  "productCard": {
+    "bundleProductTitle": "ستوفر <price></price> 🎉",
+    "cartAction": {
+      "add": "أضف",
+      "added": "تمت الإضافة",
+      "notify_me": "أعلمني",
+      "remove": "إزالة",
+      "options": "خيارات",
+      "move_to_bag": "نقل للسلة"
+    },
+    "badges": {
+      "b1g1": "1+1",
+      "best_sellers": "الأفضل مبيعاً",
+      "bundles_saving": "باقات التوفير",
+      "discount": "تخفيض",
+      "exclusive": "حصري",
+      "flash_sale": "تخفيض مؤقت",
+      "free_gift": "+ هدية",
+      "gift_voucher": "قسيمه هدية",
+      "hot_seller": "الأكثر مبيعًا",
+      "influencers_picks": "اختيارات المشاهير",
+      "max_saving": "الأكثر توفيراً",
+      "new_arrival": "وصل حديثاً",
+      "sale": "تخفيض",
+      "sale_ends_in": "{hasTitle, select, yes {{title} {countdown}} other {ينتهي بعد {countdown}}}",
+      "hour_delivery": "توصيل بـ {hours} سـ",
+      "trending": "أكثر شهرة",
+      "use_code": "كود: <u>{code}</u>",
+      "out_of_stock": "غير متوفر"
+    }
+  },
+  "category": {
+    "previous": "السابق",
+    "emptyState": {
+      "title": "لم يتم العثور على منتجات",
+      "description": "لم نتمكن من العثور على أي منتجات تطابق معاييرك. حاول تعديل الفلاتر أو تصفح فئاتنا الأخرى.",
+      "browseAll": "تصفح جميع المنتجات",
+      "goBack": "العودة",
+      "suggestions": "اقتراحات",
+      "checkSpelling": "تحقق من الإملاء",
+      "tryDifferentKeywords": "جرب كلمات مفتاحية مختلفة أو أكثر عمومية",
+      "removeFilters": "قم بإزالة بعض الفلاتر لرؤية المزيد من النتائج"
+    },
+    "endOfProducts": "لقد وصلت إلى نهاية المنتجات",
+    "loadingMore": "جاري تحميل المزيد من المنتجات...",
+    "sortDropdown": {
+      "title": "تصنيف",
+      "shortTitle": "تصفية",
+      "options": {
+        "relevance": "ماتبحث عنه",
+        "new": "جديد",
+        "offers": "العروض",
+        "priceLowToHigh": "السعر من الأقل للأعلى",
+        "priceHighToLow": "السعر الأعلى إلى الأقل"
+      },
+      "dialog": {
+        "title": "تصنيف",
+        "shortTitle": "تصفية",
+        "options": {
+          "relevance": "ماتبحث عنه",
+          "new": "جديد",
+          "offers": "العروض",
+          "priceLowToHigh": "السعر من الأقل للأعلى",
+          "priceHighToLow": "السعر الأعلى إلى الأقل"
+        }
+      }
+    },
+    "categoryFilter": {
+      "options": {
+        "allProducts": "عرض الكل",
+        "exclusive": "عطور حصرية",
+        "forHim": "رجالية",
+        "forHer": "نسائية",
+        "arabicScents": "عطور الباتشولي",
+        "niche": "نيش",
+        "homeFragrances": "معطرات للمنزل",
+        "oud": "العود",
+        "body": "الورود",
+        "top12Brands": "عطور الباتشولي"
+      }
+    },
+    "filtersSection": {
+      "filterBy": "فرز حسب",
+      "clear": "مسح",
+      "apply": "عـرض",
+      "searchInputPlaceholder": "بحث عن",
+      "dialogSearchInputPlaceholder": "أبحث عن",
+      "noResultsFor": "لا يوجد نتائج بحث عن",
+      "priceRangeFilter": {
+        "title": "السعر",
+        "dialogTitle": "تسوق حسب السعر",
+        "minInputLabel": "الحد الأدنى:",
+        "maxInputLabel": "الحد الأعلى:",
+        "minInputShortLabel": "الأدنى",
+        "maxInputShortLabel": "الإعلى",
+        "errors": {
+          "minRequired": "يرجى إدخال الحد الأدنى",
+          "maxRequired": "يرجى إدخال الحد الأعلى",
+          "maxSmallerThanMin": "الحد الأعلى أصغر من الحد الأدنى"
+        }
+      },
+      "filters": {
+        "relevance": "الأكثر شعبية",
+        "new": "جديد",
+        "offers": "عروض",
+        "priceLowToHigh": "السعر من الأعلى لأقل",
+        "priceHighToLow": "السعر من الأقل للأعلى",
+
+        "shopByNotes": "تسوق حسب المكونات العطرية",
+        "perfumeNotes": "مكونات العطر",
+        "oriental": "شرقية",
+        "floral": "زهرية",
+        "woody": "خشبية",
+        "floralOriental": "زهرية شرقية",
+        "citrus": "حمضية",
+        "fruity": "فاكهية",
+        "oud": "عود",
+        "aromatic": "أروماتيك",
+        "woodyOriental": "شرقية خشبية",
+        "leather": "جلدية",
+
+        "character": "شخصية العطر",
+        "shopByCharacter": "تسوق حسب شخصية العطر",
+        "charismatic": "جذابة",
+        "sensual": "حسية",
+        "natural": "محبة للطبيعة",
+        "extravagant": "حيوية",
+        "dynamic": "ديناميكية",
+        "sophisticated": "راقية",
+        "romantic": "رومانسية",
+        "classical": "كلاسيكية",
+        "glamorous": "متألقة",
+        "modern": "عصرية",
+
+        "concentration": "التركيز",
+        "eauDeParfum": "أو دو برفيوم",
+        "eauDeToilette": "أو دو تواليت",
+        "perfumeOil": "زيت عطري",
+        "parfum": "برفيوم مركز",
+        "extraitDeParfum": "إكستريت دو برفيوم",
+        "eauDeCologne": "أو دو كولون",
+        "eauDeParfumIntense": "أو دو برفيوم انتنس",
+        "eauDeSenteur": "أو دو سنتور",
+        "parfumIntense": "برفيوم انتنس",
+        "essenceDeParfum": "إيسنس دو برفيوم",
+
+        "productCategory": "فئة المنتج",
+        "eyes": "العيون",
+        "face": "الوجه",
+        "cleansersAndToners": "منظف وتونر",
+        "bathAndBody": "للجسم والاستحمام",
+        "moisturizers": "كريم مرطب",
+        "nichePerfume": "منتجات النيش",
+        "oilsAndSerums": "زيت وسيروم",
+        "exfoliators": "مقشر للبشرة",
+        "luxuryProducts": "منتجات فاخرة",
+        "bestSeller": "الأفضل مبيعا",
+
+        "makeUpColor": "لون المكياج",
+        "black": "أسود",
+        "multiColor": "متعدد الألوان",
+        "clear": "شفاف",
+        "bronze": "برونزي",
+        "brown": "بني",
+        "pink": "زهري",
+        "red": "أحمر",
+        "beige": "بيج",
+        "goldBronze": "ذهبي, برونزي",
+
+        "makeUpType": "نوع المكياج",
+        "luminizer": "موحد للبشرة",
+        "foundation": "كريم أساس",
+        "mascara": "ماسكرا",
+        "concealer": "مخفي عيوب",
+
+        "areaOfApplication": "يستخدم على",
+        "body": "الجسم",
+        "hair": "الشعر",
+        "lips": "الشفاه",
+        "hands": "اليدين",
+        "nails": "الأظافر",
+        "feet": "القدم",
+        "mouth": "الفم",
+        "faceBody": "الوجه, الجسم",
+
+        "shopByGender": "تسوق حسب الجنس",
+        "gender": "الجنس",
+        "unisex": "رجالي/نسائي",
+        "women": "نسائي",
+        "men": "رجالي",
+        "kids": "أطفال",
+        "others": "أخر",
+
+        "shopByBrand": "تسوق حسب الماركة",
+        "brands": "الماركة",
+        "areon": "أريون",
+        "smellAndSmile": "سميل أند سمايل",
+        "alMajedForOud": "الماجد للعود",
+        "exclusiveBundles": "مجموعات حصرية",
+        "ajmal": "أجمل",
+        "xerjoff": "زيرجوف",
+        "alDakheelOud": "الدخيل للعود",
+        "dior": "ديور",
+        "ibraheemAlQurashi": "إبراهيم القرشي",
+        "azraqAlOud": "أزرق العود",
+        "arabianOud": "العربية للعود",
+        "benefit": "بنفت",
+        "guerlain": "جيرلان",
+        "jad": "جاد",
+        "giorgioArmani": "جورجيو ارماني",
+        "bathAndBodyWorks": "باث أند بودي وركس",
+        "joyScent": "جوي سنت",
+        "ahmedPerfume": "أحمد للعطور",
+        "surrati": "السرتي",
+        "fabian": "فابيان",
+
+        "productType": "النوع",
+        "type": "النوع",
+        "shopByType": "تسوق حسب النوع",
+        "perfume": "عطور",
+        "perfumeSet": "مجموعة عطور",
+        "bakhoor": "بخور",
+        "bundles": "مجموعات",
+        "essentialOil": "شمعة",
+        "roomSpray": "معطر للغرفة",
+        "candle": "شمعة",
+        "hairMist": "عطر للشعر",
+        "diffuser": "موزع للرائحة",
+        "bodySpray": "بخاخ للجسم"
+      }
+    },
+    "productsList": {
+      "useFiltersSuggestion": "فكر في استخدام الفلاتر لمساعدتك في العثور على ما تبحث عنه."
+    }
+  },
+  "search": {
+    "title": "بحث",
+    "showingResults": "عرض {count} النتائج",
+    "breadcrumb": {
+      "home": "الرئيسية",
+      "search": "بحث"
+    }
+  },
+  "footer": {
+    "socialSectionTitle": "تابعنا على",
+    "promotionSection": {
+      "twoToneTitle": {
+        "firstText": "قسطها ولاتشيل هم!  –",
+        "secondText": "  اشترِ الآن بدون فوائد أو رسوم"
+      }
+    },
+    "downloadOurApp": "نزّل التطبيق الحين",
+    "customerService": "للشكاوى والمقترحات",
+    "faq": "الأسئلة الأكثر تكراراً",
+    "paymentMethods": "طرق الدفع",
+    "delivery": "التوصيل",
+    "returnPolicy": "سياسة الاسترجاع",
+    "trackYourOrder": "تتبع طلبك",
+    "aboutGoldenScent": "عن قولدن سنت",
+    "aboutUs": "من نحن",
+    "joinUs": "انضم إلينا",
+    "privacyPolicy": "سياسة الخصوصية",
+    "termsAndConditions": "الشروط والأحكام*",
+    "customerServiceAvailability": "أوقات عمل فريق خدمة العملاء",
+    "workingHours": "ساعات العمل (بتوقيت السعودية):",
+    "workingHoursDescription": "من السبت إلى الخميس: 10:00 صباحًا – 6:00 مساءً الجمعة: 2:00 ظهرًا – 10:00 مساءً",
+    "verifiedOnSBC": "موّثق لدى منصة الأعمال",
+    "goldenScentCo": "شركة قولدن سنت – مؤسسة فردية • الرقم الضريبي: 310428442600003 • السجل التجاري: 2050116033 صادر عن وزارة التجارة والاستثمار"
+  },
+  "breadcrumbTitles": {
+    "/": "الرئيسية",
+    "/customer": "العميل",
+    "/customer/account": "حسابي",
+    "/customer/login": "تسجيل الدخول",
+    "/customer/profile": "الملف الشخصي",
+    "/customer/profile/wishlist": "قائمة الأمنيات",
+    "/customer/profile/addresses": "العناوين",
+    "/customer/profile/addresses/add": "أضف عنوان جديد",
+    "/customer/profile/addresses/edit/:id": "تعديل العنوان",
+    "/customer/orders": "الطلبات",
+    "/customer/orders/view/:id": "تفاصيل الطلب",
+    "/customer/cards": "البطاقات",
+    "/customer/wallet": "المحفظة",
+    "/customer/tickets": "التذاكر",
+    "/customer/returns": "المسترجع",
+    "/customer/delete-account": "حذف الحساب",
+    "/customer/language": "اللغة",
+    "/customer/region": "الدولة",
+    "/search": "بحث",
+    "/track-order": "تتبع طلبك",
+    "/c/brands": "الماركات",
+    "/c/new-in": "جديدنا",
+    "/c/fragrances": "عطور عالمية",
+    "/c/beauty-world": "عالم الجمال",
+    "/c/gift-shop": "متجر الهدايا",
+    "/p/:id/reviews/:id": "التقيمات",
+    "/p/:id/reviews/add": "تقييم جديد"
+  },
+  "CustomerServiceActionSheet": {
+    "title": "تحتاج مساعدة؟",
+    "description": "عندك أسئلة؟ تحتاج دعم؟\n تواصل معنا بأي وقت!",
+    "whatsAppUs": "واتسابنا",
+    "callUs": "اتصل فينا",
+    "emailUs": "راسلنا بالإيميل",
+    "boulevard": "البوليفارد"
+  },
+  "ContactForm": {
+    "title": "تواصل معنا",
+    "firstName": "الاسم الأول",
+    "lastName": "الاسم الأخير",
+    "email": "البريد الإلكتروني",
+    "mobile": "رقم الجوال",
+    "message": "الرسالة",
+    "messagePlaceholder": "اكتب رسالتك هنا...",
+    "submitButton": "إرسال الطلب",
+    "submittingButton": "جاري الإرسال..."
+  },
+  "TrackOrder": {
+    "title": "تتبع طلبك",
+    "orderNumber": "رقم الطلب",
+    "incrementId": "معرف التزايد",
+    "trackingNumber": "رقم التتبع",
+    "phoneCode": "رمز الهاتف",
+    "phoneNumberPlaceholder": "رقم الهاتف",
+    "trackingTypeLabel": "طريقة التتبع",
+    "trackByOrderId": "تتبع برقم الطلب",
+    "trackByIncrementId": "تتبع بمعرف التزايد",
+    "instructions": "أدخل رقم طلبك ورقم التتبع لتتبع شحنتك",
+    "atLeastOneFieldRequired": "يرجى إدخال إما رقم الطلب أو رقم التتبع",
+    "bothFieldsRequired": "يرجى إدخال رقم الطلب ورقم التتبع",
+    "trackButton": "تتبع الطلب",
+    "orderNumberTitle": "رقم الطلب",
+    "shipmentCreated": "تم إنشاء الشحنة",
+    "inProgress": "قيد التقدم",
+    "delivered": "تم التسليم",
+    "orderDetails": "تفاصيل الطلب",
+    "grandTotal": "المجموع الكلي",
+    "carrier": "الناقل",
+    "trackingNumberLabel": "رقم التتبع",
+    "trackAnotherOrder": "تتبع طلب آخر",
+    "trackingTimeline": "جدول التتبع",
+    "assistanceTitle": "تحتاج مساعدة؟",
+    "assistanceText1": "إذا كنت تحتاج مساعدة في تتبع طلبك، يرجى الاتصال بفريق خدمة العملاء من خلال",
+    "assistanceText2": "أو من خلال التواصل مع فريق خدمة العملاء المميز",
+    "goldenScentAccount": "حساب قولدن سنت",
+    "customerServicePhone": "+966114407335",
+    "deliveryStatus": "حالة التسليم",
+    "returned": "مُسترد",
+    "shipmentCreatedCaps": "تم إنشاء الشحنة"
+  },
+  "StaticPages": {
+    "aboutUs": "من نحن",
+    "trackOrder": "تتبع طلبك",
+    "privacyPolicy": "سياسة الخصوصية",
+    "termsConditions": "الشروط والأحكام",
+    "accountDeletePolicy": "سياسة حذف الحساب"
+  },
+  "CartPage": {
+    "drawer": {
+      "title": "تمت الإضافة للسلة",
+      "freeShippingSuggestion": "تبقى لك بس <b><price></price></b> عشان توصل <b>للشحن المجاني</b>",
+      "freeShippingSuccess": "تهانينا! 🎉 لقد حصلت على <b>شحن مجاني عادي</b>",
+      "lastAddedItem": {
+        "name": "جورجيو أرماني",
+        "description": "سي باشن - أو دو برفيوم، عطر شيبر مُعاد ابتكاره"
+      },
+      "alreadyInBagSection": {
+        "title": "موجود بالفعل في سلتك",
+        "versace": "لورا ميرسير",
+        "description": "سي باشن - أو دو برفيوم، عطر شيبر مُعاد ابتكاره",
+        "quantity": "الكمية: {count}"
+      },
+      "suggestedItemsSection": {
+        "title": "ممكن يعجبك كمان"
+      },
+      "subtotal": "المجموع",
+      "numberOfItems": "{count} منتجات",
+      "viewCart": "عرض السلة",
+      "continueShopping": "استمر بالتسوق",
+      "viewBag": "عرض السلة",
+      "keepShopping": "استمر بالتسوق"
+    },
+    "wishlistSection": {
+      "title": "<b>قائمة</b> رغباتك",
+      "seeAll": "عرض الكل"
+    },
+    "orderSummary": {
+      "title": "ملخص الطلب",
+      "subtotal": "المجموع",
+      "serviceFee": "رسوم الخدمة",
+      "shippingFee": "رسوم التوصيل",
+      "free": "مجاني",
+      "grandTotal": "الإجمالي الكلي",
+      "walletBalance": "رصيد المحفظة",
+      "rajhiMokafaa": "مكافأة الراجحي",
+      "freeDeliverySuccess": "تهانينا! 🎉 لقد حصلت على <b>توصيل مجاني عادي</b>",
+      "actions": {
+        "redeemMokafaa": "استبدل <b>نقاط الراجحي</b> مكافأة",
+        "mokafaaUsed": "تم استخدام <b>{amount}</b> من نقاط مكافأة الأهلي",
+        "spendAdditionalToUnlock": "أنفق <amount></amount> إضافية لفتح محفظة الاسترجاع النقدي",
+        "useWallet": "استخدم <amount></amount> من المحفظة",
+        "usedWallet": "تم استخدام <amount></amount> من المحفظة"
+      },
+      "perks": {
+        "cashback": "سوف تكسب <b><amount></amount></b> كاش باك",
+        "giftWrap": "التغليف كهدية متاح عند الدفع",
+        "installments": "4 دفعات بدون فوائد بقيمة <b><amount></amount></b> لكل دفعة"
+      },
+      "applyCoupon": {
+        "trigger": "استخدم الكوبون",
+        "title": "إضافة كوبون",
+        "description": "إذا كان لديك رمز كوبون، يرجى إدخاله أدناه. يمكن استخدام كوبون واحد فقط في كل مرة.",
+        "inputLabel": "رمز الكوبون",
+        "inputPlaceholder": "أدخل رمز الكوبون",
+        "apply": "تطبيق",
+        "cancel": "إلغاء",
+        "invalid": "أدخل رمز كوبون صالحًا"
+      },
+      "mokafaa": {
+        "trigger": "استبدال نقاط <b>مكافأة الراجحي</b>",
+        "title": "إستخدم النقاط",
+        "description": "أدخل رقم جوّالك المسجّل في الراجحي ليوصلك رمز التحقق.",
+        "requestOtp": "أرسل رمز تحقق",
+        "applied": "تم استخدام <b><points></points></b> من نقاط مكافأة الراجحي",
+        "otpDescription": "أدخل رمز التحقق المرسل إلى رقم هاتفك المحمول على <phoneNumber></phoneNumber>، وبعدين المبلغ اللي تبغى تستخدمه.",
+        "pointsToRedeem": "النقاط المستبدلة",
+        "otpDidNotReceive": "لم تتلقَّ الرمز؟",
+        "otpResend": "إعادة إرسال",
+        "verifyOtp": "إستخدم النقاط",
+        "mobileNumberlabel": "رقم الجوال",
+        "otpPlaceholder": "أدخل رمز التحقق",
+        "otpLabel": "رمز التحقق",
+        "amountLabel": "المبلغ",
+        "amountPlaceholder": "XXXX",
+        "errors": {
+          "required": "رقم الجوال مطلوب.",
+          "invalid": "يرجى إدخال رقم جوال صحيح.",
+          "generic": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+          "otpRequired": "يرجى إدخال رمز التحقق",
+          "verifyFailed": "رمز التحقق غير صحيح",
+          "generalError": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+          "amountExceedsTotal": "لا يمكن أن يتجاوز مبلغ الاستبدال إجمالي السلة."
+        },
+        "removeAmountTitle": "إزالة المبلغ",
+        "removeAmountConfirm": "هل أنت متأكد من إزالة مبلغ نقاط مكافأة؟",
+        "removeConfirmYes": "نعم",
+        "removeConfirmNo": "لا"
+      }
+    },
+    "giftItems": {
+      "orderIncludesFreeGift": "🥳 طلبك يحتوي على <strong>هدية مجانية</strong>",
+      "freeGiftLabel": "{count} هدية مجانية"
+    },
+    "shoppingBag": "حقيبة التسوق",
+    "itemCount": "{count, plural, one {# منتج في حقيبتك} two {# منتجان في حقيبتك} few {# منتجات في حقيبتك} many {# منتجًا في حقيبتك} other {# منتج في حقيبتك}}",
+    "giftsCount": "(يشمل {giftsCount, plural, one {# هدية} two {# هديتان} few {# هدايا} many {# هدية} other {# هدية}})",
+    "emptyBag": "سلتك فارغة",
+    "continueShopping": "→ متابعة التسوق",
+    "proceedToCheckout": "المتابعة للدفع",
+    "suggestions": "إليك بعض الاقتراحات لبدء تسوقك!",
+    "successfullyAddedToCart": "تم اضافة المنتج فى السلة",
+    "errors": {
+      "cartNotActive": "سلتك لم تعد نشطة. أنشأنا لك سلة جديدة، يرجى المحاولة مرة أخرى.",
+      "failedToAddItem": "فشل في إضافة المنتج إلى السلة",
+      "failedToResolveCart": "تعذر الوصول إلى السلة"
+    }
+  },
+  "ProductPage": {
+    "breadcrumbTitles": {
+      "mensPerfumes": "عطور رجالية",
+      "creed": "كريد",
+      "slug": "أبسولو أفينتوس",
+      "beauty": "كريم إليزابيث آردن المرطّب للشفاه لمدة ثماني ساعات",
+      "elizabethArden": "إليزابيث آردن",
+      "giftCard": "بطاقات الهدايا",
+      "eGiftCard": "بطاقة هدية إلكترونية"
+    },
+    "header": {
+      "beauty": {
+        "brand": "إليزابيث أردن",
+        "name": "بلسم شفاه إليزابيث آردن المرطّب بلمسة لون طبيعية مع واقٍ شمسي"
+      },
+      "fragrance": {
+        "brand": "كريد",
+        "name": "أبسولو أفينتوس"
+      },
+      "gift-card": {
+        "brand": "بطاقات الهدايا",
+        "name": "اسم بطاقة الهدايا"
+      },
+      "e-gift-card": {
+        "brand": "بطاقة هدية إلكترونية",
+        "name": "يرجى عرض هذا في التطبيق، لأنه غير متاح على الموقع الإلكتروني.",
+        "mobileName": "متجر الهدايا"
+      },
+      "rating": "4.7",
+      "reviews": "{count} تقييم",
+      "writeAReview": "اكتب تقييم",
+      "originalProduct": "100% منتج أصلي"
+    },
+    "badges": {
+      "savedPrice": "واو! وفرت <price></price>",
+      "earnCashback": "اكسب +<price></price> استرجاع نقدي",
+      "bulletDelivery": {
+        "3hourDelivery": "توصيل خلال ٣ ساعات بالرياض!",
+        "orderIn": "اطلب خلال {countdown}",
+        "days": "{count, plural, =1 {يوم} other {أيام}}",
+        "hours": "{count, plural, =1 {سـ} other {سـ}}",
+        "minutes": "{count, plural, =1 {د} other {د}}"
+      },
+      "flashSale": {
+        "endsIn": "{hasTitle, select, yes {{title} {countdown}} other {ينتهي بعد {countdown}}}"
+      },
+      "itemsLeft": "{count} قطعة متبقي"
+    },
+    "variants": {
+      "50ml": "50مل",
+      "100ml": "100مل",
+      "200ml": "200مل",
+      "250ml": "250مل",
+      "colorCode": "رمز اللون:",
+      "blush": "وردي",
+      "nude": "لون البشرة",
+      "rose": "زهري",
+      "peach": "خوخي",
+      "coral": "مرجاني",
+      "bronze": "برونزي",
+      "gold": "ذهبي",
+      "copper": "نحاسي",
+      "chocolate": "شكولاتة",
+      "cinnamon": "قرفة",
+      "mocha": "موكا"
+    },
+    "info": {
+      "type": "النوع",
+      "perfume": "عطر",
+      "intensity": "الشدة",
+      "edp": "أو دو برفيوم",
+      "gender": "الجنس",
+      "men": "للذكور",
+      "year": "السنة",
+      "2025": "2025",
+      "concealer": "خافي العيوب",
+      "area": "المنطقة",
+      "face": "الوجه",
+      "skinType": "نوع البشرة",
+      "allTypes": "جميع الأنواع",
+      "coverage": "التغطية",
+      "natural": "طبيعي"
+    },
+    "actions": {
+      "addToBag": "أضف إلى السلة",
+      "installApp": "انقر هنا لتثبيت التطبيق",
+      "notifyMe": "أعلمني"
+    },
+    "installmensts": {
+      "message": "ادفع ابتداءً من <price></price> ادفع على ٤ دفعات بدون فوائد."
+    },
+    "additionalInfo": {
+      "seeMore": "اقرأ المزيد.",
+      "showLess": "اقرأ أقل.",
+      "information": {
+        "title": "معلومات المنتج"
+      },
+      "aboutThisFragrance": {
+        "title": "عن هذا العطر",
+        "p1": "عطر يلمع بنضارة الفواكه الحمضية، ويشع بالحيوية والطاقة.",
+        "p2": "مزيج نابض من الجريب فروت، البرغموت، والسترون يملأ قلبك بالحماس الخالص.",
+        "p3": " يصبح العطر أكثر إشراقًا وجاذبية مع نفحات من خشب الصندل، مدفأة بالقرفة ومميزة بلمسة الزنجبيل المنعشة.",
+        "p4": " استمتع بكل لحظة مميزة من يومك واترك انطباعًا دائمًا بعطر فاخر يجعل حضورك لا يُنسى."
+      },
+      "aboutTheProduct": {
+        "title": "عن المنتج",
+        "p1": "عطر يلمع بنضارة الفواكه الحمضية، ويشع بالحيوية والطاقة.",
+        "p2": "مزيج نابض من الجريب فروت، البرغموت، والسترون يملأ قلبك بالحماس الخالص.",
+        "p3": " يصبح العطر أكثر إشراقًا وجاذبية مع نفحات من خشب الصندل، مدفأة بالقرفة ومميزة بلمسة الزنجبيل المنعشة.",
+        "p4": " استمتع بكل لحظة مميزة من يومك واترك انطباعًا دائمًا بعطر فاخر يجعل حضورك لا يُنسى."
+      },
+      "aboutTheBrand": {
+        "title": "عن العلامة التجارية",
+        "p1": "عطر يلمع بنضارة الفواكه الحمضية، ويشع بالحيوية والطاقة.",
+        "p2": "مزيج نابض من الجريب فروت، البرغموت، والسترون يملأ قلبك بالحماس الخالص.",
+        "p3": " يصبح العطر أكثر إشراقًا وجاذبية مع نفحات من خشب الصندل، مدفأة بالقرفة ومميزة بلمسة الزنجبيل المنعشة.",
+        "p4": " استمتع بكل لحظة مميزة من يومك واترك انطباعًا دائمًا بعطر فاخر يجعل حضورك لا يُنسى."
+      },
+      "ingredients": {
+        "title": "المكونات",
+        "p1": "Aqua/Water/Eau, Dimethicone, Glycerin, Butylene Glycol, Propanediol, Ammonium Acryloyldimethyltaurate/Beheneth-25 Methacrylate Crosspolymer, Vinyl Dimethicone/Methicone Silsesquioxane Crosspolymer, Ammonium Polyacryloyldimethyl Taurate, C12-15 Alkyl Benzoate."
+      }
+    },
+    "ingredientPyramid": {
+      "title": "الهرم العناصر العطرية",
+      "description": "تعرّف على هرم العطر وشوف كيف النفحات العلوية والوسطى والقاعدية تجتمع وتكوّن شخصية العطر الكاملة.",
+      "badges": {
+        "top": "مقدمة",
+        "heart": "قلب",
+        "base": "أساس"
+      },
+      "ingredients": {
+        "blackCurrant": {
+          "badge": "top",
+          "name": "الكشمش الأسود",
+          "description": "مكوّن عطري أساسي يمنح العطر لمسة خضراء، نعناعية وفاكهية نابضة بالحياة."
+        },
+        "pineapple": {
+          "badge": "top",
+          "name": "الورد البلغاري",
+          "description": "مكوّن عطري أساسي يضيف لمسة رقيقة ورومانسية، مما يعكس جمال الطبيعة."
+        },
+        "grapefruit": {
+          "badge": "top",
+          "name": "خشب الصندل",
+          "description": "مكوّن عطري أساسي يمنح العمق والثبات، ويعكس جو من الفخامة والراحة."
+        },
+        "pinkPepper": {
+          "badge": "top",
+          "name": "الفانيلا",
+          "description": "مكوّن عطري أساسي يضفي لمسة دافئة وحلوة، مما يخلق شعوراً بالحنين."
+        },
+        "bergamot": {
+          "badge": "top",
+          "name": "التوابل الشرقية",
+          "description": "مكوّن عطري أساسي يضيف طابعاً غامضاً وجذّاباً، ويثير الحواس بعمق."
+        },
+        "patchouli": {
+          "badge": "heart",
+          "name": "التفاح الأخضر",
+          "description": "يضيف نكهة منعشة وحمضية، مما يمنح العطر لمسة من الحيوية والانتعاش."
+        },
+        "cardamom": {
+          "badge": "heart",
+          "name": "البرتقال",
+          "description": "يمنح العطر لمسة حامضية ومشرقة، مما يضيف طابعاً منعشاً ومبهجاً."
+        },
+        "ginger": {
+          "badge": "heart",
+          "name": "الورد",
+          "description": "مكون رومانسي يضفي لمسة عاطفية ودافئة على العطر، يخلق توازنًا بين الفاكهة والخضار."
+        },
+        "cinnamon": {
+          "badge": "heart",
+          "name": "الفانيليا",
+          "description": "يمنح العطر لمسة حلوة ودافئة، مما يضيف عمقًا وجرسًا مميزًا."
+        },
+        "ambroxan": {
+          "badge": "base",
+          "name": "خشب الصندل",
+          "description": "مكون دافئ ومريح يمنح العطر طابعاً غنياً وخشبياً."
+        },
+        "patchouliBase": {
+          "badge": "base",
+          "name": "الفانيليا",
+          "description": "عطر حلو ودافئ يضيف لمسة من الفخامة والراحة."
+        },
+        "vetiver": {
+          "badge": "base",
+          "name": "الحمضيات",
+          "description": "مجموعة من الروائح المنعشة والحيوية تعزز من انتعاش العطر."
+        }
+      }
+    },
+    "reviewsSection": {
+      "title": "التقييمات <b>الأخيرة</b>",
+      "seeAll": "عرض الكل",
+      "writeAReview": "اكتب تقييم",
+      "noReviews": "لا توجد تقييمات متاحة"
+    },
+    "similarProductsSection": {
+      "title": "منتجات ذات <b>صلة</b>",
+      "seeAll": "عرض الكل"
+    },
+    "youMightAlsoLikeSection": {
+      "title": "قد يعجبك <b>ايضا</b>",
+      "seeAll": "عرض الكل"
+    },
+    "notFound": {
+      "title": "المنتج غير موجود",
+      "description": "نأسف، ولكن المنتج الذي تبحث عنه غير موجود أو لم يعد متاحًا.",
+      "goHome": "الذهاب إلى الصفحة الرئيسية"
+    },
+    "originalProductsDialog": {
+      "title": "منتج أصلي",
+      "heading": "فولدن سنت: المنصة الأولى للمنتجات الأصلية",
+      "description": "وجهة واحدة لخيارات لا حدود لها من العطور ومنتجات الجمال! تعرف على محطتك الأولى لأفضل المنتجات ذات الجودة العالية والأصلية 100% لأكثر من 700 ماركة حول العالم. قولدن سنت تقدم لك تجربة تسوق أونلاين استثنائية ومحبوبة لدى الملايين في الشرق الأوسط.",
+      "whyChooseTitle": "ما الذي يميز قولدن سنت؟",
+      "whyChooseDescription1": "صُممت هذه المنصة بأعلى المعايير لتؤمن لك دائماً تجربة تسوق متميزة، يمكنك الاعتماد عليها والوثوق بها. إذ يبذل فريقنا قصارى جهده لتحقيق الأفضل والازدهار الدائم لتقديم خدمة لا يعلى عليها.",
+      "whyChooseDescription2": "إن كانت لديك أي استفسارات، بإمكانك التواصل مع فريق خدمة العملاء لمساعدتك فوراً."
+    },
+    "messages": {
+      "loginToAddToWishlist": "يرجى تسجيل الدخول لإضافة المنتجات إلى قائمة المفضلة"
+    }
+  },
+  "ProductReviewsPage": {
+    "title": "التقيمات",
+    "sortByFilters": {
+      "newest-first": "الأحدث أولًا",
+      "oldest-first": "الأقدم أولًا",
+      "rating-low-to-high": "التقييم من الأقل للأعلى",
+      "rating-high-to-low": "التقييم من الأعلى للأقل"
+    },
+    "reviews": "{count} تقييم",
+    "writeAReview": "اكتب تقييم جديد",
+    "reportReview": "إبلاغ",
+    "messages": {
+      "reviewVoteFailed": "فشل في تصويت المراجعة",
+      "reviewVoteSuccess": "تم إضافة التصويت بنجاح",
+      "loginToReviewProducts": "يرجى تسجيل الدخول لتقييم المنتجات",
+      "reviewReportFailed": "فشل في إبلاغ المراجعة",
+      "reviewReportSuccess": "تم إبلاغ المراجعة بنجاح",
+      "loginToReportReview": "يرجى تسجيل الدخول للإبلاغ عن المراجعة",
+      "loginToVoteReview": "يرجى تسجيل الدخول للتصويت على المراجعة"
+    }
+  },
+  "AddProductReviewPage": {
+    "title": "تقييم جديد",
+    "reviewProduct": {
+      "label": "قيّم المنتج"
+    },
+    "firstName": { "label": "الاسم الأول" },
+    "lastName": { "label": "الاسم الأخير" },
+    "reviewTitle": {
+      "label": "عنوان التقييم"
+    },
+    "writeComment": {
+      "label": "اكتب تعليقك",
+      "placeholder": "هالرسالة بتظهر في صفحة تقييم المنتج"
+    },
+    "allowName": {
+      "label": "أسمح بعرض اسمي"
+    },
+    "submitReview": "أضف تعليقك",
+    "messages": {
+      "reviewAddFailed": "فشل في إضافة مراجعة المنتج",
+      "reviewAddSuccess": "تمت إضافة المراجعة بنجاح"
+    }
+  },
+  "NotifyMeDialog": {
+    "title": "أعلمني",
+    "description": "أدخل بريدك الإلكتروني وسنخبرك فور توفر <productName></productName> في المخزون.",
+    "email": {
+      "label": "البريد الإلكتروني",
+      "placeholder": "أدخل بريدك الإلكتروني"
+    },
+    "sendAlert": "إرسال إشعار",
+    "errors": {
+      "subscriptionFailed": "فشل الاشتراك في إشعارات المخزون. يرجى المحاولة مرة أخرى."
+    },
+    "success": {
+      "message": "تم الاشتراك بنجاح في إشعارات المخزون!"
+    }
+  },
+  "formErrorMessages": {
+    "requiredField": "هذا الحقل مطلوب",
+    "invalidDate": "يرجى إدخال تاريخ صالح",
+    "notFutureDate": "لا يمكن أن يكون تاريخ الميلاد في المستقبل",
+    "invalidEmail": "يرجى إدخال عنوان بريد إلكتروني صالح",
+    "maxFiftyCharsAllowed": "الحد الأقصى المسموح هو 50 حرفًا",
+    "alphanumericAllowed": "مسموح فقط باستخدام الحروف والأرقام",
+    "specialCharsNotAllowed": "الأحرف الخاصة غير مسموح بها",
+    "invalidPostalCode": "الرمز البريدي يمكن أن يحتوي فقط على حروف وأرقام ومسافات وشرطات",
+    "invalidPhoneNumber": "يرجى إدخال رقم هاتف صالح",
+    "invalidCity": "هذه المدينة غير مدعومة"
+  },
+  "errors": {
+    "productLoad": {
+      "title": "تعذر تحميل المنتجات",
+      "description": "نواجه مشكلة في تحميل المنتجات الآن. يرجى المحاولة مرة أخرى.",
+      "tryAgain": "حاول مرة أخرى",
+      "goHome": "العودة إلى الصفحة الرئيسية"
+    },
+    "infiniteScroll": {
+      "title": "فشل تحميل المزيد من المنتجات",
+      "tryAgain": "حاول مرة أخرى"
+    },
+    "general": {
+      "title": "حدث خطأ ما",
+      "description": "واجهنا خطأ أثناء تحميل هذا المحتوى.",
+      "goHome": "العودة إلى الصفحة الرئيسية",
+      "reload": "إعادة تحميل الصفحة"
+    },
+    "noInternetFallback": {
+      "title": "اتصل بالإنترنت",
+      "description": "يبدو أن الاتصال بالإنترنت غير متوفر",
+      "retry": "إعادة المحاولة"
+    },
+    "offline": {
+      "title": "أنت غير متصل بالإنترنت",
+      "description": "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى."
+    },
+    "maintenance": {
+      "title": "سنعود خلال لحظات",
+      "description": "نحن نقوم حاليًا ببعض أعمال صيانة النظام",
+      "retry": "إعادة المحاولة"
+    }
+  },
+  "CheckoutPage": {
+    "header": {
+      "secureCheckout": "الدفع الآمن",
+      "trustText": "عملية الدفع لدينا آمنة وموثوقة. <br />استرجاع سهل. منتجات أصلية 100%",
+      "joinHere": "انضم من هنا!",
+      "joinBannerText": "انضم لعائلة قولدن سنت عشان تاخذ كاش باك، وتتابع طلباتك وأكثر!"
+    },
+    "editBag": "عربة التسوق",
+    "shippingAddress": {
+      "title": "عنوان الشحن",
+      "addNewAddress": "أضف عنوان جديد",
+      "nameLabel": "الاسم",
+      "lockerNameLabel": "اسم الخزنة",
+      "addressLabel": "العنوان",
+      "mobileLabel": "الهاتف",
+      "editAddress": "تعديل",
+      "addOrChange": "إضافة / تغيير العنوان"
+    },
+    "addressDrawer": {
+      "title": "إضافة / تغيير العنوان",
+      "addNew": "إضافة عنوان جديد",
+      "tabs": {
+        "home": "عنوان المنزل المحفوظ",
+        "gifting": "عناوين المهدى إاليهم"
+      },
+      "empty": "لا توجد عناوين محفوظة بعد.",
+      "name": "الاسم",
+      "address": "العنوان",
+      "country": "الدولة",
+      "mobile": "الجوال",
+      "default": "افتراضي",
+      "makeDefault": "تعيين كافتراضي",
+      "selected": "محدد",
+      "selectAddress": "اختر العنوان",
+      "verified": "العنوان الوطني موثق",
+      "notVerified": "حدّث العنوان الوطني",
+      "edit": "تعديل",
+      "delete": "حذف"
+    },
+    "shippingMethodsDrawer": {
+      "title": "طرق الشحن",
+      "deliverySection": {
+        "title": "طرق الشحن",
+        "options": {
+          "home": {
+            "title": "توصيل إلى المنزل",
+            "description": "استلم طلبك إلى المنزل أو المكتب!",
+            "eta": "من 2 إلى 4 أيام"
+          },
+          "gift": {
+            "title": "هل ترسل هدية؟",
+            "description": "دعنا نوصلها مباشرةً لأحبائك!",
+            "eta": "من 2 إلى 4 أيام"
+          }
+        }
+      },
+      "pickupSection": {
+        "title": "الخزائن / نقاط الاستلام",
+        "options": {
+          "redbox": {
+            "title": "استلام من خزائن RedBox",
+            "description": "اعثر على أقرب خزانة للاستلام بدون تلامس!",
+            "eta": "من 1 إلى 2 يوم"
+          },
+          "fodel": {
+            "title": "استلام من متاجر Fodel",
+            "description": "استلم من أقرب متجر في الوقت الأنسب لك!",
+            "eta": "من 1 إلى 2 يوم"
+          }
+        }
+      },
+      "confirmButton": "إضافة عنوان جديد",
+      "proceedButton": "استمر",
+      "noShippingMethodsAvailable": "لا توجد وسائل شحن متاحة"
+    },
+    "delivery": {
+      "title": "التوصيل والإضافات",
+      "threeHourDelivery": "توصيل بـ ٣ ساعات",
+      "orderWithin": "اطلب خلال {hours} سـ {mins} د",
+      "standardDelivery": "توصيل أساسي",
+      "days": "{days} أيام",
+      "free": "مجاناً",
+      "giftWrapping": "تغليف هدية",
+      "freeGiftLabel": "هدية مجانية",
+      "noShippingMethods": "لا توجد وسائل توصيل لهذا العنوان",
+      "waitingForMoreInfo": "في انتظار المزيد من المعلومات"
+    },
+    "bulletDelivery": {
+      "qualifiedToast": "طلبك مؤهل للتوصيل السريع.",
+      "clickToApply": "انقر لتطبيق الشحن",
+      "standardApplied": "يتم تطبيق التوصيل الأساسي على سلة التسوق الخاصة بك.",
+      "orderWithin": "اطلب خلال {remainingTime}",
+      "orderInShort": "اطلب خلال {time}",
+      "hours": "{count, plural, =1 {ساعة} other {ساعات}}",
+      "minutes": "{count, plural, =1 {دقيقة} other {دقائق}}"
+    },
+    "payment": {
+      "title": "طريقة الدفع",
+      "applePay": "Apple Pay",
+      "madaCard": "بطاقة مدى / بطاقة ائتمانية",
+      "tabby": "تابي",
+      "tabbyDescription": "{count} دفعات بدون فوائد، <b><amount></amount></b> كل دفعة",
+      "tamara": "تمارا",
+      "tamaraDescription": "{count} دفعات بـ <b><amount></amount></b> بدون أي فوائد",
+      "cashOnDelivery": "الدفع عند الاستلام",
+      "waitingForMoreInfo": "في انتظار المزيد من المعلومات"
+    },
+    "applePay": {
+      "displayName": "قولدن سنت",
+      "notAvailable": "Apple Pay غير متاح على هذا الجهاز. يرجى استخدام طريقة دفع أخرى.",
+      "ready": "Apple Pay جاهز. انقر على زر \"دفع\" أدناه لإتمام عملية الشراء.",
+      "errors": {
+        "notAvailable": "Apple Pay غير متاح",
+        "paymentCanceled": "تم إلغاء الدفع بواسطة Apple Pay",
+        "errorPlacingOrder": "خطأ في تأكيد الطلب باستخدام Apple Pay",
+        "noActiveCart": "لم يتم العثور على سلة تسوق نشطة",
+        "failedToPlaceOrder": "فشل تأكيد الطلب",
+        "failedToCreateToken": "فشل إنشاء رمز الدفع",
+        "failedToValidateMerchant": "فشل التحقق من التاجر"
+      }
+    },
+    "addCardDialog": {
+      "title": "إضافة بطاقة جديدة",
+      "description": "تفاصيل بطاقتك آمنة ومشفرة. نحن لا نخزن المعلومات الحساسة أبداً.",
+      "cardNumberInput": {
+        "label": "رقم البطاقة",
+        "placeholder": "XXXX XXXX XXXX XXXX"
+      },
+      "cardExpiryInput": {
+        "label": "تاريخ انتهاء البطاقة",
+        "placeholder": "MM/YY"
+      },
+      "cvvInput": {
+        "label": "رمز الأمان",
+        "placeholder": "XXX"
+      },
+      "setAsDefaultCard": "تعيين كافتراضي",
+      "cancelButton": "إلغاء",
+      "submitButton": {
+        "label": "إضافة البطاقة"
+      },
+      "messages": {
+        "requiredField": "هذا الحقل مطلوب",
+        "invalidDate": "يرجى إدخال تاريخ صحيح",
+        "invalidCardNumber": "يرجى إدخال رقم بطاقة صحيح",
+        "invalidCvv": "يرجى إدخال رمز أمان صحيح",
+        "unsupportedCardType": "يُسمح فقط ببطاقات ماستركارد وفيزا"
+      }
+    },
+    "savedCardsDialog": {
+      "title": "إدارة البطاقات",
+      "description": "اختر بطاقة محفوظة أو أضف بطاقة جديدة",
+      "cardEndingIn": "البطاقة المنتهية بـ",
+      "expiry": "انتهاء الصلاحية",
+      "expires": "تنتهي",
+      "default": "افتراضي",
+      "delete": "حذف",
+      "empty": "لا توجد بطاقات محفوظة",
+      "cvvLabel": "رمز الأمان",
+      "cvvPlaceholder": "رمز الأمان",
+      "cancelButton": "إلغاء",
+      "selectButton": "استخدم هذه البطاقة",
+      "processing": "جاري المعالجة...",
+      "addNewCard": "إضافة بطاقة جديدة",
+      "errorCreatingToken": "فشل إنشاء رمز الدفع. يرجى المحاولة مرة أخرى.",
+      "makeDefault": "تعيين كافتراضي",
+      "makeDefaultSuccess": "تم تعيين البطاقة كافتراضية بنجاح",
+      "deleteSuccess": "تم حذف البطاقة بنجاح"
+    },
+    "cardPaymentSection": {
+      "addNewCard": "إضافة بطاقة جديدة",
+      "changeCard": "تغيير البطاقة",
+      "delete": "حذف",
+      "edit": "تعديل",
+      "remove": "إزالة البطاقة",
+      "expires": "تنتهي في"
+    },
+    "discounts": {
+      "applyCoupon": "استخدم كود خصم",
+      "redeemPoints": "استخدم نقاط مكافأة الراجحي",
+      "useWallet": "استخدم",
+      "fromWallet": "من المحفظة"
+    },
+    "orderSummary": {
+      "title": "ملخص الطلب",
+      "itemsInBag": "{count} منتجات في حقيبتك (تشمل {gifts} هدايا)",
+      "itemsInBagNoGifts": "{count} منتجات في حقيبتك",
+      "quantity": "العدد: {qty}",
+      "subtotal": "المجموع الفرعي",
+      "serviceFee": "رسوم الخدمة",
+      "shippingFee": "رسوم الشحن",
+      "grandTotal": "المجموع الكلي",
+      "includingTaxes": "شامل الضرائب والرسوم",
+      "discount": "خصم",
+      "rajhiMokafaa": "مكافأة الراجحي",
+      "walletBalance": "رصيد المحفظة",
+      "youSaved": "وااااو 🎉 وفرت",
+      "youUsed": "وااااو 🎉 استخدمت",
+      "inThisOrder": "في هذا الطلب",
+      "totalDue": "المبلغ المستحق",
+      "cashback": "كاش باك"
+    },
+    "button": {
+      "selectAddress": "اختر عنوان",
+      "placeOrder": "تأكيد الطلب",
+      "placingOrder": "جاري تأكيد الطلب...",
+      "proceedToTabby": "المتابعة إلى تابي",
+      "proceedToTamara": "المتابعة إلى تمارا",
+      "selectDeliveryMethod": "اختر طريقة التوصيل",
+      "selectPaymentMethod": "اختر طريقة الدفع",
+      "addChangeAddress": "إضافة / تغيير العنوان",
+      "enterCvv": "أدخل رمز CVV",
+      "pleaseAddCard": "يرجى إضافة بطاقة",
+      "pay": "دفع"
+    },
+    "AddGiftWrappingDrawer": {
+      "title": "إضافة تغليف هدية",
+      "add": "إضافة",
+      "skip": "تخطي",
+      "giftItemSuccessfullyAddedToCart": "تم إضافة العنصر الهدية بنجاح",
+      "writeMessage": "اكتب رسالتك",
+      "messagePlaceholder": "سيتم طباعة هذه الرسالة على البطاقة",
+      "standardBox": "علبة أساسية",
+      "infoMessage": "سيتم طباعة رسالتك بشكل خاص على بطاقة وإرسالها مع الهدية.",
+      "readMore": "إقرأ المزيد",
+      "readLess": "إقرأ أقل",
+      "expandedMessage": "بطاقة واحدة لكل طلب. يأتي كل عنصر في صندوق Golden Scent، بدون فاتورة أو تفاصيل المرسل بالداخل.",
+      "free": "مجاناً",
+      "sections": {
+        "wrapping-with-gift": "تغليف مع هدية",
+        "wrapping-only": "تغليف فقط"
+      }
+    },
+    "errors": {
+      "selectShippingAddress": "يرجى اختيار عنوان الشحن",
+      "selectDeliveryMethod": "يرجى اختيار طريقة التوصيل",
+      "selectPaymentMethod": "يرجى اختيار طريقة الدفع",
+      "selectCardForPayment": "يرجى إضافة أو اختيار بطاقة دفع",
+      "paymentMethodsUnavailable": "طرق الدفع غير متاحة. يرجى المحاولة مرة أخرى.",
+      "failedToPlaceOrder": "فشل تأكيد الطلب",
+      "invalidPaymentMethod": "طريقة الدفع المحددة غير صحيحة",
+      "failedToSetPaymentMethod": "فشل تعيين طريقة الدفع",
+      "failedToUpdatePaymentMethod": "فشل تحديث طريقة الدفع",
+      "failedToSetShippingMethod": "فشل تعيين طريقة الشحن",
+      "failedToUpdateShippingMethod": "فشل تحديث طريقة الشحن",
+      "failedToSetBillingAddress": "فشل تعيين عنوان الفوترة",
+      "failedToUpdateShippingAddress": "فشل تحديث عنوان الشحن",
+      "signInToManageAddresses": "يرجى تسجيل الدخول لإدارة العناوين",
+      "failedToRefreshAddresses": "فشل تحديث العناوين",
+      "paymentCancelled": "تم إلغاء الدفع. تمت استعادة سلة التسوق الخاصة بك. يرجى المحاولة مرة أخرى.",
+      "paymentFailed": "فشل الدفع. تمت استعادة سلة التسوق الخاصة بك. يرجى المحاولة مرة أخرى.",
+      "lockerMethodUnavailable": "طريقة التوصيل إلى نقطة الاستلام المحددة لم تعد متاحة. يرجى اختيار طريقة توصيل أخرى.",
+      "networkError": "خطأ في الاتصال. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.",
+      "timeoutError": "انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.",
+      "bulletDeliveryMethodUnavailable": "{carrierTitle} غير متاح."
+    },
+    "messages": {
+      "orderPlacedSuccess": "تم تأكيد الطلب رقم {orderNumber} بنجاح",
+      "orderPlacedSuccessNoNumber": "تم تأكيد الطلب بنجاح",
+      "addressDeleted": "تم حذف العنوان"
+    }
+  },
+  "AddPickupPointPage": {
+    "title": "إضافة نقطة استلام",
+    "lockerLocations": "حدد موقع الاستلام",
+    "lockerLocation": "موقع الخزانة",
+    "selectPickUpLocation": "اختر موقع الاستلام",
+    "distance": "{distance} كم",
+    "distanceMeters": "{distance} م",
+    "pickUpWithin": "الاستلام خلال",
+    "operatingHours": "ساعات العمل",
+    "selectLockerButton": "اِختر",
+    "selectedLocker": "الخزانة المحددة",
+    "firstName": { "label": "الاسم الأول" },
+    "lastName": { "label": "الاسم الأخير" },
+    "mobileNumber": { "label": "رقم الجوال" },
+    "email": { "label": "الإيميل" },
+    "submitButton": "اضافة متجر إستلام",
+    "loadingLockerLocations": "يتم تحميل مواقع الخزائن...",
+    "noLockerLocationsFound": "لا توجد مواقع خزانات قريبة.",
+    "map": {
+      "yourCurrentLocation": "موقعك الحالي",
+      "gettingYourLocation": "يتم الحصول على موقعك الحالي...",
+      "locationPermissionRequired": "إذن الموقع مطلوب",
+      "pleaseAllowLocationAccess": "الرجاء تمكين إذن الموقع من الإعدادات وحاول مرة أخرى",
+      "tryAgain": "حاول مرة أخرى",
+      "searchLocation": "ابحث عن موقع"
+    },
+    "messages": {
+      "lockerAddressAddedSuccessfully": "تم إضافة عنوان الخزانة بنجاح",
+      "failedToAddLockerAddressToCart": "فشل في إضافة عنوان الخزانة إلى العربة"
+    },
+    "manualGeolocation": {
+      "title": "تعيين الموقع يدوياً (اختبار QA)",
+      "description": "أدخل إحداثيات خط العرض وخط الطول لتعيين موقعك يدوياً لأغراض الاختبار.",
+      "latitude": "خط العرض",
+      "longitude": "خط الطول",
+      "latitudeHelper": "أدخل قيمة بين -90 و 90",
+      "longitudeHelper": "أدخل قيمة بين -180 و 180",
+      "invalidCoordinates": "يرجى إدخال إحداثيات رقمية صالحة",
+      "invalidLatitude": "يجب أن يكون خط العرض بين -90 و 90",
+      "invalidLongitude": "يجب أن يكون خط الطول بين -180 و 180",
+      "save": "حفظ",
+      "clear": "مسح"
+    }
+  },
+  "AddDeliveryAddressPage": {
+    "title": "أضف عنوان جديد",
+    "giftTitle": "إضافة عنوان توصيل الهدية",
+    "map": {
+      "gettingYourLocation": "اختر العنوان من الخريطة...",
+      "locationPermissionRequired": "مطلوب إذن الموقع",
+      "locationOutsideSaudiArabia": "العنوان المحدد غير متاح",
+      "pleaseAllowLocationAccess": "يرجى تفعيل إذن الموقع للمتابعة",
+      "tryAgain": "حاول مرة أخرى",
+      "searchAddress": "ابحث عن العنوان الوطني أو الموقع",
+      "yourCurrentLocation": "موقعك الحالي",
+      "moveMapInstructions": "حرك الخريطة أو اسحب العلامة لاختيار الموقع",
+      "locateMe": "حدّد موقعي",
+      "enableLocationServices": "حرّك الخريطة عشان تحدد موقعك"
+    },
+    "steps": {
+      "homeDeliveryTitle": "التوصيل المنزلي",
+      "giftDeliveryTitle": "توصيل الهدية",
+      "homeInstructions": "ابحث واختر عنوان التوصيل",
+      "giftInstructions": "ابحث واختر عنوان توصيل الهدية",
+      "selectedAddress": "العنوان المختار",
+      "selectAddressFromMap": "اختر عنوان من الخريطة",
+      "useSearchToSelectAddress": "استخدم مربع البحث أعلاه للعثور على عنوان واختياره",
+      "confirmAddress": "تأكيد العنوان",
+      "confirmDeliveryAddress": "تأكيد عنوان التوصيل",
+      "enterAddressManually": "إدخال العنوان يدوياً",
+      "firstName": "الاسم الأول",
+      "lastName": "الاسم الأخير",
+      "mobileNumber": "رقم الجوال",
+      "receiverPhoneNumber": "رقم هاتف المستلم",
+      "recipientFirstName": "اسم المستلم الأول",
+      "recipientLastName": "اسم عائلة المستلم",
+      "city": "المدينة",
+      "district": "المنطقة",
+      "buildingNameOptional": "اسم المبنى، رقم الشقة",
+      "shortNationalAddress": "العنوان الوطني",
+      "confirming": "جاري التأكيد...",
+      "setAsDefaultAddress": "تعيين كعنوان افتراضي",
+      "incorrectNationalAddressWarning": "العنوان الوطني غير صحيح قد يؤخر التوصيل.",
+      "edit": "عدّل",
+      "loadingCities": "جاري تحميل المدن...",
+      "validatingAddressLocation": "جاري التحقق من موقع العنوان..."
+    }
+  },
+  "BrandsCategoryPage": {
+    "metaData": {
+      "title": "تسوق أفضل ماركات العطور - تسوق أونلاين على قولدن سنت",
+      "description": "اختر من بين أكثر من 700 ماركة عالمية ومحلية وأكثر من 20,000 منتج من العطور والمكياج ومنتجات العناية بالبشرة والشعر. تسوق قوتشي، شانيل، ديور وغيرها الكثير. 100% أصلي | عروض وأسعار لا تفوت",
+      "keywords": "ماركات حصرية, أشهر الماركات, ماركات العطور, أفضل الماركات"
+    },
+    "title": "ماركات أ-ي"
+  },
+  "OrderConfirmation": {
+    "heroTitle": "شكرًا لك!",
+    "heroSubtitle": "طلبك في الطريق! استعد لتجربة عطرية رائعة!",
+    "smsNotice": "تفاصيل الطلب والتواصل سيتم إرسالها إلى {phone} عبر الرسائل النصية.",
+    "emptyState": "تفاصيل الطلب ستكون متاحة قريبًا.",
+    "rateIt": "قيّم المنتج",
+    "orderTitle": "رقم الطلب #{id}",
+    "paymentMethod": "طريقة الدفع",
+    "additionalPaymentMethod": "طريقة دفع إضافية",
+    "delivery": "التوصيل",
+    "breakdownTitle": "تفاصيل الطلب",
+    "subtotal": "المجموع الفرعي",
+    "serviceFee": "رسوم الخدمة",
+    "shippingFee": "رسوم الشحن",
+    "shippingFree": "مجانًا",
+    "discount": "خصم",
+    "rajhiMokafaa": "مكافأة الراجحي",
+    "grandTotal": "المجموع الكلي",
+    "deliveryAddress": "عنوان التوصيل",
+    "fallbackDeliveryEstimate": "١ - ٣ أيام عمل",
+    "fallbackAddress": "الإمارات، دبي، مدينة دبي للإنترنت، شارع الفلك، برج الشاطئ، مكتب 1209",
+    "quantityPrefix": "×{count}",
+    "homeCta": "الرئيسية",
+    "backToHome": "عودة للصفحة الرئيسية",
+    "includingTaxes": "شامل الضرائب / الرسوم",
+    "joinHere": "انضم من هنا!",
+    "joinBannerText": "انضم لعائلة قولدن سنت عشان تاخذ كاش باك، وتتابع طلباتك وأكثر!"
+  },
+  "JoinModal": {
+    "title": "انضم إلى قولدن سنت!",
+    "description": "ضيف بريدك الإلكتروني وانضم لعائلتنا! بتقدر تتابع طلباتك، تكسب كاش باك، وتستخدمه للخصومات!",
+    "email": {
+      "label": "الإيميل",
+      "placeholder": "الإيميل"
+    },
+    "mobileNumber": {
+      "label": "رقم الجوال",
+      "placeholder": "رقم الجوال"
+    },
+    "joinButton": "أنضم",
+    "joining": "جاري الإنضمام..."
+  },
+  "RedirectPage": {
+    "redirecting": "جاري إعادة التوجيه...",
+    "redirectingToOrderConfirmation": "جاري إعادة التوجيه إلى تأكيد الطلب...",
+    "redirectingToCheckout": "جاري إعادة التوجيه إلى صفحة الدفع...",
+    "ifNotRedirected": "إذا لم يتم إعادة توجيهك تلقائيًا،",
+    "clickHere": "انقر هنا",
+    "badRequest": "طلب غير صالح",
+    "orderInfoMissing": "معلومات الطلب مفقودة أو غير صالحة."
+  },
+  "NotFoundPage": {
+    "title": "نأسف! لم نتمكن من العثور على الصفحة التي تبحث عنها.",
+    "description": "استخدم شريط البحث أو انتقل إلى الصفحة الرئيسية لمواصلة التسوق.",
+    "backToHome": "عودة للصفحة الرئيسية",
+    "continueShopping": "مواصلة التسوق"
+  },
+  "UnauthorizedPage": {
+    "message": "ليس لديك صلاحية لعرض هذه الصفحة.",
+    "redirecting": "جاري إعادة توجيهك إلى صفحة آمنة..."
+  },
+  "CommonErrors": {
+    "backendUnavailable": "الخدمة غير متاحة حاليًا. يرجى المحاولة مرة أخرى بعد قليل.",
+    "networkError": "خطأ في الاتصال. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.",
+    "timeoutError": "انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.",
+    "unknownError": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+  },
+  "CookieConsent": {
+    "title": "تفضيلات ملفات تعريف الارتباط"
+  },
+  "common": {
+    "countdownDaySuffix": "يـ"
+  }
+}

@@ -1,0 +1,130 @@
+import { unauthorized } from "next/navigation";
+
+import { getLocale } from "next-intl/server";
+
+import { AddDeliveryAddressContainer } from "@/components/checkout/add-delivery-address/add-delivery-address-container";
+import { RedirectToCheckout } from "@/components/navigation/redirect-to-checkout";
+import { AddDeliveryAddressContextProvider } from "@/contexts/add-delivery-address-context";
+import { estimateShippingMethodsAction } from "@/lib/actions/checkout/estimate-shipping-methods";
+import { getCurrentCustomer } from "@/lib/actions/customer/get-current-customer";
+import { Locale } from "@/lib/constants/i18n";
+import { getLocaleInfo } from "@/lib/utils/locale";
+import { isError, isOk, isUnauthenticated } from "@/lib/utils/service-result";
+
+interface AddDeliveryAddressPageContentProps {
+  searchParams: Promise<{
+    firstName?: string;
+    lastName?: string;
+    latitude?: string;
+    longitude?: string;
+    phoneNumber?: string;
+    type?: string;
+  }>;
+}
+
+export async function AddDeliveryAddressPageContent({
+  searchParams,
+}: AddDeliveryAddressPageContentProps) {
+  const resolvedSearchParams = await searchParams;
+  const locale = (await getLocale()) as Locale;
+
+  // Determine delivery type from search params (home_delivery or gift_delivery)
+  const deliveryType = resolvedSearchParams.type || "home_delivery";
+  const latitude = Number(resolvedSearchParams.latitude);
+  const longitude = Number(resolvedSearchParams.longitude);
+  const initialSelectedLocation =
+    Number.isFinite(latitude) && Number.isFinite(longitude)
+      ? { lat: latitude, lng: longitude }
+      : null;
+  const initialContactData =
+    resolvedSearchParams.firstName ||
+    resolvedSearchParams.lastName ||
+    resolvedSearchParams.phoneNumber
+      ? {
+          firstName: resolvedSearchParams.firstName || "",
+          lastName: resolvedSearchParams.lastName || "",
+          phoneNumber: resolvedSearchParams.phoneNumber || "",
+        }
+      : null;
+
+  const currentCustomer = await getCurrentCustomer();
+
+  if (isUnauthenticated(currentCustomer)) {
+    unauthorized();
+  }
+
+  if (isError(currentCustomer)) {
+    throw new Error(
+      currentCustomer.error || "Failed to fetch customer profile"
+    );
+  }
+
+  // Get country code from locale
+  const localeInfo = getLocaleInfo(locale);
+  // For GLOBAL locales, use 'US' as the country code
+  const countryCode = localeInfo.region === "GLOBAL" ? "US" : localeInfo.region;
+
+  // Check if delivery methods are available
+  const shippingMethodsResult = await estimateShippingMethodsAction({
+    countryCode,
+  });
+
+  if (isOk(shippingMethodsResult)) {
+    const methods = shippingMethodsResult.data.methods;
+
+    // Define expected method codes for delivery types
+    const expectedCodes = {
+      gift_delivery: ["gift_delivery", "gifting"],
+      home_delivery: ["flatrate", "flat_rate", "lambdashipping_flatrate"],
+    };
+
+    const expectedMethodCodes =
+      expectedCodes[deliveryType as keyof typeof expectedCodes] || [];
+
+    // Check if any method matches the expected codes
+    const isDeliveryMethodAvailable = methods.some((method) => {
+      if (!method.available) return false;
+
+      const methodCode = method.method_code?.toLowerCase() || "";
+      const carrierCode = method.carrier_code?.toLowerCase() || "";
+      const combined =
+        method.carrier_code && method.method_code
+          ? `${carrierCode}_${methodCode}`.toLowerCase()
+          : "";
+
+      return expectedMethodCodes.some((code) => {
+        const lowerCode = code.toLowerCase();
+        return (
+          methodCode === lowerCode ||
+          carrierCode === lowerCode ||
+          combined.includes(lowerCode) ||
+          combined.includes(`lambdashipping_${lowerCode}`)
+        );
+      });
+    });
+
+    // If home delivery method is not available, redirect to checkout
+    // (Gift delivery can proceed even without specific methods)
+    if (deliveryType === "home_delivery" && !isDeliveryMethodAvailable) {
+      return <RedirectToCheckout />;
+    }
+  }
+
+  const customerData = {
+    email: currentCustomer.data?.email,
+    firstName: currentCustomer.data?.firstName,
+    lastName: currentCustomer.data?.lastName,
+    phoneNumber: currentCustomer.data?.phoneNumber,
+  };
+
+  return (
+    <AddDeliveryAddressContextProvider
+      customerData={customerData}
+      deliveryType={deliveryType}
+      initialContactData={initialContactData}
+      initialSelectedLocation={initialSelectedLocation}
+    >
+      <AddDeliveryAddressContainer />
+    </AddDeliveryAddressContextProvider>
+  );
+}

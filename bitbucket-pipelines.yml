@@ -1,0 +1,77 @@
+image: amazon/aws-cli
+
+definitions:
+  caches:
+    nextcache: .next/cache
+pipelines:
+  branches:
+    develop:
+      - step:
+          name: "Run SonarQube Scan"
+          image: sonarsource/sonar-scanner-cli:5.0.1
+          script:
+            - git clone -b develop --single-branch https://$BITBUCKET_USERNAME:$BITBUCKET_APP_PASSWORD@bitbucket.org/goldenscent/magnext_config.git
+            - cp magnext_config/magnext_web/sonarqube-dev-project.properties .
+            - sonar-scanner -Dproject.settings=sonarqube-dev-project.properties -Dsonar.token=$SONAR_TOKEN || true
+      - step:
+          name: "Build Next.js Application"
+          image: node:24-alpine
+          size: 2x
+          caches:
+            - node
+            - nextcache
+          script:
+            # Install libc6-compat for better compatibility
+            - apk add --no-cache libc6-compat git
+
+            # Fetch environment variables first
+            - git clone -b develop --single-branch https://$BITBUCKET_USERNAME:$BITBUCKET_APP_PASSWORD@bitbucket.org/goldenscent/magnext_config.git
+            - cp magnext_config/magnext_web/.env .env
+            - cat .env
+
+            # Install dependencies
+            - npm ci --frozen-lockfile
+            # Build the application
+            - npm run build
+          artifacts:
+            - .next/standalone/**
+            - .next/static/**
+            - public/**
+            - .env
+      - step:
+          name: "Docker Build and Push"
+          services:
+            - docker
+          caches:
+            - docker
+          script:
+            - aws ecr get-login-password --region me-south-1 | docker login --username AWS --password-stdin 439413061158.dkr.ecr.me-south-1.amazonaws.com
+
+            # Build Docker image (now with pre-built Next.js app)
+            - docker build -t magnext_web .
+
+            # Tag images with latest and build number
+            - docker tag magnext_web:latest 439413061158.dkr.ecr.me-south-1.amazonaws.com/magnext_web:latest
+            - docker tag magnext_web:latest 439413061158.dkr.ecr.me-south-1.amazonaws.com/magnext_web:$BITBUCKET_BUILD_NUMBER
+            # Push images to AWS ECR
+            - docker push 439413061158.dkr.ecr.me-south-1.amazonaws.com/magnext_web:latest
+            - docker push 439413061158.dkr.ecr.me-south-1.amazonaws.com/magnext_web:$BITBUCKET_BUILD_NUMBER
+      - step:
+          name: Refresh ArgoCD App
+          image: amazon/aws-cli
+          script:
+            - yum update -y && yum install -y git
+
+            # Clone config repo
+            - git clone -b develop --single-branch https://$BITBUCKET_USERNAME:$BITBUCKET_APP_PASSWORD@bitbucket.org/goldenscent/magnext_config.git
+            - cd magnext_config/magnext_web
+
+            # Update image tag in argo.yml
+            - sed -i "s|magnext_web:[^ ]*|magnext_web:$BITBUCKET_BUILD_NUMBER|g" argo.yaml
+
+            # Commit & Push
+            - git config user.name "Bitbucket Pipelines"
+            - git config user.email "pipelines@bitbucket.org"
+            - git add argo.yaml
+            - git commit -m "Pipeline Update magnext-web image tag to $BITBUCKET_BUILD_NUMBER for ArgoCD sync"
+            - git push

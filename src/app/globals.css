@@ -1,0 +1,385 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-gilroy: var(--font-gilroy);
+  --font-cairo: var(--font-cairo);
+  --font-saudi-riyal: var(--font-saudi-riyal);
+}
+
+body.cursor-wait,
+body.cursor-wait * {
+  cursor: wait !important;
+}
+
+@theme {
+  --motion-duration-default: 0.3s linear;
+
+  --desktop-header-height: 70px;
+  --mobile-header-height: 50px;
+
+  --radius-xl: 10px;
+
+  /* ─── Text Colors ───────────────────────────────────────────────────────── */
+  --color-text-primary: #374957; /* Main text color */
+  --color-text-placeholder: #bdc2c5; /* Input placeholders */
+  --color-text-brand: #6543f5; /* Brand purple text */
+  --color-text-danger: #fe5000; /* Error/warning text */
+  --color-text-secondary: #85878a; /* Secondary text */
+  --color-text-inverse: #ffffff; /* White text on dark backgrounds */
+  --color-text-success: #c5e86c; /* Success/positive text */
+  --color-text-error: #ef3043; /* Error text */
+  --color-text-muted: #8c8c8c; /* Muted/disabled text */
+  --color-text-tertiary: #5d5d5d;
+  --color-text-ghost: #f9f9f9;
+  --color-text-accent: #76d671;
+  --color-text-info: #2568f2;
+  --color-text-teal: #00c7b1;
+
+  /* ─── Background Colors ─────────────────────────────────────────────────── */
+  --color-bg-body: #f9f9f9;
+  --color-bg-default: #ffffff;
+  --color-bg-surface: #f3f3f3; /* cards, panels */
+  --color-bg-brand: #6543f5;
+  --color-bg-success: #c5e86c;
+  --color-bg-primary: #374957;
+  --color-bg-muted: #bdc2c5;
+  --color-bg-soft: #f5f9ff;
+  --color-bg-danger: #fe5000;
+  --color-bg-warm: #fff8ec;
+  --color-bg-muted-light: #d9d9d9;
+  --color-bg-accent: #76d671;
+
+  /* ─── Button Backgrounds ───────────────────────────────────────────────── */
+  --color-btn-bg-default: #f9f9f9;
+  --color-btn-bg-success: #c5e86c;
+  --color-btn-bg-alert: #fe5000;
+  --color-btn-bg-muted: #d9d9d9;
+  --color-btn-bg-primary: #374957;
+  --color-btn-bg-warning: #ffa500;
+  --color-btn-bg-soft: #fff5f3;
+  --color-btn-bg-dark: #11293c;
+  --color-btn-bg-surface: #f3f3f3;
+  --color-btn-bg-inverse: #ffffff;
+  --color-btn-bg-slate: #5a6974;
+  --color-btn-bg-cool: #eaedf3;
+  --color-btn-bg-teal: #00c7b1;
+  --color-btn-bg-mint: #00dbc3;
+
+  /* ─── Label / Badge Backgrounds (10–12% opacity) ───────────────────────── */
+  --color-label-primary: #6543f50d;
+  --color-label-warning: #ffa5000d;
+  --color-label-info: #3749570d;
+  --color-label-error: #eb32230d;
+  --color-label-accent: #00c7b10d;
+  --color-label-success: #76d6710d;
+  --color-label-highlight: #f04e980d;
+  --color-label-secondary: #9678d30d;
+  --color-label-positive: #c5e86c0d;
+  --color-label-attention: #f6e4e21a;
+  --color-label-critical: #ce00580d;
+  --color-label-action: #2568f20d;
+  --color-label-deep: #84329b0d;
+  --color-label-warning-strong: #ffc72c0d;
+  --color-label-alert-light: #fe50000d;
+  --color-label-shadow: #0000000d;
+  --color-label-muted: #af97680d;
+  --color-label-accent-light: #00c7b11a;
+  --color-label-accent-medium: #00c7b133;
+  --color-label-muted-bg: #d9d9d9;
+
+  /* ─── Border Colors ─────────────────────────────────────────────────── */
+  --color-border-base: #f3f3f3;
+  --color-border-primary: #374957;
+  --color-border-strong: #374957;
+  --color-border-light: #f9f9f9;
+  --color-border-secondary: #85878a;
+  --color-border-danger: #fe5000;
+  --color-border-accent: #76d671;
+  --color-border-info: #2568f2;
+  --color-border-brand-soft: #6543f51a;
+  --color-border-muted: #bdc2c5;
+  --color-border-light-gray: #d9d9d9;
+  --color-border-divider: #ebebeb;
+
+  /* ─── SVG Icon Colors ───────────────────────────────────────────────────── */
+  --color-svg-icon-dark: #374957;
+  --color-svg-icon-light: #d9d9d9;
+  --color-svg-icon-brand: #6543f5;
+
+  --animate-accordion-down: accordion-down var(--motion-duration-default);
+  --animate-accordion-up: accordion-up var(--motion-duration-default);
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+
+  --animate-collapsible-down: collapsible-down var(--motion-duration-default);
+  --animate-collapsible-up: collapsible-up var(--motion-duration-default);
+
+  @keyframes collapsible-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-collapsible-content-height);
+    }
+  }
+
+  @keyframes collapsible-up {
+    from {
+      height: var(--radix-collapsible-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+
+  --animate-slide-in-from-bottom: slide-in-from-bottom
+    var(--motion-duration-default);
+  --animate-slide-out-to-bottom: slide-out-to-bottom
+    var(--motion-duration-default);
+
+  @keyframes slide-in-from-bottom {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-out-to-bottom {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+
+  --animate-slide-up-out: slide-up-out var(--motion-duration-default) forwards;
+  --animate-slide-up-in: slide-up-in var(--motion-duration-default) forwards;
+  --animate-slide-down-out: slide-down-out var(--motion-duration-default)
+    forwards;
+  --animate-slide-down-in: slide-down-in var(--motion-duration-default) forwards;
+
+  @keyframes slide-up-out {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes slide-up-in {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-down-out {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes slide-down-in {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html[data-locale="ar"] body {
+    font-family: var(--font-cairo);
+  }
+
+  html[data-locale="en"] body {
+    font-family: var(--font-gilroy);
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  html[dir="rtl"] input[type="date"] {
+    text-align: right !important;
+    direction: rtl !important;
+  }
+
+  html[dir="rtl"] input[type="date"]::-webkit-datetime-edit {
+    text-align: right !important;
+    direction: rtl !important;
+  }
+}
+
+@layer utilities {
+  .site-header:not(.is-scrolling) .sticky-header {
+    @apply -translate-y-full;
+  }
+
+  .site-header:not(.is-scrolling) .sticky-header .blur-overlay {
+    @apply invisible opacity-0;
+  }
+
+  .site-header.is-scrolling .static-header .blur-overlay {
+    @apply invisible opacity-0;
+  }
+}
+
+@utility scrollbar-hidden {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.product-carousel {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.product-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.flex.overflow-x-auto::-webkit-scrollbar {
+  display: none;
+}
+
+.flex.overflow-x-auto {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+@utility scrollbar-visible {
+  &::-webkit-scrollbar {
+    display: block;
+  }
+}
+
+@utility transition-default {
+  transition: all var(--motion-duration-default);
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+.animate-gradient-bg {
+  animation: gradientMove 5s linear forwards;
+  background-size: 200% 100%;
+}
+
+@keyframes globalLinkLoadingProgress {
+  0% {
+    transform: scaleX(0.08);
+  }
+  25% {
+    transform: scaleX(0.42);
+  }
+  55% {
+    transform: scaleX(0.7);
+  }
+  100% {
+    transform: scaleX(0.9);
+  }
+}
+
+.global-link-loading-progress-running {
+  animation: globalLinkLoadingProgress 8s cubic-bezier(0.2, 0, 0.2, 1) forwards;
+  transform-origin: left center;
+}
+
+.global-link-loading-progress-complete {
+  transform: scaleX(1);
+  transform-origin: left center;
+  transition: transform 200ms ease-out;
+}
+
+/* Safari mobile bottom navigation fix */
+@supports (-webkit-touch-callout: none) {
+  /* Safari-specific fixes for bottom navigation */
+  [data-slot="mobile-bottom-navigation"] {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: translateZ(0) !important;
+    -webkit-transform: translateZ(0) !important;
+    will-change: transform !important;
+  }
+
+  /* Ensure bottom navigation stays at bottom on Safari */
+  @media screen and (max-width: 1024px) {
+    body {
+      padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+    }
+  }
+}
+
+/* Apple Pay Button Styling - Following Apple's Guidelines
+ * https://developer.apple.com/documentation/applepayontheweb/styling-the-apple-pay-button-using-css
+ * https://css-tricks.com/snippets/css/apple-pay-buttons-in-css/
+ */
+.apple-pay-button-styled {
+  -webkit-appearance: -apple-pay-button;
+  appearance: -apple-pay-button;
+  -apple-pay-button-type: plain;
+  -apple-pay-button-style: black;
+}
+
+/* Fallback for browsers that don't support Apple Pay button styling */
+@supports not (-webkit-appearance: -apple-pay-button) {
+  .apple-pay-button-styled {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #000000;
+    background-image: -webkit-named-image(apple-pay-logo-white);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto 60%;
+  }
+}
