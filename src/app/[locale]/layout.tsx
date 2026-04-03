@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 
 import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { locale as rootLocale } from "next/root-params";
 
@@ -10,9 +11,6 @@ import { getLangDir } from "rtl-detect";
 import { Toaster } from "sonner";
 
 import { AppRootProvider } from "@/app/[locale]/_components/app-root-provider";
-import { cairo } from "@/app/fonts/cairo";
-import { gilroy } from "@/app/fonts/gilroy";
-import { saudiRiyal } from "@/app/fonts/saudi-riyal";
 import { NewRelicBrowserAgent } from "@/components/analytics/new-relic-browser-agent";
 import { JsonLdScript } from "@/components/seo/json-ld-script";
 import { SpinnerAssetsPreloader } from "@/components/ui/spinner-assets-preloader";
@@ -22,7 +20,6 @@ import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
 import { PROTOCOL } from "@/lib/constants/environment";
 import { LOCALE_TO_DOMAIN } from "@/lib/constants/i18n";
 import { Stores } from "@/lib/models/stores";
-import { cn } from "@/lib/utils";
 import { getLocaleInfo, initializePageLocale } from "@/lib/utils/locale";
 import { generateOrganizationSchema } from "@/lib/utils/schema";
 import { isOk } from "@/lib/utils/service-result";
@@ -30,6 +27,16 @@ import { isOk } from "@/lib/utils/service-result";
 import type { Locale } from "@/lib/constants/i18n";
 
 import "../globals.css";
+
+const geistSans = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist-sans",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await rootLocale();
@@ -172,12 +179,7 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body
-        className={cn(
-          "bg-bg-body antialiased",
-          gilroy.variable,
-          cairo.variable,
-          saudiRiyal.variable,
-        )}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NewRelicBrowserAgent />
         {/* Organization Schema - appears on every page */}
