@@ -21,6 +21,8 @@ const DEFAULT_NAV_ICON_COLOR = "#374957";
 const navIconClassName =
   "h-[clamp(1.25rem,7.634vw,1.75rem)] w-[clamp(1.25rem,7.634vw,1.75rem)]";
 
+const HIDE_MOBILE_BOTTOM_NAV = process.env.NEXT_PUBLIC_HIDE_MOBILE_BOTTOM_NAV === "true";
+
 export function MobileBottomNavigation() {
   const { isCart, isCategory, isCustomer, isHome } = useRouteMatch();
   const { isMobileModalOpen } = useMobileModal();
@@ -35,7 +37,7 @@ export function MobileBottomNavigation() {
     home: isHome,
   };
 
-  if (isMobileBottomNavHidden || isMobileModalOpen) return null;
+  if (isMobileBottomNavHidden || isMobileModalOpen || HIDE_MOBILE_BOTTOM_NAV) return null;
 
   return (
     <>

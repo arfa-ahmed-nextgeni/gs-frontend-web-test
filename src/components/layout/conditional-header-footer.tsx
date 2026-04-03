@@ -14,6 +14,8 @@ interface ConditionalHeaderFooterProps {
   mobileNavigation: React.ReactNode;
 }
 
+const HIDE_HEADER = process.env.NEXT_PUBLIC_HIDE_HEADER === "true";
+
 export function ConditionalHeaderFooter({
   children,
   footer,
@@ -32,7 +34,7 @@ export function ConditionalHeaderFooter({
 
   // Effective pathname: overlay routes use underlying route for layout (header/footer)
   const shouldHideHeader =
-    isAccountPage || isLoginPage || isCheckoutPage || (isCart && isMobile);
+    HIDE_HEADER || isAccountPage || isLoginPage || isCheckoutPage || (isCart && isMobile);
   const shouldHideFooter = (isCheckoutPage || !isLandingPage) && !isHome;
 
   return (
