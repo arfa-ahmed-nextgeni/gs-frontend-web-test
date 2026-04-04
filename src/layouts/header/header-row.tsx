@@ -1,8 +1,11 @@
+import { Suspense } from "react";
+
 import { AsyncBoundary } from "@/components/common/async-boundary";
 import { CartIcon } from "@/components/icons/cart-icon";
 import { GoldenScentLogo } from "@/components/icons/golden-scent-logo";
 import { MenuIcon } from "@/components/icons/menu-icon";
 import { ProfileIcon } from "@/components/icons/profile-icon";
+import { SearchBar } from "@/components/search/search-bar";
 import Container from "@/components/shared/container";
 import { Link } from "@/i18n/navigation";
 import { DeferredDesktopHeaderActions } from "@/layouts/header/deferred-desktop-header-actions";
@@ -29,9 +32,9 @@ export const HeaderRow = ({
       <Link aria-label="Home" href={ROUTES.ROOT} title="Go to homepage">
         <GoldenScentLogo />
       </Link>
-      {/* <Suspense>
+      <Suspense>
         <SearchBar isSticky={isSticky} />
-      </Suspense> */}
+      </Suspense>
     </>
   );
 

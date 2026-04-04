@@ -2,7 +2,6 @@ import Container from "@/components/shared/container";
 import { BlurOverlay } from "@/components/ui/blur-overlay";
 import { DesktopNavigation } from "@/layouts/header/desktop-navigation";
 import { HeaderRow } from "@/layouts/header/header-row";
-import { MobileNavigation } from "@/layouts/header/mobile-navigation";
 import { PromotionalBanner } from "@/layouts/header/promotional-banner";
 import { ZIndexLevel } from "@/lib/constants/ui";
 import { PromoBanner } from "@/lib/models/promo-banner";
@@ -46,11 +45,11 @@ export const HeaderBody = ({
         navigationItems={navigationItems}
       />
 
-      <MobileNavigation
+      {/* <MobileNavigation
         isSticky={isSticky}
         navigationItems={navigationItems}
         zIndexLevel={lowerZIndexLevel}
-      />
+      /> */}
 
       <BlurOverlay />
     </>
