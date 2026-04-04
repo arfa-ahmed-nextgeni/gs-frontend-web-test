@@ -9,7 +9,6 @@ import Providers from "@/app/provider/provider";
 import { CookieConsentSheetContainer } from "@/components/cookie-consent";
 import { ConditionalHeaderFooter } from "@/components/layout/conditional-header-footer";
 import { OpenAppSheetContainer } from "@/components/open-app-prompt/open-app-sheet-container";
-import { GlobalLinkLoadingBar } from "@/components/ui/global-link-loading-bar";
 import { CookieConsentProvider } from "@/contexts/cookie-consent-context";
 import { WebsiteFooterProvider } from "@/contexts/website-footer-context";
 import { Footer } from "@/layouts/footer";
@@ -67,7 +66,7 @@ export async function AppRootProvider({
       >
         <WebsiteFooterProvider websiteFooter={structuredClone(websiteFooter)}>
           <Providers dir={direction}>
-            <GlobalLinkLoadingBar />
+            {/* <GlobalLinkLoadingBar /> */}
             <ConditionalHeaderFooter
               footer={<Footer websiteFooter={websiteFooter} />}
               header={
