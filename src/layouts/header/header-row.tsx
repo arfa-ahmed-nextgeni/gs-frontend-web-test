@@ -2,19 +2,15 @@ import { Suspense } from "react";
 
 import { AsyncBoundary } from "@/components/common/async-boundary";
 import { CartIcon } from "@/components/icons/cart-icon";
-import { GoldenScentLogo } from "@/components/icons/golden-scent-logo";
 import { MenuIcon } from "@/components/icons/menu-icon";
 import { ProfileIcon } from "@/components/icons/profile-icon";
 import { SearchBar } from "@/components/search/search-bar";
 import Container from "@/components/shared/container";
-import { Link } from "@/i18n/navigation";
 import { DeferredDesktopHeaderActions } from "@/layouts/header/deferred-desktop-header-actions";
 import { DeferredMobileTopBar } from "@/layouts/header/deferred-mobile-top-bar";
 import { HeaderRowShell } from "@/layouts/header/header-row-shell";
-import { MobileMenuButton } from "@/layouts/header/mobile-menu-button";
 import { RegionLanguageSwitcher } from "@/layouts/header/region-language-switcher";
 import { RegionLanguageSwitcherSkeleton } from "@/layouts/header/region-language-switcher-skeleton";
-import { ROUTES } from "@/lib/constants/routes";
 import { ZIndexLevel } from "@/lib/constants/ui";
 import { cn } from "@/lib/utils";
 
@@ -29,9 +25,9 @@ export const HeaderRow = ({
 }) => {
   const defaultHeaderContent = (
     <>
-      <Link aria-label="Home" href={ROUTES.ROOT} title="Go to homepage">
+      {/* <Link aria-label="Home" href={ROUTES.ROOT} title="Go to homepage">
         <GoldenScentLogo />
-      </Link>
+      </Link> */}
       <Suspense>
         <SearchBar isSticky={isSticky} />
       </Suspense>
@@ -74,7 +70,7 @@ export const HeaderRow = ({
           />
         </div>
 
-        <MobileMenuButton isSticky={isSticky} />
+        {/* <MobileMenuButton isSticky={isSticky} /> */}
       </HeaderRowShell>
     </Container>
   );
