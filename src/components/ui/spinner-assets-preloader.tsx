@@ -12,7 +12,7 @@ export const SpinnerAssetsPreloader = () => {
       <Image
         alt=""
         height={1}
-        preload
+        loading="lazy"
         src={SpinnerIcon}
         unoptimized
         width={1}
@@ -20,7 +20,7 @@ export const SpinnerAssetsPreloader = () => {
       <Image
         alt=""
         height={1}
-        preload
+        loading="lazy"
         src={SpinnerDarkIcon}
         unoptimized
         width={1}
