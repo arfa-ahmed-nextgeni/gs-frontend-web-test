@@ -29,9 +29,11 @@ export function ConditionalHeaderFooter({
 }: ConditionalHeaderFooterProps) {
   return (
     <div className="flex min-h-dvh flex-col">
-      <ConditionalHeaderGate>
-        <Header navigationItems={navigationItems} promoBanner={promoBanner} />
-      </ConditionalHeaderGate>
+      {process.env.NEXT_PUBLIC_HIDE_HEADER !== "true" && (
+        <ConditionalHeaderGate>
+          <Header navigationItems={navigationItems} promoBanner={promoBanner} />
+        </ConditionalHeaderGate>
+      )}
 
       <main
         className="bg-bg-body relative grow flex-col lg:block"
@@ -45,9 +47,11 @@ export function ConditionalHeaderFooter({
         <Footer websiteFooter={websiteFooter} />
       </ConditionalFooterGate>
 
-      <ConditionalMobileNavigationGate>
-        <MobileBottomNavigation />
-      </ConditionalMobileNavigationGate>
+      {process.env.NEXT_PUBLIC_HIDE_MOBILE_BOTTOM_NAV !== "true" && (
+        <ConditionalMobileNavigationGate>
+          <MobileBottomNavigation />
+        </ConditionalMobileNavigationGate>
+      )}
     </div>
   );
 }
