@@ -27,7 +27,6 @@ import { initializePageLocale } from "@/lib/utils/locale";
 import { generateWebsiteSchema } from "@/lib/utils/schema";
 
 export default async function Page({ params }: PageProps<"/[locale]">) {
-  return null;
   const { locale } = await params;
   initializePageLocale(locale);
 
@@ -88,7 +87,7 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
               <Container
                 className={cn(
                   "lg:mt-7.5 mt-5",
-                  "[contain-intrinsic-size:0_540px] [content-visibility:auto] lg:[content-visibility:visible]",
+                  "[contain-intrinsic-size:0_540px] [content-visibility:auto] lg:[content-visibility:visible]"
                 )}
                 key={`content-${index}`}
               >
@@ -124,7 +123,7 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
               <Container
                 className={cn(
                   "lg:mt-7.5 mt-5",
-                  "[contain-intrinsic-size:0_540px] [content-visibility:auto] lg:[content-visibility:visible]",
+                  "[contain-intrinsic-size:0_540px] [content-visibility:auto] lg:[content-visibility:visible]"
                 )}
                 key={`content-${index}`}
               >
@@ -145,7 +144,7 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
               <Container
                 className={cn(
                   "lg:mt-7.5 mt-5",
-                  "[contain-intrinsic-size:0_820px] [content-visibility:auto]",
+                  "[contain-intrinsic-size:0_820px] [content-visibility:auto]"
                 )}
                 key={`content-${index}`}
               >

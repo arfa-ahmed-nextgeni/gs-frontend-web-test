@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, Suspense } from "react";
 
 import { NextIntlClientProvider } from "next-intl";
 import { getLangDir } from "rtl-detect";
@@ -7,10 +7,14 @@ import { GoogleAnalyticsWrapper } from "@/app/[locale]/_components/google-analyt
 import { GoogleTagManagerWrapper } from "@/app/[locale]/_components/google-tag-manager-wrapper";
 import Providers from "@/app/provider/provider";
 import { CookieConsentSheetContainer } from "@/components/cookie-consent";
+import { ConditionalHeaderFooter } from "@/components/layout/conditional-header-footer";
 import { OpenAppSheetContainer } from "@/components/open-app-prompt/open-app-sheet-container";
+import { GlobalLinkLoadingBar } from "@/components/ui/global-link-loading-bar";
 import { CookieConsentProvider } from "@/contexts/cookie-consent-context";
 import { WebsiteFooterProvider } from "@/contexts/website-footer-context";
+import { Footer } from "@/layouts/footer";
 import { Header } from "@/layouts/header";
+import { MobileBottomNavigation } from "@/layouts/header/mobile-bottom-navigation";
 import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
 import { Locale } from "@/lib/constants/i18n";
 import { PromoBanner } from "@/lib/models/promo-banner";
@@ -63,12 +67,8 @@ export async function AppRootProvider({
       >
         <WebsiteFooterProvider websiteFooter={structuredClone(websiteFooter)}>
           <Providers dir={direction}>
-            <Header
-              navigationItems={navigationItems}
-              promoBanner={promoBanner}
-            />
-            {/* <GlobalLinkLoadingBar /> */}
-            {/* <ConditionalHeaderFooter
+            <GlobalLinkLoadingBar />
+            <ConditionalHeaderFooter
               footer={<Footer websiteFooter={websiteFooter} />}
               header={
                 <Header
@@ -81,9 +81,9 @@ export async function AppRootProvider({
                   <MobileBottomNavigation />
                 </Suspense>
               }
-            > */}
-            {children}
-            {/* </ConditionalHeaderFooter> */}
+            >
+              {children}
+            </ConditionalHeaderFooter>
             <CookieConsentSheetContainer
               cookieConsentPrompt={structuredClone(cookieConsentPrompt)}
             />

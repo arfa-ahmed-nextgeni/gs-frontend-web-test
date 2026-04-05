@@ -1,71 +1,69 @@
-import SearchIcon from "@/components/icons/search-icon";
+import { Suspense } from "react";
+
+import { AsyncBoundary } from "@/components/common/async-boundary";
+import { CartIcon } from "@/components/icons/cart-icon";
+import { GoldenScentLogo } from "@/components/icons/golden-scent-logo";
+import { MenuIcon } from "@/components/icons/menu-icon";
+import { ProfileIcon } from "@/components/icons/profile-icon";
+import { SearchBar } from "@/components/search/search-bar";
 import Container from "@/components/shared/container";
+import { Link } from "@/i18n/navigation";
+import { DeferredDesktopHeaderActions } from "@/layouts/header/deferred-desktop-header-actions";
+import { DeferredMobileTopBar } from "@/layouts/header/deferred-mobile-top-bar";
 import { HeaderRowShell } from "@/layouts/header/header-row-shell";
+import { MobileMenuButton } from "@/layouts/header/mobile-menu-button";
+import { RegionLanguageSwitcher } from "@/layouts/header/region-language-switcher";
+import { RegionLanguageSwitcherSkeleton } from "@/layouts/header/region-language-switcher-skeleton";
+import { ROUTES } from "@/lib/constants/routes";
 import { ZIndexLevel } from "@/lib/constants/ui";
 import { cn } from "@/lib/utils";
 
 export const HeaderRow = ({
+  hoverZIndexLevel = ZIndexLevel.z25,
+  isSticky = false,
   zIndexLevel = ZIndexLevel.z40,
 }: {
   hoverZIndexLevel?: ZIndexLevel;
   isSticky?: boolean;
   zIndexLevel?: ZIndexLevel;
 }) => {
-  // const defaultHeaderContent = (
-  //   <>
-  //     {/* <Link aria-label="Home" href={ROUTES.ROOT} title="Go to homepage">
-  //       <GoldenScentLogo />
-  //     </Link> */}
-  //     <Suspense>
-  //       <SearchBar isSticky={isSticky} />
-  //     </Suspense>
-  //   </>
-  // );
+  const defaultHeaderContent = (
+    <>
+      <Link aria-label="Home" href={ROUTES.ROOT} title="Go to homepage">
+        <GoldenScentLogo />
+      </Link>
+      <Suspense>
+        <SearchBar isSticky={isSticky} />
+      </Suspense>
+    </>
+  );
 
-  // const desktopHeaderActionsFallback = (
-  //   <div aria-hidden="true" className="flex flex-row items-center gap-5">
-  //     <div className="relative flex h-auto shrink-0 transform items-center justify-center">
-  //       <CartIcon />
-  //     </div>
-  //     <div className="relative">
-  //       <div className="cart-button">
-  //         <ProfileIcon />
-  //       </div>
-  //     </div>
-  //     {isSticky ? <MenuIcon /> : null}
-  //   </div>
-  // );
+  const desktopHeaderActionsFallback = (
+    <div aria-hidden="true" className="flex flex-row items-center gap-5">
+      <div className="relative flex h-auto shrink-0 transform items-center justify-center">
+        <CartIcon />
+      </div>
+      <div className="relative">
+        <div className="cart-button">
+          <ProfileIcon />
+        </div>
+      </div>
+      {isSticky ? <MenuIcon /> : null}
+    </div>
+  );
 
   return (
     <Container
       className={cn(
         "border-border-base bg-bg-default relative border-b",
-        zIndexLevel,
+        zIndexLevel
       )}
       variant="FullWidth"
     >
       <HeaderRowShell>
-        <div className="flex-1">
-          <div className="relative z-30 mx-auto flex w-full shrink-0 flex-col justify-center">
-            <form className="relative flex w-full" noValidate role="search">
-              <span className="ltr:lg:left-7.5 rtl:lg:right-7.5 absolute top-0 flex h-full shrink-0 items-center justify-center focus:outline-none ltr:left-5 rtl:right-5">
-                <SearchIcon />
-              </span>
-              <label className="flex flex-1 items-center py-0.5">
-                <input
-                  autoComplete="off"
-                  className={cn(
-                    "rounded-4xl text-text-primary lg:ltr:pl-17.5 lg:rtl:pr-17.5 ltr:pl-12.5 rtl:pr-12.5 placeholder:text-text-placeholder bg-bg-surface focus:bg-bg-default w-full border-none py-[10px] text-base font-normal outline-none focus:border-transparent focus:ring-0 lg:text-sm ltr:pr-5 lg:ltr:pr-12 rtl:pl-5 lg:rtl:pl-12",
-                  )}
-                  placeholder="Search all brands..."
-                />
-              </label>
-            </form>
-          </div>
-        </div>
-        {/* <DeferredMobileTopBar fallback={defaultHeaderContent} /> */}
+        <DeferredMobileTopBar fallback={defaultHeaderContent} />
 
-        {/* <div className="hidden h-full flex-row gap-7 lg:flex">
+        <div className="hidden h-full flex-row gap-7 lg:flex">
           <AsyncBoundary fallback={<RegionLanguageSwitcherSkeleton />}>
             <RegionLanguageSwitcher hoverZIndexLevel={hoverZIndexLevel} />
           </AsyncBoundary>
@@ -74,9 +72,9 @@ export const HeaderRow = ({
             hoverZIndexLevel={hoverZIndexLevel}
             isSticky={isSticky}
           />
-        </div> */}
+        </div>
 
-        {/* <MobileMenuButton isSticky={isSticky} /> */}
+        <MobileMenuButton isSticky={isSticky} />
       </HeaderRowShell>
     </Container>
   );

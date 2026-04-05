@@ -12,7 +12,6 @@ export const BlurOverlay = ({
   visible?: boolean;
   zIndexClass?: string;
 }) => {
-  return null;
   const { blurZIndexLevel, clearHoverStack } = useBlurContext();
 
   const manualMode = visible !== undefined;
@@ -36,7 +35,7 @@ export const BlurOverlay = ({
         {
           "invisible opacity-0": !isShowing,
           "visible opacity-100": isShowing,
-        },
+        }
       )}
       onClick={handler}
     />
