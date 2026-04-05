@@ -5,6 +5,8 @@ export const CUSTOMER_SERVICE_TRACKING_DATA_ATTRIBUTE =
 
 export const FAQ_TRACKING_DATA_ATTRIBUTE = "data-faq-section";
 
+export const MENU_TRACKING_DATA_ATTRIBUTE = "data-menu-track";
+
 export const PRODUCT_CARD_CLICK_ORIGIN_DATA_ATTRIBUTE =
   "data-product-card-click-origin";
 

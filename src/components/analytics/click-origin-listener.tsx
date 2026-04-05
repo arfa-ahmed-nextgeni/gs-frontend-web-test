@@ -14,11 +14,13 @@ import {
   trackCsEmail,
   trackCsWhatsapp,
   trackFaqPageOpen,
+  trackMenuClick,
 } from "@/lib/analytics/events";
 import {
   BANNER_TRACKING_DATA_ATTRIBUTE,
   CUSTOMER_SERVICE_TRACKING_DATA_ATTRIBUTE,
   FAQ_TRACKING_DATA_ATTRIBUTE,
+  MENU_TRACKING_DATA_ATTRIBUTE,
   PRODUCT_CARD_CLICK_ORIGIN_DATA_ATTRIBUTE,
   SECTION_HEADER_CLICK_ORIGIN_DATA_ATTRIBUTE,
 } from "@/lib/constants/tracking-data-attributes";
@@ -26,6 +28,7 @@ import {
 const BANNER_TRACKING_SELECTOR = `[${BANNER_TRACKING_DATA_ATTRIBUTE}]`;
 const CUSTOMER_SERVICE_TRACKING_SELECTOR = `[${CUSTOMER_SERVICE_TRACKING_DATA_ATTRIBUTE}]`;
 const FAQ_TRACKING_SELECTOR = `[${FAQ_TRACKING_DATA_ATTRIBUTE}]`;
+const MENU_TRACKING_SELECTOR = `[${MENU_TRACKING_DATA_ATTRIBUTE}]`;
 const PRODUCT_CARD_CLICK_ORIGIN_SELECTOR = `[${PRODUCT_CARD_CLICK_ORIGIN_DATA_ATTRIBUTE}]`;
 const SECTION_HEADER_CLICK_ORIGIN_SELECTOR = `[${SECTION_HEADER_CLICK_ORIGIN_DATA_ATTRIBUTE}]`;
 
@@ -97,6 +100,18 @@ export function ClickOriginListener() {
         try {
           trackFaqPageOpen({ section });
         } catch {}
+      }
+
+      return;
+    }
+
+    const menuLink = target.closest(MENU_TRACKING_SELECTOR);
+
+    if (menuLink instanceof HTMLElement) {
+      const menu = menuLink.getAttribute(MENU_TRACKING_DATA_ATTRIBUTE);
+
+      if (menu) {
+        trackMenuClick(menu);
       }
 
       return;

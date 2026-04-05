@@ -1,16 +1,25 @@
 import { useRouteMatch } from "@/hooks/use-route-match";
 
-export const useIsMobileBottomNavHidden = () => {
-  const {
-    isDeleteAccount,
-    isLanguage,
-    isLogin,
-    isProduct,
-    isProfile,
-    isRegion,
-    isWallet,
-  } = useRouteMatch();
+type MobileBottomNavHiddenInput = Pick<
+  ReturnType<typeof useRouteMatch>,
+  | "isDeleteAccount"
+  | "isLanguage"
+  | "isLogin"
+  | "isProduct"
+  | "isProfile"
+  | "isRegion"
+  | "isWallet"
+>;
 
+export function getIsMobileBottomNavHidden({
+  isDeleteAccount,
+  isLanguage,
+  isLogin,
+  isProduct,
+  isProfile,
+  isRegion,
+  isWallet,
+}: MobileBottomNavHiddenInput) {
   return (
     isLogin ||
     isDeleteAccount ||
@@ -20,4 +29,8 @@ export const useIsMobileBottomNavHidden = () => {
     isProduct ||
     isWallet
   );
+}
+
+export const useIsMobileBottomNavHidden = () => {
+  return getIsMobileBottomNavHidden(useRouteMatch());
 };

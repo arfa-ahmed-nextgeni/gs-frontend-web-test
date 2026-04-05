@@ -7,21 +7,27 @@ import cn from "classnames";
 import { useCart } from "@/contexts/use-cart";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/lib/constants/routes";
+import { MENU_TRACKING_DATA_ATTRIBUTE } from "@/lib/constants/tracking-data-attributes";
 
 export const CartButton = ({
   children,
   className,
   indicatorProps,
   onClick,
+  trackingMenu,
 }: PropsWithChildren<{
   className?: string;
   indicatorProps?: ComponentProps<"span">;
   onClick?: () => void;
+  trackingMenu?: string;
 }>) => {
   const { cartHasItems } = useCart();
 
   return (
     <Link
+      {...(trackingMenu
+        ? { [MENU_TRACKING_DATA_ATTRIBUTE]: trackingMenu }
+        : undefined)}
       aria-label="Cart button"
       className={cn(
         "relative flex h-auto shrink-0 transform items-center justify-center focus:outline-none",
@@ -29,7 +35,6 @@ export const CartButton = ({
       )}
       href={ROUTES.CART.ROOT}
       onClick={onClick}
-      prefetch={false}
     >
       {children}
       {cartHasItems && (

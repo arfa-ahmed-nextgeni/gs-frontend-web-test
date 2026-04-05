@@ -7,14 +7,10 @@ import { GoogleAnalyticsWrapper } from "@/app/[locale]/_components/google-analyt
 import { GoogleTagManagerWrapper } from "@/app/[locale]/_components/google-tag-manager-wrapper";
 import Providers from "@/app/provider/provider";
 import { CookieConsentSheetContainer } from "@/components/cookie-consent";
-import { ConditionalHeaderFooter } from "@/components/layout/conditional-header-footer";
 import { OpenAppSheetContainer } from "@/components/open-app-prompt/open-app-sheet-container";
 import { GlobalLinkLoadingBar } from "@/components/ui/global-link-loading-bar";
 import { CookieConsentProvider } from "@/contexts/cookie-consent-context";
 import { WebsiteFooterProvider } from "@/contexts/website-footer-context";
-import { Footer } from "@/layouts/footer";
-import { Header } from "@/layouts/header";
-import { MobileBottomNavigation } from "@/layouts/header/mobile-bottom-navigation";
 import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
 import { Locale } from "@/lib/constants/i18n";
 import { PromoBanner } from "@/lib/models/promo-banner";
@@ -24,6 +20,7 @@ import { normalizeStyles } from "@/lib/utils/style-normalization";
 
 import type { CookieConsentPromptModel } from "@/lib/models/cookie-consent-prompt-model";
 import type { OpenAppPromptModel } from "@/lib/models/open-app-prompt-model";
+import { ConditionalHeaderFooter } from "@/components/layout/conditional-header-footer";
 
 export async function AppRootProvider({
   children,
@@ -69,18 +66,9 @@ export async function AppRootProvider({
           <Providers dir={direction}>
             <GlobalLinkLoadingBar />
             <ConditionalHeaderFooter
-              footer={<Footer websiteFooter={websiteFooter} />}
-              header={
-                <Header
-                  navigationItems={navigationItems}
-                  promoBanner={promoBanner}
-                />
-              }
-              mobileNavigation={null
-                // <Suspense>
-                //   <MobileBottomNavigation />
-                // </Suspense>
-              }
+              navigationItems={navigationItems}
+              promoBanner={promoBanner}
+              websiteFooter={websiteFooter}
             >
               {children}
             </ConditionalHeaderFooter>
