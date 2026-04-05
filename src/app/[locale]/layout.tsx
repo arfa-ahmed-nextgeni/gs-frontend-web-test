@@ -157,6 +157,8 @@ export default async function RootLayout({
   initializePageLocale(locale);
 
   const { language } = getLocaleInfo(locale);
+  const localeFontVariable =
+    language === "ar" ? cairo.variable : gilroy.variable;
 
   const direction = getLangDir(locale);
 
@@ -165,7 +167,7 @@ export default async function RootLayout({
 
   return (
     <html
-      className={`${gilroy.variable} ${cairo.variable} ${saudiRiyal.variable} antialiased`}
+      className={`${localeFontVariable} ${saudiRiyal.variable} antialiased`}
       data-locale={language}
       dir={direction}
       lang={language}
