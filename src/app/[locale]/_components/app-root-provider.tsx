@@ -76,10 +76,10 @@ export async function AppRootProvider({
                   promoBanner={promoBanner}
                 />
               }
-              mobileNavigation={
-                <Suspense>
-                  <MobileBottomNavigation />
-                </Suspense>
+              mobileNavigation={null
+                // <Suspense>
+                //   <MobileBottomNavigation />
+                // </Suspense>
               }
             >
               {children}
