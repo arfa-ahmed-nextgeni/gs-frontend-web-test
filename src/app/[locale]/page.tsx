@@ -1,5 +1,6 @@
 import { HomeTracker } from "@/components/analytics/home-tracker";
 import { BannerSliderCarousel } from "@/components/banner/banner-slider-carousel";
+import { BannerSliderSection } from "@/components/banner/banner-slider-section";
 import { WebsiteBannerComponent } from "@/components/banner/website-banner";
 import WebsiteMultipleBannersComponent from "@/components/banner/website-multiple-banners";
 import HomeCategories from "@/components/category/home-categories";
@@ -54,12 +55,12 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
           case TabContentType.BannerSlider:
             const bannerSlider = content as BannerSlider;
             return (
-              <Container className="mt-2" key={`content-${index}`}>
-                <BannerSliderCarousel
+              <Container className="mt-4" key={`content-${index}`}>
+                <BannerSliderSection
                   bannerColumn={1}
                   bannerContainerProps={{
                     className:
-                      "rounded-2xl mt-2 h-[var(--mobile-height)] lg:h-[var(--desktop-height)] overflow-hidden",
+                      "rounded-2xl h-[var(--mobile-height)] lg:h-[var(--desktop-height)] overflow-hidden",
                     style: {
                       "--desktop-height": `${bannerSlider.sliderHeight?.desktop}px`,
                       "--mobile-height": `${bannerSlider.sliderHeight?.mobile}px`,
