@@ -10,9 +10,6 @@ import { getLangDir } from "rtl-detect";
 import { Toaster } from "sonner";
 
 import { AppRootProvider } from "@/app/[locale]/_components/app-root-provider";
-import { cairo } from "@/app/fonts/cairo";
-import { gilroy } from "@/app/fonts/gilroy";
-import { saudiRiyal } from "@/app/fonts/saudi-riyal";
 import { NewRelicBrowserAgent } from "@/components/analytics/new-relic-browser-agent";
 import { JsonLdScript } from "@/components/seo/json-ld-script";
 import { SpinnerAssetsPreloader } from "@/components/ui/spinner-assets-preloader";
@@ -157,8 +154,6 @@ export default async function RootLayout({
   initializePageLocale(locale);
 
   const { language } = getLocaleInfo(locale);
-  const localeFontVariable =
-    language === "ar" ? cairo.variable : gilroy.variable;
 
   const direction = getLangDir(locale);
 
@@ -167,7 +162,6 @@ export default async function RootLayout({
 
   return (
     <html
-      className={`${localeFontVariable} ${saudiRiyal.variable} antialiased`}
       data-locale={language}
       dir={direction}
       lang={language}
