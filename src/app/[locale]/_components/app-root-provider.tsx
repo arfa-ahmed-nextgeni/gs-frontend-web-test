@@ -1,4 +1,4 @@
-import { PropsWithChildren, Suspense } from "react";
+import { PropsWithChildren } from "react";
 
 import { NextIntlClientProvider } from "next-intl";
 import { getLangDir } from "rtl-detect";
@@ -7,6 +7,7 @@ import { GoogleAnalyticsWrapper } from "@/app/[locale]/_components/google-analyt
 import { GoogleTagManagerWrapper } from "@/app/[locale]/_components/google-tag-manager-wrapper";
 import Providers from "@/app/provider/provider";
 import { CookieConsentSheetContainer } from "@/components/cookie-consent";
+import { ConditionalHeaderFooter } from "@/components/layout/conditional-header-footer";
 import { OpenAppSheetContainer } from "@/components/open-app-prompt/open-app-sheet-container";
 import { GlobalLinkLoadingBar } from "@/components/ui/global-link-loading-bar";
 import { CookieConsentProvider } from "@/contexts/cookie-consent-context";
@@ -20,7 +21,6 @@ import { normalizeStyles } from "@/lib/utils/style-normalization";
 
 import type { CookieConsentPromptModel } from "@/lib/models/cookie-consent-prompt-model";
 import type { OpenAppPromptModel } from "@/lib/models/open-app-prompt-model";
-import { ConditionalHeaderFooter } from "@/components/layout/conditional-header-footer";
 
 export async function AppRootProvider({
   children,

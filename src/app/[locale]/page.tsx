@@ -1,5 +1,4 @@
 import { HomeTracker } from "@/components/analytics/home-tracker";
-import { BannerSliderCarousel } from "@/components/banner/banner-slider-carousel";
 import { BannerSliderSection } from "@/components/banner/banner-slider-section";
 import { WebsiteBannerComponent } from "@/components/banner/website-banner";
 import WebsiteMultipleBannersComponent from "@/components/banner/website-multiple-banners";

@@ -1,21 +1,21 @@
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 
 import { getLocale, getTranslations } from "next-intl/server";
 
+import { DeviceOnlyCategoryProductsContent } from "@/components/product/device-only-category-products-content";
+import { FlashSaleCarousel } from "@/components/product/flash-sale-section/flash-sale-carousel";
 import { FlashSaleResponsiveCountdown } from "@/components/product/flash-sale-section/flash-sale-responsive-countdown";
-import { ProductCard } from "@/components/product/product-card";
 import { ContentfulImage } from "@/components/shared/contentful-image";
-import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
-import { CarouselItem } from "@/components/ui/carousel/carousel-item";
 import { Link } from "@/i18n/navigation";
 import { getBulletDeliveryEnabled } from "@/lib/actions/config/get-bullet-delivery-enabled";
 import { getProductsByCategory } from "@/lib/actions/products/get-products-by-category";
 import { Locale } from "@/lib/constants/i18n";
 import { ROUTES } from "@/lib/constants/routes";
 import { FlashSale } from "@/lib/models/flash-sale";
-import { ProductCardModel } from "@/lib/models/product-card-model";
 import { cn } from "@/lib/utils";
 import { isOk } from "@/lib/utils/service-result";
+
+import type { ProductCardModel } from "@/lib/models/product-card-model";
 
 export const FlashSaleContent = async ({
   autoSlideDelay,
@@ -154,44 +154,20 @@ export const FlashSaleContent = async ({
             {/* Products */}
             <div className="relative min-w-0 flex-1">
               {Array.isArray(products) && products.length > 0 ? (
-                <CarouselContainer
-                  carouselProps={{
-                    autoPlay: {
-                      delay: autoSlideDelay,
-                      enabled: autoSliding,
-                    },
-                    deferUntilInView: true,
-                  }}
-                  contentProps={{
-                    className: "gap-3",
-                  }}
-                  nextButtonProps={{
-                    className: "hidden", // Hide arrows on mobile
-                  }}
-                  previousButtonProps={{
-                    className: "hidden", // Hide arrows on mobile
-                  }}
+                <DeviceOnlyCategoryProductsContent
+                  device="mobile"
+                  maximumProducts={4}
+                  variant={variant}
                 >
-                  {products.map((product: any, index: number) => (
-                    <CarouselItem
-                      className="w-[190px] flex-shrink-0"
-                      key={product.id}
-                    >
-                      <ProductCard
-                        isBulletDeliveryEnabled={isBulletDeliveryEnabled}
-                        lpColumn={1}
-                        lpExtra={{
-                          row_count: products.length,
-                          style: "horizontal",
-                          type: "category-slider",
-                        }}
-                        lpInnerPosition={index + 1}
-                        lpRow={lpRow}
-                        product={product}
-                      />
-                    </CarouselItem>
-                  ))}
-                </CarouselContainer>
+                  <FlashSaleCarousel
+                    autoSlideDelay={autoSlideDelay ?? 5000}
+                    autoSliding={autoSliding ?? true}
+                    isBulletDeliveryEnabled={isBulletDeliveryEnabled}
+                    lpRow={lpRow}
+                    mode="mobile"
+                    products={products}
+                  />
+                </DeviceOnlyCategoryProductsContent>
               ) : (
                 <div className="p-4 text-center text-[#5D5D5D]">
                   No products available
@@ -224,50 +200,20 @@ export const FlashSaleContent = async ({
       >
         <div className="w-full">
           {Array.isArray(products) && products.length > 0 ? (
-            <CarouselContainer
-              carouselProps={{
-                autoPlay: {
-                  delay: autoSlideDelay,
-                  enabled: autoSliding,
-                },
-                deferUntilInView: true,
-              }}
-              nextButtonProps={{
-                className:
-                  "absolute xl:translate-x-15 xl:rtl:-translate-x-15 top-1/2 -translate-y-1/2 z-10 text-[#374957]",
-              }}
-              nextIconProps={{
-                fill: "#374957",
-              }}
-              previousButtonProps={{
-                className:
-                  "absolute -start-8 top-1/2 -translate-y-1/2 z-10 text-[#374957]",
-              }}
-              previousIconProps={{
-                fill: "#ffffff",
-                opacity: 1,
-              }}
+            <DeviceOnlyCategoryProductsContent
+              device="desktop"
+              maximumProducts={4}
+              variant={variant}
             >
-              {products.map((product: any, index: number) => (
-                <CarouselItem
-                  className="max-w-[280px] flex-shrink-0"
-                  key={product.id}
-                >
-                  <ProductCard
-                    isBulletDeliveryEnabled={isBulletDeliveryEnabled}
-                    lpColumn={1}
-                    lpExtra={{
-                      row_count: products.length,
-                      style: "horizontal",
-                      type: "category-slider",
-                    }}
-                    lpInnerPosition={index + 1}
-                    lpRow={lpRow}
-                    product={product}
-                  />
-                </CarouselItem>
-              ))}
-            </CarouselContainer>
+              <FlashSaleCarousel
+                autoSlideDelay={autoSlideDelay ?? 5000}
+                autoSliding={autoSliding ?? true}
+                isBulletDeliveryEnabled={isBulletDeliveryEnabled}
+                lpRow={lpRow}
+                mode="desktop"
+                products={products}
+              />
+            </DeviceOnlyCategoryProductsContent>
           ) : (
             <div className="w-full rounded-2xl bg-white/20 p-8 text-center text-gray-600">
               {!saleProductCategoryId

@@ -1,18 +1,18 @@
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { SectionHeader } from "@/components/common/section-header";
-import { ProductCard } from "@/components/product/product-card";
+import { DeviceOnlyCategoryProductsContent } from "@/components/product/device-only-category-products-content";
 import { TopTrendsBannerImage } from "@/components/product/top-trends-section/top-trends-banner-image";
+import { TopTrendsCarousel } from "@/components/product/top-trends-section/top-trends-carousel";
 import { TopTrendsCashbackCard } from "@/components/product/top-trends-section/top-trends-cashback-card";
-import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
-import { CarouselItem } from "@/components/ui/carousel/carousel-item";
 import { getBulletDeliveryEnabled } from "@/lib/actions/config/get-bullet-delivery-enabled";
 import { getProductsByCategory } from "@/lib/actions/products/get-products-by-category";
 import { Locale } from "@/lib/constants/i18n";
 import { ROUTES } from "@/lib/constants/routes";
-import { ProductCardModel } from "@/lib/models/product-card-model";
 import { TopTrendsCategoryProducts } from "@/lib/models/top-trends-category-products";
 import { isOk } from "@/lib/utils/service-result";
+
+import type { ProductCardModel } from "@/lib/models/product-card-model";
 
 export const TopTrendsContent = async ({
   autoSliding,
@@ -62,28 +62,6 @@ export const TopTrendsContent = async ({
 
   if (!products?.length) return null;
 
-  const renderCategoryProducts = () => {
-    return products?.map((product, index) => (
-      <CarouselItem
-        id={`${carouselIdPrefix}-carousel-item-${index}`}
-        key={`${product.id}`}
-      >
-        <ProductCard
-          isBulletDeliveryEnabled={isBulletDeliveryEnabled}
-          lpColumn={1}
-          lpExtra={{
-            row_count: products.length,
-            style: "horizontal",
-            type: "category-slider",
-          }}
-          lpInnerPosition={index + 1}
-          lpRow={lpRow}
-          product={product}
-        />
-      </CarouselItem>
-    ));
-  };
-
   return (
     <div className="gap-4.5 flex flex-col">
       {/* Top banner - mobile only */}
@@ -126,31 +104,20 @@ export const TopTrendsContent = async ({
             }}
           />
           {Array.isArray(products) && products.length > 0 && (
-            <CarouselContainer
-              carouselProps={{
-                autoPlay: {
-                  delay: autoSliding?.delay,
-                  enabled: autoSliding?.enabled,
-                },
-                deferUntilInView: true,
-              }}
-              nextButtonProps={{
-                className: "-end-9",
-              }}
-              nextIconProps={{
-                fill: "#FFFFFF",
-                opacity: 1,
-              }}
-              previousButtonProps={{
-                className: "-start-9",
-              }}
-              previousIconProps={{
-                fill: "#FFFFFF",
-                opacity: 1,
-              }}
+            <DeviceOnlyCategoryProductsContent
+              device="mobile"
+              maximumProducts={2}
+              variant={variant}
             >
-              {renderCategoryProducts()}
-            </CarouselContainer>
+              <TopTrendsCarousel
+                autoSliding={autoSliding}
+                carouselIdPrefix={carouselIdPrefix}
+                isBulletDeliveryEnabled={isBulletDeliveryEnabled}
+                lpRow={lpRow}
+                mode="mobile"
+                products={products}
+              />
+            </DeviceOnlyCategoryProductsContent>
           )}
         </div>
       </div>
@@ -232,36 +199,20 @@ export const TopTrendsContent = async ({
           <div className="relative">
             <div className="px-12">
               {Array.isArray(products) && products.length > 0 && (
-                <CarouselContainer
-                  carouselProps={{
-                    autoPlay: {
-                      delay: autoSliding?.delay,
-                      enabled: autoSliding?.enabled,
-                    },
-                    deferUntilInView: true,
-                  }}
-                  dotsProps={{
-                    className: "-bottom-10",
-                    idPrefix: carouselIdPrefix,
-                    visible: true,
-                  }}
-                  nextButtonProps={{
-                    className: "-end-9",
-                  }}
-                  nextIconProps={{
-                    fill: "#FFFFFF",
-                    opacity: 1,
-                  }}
-                  previousButtonProps={{
-                    className: "-start-9",
-                  }}
-                  previousIconProps={{
-                    fill: "#FFFFFF",
-                    opacity: 1,
-                  }}
+                <DeviceOnlyCategoryProductsContent
+                  device="desktop"
+                  maximumProducts={2}
+                  variant={variant}
                 >
-                  {renderCategoryProducts()}
-                </CarouselContainer>
+                  <TopTrendsCarousel
+                    autoSliding={autoSliding}
+                    carouselIdPrefix={carouselIdPrefix}
+                    isBulletDeliveryEnabled={isBulletDeliveryEnabled}
+                    lpRow={lpRow}
+                    mode="desktop"
+                    products={products}
+                  />
+                </DeviceOnlyCategoryProductsContent>
               )}
             </div>
           </div>

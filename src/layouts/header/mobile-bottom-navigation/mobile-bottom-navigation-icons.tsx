@@ -1,11 +1,11 @@
 import type { SVGAttributes } from "react";
 
 type MobileBottomNavigationIconProps = {
-  color: string;
+  color?: string;
 } & SVGAttributes<SVGSVGElement>;
 
 export function MobileBottomNavigationBagIcon({
-  color,
+  color = "currentColor",
   ...props
 }: MobileBottomNavigationIconProps) {
   return (
@@ -24,7 +24,7 @@ export function MobileBottomNavigationBagIcon({
 }
 
 export function MobileBottomNavigationCategoryIcon({
-  color,
+  color = "currentColor",
   ...props
 }: MobileBottomNavigationIconProps) {
   return (
@@ -43,7 +43,7 @@ export function MobileBottomNavigationCategoryIcon({
 }
 
 export function MobileBottomNavigationHomeIcon({
-  color,
+  color = "currentColor",
   ...props
 }: MobileBottomNavigationIconProps) {
   return (
@@ -62,7 +62,7 @@ export function MobileBottomNavigationHomeIcon({
 }
 
 export function MobileBottomNavigationProfileIcon({
-  color,
+  color = "currentColor",
   ...props
 }: MobileBottomNavigationIconProps) {
   return (
