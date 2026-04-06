@@ -169,7 +169,7 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body className="bg-bg-body antialiased">
-        <LocaleFontPreload language={preloadLanguage} />
+        {/* <LocaleFontPreload language={preloadLanguage} /> */}
         <NewRelicBrowserAgent />
         {/* Organization Schema - appears on every page */}
         <JsonLdScript data={organizationSchema} id="organization-schema" />
