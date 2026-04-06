@@ -1,10 +1,25 @@
 @import "tailwindcss";
 
-/* @theme inline {
-  --font-gilroy: var(--font-gilroy);
-  --font-cairo: var(--font-cairo);
-  --font-saudi-riyal: var(--font-saudi-riyal);
-} */
+@font-face {
+  font-display: swap;
+  font-family: "Cairo Fallback";
+  font-style: normal;
+  font-weight: 200 900;
+  src: url("./fonts/cairo/cairo-variable-font.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Gilroy Fallback";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./fonts/gilroy/gilroy-regular.woff2") format("woff2");
+}
+
+@theme inline {
+  --font-gilroy: var(--font-gilroy, "Gilroy Fallback");
+  --font-cairo: var(--font-cairo, "Cairo Fallback");
+}
 
 body.cursor-wait,
 body.cursor-wait * {

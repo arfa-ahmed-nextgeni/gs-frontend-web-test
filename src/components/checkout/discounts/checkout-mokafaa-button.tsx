@@ -10,6 +10,8 @@ import CloseIcon from "@/assets/icons/close-icon.svg";
 import PlusIcon from "@/assets/icons/plus-icon.svg";
 import VectorIcon from "@/assets/icons/vector-icon.svg";
 import { RotatingIcon } from "@/components/cart/order/order-summary/order-summary-helpers";
+import { LocalizedPrice } from "@/components/shared/localized-price";
+import { useStoreConfig } from "@/contexts/store-config-context";
 
 interface CheckoutMokafaaButtonProps {
   amount: number;
@@ -21,7 +23,9 @@ export function CheckoutMokafaaButton({
   onToggle,
 }: CheckoutMokafaaButtonProps) {
   const t = useTranslations("CartPage.orderSummary.actions");
+  const { storeConfig } = useStoreConfig();
   const [isApplied, setIsApplied] = useState(false);
+  const currencyCode = storeConfig?.currencyCode || "SAR";
 
   const handleClick = () => {
     const newState = !isApplied;
@@ -41,15 +45,15 @@ export function CheckoutMokafaaButton({
           <span>
             {t.rich("mokafaaUsed", {
               amount: () => (
-                <span className="inline-flex items-center">
-                  <span
-                    className="font-saudi-riyal relative ml-1 leading-none"
-                    dir="ltr"
-                  >
-                    &#xE900;
-                  </span>
-                  <span className="mr-0.5 font-semibold">{amount}</span>
-                </span>
+                <LocalizedPrice
+                  containerProps={{
+                    className: "ml-1 inline-flex items-center",
+                  }}
+                  price={`${amount} ${currencyCode}`}
+                  valueProps={{
+                    className: "mr-0.5 font-semibold",
+                  }}
+                />
               ),
               b: (chunks) => (
                 <span className="text-btn-bg-teal font-medium">{chunks}</span>

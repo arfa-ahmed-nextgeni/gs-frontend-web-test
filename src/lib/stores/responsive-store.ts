@@ -5,7 +5,7 @@ import type { BreakpointKey } from "@/lib/types/ui-types";
 type Listener = () => void;
 type MediaQueries = Record<BreakpointKey, MediaQueryList>;
 
-const DEFAULT_BREAKPOINT: BreakpointKey = "sm";
+const DEFAULT_BREAKPOINT: BreakpointKey = "lg";
 const listeners = new Set<Listener>();
 
 let currentBreakpoint: BreakpointKey = DEFAULT_BREAKPOINT;

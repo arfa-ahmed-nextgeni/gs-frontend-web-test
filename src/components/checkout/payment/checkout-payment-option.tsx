@@ -4,6 +4,8 @@ import Image from "next/image";
 
 import { useTranslations } from "next-intl";
 
+import { LocalizedPrice } from "@/components/shared/localized-price";
+
 interface CheckoutPaymentOptionProps {
   icon: string;
   isSelected: boolean;
@@ -45,12 +47,10 @@ export function CheckoutPaymentOption({
                 ? secondary.split(secondaryPrice)[0]
                 : null}
               {typeof secondary === "string" && secondaryPrice && (
-                <span className="inline-flex items-center">
-                  <span className="font-saudi-riyal relative leading-none">
-                    &#xE900;
-                  </span>
-                  {secondaryPrice}
-                </span>
+                <LocalizedPrice
+                  containerProps={{ className: "inline-flex items-center" }}
+                  price={secondaryPrice}
+                />
               )}
               {typeof secondary === "string" && secondaryPrice
                 ? secondary.split(secondaryPrice)[1]

@@ -4,7 +4,9 @@ import { ChangeEvent, ComponentProps } from "react";
 
 import { useTranslations } from "next-intl";
 
+import { useStoreConfig } from "@/contexts/store-config-context";
 import { cn } from "@/lib/utils";
+import { findCurrencyConfig } from "@/lib/utils/price";
 
 export const CategoryPriceInput = ({
   containerProps,
@@ -32,6 +34,8 @@ export const CategoryPriceInput = ({
   value?: null | number;
 }) => {
   const t = useTranslations("category.filtersSection.priceRangeFilter");
+  const { storeConfig } = useStoreConfig();
+  const currencyCode = storeConfig?.currencyCode || "SAR";
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
@@ -80,11 +84,11 @@ export const CategoryPriceInput = ({
         <span
           {...currencyProps}
           className={cn(
-            "font-saudi-riyal text-text-primary absolute inset-y-0 start-0 flex items-center ps-2 text-xs font-normal",
+            "text-text-primary font-gilroy absolute inset-y-0 start-0 flex items-center ps-2 text-xs font-normal",
             currencyProps?.className
           )}
         >
-          &#xE900;
+          {findCurrencyConfig(currencyCode)?.symbol || "$"}
         </span>
         <input
           {...inputProps}

@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 
 export const gilroy = localFont({
   display: "swap",
+  preload: false,
   src: "./gilroy-regular.woff2",
   // src: [
   //   {

@@ -6,6 +6,37 @@ type FormatPriceOpts = {
 };
 
 const formatterCache = new Map<string, Intl.NumberFormat>();
+const currencyConfig = {
+  AED: {
+    match: [/AED/i, /د\.إ/],
+    symbol: "<",
+  },
+  SAR: {
+    match: [/SAR/i, /ر\.س/],
+    symbol: ">",
+  },
+} as const;
+
+type SupportedCurrencyCode = keyof typeof currencyConfig;
+
+export function findCurrencyConfig(price?: string) {
+  const match = (
+    Object.entries(currencyConfig) as Array<
+      [SupportedCurrencyCode, (typeof currencyConfig)[SupportedCurrencyCode]]
+    >
+  ).find(([, config]) => config.match.some((regex) => regex.test(price || "")));
+
+  if (!match) {
+    return null;
+  }
+
+  const [code, config] = match;
+
+  return {
+    code,
+    ...config,
+  };
+}
 
 export function formatPrice({
   amount,

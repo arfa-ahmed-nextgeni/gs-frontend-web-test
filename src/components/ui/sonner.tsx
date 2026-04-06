@@ -168,13 +168,11 @@ const CustomToast = ({
 
         <div className="flex flex-1 flex-col gap-1">
           <span
-            className="font-gilroy rtl:font-cairo text-base font-bold text-gray-900 drop-shadow-sm"
+            className="text-base font-bold text-gray-900 drop-shadow-sm"
             dangerouslySetInnerHTML={{ __html: title }}
           />
           {description && (
-            <span className="font-gilroy rtl:font-cairo text-sm text-gray-700">
-              {description}
-            </span>
+            <span className="text-sm text-gray-700">{description}</span>
           )}
           {actionButton && (
             <button

@@ -1,17 +1,7 @@
 import { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
-
-const currencyConfig = {
-  AED: {
-    match: [/AED/, /د\.إ/],
-    symbol: "<",
-  },
-  SAR: {
-    match: [/SAR/, /ر\.س/],
-    symbol: ">",
-  },
-} as const;
+import { findCurrencyConfig } from "@/lib/utils/price";
 
 export const LocalizedPrice = ({
   containerProps,
@@ -24,9 +14,7 @@ export const LocalizedPrice = ({
   price?: string;
   valueProps?: ComponentProps<"span">;
 }) => {
-  const config = Object.values(currencyConfig).find((cfg) =>
-    cfg.match.some((regex) => regex.test(price || ""))
-  );
+  const config = findCurrencyConfig(price);
 
   const cleanedPrice = config
     ? config.match.reduce(

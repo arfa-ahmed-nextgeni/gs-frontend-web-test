@@ -97,9 +97,8 @@ export const BannerSliderCarousel = ({
               fetchPriority={index === 0 ? "high" : undefined}
               fill
               loading={index === 0 ? "eager" : "lazy"}
-              placeholder={getShimmerPlaceholder()}
-              preload={index === 0}
-              sizes="(max-width: 1200px) 80vw, 1200px"
+              placeholder={index === 0 ? "empty" : getShimmerPlaceholder()}
+              sizes="(max-width: 1200px) calc(100vw - 20px), 1200px"
               src={banner.image.desktop.url}
             />
           </BannerTrackerLink>

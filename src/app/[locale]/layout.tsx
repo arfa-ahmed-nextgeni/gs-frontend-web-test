@@ -154,6 +154,10 @@ export default async function RootLayout({
   initializePageLocale(locale);
 
   const { language } = getLocaleInfo(locale);
+  const localeFont =
+    language === "ar"
+      ? (await import("@/app/fonts/cairo")).cairo
+      : (await import("@/app/fonts/gilroy")).gilroy;
 
   const direction = getLangDir(locale);
 
@@ -162,6 +166,7 @@ export default async function RootLayout({
 
   return (
     <html
+      className={`${localeFont.variable} antialiased`}
       data-locale={language}
       dir={direction}
       lang={language}

@@ -4,8 +4,12 @@ import {
 } from "@contentful/rich-text-react-renderer";
 import { BLOCKS } from "@contentful/rich-text-types";
 
+import { LocalizedPrice } from "@/components/shared/localized-price";
 import { Link } from "@/i18n/navigation";
 import { PromoBanner } from "@/lib/models/promo-banner";
+
+const PRICE_SPLIT_PATTERN = /(-?\d[\d,]*(?:\.\d+)?\s*(?:AED|SAR|د\.إ|ر\.س))/gi;
+const PRICE_TOKEN_PATTERN = /^-?\d[\d,]*(?:\.\d+)?\s*(?:AED|SAR|د\.إ|ر\.س)$/i;
 
 const renderOptions: Options = {
   renderNode: {
@@ -15,22 +19,16 @@ const renderOptions: Options = {
     ),
   },
   renderText: (text) => {
-    const TOKEN = "&#xE900;";
-    const parts = text.split(TOKEN);
-
-    return parts.flatMap((part, i) =>
-      i === 0
-        ? [part]
-        : [
-            <span
-              className="font-saudi-riyal top-0.25 relative ltr:-right-0.5 rtl:-left-0.5"
-              key={`riyalsym-${i}`}
-            >
-              &#xE900;
-            </span>,
-            part,
-          ]
-    );
+    return text
+      .split(PRICE_SPLIT_PATTERN)
+      .filter(Boolean)
+      .map((part, index) =>
+        PRICE_TOKEN_PATTERN.test(part) ? (
+          <LocalizedPrice key={`price-${index}`} price={part} />
+        ) : (
+          part
+        )
+      );
   },
 };
 

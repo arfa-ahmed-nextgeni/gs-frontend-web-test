@@ -7,6 +7,8 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 import RiyalIcon from "@/assets/icons/riyal-icon.svg";
+import { LocalizedPrice } from "@/components/shared/localized-price";
+import { useStoreConfig } from "@/contexts/store-config-context";
 
 interface CheckoutWalletToggleProps {
   balance: number;
@@ -18,7 +20,9 @@ export function CheckoutWalletToggle({
   onToggle,
 }: CheckoutWalletToggleProps) {
   const t = useTranslations("CheckoutPage.discounts");
+  const { storeConfig } = useStoreConfig();
   const [isEnabled, setIsEnabled] = useState(false);
+  const currencyCode = storeConfig?.currencyCode || "SAR";
 
   const handleToggle = () => {
     const newState = !isEnabled;
@@ -34,16 +38,16 @@ export function CheckoutWalletToggle({
       <span className="flex items-center gap-2 text-[15px] font-normal">
         <Image alt="wallet" className="h-5 w-5" src={RiyalIcon} />
         <span className="inline-flex items-center">
-          {t("useWallet")}{" "}
-          <div className="inline-flex items-center" dir="ltr">
-            <span
-              className="font-saudi-riyal relative ml-1 leading-none"
-              dir="ltr"
-            >
-              &#xE900;
-            </span>
-            <span className="mr-0.5 font-semibold">{balance}</span>{" "}
-          </div>
+          {t("useWallet")}
+          <LocalizedPrice
+            containerProps={{
+              className: "ml-1 inline-flex items-center",
+            }}
+            price={`${balance} ${currencyCode}`}
+            valueProps={{
+              className: "mr-0.5 font-semibold",
+            }}
+          />
           {t("fromWallet")}
         </span>
       </span>

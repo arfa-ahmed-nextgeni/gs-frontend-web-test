@@ -1,6 +1,10 @@
+"use client";
+
 import { useTranslations } from "next-intl";
 
+import { useStoreConfig } from "@/contexts/store-config-context";
 import { PRICE_RANGE_BOUNDS } from "@/lib/constants/category/category-filters";
+import { findCurrencyConfig } from "@/lib/utils/price";
 
 export const CategoryPriceInputSkeleton = ({
   type,
@@ -8,6 +12,8 @@ export const CategoryPriceInputSkeleton = ({
   type: "max" | "min";
 }) => {
   const t = useTranslations("category.filtersSection.priceRangeFilter");
+  const { storeConfig } = useStoreConfig();
+  const currencyCode = storeConfig?.currencyCode || "SAR";
 
   const value =
     type === "min" ? PRICE_RANGE_BOUNDS.MIN : PRICE_RANGE_BOUNDS.MAX;
@@ -19,8 +25,8 @@ export const CategoryPriceInputSkeleton = ({
         {label}
       </label>
       <div className="relative">
-        <span className="font-saudi-riyal text-text-primary absolute inset-y-0 start-0 flex items-center ps-2 text-xs font-normal">
-          &#xE900;
+        <span className="text-text-primary font-gilroy absolute inset-y-0 start-0 flex items-center ps-2 text-xs font-normal">
+          {findCurrencyConfig(currencyCode)?.symbol || "$"}
         </span>
         <input
           className="w-16.25 bg-bg-surface focus:border-border-primary focus:bg-bg-body text-text-primary focus:outline-border-primary block rounded-2xl border-none py-1.5 pe-2 ps-6 text-xs font-normal [appearance:textfield] focus:outline-[0.5px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"

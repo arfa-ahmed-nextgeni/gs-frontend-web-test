@@ -7,6 +7,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import CoinsSvg from "@/assets/images/Coins.svg";
 import { WalletBalanceCardLink } from "@/components/customer/wallet-balance-card-link";
+import { LocalizedPrice } from "@/components/shared/localized-price";
 import { CurrencyEnum } from "@/graphql/graphql";
 import { getStoreConfig } from "@/lib/actions/config/get-store-config";
 import { Locale } from "@/lib/constants/i18n";
@@ -51,16 +52,20 @@ export const WalletBalanceCard = async ({
           <p className={cn("text-xl font-medium text-[#374957]")}>
             {t("WalletBalanceCard.title")}
           </p>
-          <div
-            className={cn(
-              "font-gilroy -mt-4 items-center font-medium text-[#374957]"
-            )}
-          >
-            <span className="font-saudi-riyal text-[40px]">&#xE900;</span>
-            <span className="font-gilroy text-[75px]">
-              {balance?.value || 0}
-            </span>
-          </div>
+          <LocalizedPrice
+            containerProps={{
+              className: cn(
+                "font-gilroy -mt-4 inline-flex items-center font-medium text-[#374957]"
+              ),
+            }}
+            currencySymbolProps={{
+              className: "text-[40px]",
+            }}
+            price={`${balance?.value || 0} ${balance?.currency || CurrencyEnum.Sar}`}
+            valueProps={{
+              className: "text-[75px]",
+            }}
+          />
         </div>
       </div>
 
