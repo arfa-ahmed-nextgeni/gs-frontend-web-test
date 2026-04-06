@@ -23,17 +23,13 @@
     "GoldenScent Cairo", ui-sans-serif, system-ui, sans-serif;
 } */
 
-@theme inline {
-  --font-gilroy: var(--font-gilroy);
-}
-
-html[data-locale="ar"] {
+/* html[data-locale="ar"] {
   font-family: var(--font-cairo);
 }
 
 html[data-locale="en"] {
   font-family: var(--font-gilroy);
-}
+} */
 
 body.cursor-wait,
 body.cursor-wait * {
@@ -255,6 +251,14 @@ body.cursor-wait * {
 @layer base {
   html {
     -webkit-tap-highlight-color: transparent;
+  }
+
+  html[data-locale="ar"] body {
+    font-family: var(--font-cairo);
+  }
+
+  html[data-locale="en"] body {
+    font-family: var(--font-gilroy);
   }
 
   button {

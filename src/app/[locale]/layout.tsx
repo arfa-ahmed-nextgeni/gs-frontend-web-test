@@ -28,6 +28,7 @@ import { isOk } from "@/lib/utils/service-result";
 import type { Locale } from "@/lib/constants/i18n";
 
 import "../globals.css";
+import { cn } from "@/lib/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await rootLocale();
@@ -168,9 +169,8 @@ export default async function RootLayout({
       dir={direction}
       lang={language}
       suppressHydrationWarning
-      className={gilroy.variable}
     >
-      <body className="bg-bg-body antialiased">
+      <body className={cn("bg-bg-body antialiased", gilroy.variable)}>
         {/* <LocaleFontPreload language={preloadLanguage} /> */}
         <NewRelicBrowserAgent />
         {/* Organization Schema - appears on every page */}
