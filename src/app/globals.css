@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@font-face {
+/* @font-face {
   font-display: swap;
   font-family: "GoldenScent Cairo";
   font-style: normal;
@@ -21,6 +21,10 @@
     "GoldenScent Gilroy", ui-sans-serif, system-ui, sans-serif;
   --font-cairo:
     "GoldenScent Cairo", ui-sans-serif, system-ui, sans-serif;
+} */
+
+@theme inline {
+  --font-gilroy: var(--font-gilroy);
 }
 
 html[data-locale="ar"] {

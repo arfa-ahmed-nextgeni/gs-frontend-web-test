@@ -9,9 +9,10 @@ import { getTranslations } from "next-intl/server";
 import { getLangDir } from "rtl-detect";
 import { Toaster } from "sonner";
 
+import { gilroy } from "@/app/fonts/gilroy";
 import { AppRootProvider } from "@/app/[locale]/_components/app-root-provider";
 import { NewRelicBrowserAgent } from "@/components/analytics/new-relic-browser-agent";
-import { LocaleFontPreload } from "@/components/common/locale-font-preload";
+// import { LocaleFontPreload } from "@/components/common/locale-font-preload";
 import { JsonLdScript } from "@/components/seo/json-ld-script";
 import { SpinnerAssetsPreloader } from "@/components/ui/spinner-assets-preloader";
 import { routing } from "@/i18n/routing";
@@ -167,6 +168,7 @@ export default async function RootLayout({
       dir={direction}
       lang={language}
       suppressHydrationWarning
+      className={gilroy.variable}
     >
       <body className="bg-bg-body antialiased">
         {/* <LocaleFontPreload language={preloadLanguage} /> */}
