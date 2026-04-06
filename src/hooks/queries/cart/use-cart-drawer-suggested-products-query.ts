@@ -7,7 +7,7 @@ import { QUERY_KEYS } from "@/lib/constants/query-keys";
 import { isOk } from "@/lib/utils/service-result";
 
 import type { Locale } from "@/lib/constants/i18n";
-import type { ProductCardModel } from "@/lib/models/product-card-model";
+import type { CartSuggestedProductsApiData } from "@/lib/types/cart-suggested-products";
 
 export const useCartDrawerSuggestedProductsQuery = ({
   enabled,
@@ -15,16 +15,20 @@ export const useCartDrawerSuggestedProductsQuery = ({
   enabled: boolean;
 }) => {
   const locale = useLocale() as Locale;
+  const emptyData: CartSuggestedProductsApiData = {
+    products: [],
+    title: "",
+  };
 
   return useQuery({
     enabled,
     queryFn: async () => {
-      const response = await appApiRequest<ProductCardModel[]>({
+      const response = await appApiRequest<CartSuggestedProductsApiData>({
         endpoint: APP_API_ENDPOINTS.CART.SUGGESTED_PRODUCTS(locale),
       });
 
       if (!isOk(response)) {
-        return [];
+        return emptyData;
       }
 
       return response.data;

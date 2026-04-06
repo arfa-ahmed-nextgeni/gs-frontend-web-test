@@ -51,6 +51,18 @@ export type BannerSliderData = {
   title: string;
 };
 
+export type CartSuggestedProductsData = {
+  emptyCartFallbackCategoryId?: string;
+  emptyCartFallbackRichTitle?: Document;
+  emptyCartFallbackTitle?: string;
+  enabled?: boolean;
+  internalName: string;
+  maximumProducts: number;
+  richTitle?: Document;
+  suggestedProductsCategoryId: string;
+  title: string;
+};
+
 export type CategoryProductsData = {
   bundlesVariant?: boolean;
   grid?: boolean;
@@ -207,6 +219,7 @@ export type PageLandingData = {
         tabContent: {
           fields?:
             | BannerSliderData
+            | CartSuggestedProductsData
             | CategoryProductsData
             | CookieConsentPromptData
             | DesktopCategoriesData

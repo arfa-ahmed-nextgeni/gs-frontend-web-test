@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 import { hasLocale } from "next-intl";
 
@@ -8,12 +8,23 @@ import { searchProductsByAttributeAction } from "@/lib/actions/catalog-service/s
 import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
 import { type Locale } from "@/lib/constants/i18n";
 import { QueryParamsKey } from "@/lib/constants/query-params";
-import { CategoryProducts } from "@/lib/models/category-products";
-import { TabContentType } from "@/lib/models/page-landing";
-import { ProductCardModel } from "@/lib/models/product-card-model";
 import { failure, isOk, ok } from "@/lib/utils/service-result";
 
-const getSuggestedProductsCategory = async (locale: Locale) => {
+import type { ProductCardModel } from "@/lib/models/product-card-model";
+import type { CartSuggestedProductsApiData } from "@/lib/types/cart-suggested-products";
+
+const EMPTY_CART_SUGGESTED_PRODUCTS: CartSuggestedProductsApiData = {
+  products: [],
+  title: "",
+};
+
+const getSuggestedProductsCategory = async (
+  locale: Locale
+): Promise<{
+  categoryId: string;
+  maximumProducts: number;
+  title: string;
+} | null> => {
   const cartDetailsResult = await getCartDetails({
     locale,
     page: 1,
@@ -24,17 +35,32 @@ const getSuggestedProductsCategory = async (locale: Locale) => {
     ? cartDetailsResult.data?.items.length || 0
     : 0;
 
-  const categoryTitleToSearch = cartItemsCount > 0 ? "FBT" : "Best Sellers";
-
   const pageLandingData = await getPageLandingData({ locale });
+  const suggestedProducts = pageLandingData.cartSuggestedProducts;
 
-  const categoryData = pageLandingData.contents?.find(
-    (content) =>
-      content.contentType === TabContentType.CategoryProducts &&
-      (content as CategoryProducts).title === categoryTitleToSearch
-  ) as CategoryProducts | undefined;
+  if (!suggestedProducts?.enabled) {
+    return null;
+  }
 
-  return categoryData?.productsCategoryId;
+  const useFallback =
+    cartItemsCount === 0 && !!suggestedProducts.emptyCartFallbackCategoryId;
+  const categoryId = useFallback
+    ? (suggestedProducts.emptyCartFallbackCategoryId ??
+      suggestedProducts.suggestedProductsCategoryId)
+    : suggestedProducts.suggestedProductsCategoryId;
+  const title = useFallback
+    ? (suggestedProducts.emptyCartFallbackTitle ?? suggestedProducts.title)
+    : suggestedProducts.title;
+
+  if (!categoryId) {
+    return null;
+  }
+
+  return {
+    categoryId,
+    maximumProducts: suggestedProducts.maximumProducts,
+    title,
+  };
 };
 
 export async function GET(request: NextRequest) {
@@ -49,19 +75,25 @@ export async function GET(request: NextRequest) {
     const category = await getSuggestedProductsCategory(locale);
 
     if (!category) {
-      return NextResponse.json(ok([]));
+      return NextResponse.json(ok(EMPTY_CART_SUGGESTED_PRODUCTS));
     }
 
     const response = await searchProductsByAttributeAction({
-      category,
+      category: category.categoryId,
       locale,
+      quantity: category.maximumProducts,
     });
 
     const products = (response.items?.map((item) => ({
       ...item?.productView,
     })) || []) as ProductCardModel[];
 
-    return NextResponse.json(ok(products));
+    return NextResponse.json(
+      ok({
+        products,
+        title: category.title,
+      })
+    );
   } catch (error) {
     console.error("Cart suggested products API error:", error);
     return NextResponse.json(

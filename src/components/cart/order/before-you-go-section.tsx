@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import type { Document } from "@contentful/rich-text-types";
 
-import { Document } from "@contentful/rich-text-types";
+import { useMemo } from "react";
 
 import { SectionHeader } from "@/components/common/section-header";
 import { ProductCard } from "@/components/product/product-card";

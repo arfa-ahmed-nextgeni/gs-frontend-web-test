@@ -1,8 +1,6 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 import type { Metadata } from "next";
 
-import { cairo } from "@/app/fonts/cairo";
-import { gilroy } from "@/app/fonts/gilroy";
 import { NotFoundPage } from "@/components/shared/not-found-page";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -16,12 +14,7 @@ export const metadata: Metadata = {
 
 export default function GlobalNotFound() {
   return (
-    <html
-      className={`${gilroy.variable} ${cairo.variable} antialiased`}
-      data-locale="en"
-      dir="ltr"
-      lang="en"
-    >
+    <html className="antialiased" data-locale="en" dir="ltr" lang="en">
       <body className="bg-bg-body">
         <NotFoundPage
           action={

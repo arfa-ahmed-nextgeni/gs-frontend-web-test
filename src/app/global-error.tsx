@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-import { cairo } from "@/app/fonts/cairo";
-import { gilroy } from "@/app/fonts/gilroy";
 import { MaintenanceErrorFallback } from "@/components/shared/maintenance-error-fallback";
 
 import "./globals.css";
@@ -49,7 +47,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
 
   return (
     <html
-      className={`${gilroy.variable} ${cairo.variable} antialiased`}
+      className="antialiased"
       data-locale={locale}
       dir={direction}
       lang={locale}

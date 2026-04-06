@@ -9,10 +9,38 @@ import { useCartDrawerSuggestedProductsQuery } from "@/hooks/queries/cart/use-ca
 import { useHorizontalScroll } from "@/hooks/use-horizontal-scroll";
 import { cn } from "@/lib/utils";
 
+interface CartDrawerSuggestedItemsListProps {
+  suggestedProducts: NonNullable<
+    ReturnType<typeof useCartDrawerSuggestedProductsQuery>["data"]
+  >["products"];
+  valueClassNames?: string;
+}
+
 interface CartDrawerSuggestedItemsProps {
   containerClassNames?: string;
   valueClassNames?: string;
 }
+
+const CartDrawerSuggestedItemsList = ({
+  suggestedProducts,
+  valueClassNames,
+}: CartDrawerSuggestedItemsListProps) => {
+  const scrollRef = useHorizontalScroll<HTMLDivElement>();
+
+  return (
+    <div
+      className={cn(
+        "flex flex-row gap-2.5 overflow-x-auto px-5",
+        valueClassNames
+      )}
+      ref={scrollRef}
+    >
+      {suggestedProducts.map((product, index) => (
+        <ProductCardMini key={index} product={product} />
+      ))}
+    </div>
+  );
+};
 
 export const CartDrawerSuggestedItems = ({
   containerClassNames,
@@ -22,12 +50,12 @@ export const CartDrawerSuggestedItems = ({
 
   const t = useTranslations("CartPage.drawer.suggestedItemsSection");
 
-  const scrollRef = useHorizontalScroll<HTMLDivElement>();
+  const { data, isPending } = useCartDrawerSuggestedProductsQuery({
+    enabled: cartHasItems,
+  });
 
-  const { data: suggestedProducts = [], isPending } =
-    useCartDrawerSuggestedProductsQuery({
-      enabled: cartHasItems,
-    });
+  const suggestedProducts = data?.products || [];
+  const title = data?.title || t("title");
 
   if (!cartHasItems) return null;
 
@@ -43,19 +71,12 @@ export const CartDrawerSuggestedItems = ({
       )}
     >
       <p className="text-text-primary lg:border-border-base mx-5 text-xl font-medium leading-none lg:border-t lg:pt-4">
-        {t("title")}
+        {title}
       </p>
-      <div
-        className={cn(
-          "flex flex-row gap-2.5 overflow-x-auto px-5",
-          valueClassNames
-        )}
-        ref={scrollRef}
-      >
-        {suggestedProducts.map((product, index) => (
-          <ProductCardMini key={index} product={product} />
-        ))}
-      </div>
+      <CartDrawerSuggestedItemsList
+        suggestedProducts={suggestedProducts}
+        valueClassNames={valueClassNames}
+      />
     </div>
   );
 };

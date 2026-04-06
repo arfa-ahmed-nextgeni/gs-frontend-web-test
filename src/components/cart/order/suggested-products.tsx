@@ -3,8 +3,6 @@ import { getCartDetails } from "@/lib/actions/cart/get-cart-details";
 import { searchProductsByAttributeAction } from "@/lib/actions/catalog-service/search-products-by-category";
 import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
 import { Locale } from "@/lib/constants/i18n";
-import { CategoryProducts } from "@/lib/models/category-products";
-import { TabContentType } from "@/lib/models/page-landing";
 import { transformProductViewToCardModel } from "@/lib/utils/catalog-service-product-transformer";
 
 interface SuggestedProductsProps {
@@ -19,25 +17,34 @@ export const SuggestedProducts = async ({ locale }: SuggestedProductsProps) => {
   });
 
   const cartItemsCount = cart?.items.length || 0;
-  const categoryTitleToSearch = cartItemsCount > 0 ? "FBT" : "Best Sellers";
-
   const pageLandingData = await getPageLandingData({
     locale,
   });
+  const suggestedProducts = pageLandingData.cartSuggestedProducts;
 
-  const categoryData = pageLandingData.contents?.find(
-    (content) =>
-      content.contentType === TabContentType.CategoryProducts &&
-      (content as CategoryProducts).title === categoryTitleToSearch
-  ) as CategoryProducts;
+  if (!suggestedProducts?.enabled) {
+    return null;
+  }
 
-  if (!categoryData?.productsCategoryId) {
+  const useFallback =
+    cartItemsCount === 0 && !!suggestedProducts.emptyCartFallbackCategoryId;
+  const categoryId = useFallback
+    ? (suggestedProducts.emptyCartFallbackCategoryId ??
+      suggestedProducts.suggestedProductsCategoryId)
+    : suggestedProducts.suggestedProductsCategoryId;
+  const richTitle = useFallback
+    ? (suggestedProducts.emptyCartFallbackRichTitle ??
+      suggestedProducts.richTitle)
+    : suggestedProducts.richTitle;
+
+  if (!categoryId) {
     return null;
   }
 
   const response = await searchProductsByAttributeAction({
-    category: categoryData.productsCategoryId,
+    category: categoryId,
     locale: locale as Locale,
+    quantity: suggestedProducts.maximumProducts,
   });
 
   if (!response.items || response.items.length === 0) {
@@ -52,7 +59,7 @@ export const SuggestedProducts = async ({ locale }: SuggestedProductsProps) => {
   return (
     <BeforeYouGoSection
       products={structuredClone(categoryProducts)}
-      richTitle={categoryData.richTitle}
+      richTitle={richTitle}
     />
   );
 };

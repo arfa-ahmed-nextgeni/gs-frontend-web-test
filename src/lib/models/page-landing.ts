@@ -1,4 +1,5 @@
 import { BannerSlider } from "@/lib/models/banner-slider";
+import { CartSuggestedProducts } from "@/lib/models/cart-suggested-products";
 import { CategoryProducts } from "@/lib/models/category-products";
 import {
   type ComponentSeo,
@@ -24,6 +25,7 @@ import {
 } from "@/lib/types/contentful/nav-header";
 import {
   BannerSliderData,
+  CartSuggestedProductsData,
   CategoryProductsData,
   CookieConsentPromptData,
   DesktopCategoriesData,
@@ -42,6 +44,7 @@ import {
 
 export const enum TabContentType {
   BannerSlider = "bannerSlider",
+  CartSuggestedProducts = "cartSuggestedProducts",
   CategoryProducts = "categoryProducts",
   CookieConsentPrompt = "cookieConsentPrompt",
   DesktopCategories = "desktopCategories",
@@ -61,6 +64,7 @@ export const enum TabContentType {
 }
 
 export class PageLanding {
+  public cartSuggestedProducts?: CartSuggestedProducts;
   public contents?: (
     | BannerSlider
     | CategoryProducts
@@ -162,6 +166,21 @@ export class PageLanding {
       this.cookieConsentPrompt = new CookieConsentPromptModel(
         cookieConsentPromptData.fields as CookieConsentPromptData,
         cookieConsentPromptData.sys.contentType.sys.id
+      );
+    }
+
+    const cartSuggestedProductsData = tabContents?.find(
+      (content) =>
+        content.sys.contentType?.sys.id === TabContentType.CartSuggestedProducts
+    );
+
+    if (
+      cartSuggestedProductsData?.fields &&
+      cartSuggestedProductsData.sys.contentType
+    ) {
+      this.cartSuggestedProducts = new CartSuggestedProducts(
+        cartSuggestedProductsData.fields as CartSuggestedProductsData,
+        cartSuggestedProductsData.sys.contentType.sys.id
       );
     }
 

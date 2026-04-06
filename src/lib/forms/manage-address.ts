@@ -126,8 +126,10 @@ export const addressFormSchema = (storeCode: StoreCode) => {
           }
         }
 
-        // Validate sender first name
-        if (!senderFirstName || senderFirstName.trim() === "") {
+        // Validate sender first name only if it's provided
+        // The sender fields are only displayed when customerData doesn't have firstName/lastName
+        // In that case, if fields are shown, they should be filled
+        if (senderFirstName && senderFirstName.trim() === "") {
           ctx.addIssue({
             code: "custom",
             message: "requiredField",
@@ -135,8 +137,8 @@ export const addressFormSchema = (storeCode: StoreCode) => {
           });
         }
 
-        // Validate sender last name
-        if (!senderLastName || senderLastName.trim() === "") {
+        // Validate sender last name only if it's provided
+        if (senderLastName && senderLastName.trim() === "") {
           ctx.addIssue({
             code: "custom",
             message: "requiredField",

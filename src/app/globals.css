@@ -2,23 +2,33 @@
 
 @font-face {
   font-display: swap;
-  font-family: "Cairo Fallback";
+  font-family: "GoldenScent Cairo";
   font-style: normal;
   font-weight: 200 900;
-  src: url("./fonts/cairo/cairo-variable-font.woff2") format("woff2");
+  src: url("/fonts/cairo-variable.woff2") format("woff2");
 }
 
 @font-face {
   font-display: swap;
-  font-family: "Gilroy Fallback";
+  font-family: "GoldenScent Gilroy";
   font-style: normal;
   font-weight: 400;
-  src: url("./fonts/gilroy/gilroy-regular.woff2") format("woff2");
+  src: url("/fonts/gilroy-regular.woff2") format("woff2");
 }
 
 @theme inline {
-  --font-gilroy: var(--font-gilroy, "Gilroy Fallback");
-  --font-cairo: var(--font-cairo, "Cairo Fallback");
+  --font-gilroy:
+    "GoldenScent Gilroy", ui-sans-serif, system-ui, sans-serif;
+  --font-cairo:
+    "GoldenScent Cairo", ui-sans-serif, system-ui, sans-serif;
+}
+
+html[data-locale="ar"] {
+  font-family: var(--font-cairo);
+}
+
+html[data-locale="en"] {
+  font-family: var(--font-gilroy);
 }
 
 body.cursor-wait,
@@ -241,14 +251,6 @@ body.cursor-wait * {
 @layer base {
   html {
     -webkit-tap-highlight-color: transparent;
-  }
-
-  html[data-locale="ar"] body {
-    font-family: var(--font-cairo);
-  }
-
-  html[data-locale="en"] body {
-    font-family: var(--font-gilroy);
   }
 
   button {

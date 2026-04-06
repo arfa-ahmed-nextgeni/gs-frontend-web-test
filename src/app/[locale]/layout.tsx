@@ -11,6 +11,7 @@ import { Toaster } from "sonner";
 
 import { AppRootProvider } from "@/app/[locale]/_components/app-root-provider";
 import { NewRelicBrowserAgent } from "@/components/analytics/new-relic-browser-agent";
+import { LocaleFontPreload } from "@/components/common/locale-font-preload";
 import { JsonLdScript } from "@/components/seo/json-ld-script";
 import { SpinnerAssetsPreloader } from "@/components/ui/spinner-assets-preloader";
 import { routing } from "@/i18n/routing";
@@ -154,11 +155,7 @@ export default async function RootLayout({
   initializePageLocale(locale);
 
   const { language } = getLocaleInfo(locale);
-  const localeFont =
-    language === "ar"
-      ? (await import("@/app/fonts/cairo")).cairo
-      : (await import("@/app/fonts/gilroy")).gilroy;
-
+  const preloadLanguage = language === "ar" ? "ar" : "en";
   const direction = getLangDir(locale);
 
   // Generate Organization schema for SEO (appears on all pages)
@@ -166,13 +163,13 @@ export default async function RootLayout({
 
   return (
     <html
-      className={`${localeFont.variable} antialiased`}
       data-locale={language}
       dir={direction}
       lang={language}
       suppressHydrationWarning
     >
-      <body className="bg-bg-body">
+      <body className="bg-bg-body antialiased">
+        <LocaleFontPreload language={preloadLanguage} />
         <NewRelicBrowserAgent />
         {/* Organization Schema - appears on every page */}
         <JsonLdScript data={organizationSchema} id="organization-schema" />
