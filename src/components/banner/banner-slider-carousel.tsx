@@ -96,7 +96,7 @@ export const BannerSliderCarousel = ({
               // decoding={index === 0 ? "sync" : "async"}
               fetchPriority={index === 0 ? "high" : undefined}
               fill
-              // loading={index === 0 ? "eager" : "lazy"}
+              loading={index === 0 ? "eager" : "lazy"}
               placeholder={index === 0 ? "empty" : getShimmerPlaceholder()}
               sizes="(max-width: 1200px) calc(100vw - 20px), 1200px"
               src={banner.image.desktop.url}
