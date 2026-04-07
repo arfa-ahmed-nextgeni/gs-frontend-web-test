@@ -9,10 +9,8 @@ import { getTranslations } from "next-intl/server";
 import { getLangDir } from "rtl-detect";
 import { Toaster } from "sonner";
 
-import { gilroy } from "@/app/fonts/gilroy";
 import { AppRootProvider } from "@/app/[locale]/_components/app-root-provider";
 import { NewRelicBrowserAgent } from "@/components/analytics/new-relic-browser-agent";
-// import { LocaleFontPreload } from "@/components/common/locale-font-preload";
 import { JsonLdScript } from "@/components/seo/json-ld-script";
 import { SpinnerAssetsPreloader } from "@/components/ui/spinner-assets-preloader";
 import { routing } from "@/i18n/routing";
@@ -21,6 +19,7 @@ import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
 import { PROTOCOL } from "@/lib/constants/environment";
 import { LOCALE_TO_DOMAIN } from "@/lib/constants/i18n";
 import { Stores } from "@/lib/models/stores";
+import { cn } from "@/lib/utils";
 import { getLocaleInfo, initializePageLocale } from "@/lib/utils/locale";
 import { generateOrganizationSchema } from "@/lib/utils/schema";
 import { isOk } from "@/lib/utils/service-result";
@@ -28,7 +27,6 @@ import { isOk } from "@/lib/utils/service-result";
 import type { Locale } from "@/lib/constants/i18n";
 
 import "../globals.css";
-import { cn } from "@/lib/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await rootLocale();
@@ -170,7 +168,7 @@ export default async function RootLayout({
       lang={language}
       suppressHydrationWarning
     >
-      <body className={cn("bg-bg-body antialiased", gilroy.variable)}>
+      <body className={cn("bg-bg-body antialiased")}>
         {/* <LocaleFontPreload language={preloadLanguage} /> */}
         <NewRelicBrowserAgent />
         {/* Organization Schema - appears on every page */}
