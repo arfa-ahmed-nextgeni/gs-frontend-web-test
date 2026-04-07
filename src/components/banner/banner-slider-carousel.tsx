@@ -47,7 +47,7 @@ export const BannerSliderCarousel = ({
         ...carouselContainerProps?.contentProps,
         className: cn(
           "ms-0 gap-2.5",
-          carouselContainerProps?.contentProps?.className
+          carouselContainerProps?.contentProps?.className,
         ),
       }}
       dotsProps={{
@@ -85,7 +85,7 @@ export const BannerSliderCarousel = ({
             bannerType="banner-slider"
             className={cn(
               "relative flex w-full items-center",
-              bannerContainerProps?.className
+              bannerContainerProps?.className,
             )}
             elementId={banner.elementId}
             href={banner.btnUrl}
@@ -93,10 +93,10 @@ export const BannerSliderCarousel = ({
             <ContentfulImage
               alt={`Banner slider ${index}`}
               className="object-cover"
-              decoding={index === 0 ? "sync" : "async"}
+              // decoding={index === 0 ? "sync" : "async"}
               fetchPriority={index === 0 ? "high" : undefined}
               fill
-              loading={index === 0 ? "eager" : "lazy"}
+              // loading={index === 0 ? "eager" : "lazy"}
               placeholder={index === 0 ? "empty" : getShimmerPlaceholder()}
               sizes="(max-width: 1200px) calc(100vw - 20px), 1200px"
               src={banner.image.desktop.url}
