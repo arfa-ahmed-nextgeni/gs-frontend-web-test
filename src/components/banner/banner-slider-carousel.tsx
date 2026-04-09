@@ -22,6 +22,7 @@ export const BannerSliderCarousel = ({
   banners,
   carouselContainerProps,
   carouselItemProps,
+  isLcpCandidate = false,
 }: {
   bannerColumn?: number;
   bannerContainerProps?: Omit<ComponentProps<typeof Link>, "href">;
@@ -52,6 +53,7 @@ export const BannerSliderCarousel = ({
     >["previousIconProps"];
   };
   carouselItemProps?: ComponentProps<typeof ScrollSnapCarouselItem>;
+  isLcpCandidate?: boolean;
 }) => {
   return (
     <BannerScrollSnapCarousel
@@ -117,11 +119,15 @@ export const BannerSliderCarousel = ({
             <ContentfulImage
               alt={`Banner slider ${index}`}
               className="object-cover"
-              decoding={index === 0 ? "sync" : "async"}
-              fetchPriority={index === 0 ? "high" : undefined}
+              decoding={index === 0 && isLcpCandidate ? "sync" : "async"}
+              fetchPriority={index === 0 && isLcpCandidate ? "high" : undefined}
               fill
-              loading={index === 0 ? "eager" : "lazy"}
-              placeholder={index === 0 ? "empty" : getShimmerPlaceholder()}
+              loading={index === 0 && isLcpCandidate ? "eager" : "lazy"}
+              placeholder={
+                index === 0 && isLcpCandidate
+                  ? "empty"
+                  : getShimmerPlaceholder()
+              }
               sizes="(max-width: 1200px) calc(100vw - 20px), 1200px"
               src={banner.image.desktop.url}
             />

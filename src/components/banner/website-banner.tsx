@@ -20,14 +20,20 @@ export const WebsiteBannerComponent = ({
   bannerLpId,
   bannerOrigin,
   bannerRow,
+  isLcpCandidate = false,
 }: {
   banner: WebsiteBanner;
   bannerColumn?: number;
   bannerLpId?: string;
   bannerOrigin?: "lp" | "pdp" | "plp";
   bannerRow?: number;
+  isLcpCandidate?: boolean;
 }) => {
   if (!banner) return null;
+
+  const hasResponsiveImageVariants = Boolean(
+    banner.desktopImageUrl && banner.mobileImageUrl
+  );
 
   return (
     <div
@@ -52,8 +58,15 @@ export const WebsiteBannerComponent = ({
             <ContentfulImage
               alt={banner.internalName || "Website Banner"}
               className="aspect-[var(--banner-width)/var(--banner-height)] rounded-lg"
+              decoding={isLcpCandidate ? "sync" : "async"}
+              fetchPriority={isLcpCandidate ? "high" : undefined}
               height={banner.height || 300}
-              placeholder={getShimmerPlaceholder()}
+              loading={
+                isLcpCandidate && !hasResponsiveImageVariants
+                  ? "eager"
+                  : undefined
+              }
+              placeholder={isLcpCandidate ? "empty" : getShimmerPlaceholder()}
               src={banner.desktopImageUrl}
               style={
                 {
@@ -85,8 +98,15 @@ export const WebsiteBannerComponent = ({
             <ContentfulImage
               alt={banner.internalName || "Website Banner"}
               className="aspect-[var(--banner-width)/var(--banner-height)] rounded-2xl"
+              decoding={isLcpCandidate ? "sync" : "async"}
+              fetchPriority={isLcpCandidate ? "high" : undefined}
               height={banner.mobileImageHeight || 200}
-              placeholder={getShimmerPlaceholder()}
+              loading={
+                isLcpCandidate && !hasResponsiveImageVariants
+                  ? "eager"
+                  : undefined
+              }
+              placeholder={isLcpCandidate ? "empty" : getShimmerPlaceholder()}
               src={banner.mobileImageUrl}
               style={
                 {

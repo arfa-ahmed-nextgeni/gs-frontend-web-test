@@ -12,8 +12,6 @@ import * as React from "react";
 import { useDirection } from "@radix-ui/react-direction";
 import useEmblaCarousel from "embla-carousel-react";
 
-import { useBootTrigger } from "@/hooks/use-boot-trigger";
-import { INTERACTION_BOOT_POLICY } from "@/lib/boot/config/boot-presets";
 import { DEFERRED_CAROUSEL_ROOT_MARGIN } from "@/lib/constants/carousel";
 import { CarouselHandle } from "@/lib/types/ui-types";
 import { cn } from "@/lib/utils";
@@ -120,10 +118,6 @@ function Carousel({
   );
   const autoplayEnabled = Boolean(autoPlay?.enabled);
   const autoplayDelay = autoPlay?.delay || 3000;
-  const shouldStartAutoplay = useBootTrigger(
-    autoplayEnabled,
-    INTERACTION_BOOT_POLICY
-  );
   const carouselPlugins = React.useMemo<EmblaPluginType[]>(
     () => [...(plugins ?? [])],
     [plugins]
@@ -240,7 +234,7 @@ function Carousel({
   }, [deferRootMargin, isEmblaActive, shouldDeferUntilInView]);
 
   React.useEffect(() => {
-    if (!api || !autoplayEnabled || !shouldStartAutoplay) return;
+    if (!api || !autoplayEnabled) return;
 
     const ownerDocument = api.rootNode().ownerDocument;
     const ownerWindow = ownerDocument.defaultView;
@@ -305,7 +299,7 @@ function Carousel({
         handleVisibilityChange
       );
     };
-  }, [api, autoplayDelay, autoplayEnabled, shouldStartAutoplay]);
+  }, [api, autoplayDelay, autoplayEnabled]);
 
   React.useEffect(() => {
     if (!api) return;

@@ -7,6 +7,10 @@ import {
   type ScrollSnapCarouselDotsProps,
   ScrollSnapCarouselItem,
 } from "@/components/ui/scroll-snap-carousel";
+import {
+  getScrollOffsetFromStart,
+  scrollToOffsetFromStart,
+} from "@/lib/utils/rtl-scroll";
 
 type BannerScrollSnapCarouselProps = React.PropsWithChildren<
   {
@@ -69,7 +73,7 @@ export function BannerScrollSnapCarousel({
         return;
       }
 
-      scrollToLogicalLeft(viewport, clampedIndex * slideStep, {
+      scrollToOffsetFromStart(viewport, clampedIndex * slideStep, {
         behavior,
       });
     },
@@ -280,55 +284,8 @@ function getBannerSelectedIndex(viewport: HTMLDivElement, slideGapPx: number) {
     return 0;
   }
 
-  const logicalScrollLeft = getLogicalScrollLeft(viewport);
+  const logicalScrollLeft = getScrollOffsetFromStart(viewport);
   const slideStep = viewport.clientWidth + slideGapPx;
 
   return Math.max(0, Math.round(logicalScrollLeft / slideStep));
-}
-
-function getLogicalScrollLeft(viewport: HTMLDivElement) {
-  const direction =
-    viewport.ownerDocument.defaultView?.getComputedStyle(viewport).direction ??
-    "ltr";
-
-  if (direction !== "rtl") {
-    return viewport.scrollLeft;
-  }
-
-  if (viewport.scrollLeft < 0) {
-    return Math.abs(viewport.scrollLeft);
-  }
-
-  return viewport.scrollWidth - viewport.clientWidth - viewport.scrollLeft;
-}
-
-function scrollToLogicalLeft(
-  viewport: HTMLDivElement,
-  logicalScrollLeft: number,
-  options: { behavior: ScrollBehavior }
-) {
-  const direction =
-    viewport.ownerDocument.defaultView?.getComputedStyle(viewport).direction ??
-    "ltr";
-
-  if (direction !== "rtl") {
-    viewport.scrollTo({
-      behavior: options.behavior,
-      left: logicalScrollLeft,
-    });
-    return;
-  }
-
-  if (viewport.scrollLeft < 0) {
-    viewport.scrollTo({
-      behavior: options.behavior,
-      left: -logicalScrollLeft,
-    });
-    return;
-  }
-
-  viewport.scrollTo({
-    behavior: options.behavior,
-    left: viewport.scrollWidth - viewport.clientWidth - logicalScrollLeft,
-  });
 }

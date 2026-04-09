@@ -9,6 +9,10 @@ import {
 } from "@/components/ui/scroll-snap-carousel";
 import { DEFERRED_CAROUSEL_ROOT_MARGIN } from "@/lib/constants/carousel";
 import { cn } from "@/lib/utils";
+import {
+  getScrollOffsetFromStart,
+  scrollToOffsetFromStart,
+} from "@/lib/utils/rtl-scroll";
 
 type ProductCardsDeferredActivation = {
   rootMargin?: string;
@@ -86,7 +90,7 @@ export function ProductCardsScrollSnapCarousel({
     setSnapCount(snapPositions.length);
 
     const nextIndex = getNearestSnapIndex(
-      getLogicalScrollLeft(viewport),
+      getScrollOffsetFromStart(viewport),
       snapPositions
     );
 
@@ -117,7 +121,9 @@ export function ProductCardsScrollSnapCarousel({
         Math.min(index, snapPositions.length - 1)
       );
 
-      scrollToLogicalLeft(viewport, snapPositions[clampedIndex], behavior);
+      scrollToOffsetFromStart(viewport, snapPositions[clampedIndex], {
+        behavior,
+      });
     },
     []
   );
@@ -409,20 +415,6 @@ function dedupeSnapPoints(
   );
 }
 
-function getLogicalScrollLeft(viewport: HTMLDivElement) {
-  const direction = getViewportDirection(viewport);
-
-  if (direction !== "rtl") {
-    return viewport.scrollLeft;
-  }
-
-  if (viewport.scrollLeft < 0) {
-    return Math.abs(viewport.scrollLeft);
-  }
-
-  return viewport.scrollWidth - viewport.clientWidth - viewport.scrollLeft;
-}
-
 function getNearestSnapIndex(
   logicalScrollLeft: number,
   snapPositions: readonly number[]
@@ -460,7 +452,7 @@ function getProductCardSnapPoints(viewport: HTMLDivElement) {
     };
   }
 
-  const currentLogicalScrollLeft = getLogicalScrollLeft(viewport);
+  const currentLogicalScrollLeft = getScrollOffsetFromStart(viewport);
   const maxLogicalScrollLeft = Math.max(
     0,
     viewport.scrollWidth - viewport.clientWidth
@@ -492,32 +484,4 @@ function getViewportDirection(viewport: HTMLDivElement) {
     viewport.ownerDocument.defaultView?.getComputedStyle(viewport).direction ??
     "ltr"
   );
-}
-
-function scrollToLogicalLeft(
-  viewport: HTMLDivElement,
-  logicalScrollLeft: number,
-  behavior: ScrollBehavior
-) {
-  viewport.scrollTo({
-    behavior,
-    left: toPhysicalScrollLeft(viewport, logicalScrollLeft),
-  });
-}
-
-function toPhysicalScrollLeft(
-  viewport: HTMLDivElement,
-  logicalScrollLeft: number
-) {
-  const direction = getViewportDirection(viewport);
-
-  if (direction !== "rtl") {
-    return logicalScrollLeft;
-  }
-
-  if (viewport.scrollLeft < 0) {
-    return -logicalScrollLeft;
-  }
-
-  return viewport.scrollWidth - viewport.clientWidth - logicalScrollLeft;
 }

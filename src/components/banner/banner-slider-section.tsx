@@ -7,6 +7,10 @@ import { AsyncBoundary } from "@/components/common/async-boundary";
 export const BannerSliderSection = (
   props: ComponentProps<typeof BannerSliderCarousel>
 ) => {
+  if (props.isLcpCandidate) {
+    return <BannerSliderCarousel {...props} />;
+  }
+
   return (
     <AsyncBoundary
       fallback={

@@ -35,6 +35,8 @@ import {
 
 import type { Locale } from "@/lib/constants/i18n";
 
+const BANNER_LCP_CANDIDATE_INDEX = 0;
+
 export async function generateMetadata({
   params,
 }: PageProps<"/[locale]/lp/[slug]">): Promise<Metadata> {
@@ -196,6 +198,7 @@ export default async function LandingPage({
                       },
                     },
                   }}
+                  isLcpCandidate={index === BANNER_LCP_CANDIDATE_INDEX}
                 />
               </Container>
             );
@@ -285,6 +288,7 @@ export default async function LandingPage({
                   bannerLpId={slug}
                   bannerOrigin="lp"
                   bannerRow={index + 1}
+                  isLcpCandidate={index === BANNER_LCP_CANDIDATE_INDEX}
                 />
               </Container>
             );

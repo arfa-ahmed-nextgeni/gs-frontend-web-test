@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* @font-face {
+@font-face {
   font-display: swap;
   font-family: "GoldenScent Cairo";
   font-style: normal;
@@ -17,19 +17,17 @@
 }
 
 @theme inline {
-  --font-gilroy:
-    "GoldenScent Gilroy", ui-sans-serif, system-ui, sans-serif;
-  --font-cairo:
-    "GoldenScent Cairo", ui-sans-serif, system-ui, sans-serif;
-} */
+  --font-gilroy: "GoldenScent Gilroy", ui-sans-serif, system-ui, sans-serif;
+  --font-cairo: "GoldenScent Cairo", ui-sans-serif, system-ui, sans-serif;
+}
 
-/* html[data-locale="ar"] {
+html[data-locale="ar"] {
   font-family: var(--font-cairo);
 }
 
 html[data-locale="en"] {
   font-family: var(--font-gilroy);
-} */
+}
 
 body.cursor-wait,
 body.cursor-wait * {
@@ -251,14 +249,6 @@ body.cursor-wait * {
 @layer base {
   html {
     -webkit-tap-highlight-color: transparent;
-  }
-
-  html[data-locale="ar"] body {
-    font-family: var(--font-cairo);
-  }
-
-  html[data-locale="en"] body {
-    font-family: var(--font-gilroy);
   }
 
   button {
