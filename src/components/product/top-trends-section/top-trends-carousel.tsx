@@ -1,6 +1,8 @@
 import { ProductCard } from "@/components/product/product-card";
-import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
-import { CarouselItem } from "@/components/ui/carousel/carousel-item";
+import {
+  ProductCardsScrollSnapCarousel,
+  ProductCardsScrollSnapCarouselItem,
+} from "@/components/product/product-cards-scroll-snap-carousel";
 
 import type { ProductCardModel } from "@/lib/models/product-card-model";
 
@@ -23,7 +25,7 @@ export const TopTrendsCarousel = ({
   products: ProductCardModel[];
 }) => {
   return (
-    <CarouselContainer
+    <ProductCardsScrollSnapCarousel
       carouselProps={{
         autoPlay: {
           delay: autoSliding.delay,
@@ -35,7 +37,6 @@ export const TopTrendsCarousel = ({
         mode === "desktop"
           ? {
               className: "-bottom-10",
-              idPrefix: carouselIdPrefix,
               visible: true,
             }
           : undefined
@@ -56,7 +57,7 @@ export const TopTrendsCarousel = ({
       }}
     >
       {products.map((product, index) => (
-        <CarouselItem
+        <ProductCardsScrollSnapCarouselItem
           id={`${carouselIdPrefix}-carousel-item-${index}`}
           key={product.id}
         >
@@ -72,8 +73,8 @@ export const TopTrendsCarousel = ({
             lpRow={lpRow}
             product={product}
           />
-        </CarouselItem>
+        </ProductCardsScrollSnapCarouselItem>
       ))}
-    </CarouselContainer>
+    </ProductCardsScrollSnapCarousel>
   );
 };

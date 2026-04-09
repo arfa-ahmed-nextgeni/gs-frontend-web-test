@@ -4,12 +4,14 @@ import { AsyncBoundary } from "@/components/common/async-boundary";
 import { SectionHeader } from "@/components/common/section-header";
 import { CategoryProductsCarouselContent } from "@/components/product/category-products-carousel-content";
 import { CategoryProductsCarouselSkeleton } from "@/components/product/category-products-carousel-skeleton";
-import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
+import { ProductCardsScrollSnapCarousel } from "@/components/product/product-cards-scroll-snap-carousel";
 import { CategoryProducts } from "@/lib/models/category-products";
 
 export const CategoryProductsCarousel = async (
   props: {
-    carouselContainerProps?: ComponentProps<typeof CarouselContainer>;
+    carouselContainerProps?: ComponentProps<
+      typeof ProductCardsScrollSnapCarousel
+    >;
     lpRow?: number;
     sectionHeaderProps?: ComponentProps<typeof SectionHeader>;
   } & CategoryProducts

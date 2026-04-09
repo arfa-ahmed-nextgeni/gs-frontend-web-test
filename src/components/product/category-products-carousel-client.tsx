@@ -6,8 +6,10 @@ import { useTranslations } from "next-intl";
 
 import { SectionHeader } from "@/components/common/section-header";
 import { ProductCard } from "@/components/product/product-card";
-import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
-import { CarouselItem } from "@/components/ui/carousel/carousel-item";
+import {
+  ProductCardsScrollSnapCarousel,
+  ProductCardsScrollSnapCarouselItem,
+} from "@/components/product/product-cards-scroll-snap-carousel";
 import { useBulletDeliveryEnabled } from "@/hooks/use-bullet-delivery-enabled";
 import { CategoryProducts } from "@/lib/models/category-products";
 
@@ -20,7 +22,9 @@ export const CategoryProductsCarouselClient = ({
   showClearHistory,
   showViewAll,
 }: {
-  carouselContainerProps?: ComponentProps<typeof CarouselContainer>;
+  carouselContainerProps?: ComponentProps<
+    typeof ProductCardsScrollSnapCarousel
+  >;
   lpRow?: number;
   sectionHeaderProps?: ComponentProps<typeof SectionHeader>;
 } & CategoryProducts) => {
@@ -47,7 +51,7 @@ export const CategoryProductsCarouselClient = ({
           text: t("seeAll"),
         }}
       />
-      <CarouselContainer
+      <ProductCardsScrollSnapCarousel
         {...carouselContainerProps}
         nextButtonProps={{
           className: "xl:translate-x-15 xl:rtl:-translate-x-15",
@@ -63,7 +67,7 @@ export const CategoryProductsCarouselClient = ({
         }}
       >
         {products?.map((product, index) => (
-          <CarouselItem key={`${product.id}`}>
+          <ProductCardsScrollSnapCarouselItem key={`${product.id}`}>
             <ProductCard
               isBulletDeliveryEnabled={isBulletDeliveryEnabled}
               lpColumn={1}
@@ -76,9 +80,9 @@ export const CategoryProductsCarouselClient = ({
               lpRow={lpRow}
               product={product}
             />
-          </CarouselItem>
+          </ProductCardsScrollSnapCarouselItem>
         ))}
-      </CarouselContainer>
+      </ProductCardsScrollSnapCarousel>
     </div>
   );
 };

@@ -1,14 +1,17 @@
-import { useId } from "react";
 import type { ComponentProps } from "react";
 
 import { BannerTrackerLink } from "@/components/analytics/banner-tracker";
 import { ContentfulImage } from "@/components/shared/contentful-image";
-import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
-import { CarouselItem } from "@/components/ui/carousel/carousel-item";
+import {
+  BannerScrollSnapCarousel,
+  ScrollSnapCarouselItem,
+} from "@/components/ui/banner-scroll-snap-carousel";
 import { Link } from "@/i18n/navigation";
 import { BannerSliderItem } from "@/lib/models/banner-slider";
 import { cn } from "@/lib/utils";
 import { getShimmerPlaceholder } from "@/lib/utils/image";
+
+const BANNER_SLIDE_GAP_PX = 10;
 
 export const BannerSliderCarousel = ({
   bannerColumn,
@@ -26,23 +29,34 @@ export const BannerSliderCarousel = ({
   bannerOrigin?: "lp" | "pdp" | "plp";
   bannerRow?: number;
   banners: BannerSliderItem[];
-  carouselContainerProps?: ComponentProps<typeof CarouselContainer>;
-  carouselItemProps?: ComponentProps<typeof CarouselItem>;
+  carouselContainerProps?: {
+    carouselProps?: Pick<
+      ComponentProps<typeof BannerScrollSnapCarousel>,
+      "autoPlay" | "className"
+    >;
+    contentProps?: ComponentProps<
+      typeof BannerScrollSnapCarousel
+    >["contentProps"];
+    dotsProps?: ComponentProps<typeof BannerScrollSnapCarousel>["dotsProps"];
+    nextButtonProps?: ComponentProps<
+      typeof BannerScrollSnapCarousel
+    >["nextButtonProps"];
+    nextIconProps?: ComponentProps<
+      typeof BannerScrollSnapCarousel
+    >["nextIconProps"];
+    previousButtonProps?: ComponentProps<
+      typeof BannerScrollSnapCarousel
+    >["previousButtonProps"];
+    previousIconProps?: ComponentProps<
+      typeof BannerScrollSnapCarousel
+    >["previousIconProps"];
+  };
+  carouselItemProps?: ComponentProps<typeof ScrollSnapCarouselItem>;
 }) => {
-  const carouselIdPrefix = useId();
-
   return (
-    <CarouselContainer
-      {...carouselContainerProps}
-      carouselProps={{
-        ...carouselContainerProps?.carouselProps,
-        opts: {
-          ...carouselContainerProps?.carouselProps?.opts,
-          ssr:
-            carouselContainerProps?.carouselProps?.opts?.ssr ??
-            banners.map(() => 100),
-        },
-      }}
+    <BannerScrollSnapCarousel
+      autoPlay={carouselContainerProps?.carouselProps?.autoPlay}
+      className={cn("w-full", carouselContainerProps?.carouselProps?.className)}
       contentProps={{
         ...carouselContainerProps?.contentProps,
         className: cn(
@@ -51,27 +65,37 @@ export const BannerSliderCarousel = ({
         ),
       }}
       dotsProps={{
-        idPrefix: carouselIdPrefix,
-        visible: true,
+        ...carouselContainerProps?.dotsProps,
+        visible: carouselContainerProps?.dotsProps?.visible ?? true,
       }}
       nextButtonProps={{
-        className: "end-10",
+        ...carouselContainerProps?.nextButtonProps,
+        className: cn(
+          "end-10",
+          carouselContainerProps?.nextButtonProps?.className
+        ),
       }}
       nextIconProps={{
-        fill: "#ffffff",
+        ...carouselContainerProps?.nextIconProps,
+        fill: carouselContainerProps?.nextIconProps?.fill ?? "#ffffff",
       }}
       previousButtonProps={{
-        className: "start-10",
+        ...carouselContainerProps?.previousButtonProps,
+        className: cn(
+          "start-10",
+          carouselContainerProps?.previousButtonProps?.className
+        ),
       }}
       previousIconProps={{
-        fill: "#ffffff",
+        ...carouselContainerProps?.previousIconProps,
+        fill: carouselContainerProps?.previousIconProps?.fill ?? "#ffffff",
       }}
+      slideGapPx={BANNER_SLIDE_GAP_PX}
     >
       {banners.map((banner, index) => (
-        <CarouselItem
+        <ScrollSnapCarouselItem
           {...carouselItemProps}
           className={cn("basis-1/1 ps-0", carouselItemProps?.className)}
-          id={`${carouselIdPrefix}-carousel-item-${index}`}
           key={`${banner.elementId || banner.id}`}
         >
           <BannerTrackerLink
@@ -102,8 +126,8 @@ export const BannerSliderCarousel = ({
               src={banner.image.desktop.url}
             />
           </BannerTrackerLink>
-        </CarouselItem>
+        </ScrollSnapCarouselItem>
       ))}
-    </CarouselContainer>
+    </BannerScrollSnapCarousel>
   );
 };

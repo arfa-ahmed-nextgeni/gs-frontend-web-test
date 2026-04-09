@@ -5,8 +5,10 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { CategoryProductGrid } from "@/components/category/products/category-product-grid";
 import { SectionHeader } from "@/components/common/section-header";
 import { ProductCard } from "@/components/product/product-card";
-import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
-import { CarouselItem } from "@/components/ui/carousel/carousel-item";
+import {
+  ProductCardsScrollSnapCarousel,
+  ProductCardsScrollSnapCarouselItem,
+} from "@/components/product/product-cards-scroll-snap-carousel";
 import { getBulletDeliveryEnabled } from "@/lib/actions/config/get-bullet-delivery-enabled";
 import { getProductsByCategory } from "@/lib/actions/products/get-products-by-category";
 import { Locale } from "@/lib/constants/i18n";
@@ -28,7 +30,9 @@ export const CategoryProductsCarouselContent = async ({
   showViewAll,
   variant,
 }: {
-  carouselContainerProps?: ComponentProps<typeof CarouselContainer>;
+  carouselContainerProps?: ComponentProps<
+    typeof ProductCardsScrollSnapCarousel
+  >;
   lpRow?: number;
   sectionHeaderProps?: ComponentProps<typeof SectionHeader>;
 } & CategoryProducts) => {
@@ -84,7 +88,7 @@ export const CategoryProductsCarouselContent = async ({
           products={products}
         />
       ) : (
-        <CarouselContainer
+        <ProductCardsScrollSnapCarousel
           {...carouselContainerProps}
           carouselProps={{
             ...carouselContainerProps?.carouselProps,
@@ -104,7 +108,7 @@ export const CategoryProductsCarouselContent = async ({
           }}
         >
           {products.map((product, index) => (
-            <CarouselItem key={`${product.id}-${index}`}>
+            <ProductCardsScrollSnapCarouselItem key={`${product.id}-${index}`}>
               <ProductCard
                 isBulletDeliveryEnabled={isBulletDeliveryEnabled}
                 lpColumn={1}
@@ -117,9 +121,9 @@ export const CategoryProductsCarouselContent = async ({
                 lpRow={lpRow}
                 product={product}
               />
-            </CarouselItem>
+            </ProductCardsScrollSnapCarouselItem>
           ))}
-        </CarouselContainer>
+        </ProductCardsScrollSnapCarousel>
       )}
     </div>
   );
