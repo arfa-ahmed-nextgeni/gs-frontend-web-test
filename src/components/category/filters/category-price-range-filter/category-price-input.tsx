@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 
 import { useStoreConfig } from "@/contexts/store-config-context";
 import { cn } from "@/lib/utils";
-import { findCurrencyConfig } from "@/lib/utils/price";
+import { getCurrencySymbol } from "@/lib/utils/price";
 
 export const CategoryPriceInput = ({
   containerProps,
@@ -36,6 +36,7 @@ export const CategoryPriceInput = ({
   const t = useTranslations("category.filtersSection.priceRangeFilter");
   const { storeConfig } = useStoreConfig();
   const currencyCode = storeConfig?.currencyCode || "SAR";
+  const currencySymbol = getCurrencySymbol(currencyCode);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
@@ -81,21 +82,24 @@ export const CategoryPriceInput = ({
         {label}
       </label>
       <div className="relative">
-        <span
-          {...currencyProps}
-          className={cn(
-            "text-text-primary font-gilroy absolute inset-y-0 start-0 flex items-center ps-2 text-xs font-normal",
-            currencyProps?.className
-          )}
-        >
-          {findCurrencyConfig(currencyCode)?.symbol || "$"}
-        </span>
+        {currencySymbol && (
+          <span
+            {...currencyProps}
+            className={cn(
+              "text-text-primary font-gilroy absolute inset-y-0 start-0 flex items-center ps-2 text-xs font-normal",
+              currencyProps?.className
+            )}
+          >
+            {currencySymbol}
+          </span>
+        )}
         <input
           {...inputProps}
           className={cn(
-            "bg-bg-surface focus:border-border-primary focus:bg-bg-body text-text-primary focus:outline-border-primary w-18 block rounded-2xl border-none py-3 pe-2 ps-6 text-xs font-normal [appearance:textfield] focus:outline-[0.5px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+            "bg-bg-surface focus:border-border-primary focus:bg-bg-body text-text-primary focus:outline-border-primary w-18 block rounded-2xl border-none py-3 pe-2 text-xs font-normal [appearance:textfield] focus:outline-[0.5px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
             hasError &&
               "border-red-500 focus:border-red-500 focus:outline-red-500",
+            currencySymbol ? "ps-6" : "ps-4",
             inputProps?.className
           )}
           id={id}

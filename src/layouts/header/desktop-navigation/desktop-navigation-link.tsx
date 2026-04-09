@@ -1,28 +1,12 @@
-"use client";
-
 import type { CSSProperties, ReactNode } from "react";
 
 import { BlurLink } from "@/components/ui/blur-link";
 import { Link } from "@/i18n/navigation";
-import { getCurrentDesktopNavigationLpId } from "@/layouts/header/desktop-navigation/desktop-navigation-click-origin";
-import { clickOriginTrackingManager } from "@/lib/analytics/click-origin-tracking-manager";
-import { trackDesktopNavigation } from "@/lib/analytics/events";
+import { serializeDesktopNavigationTrackingPayload } from "@/layouts/header/desktop-navigation/desktop-navigation-tracking-dataset";
+import { DESKTOP_NAVIGATION_TRACKING_DATA_ATTRIBUTE } from "@/lib/constants/tracking-data-attributes";
 import { ZIndexLevel } from "@/lib/constants/ui";
 
-import type { DesktopNavigationUrlType } from "@/lib/analytics/models/event-models";
-
-type DesktopNavigationTrackingPayload = {
-  categoryId?: string;
-  categoryMeta?: {
-    "category.id": string;
-    "category.name": string;
-  };
-  lpId: string;
-  lpName: string;
-  position: number;
-  title: string;
-  urlType: DesktopNavigationUrlType;
-};
+import type { DesktopNavigationTrackingPayload } from "@/layouts/header/desktop-navigation/desktop-navigation-tracking-dataset";
 
 export const DesktopNavigationLink = ({
   children,
@@ -41,35 +25,20 @@ export const DesktopNavigationLink = ({
   title: string;
   tracking: DesktopNavigationTrackingPayload;
 }) => {
-  const handleClick = () => {
-    const pathname = window.location.pathname;
+  const serializedTrackingPayload =
+    serializeDesktopNavigationTrackingPayload(tracking);
 
-    clickOriginTrackingManager.setClickOrigin({
-      lp_id: getCurrentDesktopNavigationLpId(pathname),
-      origin: "top_menu",
-      position: tracking.position,
-    });
-
-    trackDesktopNavigation(
-      {
-        category_id: tracking.categoryId,
-        lp_id: tracking.lpId,
-        lp_name: tracking.lpName,
-        title: tracking.title,
-        type: "webview",
-        url_type: tracking.urlType,
-      },
-      tracking.categoryMeta
-    );
+  const trackingAttributes = {
+    [DESKTOP_NAVIGATION_TRACKING_DATA_ATTRIBUTE]: serializedTrackingPayload,
   };
 
   if (hoverLevel) {
     return (
       <BlurLink
+        {...trackingAttributes}
         className={className}
         hoverLevel={hoverLevel}
         href={href}
-        onClick={handleClick}
         prefetch={false}
         style={style}
         title={title}
@@ -81,9 +50,9 @@ export const DesktopNavigationLink = ({
 
   return (
     <Link
+      {...trackingAttributes}
       className={className}
       href={href}
-      onClick={handleClick}
       prefetch={false}
       style={style}
       title={title}

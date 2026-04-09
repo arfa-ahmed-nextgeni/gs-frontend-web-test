@@ -1599,6 +1599,7 @@
       "failedToRefreshAddresses": "Failed to refresh addresses",
       "paymentCancelled": "Payment was cancelled. Your cart has been restored. Please try again.",
       "paymentFailed": "Payment failed. Your cart has been restored. Please try again.",
+      "invalidCart": "Your cart was refreshed because this checkout session is no longer valid. Please try again.",
       "lockerMethodUnavailable": "The selected pickup point delivery method is no longer available. Please select a different delivery method.",
       "networkError": "Connection error. Please check your internet connection and try again.",
       "timeoutError": "Request timed out. Please try again.",
@@ -1751,7 +1752,8 @@
       "placeholder": "Enter your mobile number"
     },
     "joinButton": "Join",
-    "joining": "Joining..."
+    "joining": "Joining...",
+    "joinSuccess": "You've successfully joined Golden Scent family"
   },
   "RedirectPage": {
     "redirecting": "Redirecting...",

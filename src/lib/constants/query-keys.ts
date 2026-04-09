@@ -69,6 +69,22 @@ export const QUERY_KEYS = {
 
   GEOLOCATION: ["geolocation"],
 
+  KSA_ADDRESS: ({
+    latitude,
+    locale,
+    longitude,
+  }: {
+    latitude: number;
+    locale: string;
+    longitude: number;
+  }) => [
+    // Cache KSA validation by locale + coordinates so reopening the flow can reuse it.
+    "ksa-address",
+    locale,
+    latitude,
+    longitude,
+  ],
+
   LOCKER_LOCATIONS: ({
     language,
     latitude,

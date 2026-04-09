@@ -19,6 +19,8 @@ export const ROUTES = {
     ADD_GIFT_WRAPPING: "/checkout/add-gift-wrapping",
     ADD_PICKUP_POINT: (type: LockerType) =>
       `/checkout/add-pickup-point?type=${type}`,
+    ADD_PRODUCT_REVIEW: (urlKey: string) =>
+      `/checkout/order-confirmation/reviews/add/${urlKey}`,
     ORDER_CONFIRMATION: (orderId: string) =>
       `/checkout/order-confirmation?${QueryParamsKey.OrderId}=${orderId}`,
     PAYFORT_CALLBACK_API: "/api/checkout/payfort/callback",

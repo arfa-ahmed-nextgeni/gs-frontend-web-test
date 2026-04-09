@@ -4,31 +4,44 @@ import { useEffect, useEffectEvent } from "react";
 
 import { setBannerClickOrigin } from "@/components/analytics/utils/banner-click-origin";
 import { parseBannerTrackingData } from "@/components/analytics/utils/banner-tracking-dataset";
+import { parseHomeCategoryClickOrigin } from "@/components/category/utils/home-category-click-origin-dataset";
 import { setSectionHeaderClickOrigin } from "@/components/common/section-header/utils/section-header-click-origin";
 import { parseSectionHeaderClickOrigin } from "@/components/common/section-header/utils/section-header-click-origin-dataset";
 import { setProductCardClickOrigin } from "@/components/product/product-card/utils/product-card-click-origin";
 import { parseProductCardClickOrigin } from "@/components/product/product-card/utils/product-card-click-origin-dataset";
+import { getCurrentDesktopNavigationLpId } from "@/layouts/header/desktop-navigation/desktop-navigation-click-origin";
+import { parseDesktopNavigationTrackingPayload } from "@/layouts/header/desktop-navigation/desktop-navigation-tracking-dataset";
+import { getCurrentLpId } from "@/layouts/header/mobile-navigation/mobile-navigation-click-origin";
+import { parseMobileNavigationClickOriginPayload } from "@/layouts/header/mobile-navigation/mobile-navigation-click-origin-dataset";
 import { bannerTrackingManager } from "@/lib/analytics/banner-tracking-manager";
+import { clickOriginTrackingManager } from "@/lib/analytics/click-origin-tracking-manager";
 import {
   trackCsCall,
   trackCsEmail,
   trackCsWhatsapp,
+  trackDesktopNavigation,
   trackFaqPageOpen,
   trackMenuClick,
 } from "@/lib/analytics/events";
 import {
   BANNER_TRACKING_DATA_ATTRIBUTE,
   CUSTOMER_SERVICE_TRACKING_DATA_ATTRIBUTE,
+  DESKTOP_NAVIGATION_TRACKING_DATA_ATTRIBUTE,
   FAQ_TRACKING_DATA_ATTRIBUTE,
-  MENU_TRACKING_DATA_ATTRIBUTE,
+  HOME_CATEGORY_CLICK_ORIGIN_DATA_ATTRIBUTE,
+  MOBILE_BOTTOM_NAVIGATION_TRACKING_DATA_ATTRIBUTE,
+  MOBILE_NAVIGATION_CLICK_ORIGIN_DATA_ATTRIBUTE,
   PRODUCT_CARD_CLICK_ORIGIN_DATA_ATTRIBUTE,
   SECTION_HEADER_CLICK_ORIGIN_DATA_ATTRIBUTE,
 } from "@/lib/constants/tracking-data-attributes";
 
 const BANNER_TRACKING_SELECTOR = `[${BANNER_TRACKING_DATA_ATTRIBUTE}]`;
 const CUSTOMER_SERVICE_TRACKING_SELECTOR = `[${CUSTOMER_SERVICE_TRACKING_DATA_ATTRIBUTE}]`;
+const DESKTOP_NAVIGATION_TRACKING_SELECTOR = `[${DESKTOP_NAVIGATION_TRACKING_DATA_ATTRIBUTE}]`;
 const FAQ_TRACKING_SELECTOR = `[${FAQ_TRACKING_DATA_ATTRIBUTE}]`;
-const MENU_TRACKING_SELECTOR = `[${MENU_TRACKING_DATA_ATTRIBUTE}]`;
+const HOME_CATEGORY_CLICK_ORIGIN_SELECTOR = `[${HOME_CATEGORY_CLICK_ORIGIN_DATA_ATTRIBUTE}]`;
+const MOBILE_BOTTOM_NAVIGATION_TRACKING_SELECTOR = `[${MOBILE_BOTTOM_NAVIGATION_TRACKING_DATA_ATTRIBUTE}]`;
+const MOBILE_NAVIGATION_CLICK_ORIGIN_SELECTOR = `[${MOBILE_NAVIGATION_CLICK_ORIGIN_DATA_ATTRIBUTE}]`;
 const PRODUCT_CARD_CLICK_ORIGIN_SELECTOR = `[${PRODUCT_CARD_CLICK_ORIGIN_DATA_ATTRIBUTE}]`;
 const SECTION_HEADER_CLICK_ORIGIN_SELECTOR = `[${SECTION_HEADER_CLICK_ORIGIN_DATA_ATTRIBUTE}]`;
 
@@ -105,13 +118,92 @@ export function ClickOriginListener() {
       return;
     }
 
-    const menuLink = target.closest(MENU_TRACKING_SELECTOR);
+    const homeCategoryLink = target.closest(
+      HOME_CATEGORY_CLICK_ORIGIN_SELECTOR
+    );
 
-    if (menuLink instanceof HTMLElement) {
-      const menu = menuLink.getAttribute(MENU_TRACKING_DATA_ATTRIBUTE);
+    if (homeCategoryLink instanceof HTMLElement) {
+      const clickOrigin = parseHomeCategoryClickOrigin(
+        homeCategoryLink.getAttribute(HOME_CATEGORY_CLICK_ORIGIN_DATA_ATTRIBUTE)
+      );
 
-      if (menu) {
-        trackMenuClick(menu);
+      if (clickOrigin) {
+        clickOriginTrackingManager.setClickOrigin(clickOrigin);
+      }
+
+      return;
+    }
+
+    const desktopNavigationLink = target.closest(
+      DESKTOP_NAVIGATION_TRACKING_SELECTOR
+    );
+
+    if (desktopNavigationLink instanceof HTMLElement) {
+      const trackingPayload = parseDesktopNavigationTrackingPayload(
+        desktopNavigationLink.getAttribute(
+          DESKTOP_NAVIGATION_TRACKING_DATA_ATTRIBUTE
+        )
+      );
+
+      if (trackingPayload) {
+        const pathname = window.location.pathname;
+
+        clickOriginTrackingManager.setClickOrigin({
+          lp_id: getCurrentDesktopNavigationLpId(pathname),
+          origin: "top_menu",
+          position: trackingPayload.position,
+        });
+
+        trackDesktopNavigation(
+          {
+            category_id: trackingPayload.categoryId,
+            lp_id: trackingPayload.lpId,
+            lp_name: trackingPayload.lpName,
+            title: trackingPayload.title,
+            type: "webview",
+            url_type: trackingPayload.urlType,
+          },
+          trackingPayload.categoryMeta
+        );
+      }
+
+      return;
+    }
+
+    const mobileNavigationElement = target.closest(
+      MOBILE_NAVIGATION_CLICK_ORIGIN_SELECTOR
+    );
+
+    if (mobileNavigationElement instanceof HTMLElement) {
+      const clickOriginPayload = parseMobileNavigationClickOriginPayload(
+        mobileNavigationElement.getAttribute(
+          MOBILE_NAVIGATION_CLICK_ORIGIN_DATA_ATTRIBUTE
+        )
+      );
+
+      if (clickOriginPayload) {
+        clickOriginTrackingManager.setClickOrigin({
+          lp_id: getCurrentLpId(window.location.pathname),
+          origin: "top_menu",
+          position: clickOriginPayload.position,
+        });
+      }
+
+      return;
+    }
+
+    const mobileBottomNavigationLink = target.closest(
+      MOBILE_BOTTOM_NAVIGATION_TRACKING_SELECTOR
+    );
+
+    if (mobileBottomNavigationLink instanceof HTMLElement) {
+      const mobileBottomNavigationItem =
+        mobileBottomNavigationLink.getAttribute(
+          MOBILE_BOTTOM_NAVIGATION_TRACKING_DATA_ATTRIBUTE
+        );
+
+      if (mobileBottomNavigationItem) {
+        trackMenuClick(mobileBottomNavigationItem);
       }
 
       return;

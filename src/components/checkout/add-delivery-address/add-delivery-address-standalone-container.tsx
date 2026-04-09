@@ -11,7 +11,7 @@ import { useAddDeliveryAddressContext } from "@/contexts/add-delivery-address-co
 
 export const AddDeliveryAddressStandaloneContainer = () => {
   const t = useTranslations("AddDeliveryAddressPage");
-  const { deliveryType, setShowSaveForm, showSaveForm } =
+  const { deliveryType, resetFlowState, setShowSaveForm, showSaveForm } =
     useAddDeliveryAddressContext();
 
   const handleBack = () => {
@@ -20,6 +20,8 @@ export const AddDeliveryAddressStandaloneContainer = () => {
       return;
     }
 
+    // Reset the flow before leaving so the next open does not reuse the last map state.
+    resetFlowState();
     window.history.back();
   };
 
@@ -29,6 +31,8 @@ export const AddDeliveryAddressStandaloneContainer = () => {
       return;
     }
 
+    // Reset the flow before leaving so the next open does not reuse the last map state.
+    resetFlowState();
     window.history.back();
   };
 

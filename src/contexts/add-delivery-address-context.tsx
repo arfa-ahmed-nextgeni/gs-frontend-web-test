@@ -14,6 +14,7 @@ interface AddDeliveryAddressContextType {
   isManualEntryMode: boolean;
   isSelectedLocationInSaudiArabia: boolean | null;
   ksaAddress: KsaNationalAddress | null;
+  resetFlowState: () => void;
   selectedAddress: null | string;
   selectedLocation: google.maps.LatLngLiteral | null;
   setCurrentLocation: (location: google.maps.LatLngLiteral | null) => void;
@@ -88,6 +89,18 @@ export function AddDeliveryAddressContextProvider({
   const [ksaAddress, setKsaAddress] = useState<KsaNationalAddress | null>(null);
   const [showSaveForm, setShowSaveForm] = useState(false);
 
+  const resetFlowState = () => {
+    // Fully reset the transient add-address flow so a reopened drawer starts fresh.
+    setCurrentLocation(null);
+    setGoogleAddressData(null);
+    setIsManualEntryMode(false);
+    setIsSelectedLocationInSaudiArabia(null);
+    setKsaAddress(null);
+    setSelectedAddress(null);
+    setSelectedLocation(null);
+    setShowSaveForm(false);
+  };
+
   return (
     <AddDeliveryAddressContext.Provider
       value={{
@@ -100,6 +113,7 @@ export function AddDeliveryAddressContextProvider({
         isManualEntryMode,
         isSelectedLocationInSaudiArabia,
         ksaAddress,
+        resetFlowState,
         selectedAddress,
         selectedLocation,
         setCurrentLocation,

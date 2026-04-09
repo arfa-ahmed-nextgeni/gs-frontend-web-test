@@ -49,13 +49,13 @@ export const WalletBalanceCard = async ({
     >
       <div className="flex flex-row">
         <div className="flex flex-col">
-          <p className={cn("text-xl font-medium text-[#374957]")}>
+          <p className={cn("text-text-primary text-xl font-medium")}>
             {t("WalletBalanceCard.title")}
           </p>
           <LocalizedPrice
             containerProps={{
               className: cn(
-                "font-gilroy -mt-4 inline-flex items-center font-medium text-[#374957]"
+                "font-gilroy inline-flex items-center font-medium text-text-primary"
               ),
             }}
             currencySymbolProps={{

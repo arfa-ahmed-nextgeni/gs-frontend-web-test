@@ -19,7 +19,6 @@ import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
 import { PROTOCOL } from "@/lib/constants/environment";
 import { LOCALE_TO_DOMAIN } from "@/lib/constants/i18n";
 import { Stores } from "@/lib/models/stores";
-import { cn } from "@/lib/utils";
 import { getLocaleInfo, initializePageLocale } from "@/lib/utils/locale";
 import { generateOrganizationSchema } from "@/lib/utils/schema";
 import { isOk } from "@/lib/utils/service-result";
@@ -168,7 +167,7 @@ export default async function RootLayout({
       lang={language}
       suppressHydrationWarning
     >
-      <body className={cn("bg-bg-body antialiased")}>
+      <body className="bg-bg-body antialiased">
         {/* <LocaleFontPreload language={preloadLanguage} /> */}
         <NewRelicBrowserAgent />
         {/* Organization Schema - appears on every page */}

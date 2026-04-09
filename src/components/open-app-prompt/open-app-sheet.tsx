@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import {
+  type FocusEvent,
+  type PointerEvent,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
 
 import Image from "next/image";
 
@@ -118,13 +124,16 @@ export function OpenAppSheet({
           ZIndexLevel.Dialog
         )}
         onEscapeKeyDown={(event) => event.preventDefault()}
+        onFocusCapture={stopNestedModalPropagation}
         onInteractOutside={(event) => event.preventDefault()}
         onOpenAutoFocus={(event) => event.preventDefault()}
+        onPointerDownCapture={stopNestedModalPropagation}
         onPointerDownOutside={(event) => event.preventDefault()}
         overlayClassName="bg-transparent backdrop-blur-none"
         showCloseButton={false}
         showOverlay={false}
         side="bottom"
+        style={{ pointerEvents: "auto" }}
       >
         <SheetTitle className="sr-only">{title}</SheetTitle>
         <SheetDescription className="sr-only">{subtitle}</SheetDescription>
@@ -230,4 +239,9 @@ function normalizeAppRating(appRating?: number) {
 
 function openUrlInNewTab(url: string) {
   window.open(url, "_blank", "noopener,noreferrer");
+}
+
+function stopNestedModalPropagation(event: FocusEvent | PointerEvent) {
+  // Keep this higher z-index sheet interactive when a lower modal drawer is open.
+  event.stopPropagation();
 }

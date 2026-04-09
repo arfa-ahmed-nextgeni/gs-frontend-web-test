@@ -66,6 +66,33 @@ export function formatPrice({
   return formatter.format(amount);
 }
 
+export function getCurrencySymbol(currencyCode?: string, locale = "en-US") {
+  const code = currencyCode?.trim().toUpperCase();
+
+  if (!code) {
+    return null;
+  }
+
+  const config = findCurrencyConfig(code);
+
+  if (config) {
+    return config.symbol;
+  }
+
+  try {
+    const currencyPart = getFormatter(locale, code, 0, 0, "symbol", false)
+      .formatToParts(0)
+      .find((part) => part.type === "currency");
+
+    // Some currencies format to the code itself, which we treat as no symbol.
+    return currencyPart?.value.toUpperCase() === code
+      ? null
+      : currencyPart?.value || null;
+  } catch {
+    return null;
+  }
+}
+
 function getFormatter(
   locale: string,
   currency: string,

@@ -17,7 +17,7 @@ export const AddDeliveryAddressDrawerLayout = ({
 }: PropsWithChildren) => {
   const t = useTranslations("AddDeliveryAddressPage");
 
-  const { deliveryType, setShowSaveForm, showSaveForm } =
+  const { deliveryType, resetFlowState, setShowSaveForm, showSaveForm } =
     useAddDeliveryAddressContext();
   const { cameFromShippingOptionDrawer, setIsShippingOptionDrawerOpen } =
     useCheckoutContext();
@@ -55,6 +55,8 @@ export const AddDeliveryAddressDrawerLayout = ({
   };
 
   const closeDrawer = () => {
+    // Reset the add-address flow so reopening the drawer starts fresh.
+    resetFlowState();
     // Navigate back to checkout
     window.history.back();
   };

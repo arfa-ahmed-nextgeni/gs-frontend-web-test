@@ -32,7 +32,7 @@ export const LocalizedPrice = ({
       {config && (
         <span
           className={cn(
-            "font-gilroy me-[3px] inline align-middle leading-none",
+            "font-gilroy me-1 inline align-middle leading-none",
             currencySymbolProps?.className
           )}
           style={{

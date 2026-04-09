@@ -7,26 +7,29 @@ import cn from "classnames";
 import { useCart } from "@/contexts/use-cart";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/lib/constants/routes";
-import { MENU_TRACKING_DATA_ATTRIBUTE } from "@/lib/constants/tracking-data-attributes";
+import { MOBILE_BOTTOM_NAVIGATION_TRACKING_DATA_ATTRIBUTE } from "@/lib/constants/tracking-data-attributes";
 
 export const CartButton = ({
   children,
   className,
   indicatorProps,
+  mobileBottomNavigationTrackingItem,
   onClick,
-  trackingMenu,
 }: PropsWithChildren<{
   className?: string;
   indicatorProps?: ComponentProps<"span">;
+  mobileBottomNavigationTrackingItem?: string;
   onClick?: () => void;
-  trackingMenu?: string;
 }>) => {
   const { cartHasItems } = useCart();
 
   return (
     <Link
-      {...(trackingMenu
-        ? { [MENU_TRACKING_DATA_ATTRIBUTE]: trackingMenu }
+      {...(mobileBottomNavigationTrackingItem
+        ? {
+            [MOBILE_BOTTOM_NAVIGATION_TRACKING_DATA_ATTRIBUTE]:
+              mobileBottomNavigationTrackingItem,
+          }
         : undefined)}
       aria-label="Cart button"
       className={cn(

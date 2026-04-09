@@ -8,7 +8,7 @@ import {
   MobileBottomNavigationProfileIcon,
 } from "@/layouts/header/mobile-bottom-navigation/mobile-bottom-navigation-icons";
 import { ROUTES } from "@/lib/constants/routes";
-import { MENU_TRACKING_DATA_ATTRIBUTE } from "@/lib/constants/tracking-data-attributes";
+import { MOBILE_BOTTOM_NAVIGATION_TRACKING_DATA_ATTRIBUTE } from "@/lib/constants/tracking-data-attributes";
 import { ZIndexLevel } from "@/lib/constants/ui";
 import { cn } from "@/lib/utils";
 
@@ -43,7 +43,7 @@ export function MobileBottomNavigation() {
     <div
       className={cn(
         "border-border-base bg-bg-default h-15 fixed bottom-0 flex w-full flex-row items-center justify-between border-t px-[clamp(2.5rem,6.25vw,3.125rem)] py-4 lg:hidden",
-        ZIndexLevel.MobileBottomNavigation,
+        ZIndexLevel.MobileBottomNavigation
       )}
       data-slot="mobile-bottom-navigation"
       style={{
@@ -60,7 +60,7 @@ export function MobileBottomNavigation() {
       <MobileBottomNavigationActiveState />
 
       <Link
-        {...{ [MENU_TRACKING_DATA_ATTRIBUTE]: "home" }}
+        {...{ [MOBILE_BOTTOM_NAVIGATION_TRACKING_DATA_ATTRIBUTE]: "home" }}
         aria-label="Home"
         className={getNavItemClassName("home")}
         href={ROUTES.HOME}
@@ -73,7 +73,7 @@ export function MobileBottomNavigation() {
       </Link>
 
       <Link
-        {...{ [MENU_TRACKING_DATA_ATTRIBUTE]: "menu" }}
+        {...{ [MOBILE_BOTTOM_NAVIGATION_TRACKING_DATA_ATTRIBUTE]: "menu" }}
         aria-label="Menu"
         className={getNavItemClassName("menu")}
         href={ROUTES.CATEGORY.BY_SLUG("fragrances")}
@@ -85,7 +85,10 @@ export function MobileBottomNavigation() {
         />
       </Link>
 
-      <CartButton className={getNavItemClassName("cart")} trackingMenu="cart">
+      <CartButton
+        className={getNavItemClassName("cart")}
+        mobileBottomNavigationTrackingItem="cart"
+      >
         <MobileBottomNavigationBagIcon
           aria-hidden="true"
           className={navIconClassName}
@@ -93,7 +96,7 @@ export function MobileBottomNavigation() {
       </CartButton>
 
       <Link
-        {...{ [MENU_TRACKING_DATA_ATTRIBUTE]: "profile" }}
+        {...{ [MOBILE_BOTTOM_NAVIGATION_TRACKING_DATA_ATTRIBUTE]: "profile" }}
         aria-label="Profile"
         className={getNavItemClassName("profile")}
         href={ROUTES.CUSTOMER.ACCOUNT}
@@ -111,6 +114,6 @@ export function MobileBottomNavigation() {
 function getNavItemClassName(activeTab: "cart" | "home" | "menu" | "profile") {
   return cn(
     "text-[#374957] before:transition-default relative shrink-0 before:absolute before:bottom-[-8px] before:start-0 before:h-[3px] before:w-0 before:content-['']",
-    navItemActiveClassNames[activeTab],
+    navItemActiveClassNames[activeTab]
   );
 }

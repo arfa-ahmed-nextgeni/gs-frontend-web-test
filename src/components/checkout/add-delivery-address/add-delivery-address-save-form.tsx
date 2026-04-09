@@ -16,9 +16,9 @@ import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
 import { useAddDeliveryAddressContext } from "@/contexts/add-delivery-address-context";
 import { useOptionalCheckoutContext } from "@/contexts/checkout-context";
+import { useKsaAddressQuery } from "@/hooks/queries/use-ksa-address";
 import { useAddressOptionsQuery } from "@/hooks/use-address-options-query";
 import { addDeliveryAddress } from "@/lib/actions/checkout/add-delivery-address";
-import { getKsaAddress } from "@/lib/actions/customer/get-ksa-address";
 import { AddressStepType } from "@/lib/constants/address";
 import {
   CHECKOUT_ADDRESS_SAVED_EVENT,
@@ -51,15 +51,14 @@ export const AddDeliveryAddressSaveForm = () => {
   const [isPending, setIsPending] = useState(false);
   const [showCitySuggestions, setShowCitySuggestions] = useState(false);
   const [showDistrictSuggestions, setShowDistrictSuggestions] = useState(false);
-  const [isLoadingKsa, setIsLoadingKsa] = useState(false);
   const [phoneNumberError, setPhoneNumberError] = useState<null | string>(null);
+  const [selectedCityForDistricts, setSelectedCityForDistricts] = useState("");
 
   const {
     customerData,
     deliveryType,
     googleAddressData,
     initialContactData,
-    ksaAddress,
     selectedAddress,
     selectedLocation,
     setGoogleAddressData,
@@ -82,43 +81,21 @@ export const AddDeliveryAddressSaveForm = () => {
   const initialPhoneNumber = isGiftDelivery
     ? ensureSaudiPhonePrefix(initialContactData?.phoneNumber ?? "")
     : ensureSaudiPhonePrefix(customerData?.phoneNumber ?? "");
+  const { data: queriedKsaAddress, isPending: isLoadingKsa } =
+    useKsaAddressQuery({
+      enabled: !!selectedLocation,
+      latitude: selectedLocation?.lat,
+      longitude: selectedLocation?.lng,
+    });
 
-  // Fetch KSA address data when component mounts or selectedLocation changes
   useEffect(() => {
-    let isActive = true;
-
-    const fetchKsaAddress = async () => {
-      if (!selectedLocation) return;
-
-      setIsLoadingKsa(true);
-      setKsaAddress(null);
-
-      const result = await getKsaAddress({
-        latitude: selectedLocation.lat,
-        longitude: selectedLocation.lng,
-      });
-
-      // Only update state if this effect is still active (not cancelled)
-      if (!isActive) return;
-
-      if (isOk(result)) {
-        setKsaAddress(result.data);
-      } else {
-        setKsaAddress(null);
-      }
-
-      setIsLoadingKsa(false);
-    };
-
-    fetchKsaAddress();
-
-    // Cleanup: mark effect as inactive if dependencies change before API completes
-    return () => {
-      isActive = false;
-    };
-  }, [selectedLocation, setKsaAddress]);
+    // Mirror the cached KSA lookup into context so the manual form can reuse it.
+    setKsaAddress(queriedKsaAddress ?? null);
+  }, [queriedKsaAddress, setKsaAddress]);
 
   const fallbackAddressData = googleAddressData || emptyGoogleAddressData();
+  // Prefer the cached KSA validation data, then fall back to Google-derived fields.
+  const ksaAddress = queriedKsaAddress ?? null;
 
   // Build address data: prefer KSA data, fallback to Google reverse geocoding
   const addressData = useMemo(
@@ -218,7 +195,7 @@ export const AddDeliveryAddressSaveForm = () => {
   const { data: districtsData, isPending: districtsLoading } =
     useAddressOptionsQuery({
       addressType: AddressStepType.Area,
-      city: formData.city,
+      city: selectedCityForDistricts,
       country: "SA",
     });
 
@@ -236,6 +213,24 @@ export const AddDeliveryAddressSaveForm = () => {
     !!normalizedCityInput && !citiesLoading && !hasMatchingCity;
   const showCityNoMatchDropdown =
     showNoMatchingCity && !isCityFocused && !showCitySuggestions;
+
+  useEffect(() => {
+    const normalizedCityInput = formData.city.trim().toLowerCase();
+
+    if (!normalizedCityInput) {
+      setSelectedCityForDistricts("");
+      return;
+    }
+
+    const matchingCity = (citiesData || []).find(
+      (city) =>
+        city?.label?.trim().toLowerCase() === normalizedCityInput ||
+        city?.value?.trim().toLowerCase() === normalizedCityInput
+    );
+
+    // Only unlock district fetching after the city matches a real option.
+    setSelectedCityForDistricts(matchingCity?.label || "");
+  }, [citiesData, formData.city]);
 
   const filteredDistricts = (districtsData || []).filter((district) =>
     district?.label
@@ -314,6 +309,7 @@ export const AddDeliveryAddressSaveForm = () => {
       city: cityLabel,
       district: "", // Reset district when city changes
     }));
+    setSelectedCityForDistricts(cityLabel);
     setShowCitySuggestions(false);
   };
 

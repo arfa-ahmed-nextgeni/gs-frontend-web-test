@@ -1,9 +1,9 @@
 import Image from "next/image";
 
 import EyeViewIcon from "@/assets/icons/eye-view-icon.svg";
-import { productPlaceholder } from "@/assets/placeholders";
 import { ProductCardImageLink } from "@/components/product/product-card/product-card-image-link";
 import { productCardSizeClasses } from "@/components/product/product-card/utils/product-card-utils";
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import {
   PRODUCT_CARD_DIMENSIONS,
   ProductCardVariant,
@@ -45,7 +45,7 @@ export const ProductCardImage = ({
       )}
       style={style}
     >
-      <Image
+      <ProductImageWithFallback
         alt="product image"
         className={cn(
           "transition-default size-full object-contain opacity-100",
@@ -58,13 +58,14 @@ export const ProductCardImage = ({
             : "aspect-square"
         )}
         fill
+        key={imageUrl}
         placeholder={getShimmerPlaceholder()}
         sizes={
           variant === ProductCardVariant.Bundles
             ? `(max-width: 768px) 30vw, ${PRODUCT_CARD_DIMENSIONS[ProductCardVariant.Bundles].default.w}px`
             : `(max-width: 768px) 22vw, ${PRODUCT_CARD_DIMENSIONS[ProductCardVariant.Single].default.w}px`
         }
-        src={imageUrl || productPlaceholder}
+        src={imageUrl}
       />
       {productHref ? (
         <ProductCardImageLink

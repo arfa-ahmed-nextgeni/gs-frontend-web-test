@@ -12,10 +12,15 @@ import { useAddDeliveryAddressContext } from "@/contexts/add-delivery-address-co
 import { extractGoogleAddressData } from "@/lib/utils/google-address";
 
 export const AddDeliveryAddressMapSearch = () => {
+  const SEARCH_DEBOUNCE_MS = 300;
   const t = useTranslations("AddDeliveryAddressPage.map");
 
-  const { setGoogleAddressData, setSelectedAddress, setSelectedLocation } =
-    useAddDeliveryAddressContext();
+  const {
+    setGoogleAddressData,
+    setIsSelectedLocationInSaudiArabia,
+    setSelectedAddress,
+    setSelectedLocation,
+  } = useAddDeliveryAddressContext();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState<
@@ -29,6 +34,7 @@ export const AddDeliveryAddressMapSearch = () => {
   const autocompleteService =
     useRef<google.maps.places.AutocompleteService | null>(null);
   const placesService = useRef<google.maps.places.PlacesService | null>(null);
+  const searchTimeoutRef = useRef<null | ReturnType<typeof setTimeout>>(null);
 
   useEffect(() => {
     console.info("[AddressSearch] Places library status:", {
@@ -173,7 +179,6 @@ export const AddDeliveryAddressMapSearch = () => {
     const value = e.target.value;
     console.info("[AddressSearch] Input changed:", value);
     setSearchQuery(value);
-    fetchSuggestions(value);
   };
 
   const handleSuggestionClick = useCallback(
@@ -232,12 +237,19 @@ export const AddDeliveryAddressMapSearch = () => {
           setShowSuggestions(false);
           setIsSearchFocused(false);
 
+          const countryComponent = place.address_components?.find(({ types }) =>
+            types.includes("country")
+          );
+
           // Update context with selected address and location
           setGoogleAddressData(
             extractGoogleAddressData({
               addressComponents: place.address_components,
               formattedAddress: address,
             })
+          );
+          setIsSelectedLocationInSaudiArabia(
+            countryComponent?.short_name === "SA"
           );
           setSelectedAddress(address);
           setSelectedLocation(location);
@@ -246,24 +258,67 @@ export const AddDeliveryAddressMapSearch = () => {
         }
       });
     },
-    [setGoogleAddressData, setSelectedAddress, setSelectedLocation]
+    [
+      setGoogleAddressData,
+      setIsSelectedLocationInSaudiArabia,
+      setSelectedAddress,
+      setSelectedLocation,
+    ]
   );
 
   const handleFocus = () => {
     console.info("[AddressSearch] Input focused, searchQuery:", searchQuery);
     setIsSearchFocused(true);
-    if (searchQuery.length >= 2) {
-      fetchSuggestions(searchQuery);
-    }
   };
 
   const handleBlur = () => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+      searchTimeoutRef.current = null;
+    }
     // Delay hiding suggestions to allow clicking on them
     setTimeout(() => {
       setIsSearchFocused(false);
       setShowSuggestions(false);
     }, 200);
   };
+
+  useEffect(() => {
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isSearchFocused) {
+      return;
+    }
+
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+      searchTimeoutRef.current = null;
+    }
+
+    if (searchQuery.length < 2) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+
+    // Debounce autocomplete calls so we do not hit Places on every keystroke.
+    searchTimeoutRef.current = setTimeout(() => {
+      fetchSuggestions(searchQuery);
+    }, SEARCH_DEBOUNCE_MS);
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+        searchTimeoutRef.current = null;
+      }
+    };
+  }, [fetchSuggestions, isSearchFocused, searchQuery]);
 
   return (
     <div className="pointer-events-none absolute top-2.5 z-10 flex w-full justify-center">

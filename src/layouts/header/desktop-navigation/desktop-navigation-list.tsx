@@ -63,6 +63,11 @@ const getTrackingPayload = (
   };
 };
 
+const hasNavigationSubmenu = (item: MainMenuType | null | undefined) =>
+  Boolean(
+    item?.subMenu && Array.isArray(item.subMenu) && item.subMenu.length > 0
+  );
+
 export const DesktopNavigationList = ({
   navigationItems,
 }: {
@@ -71,6 +76,11 @@ export const DesktopNavigationList = ({
   const safeNavigationItems = Array.isArray(navigationItems)
     ? navigationItems
     : [];
+  const lastSubmenuItemIndex = safeNavigationItems.reduce(
+    (lastIndex, item, index) =>
+      hasNavigationSubmenu(item) ? index : lastIndex,
+    -1
+  );
 
   return (
     <nav className="transition-default flex flex-row justify-between">
@@ -79,13 +89,10 @@ export const DesktopNavigationList = ({
           return null;
         }
 
-        const hasSubmenu = Boolean(
-          item?.subMenu &&
-          Array.isArray(item.subMenu) &&
-          item.subMenu.length > 0
-        );
+        const hasSubmenu = hasNavigationSubmenu(item);
 
         const finalPath = getCategoryUrl(item.path || "");
+        const shouldAlignSubmenuToEnd = index === lastSubmenuItemIndex;
 
         return (
           <div className="group relative" key={item.id}>
@@ -117,7 +124,12 @@ export const DesktopNavigationList = ({
             )}
 
             {hasSubmenu && (
-              <div className="transition-default group-hover:max-h-50 bg-bg-default absolute start-0 max-h-0 w-48 overflow-hidden rounded-b-xl group-hover:opacity-100">
+              <div
+                className={cn(
+                  "transition-default group-hover:max-h-50 bg-bg-default absolute max-h-0 w-48 overflow-hidden rounded-b-xl group-hover:opacity-100",
+                  shouldAlignSubmenuToEnd ? "end-0" : "start-0"
+                )}
+              >
                 {item.subMenu?.map((menu) => {
                   if (!menu || !menu.id || !menu.label) {
                     return null;

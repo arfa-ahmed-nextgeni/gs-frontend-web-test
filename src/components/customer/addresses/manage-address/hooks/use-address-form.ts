@@ -8,8 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useToastContext } from "@/components/providers/toast-provider";
 import { useOptionalAddDeliveryAddressContext } from "@/contexts/add-delivery-address-context";
 import { useStoreCode } from "@/hooks/i18n/use-store-code";
+import { useKsaAddressQuery } from "@/hooks/queries/use-ksa-address";
 import { addCustomerAddress } from "@/lib/actions/customer/add-customer-address";
-import { getKsaAddress } from "@/lib/actions/customer/get-ksa-address";
 import { updateCustomerAddress } from "@/lib/actions/customer/update-customer-address";
 import { updateProfileFromAddress } from "@/lib/actions/customer/update-profile";
 import { trackProfileUpdated } from "@/lib/analytics/events";
@@ -195,78 +195,61 @@ export const useAddressForm = ({
     );
   }, [addDeliveryAddressContext?.selectedLocation, addressForm]);
 
+  const { data: queriedKsaAddress } = useKsaAddressQuery({
+    enabled: !!addDeliveryAddressContext?.selectedLocation,
+    latitude: addDeliveryAddressContext?.selectedLocation?.lat,
+    longitude: addDeliveryAddressContext?.selectedLocation?.lng,
+  });
+
   useEffect(() => {
     const selectedLocation = addDeliveryAddressContext?.selectedLocation;
 
-    if (!selectedLocation) {
+    if (!selectedLocation || !queriedKsaAddress) {
       return;
     }
 
-    let isActive = true;
-
-    const syncKsaAddress = async () => {
-      const existingKsaAddress = addDeliveryAddressContext?.ksaAddress;
-      const ksaAddress =
-        existingKsaAddress ||
-        (
-          await getKsaAddress({
-            latitude: selectedLocation.lat,
-            longitude: selectedLocation.lng,
-          })
-        ).data;
-
-      if (!isActive || !ksaAddress) {
-        return;
-      }
-
-      addDeliveryAddressContext?.setKsaAddress(ksaAddress);
-      addressForm.setValue(
-        AddressFormField.KsaAdditionalNumber,
-        ksaAddress.additionalNumber || "",
-        {
-          shouldDirty: false,
-          shouldTouch: false,
-        }
-      );
-      addressForm.setValue(
-        AddressFormField.KsaBuildingNumber,
-        ksaAddress.buildingNumber || "",
-        {
-          shouldDirty: false,
-          shouldTouch: false,
-        }
-      );
-      addressForm.setValue(
-        AddressFormField.KsaShortAddress,
-        ksaAddress.short_address ||
-          addressForm.getValues(AddressFormField.KsaShortAddress),
-        {
-          shouldDirty: false,
-          shouldTouch: false,
-        }
-      );
-
-      // Update BuildingName field with sanitized street (remove district)
-      const sanitizedStreet = sanitizeStreetValue({
-        district: ksaAddress.district || "",
-        shortCode: ksaAddress.short_address || "",
-        street: ksaAddress.address1 || ksaAddress.street || "",
-      });
-      addressForm.setValue(AddressFormField.BuildingName, sanitizedStreet, {
+    addDeliveryAddressContext?.setKsaAddress(queriedKsaAddress);
+    addressForm.setValue(
+      AddressFormField.KsaAdditionalNumber,
+      queriedKsaAddress.additionalNumber || "",
+      {
         shouldDirty: false,
         shouldTouch: false,
-      });
-    };
+      }
+    );
+    addressForm.setValue(
+      AddressFormField.KsaBuildingNumber,
+      queriedKsaAddress.buildingNumber || "",
+      {
+        shouldDirty: false,
+        shouldTouch: false,
+      }
+    );
+    addressForm.setValue(
+      AddressFormField.KsaShortAddress,
+      queriedKsaAddress.short_address ||
+        addressForm.getValues(AddressFormField.KsaShortAddress),
+      {
+        shouldDirty: false,
+        shouldTouch: false,
+      }
+    );
 
-    void syncKsaAddress();
-
-    return () => {
-      isActive = false;
-    };
+    // Reuse the cached KSA validation data when prefilling the manual form.
+    const sanitizedStreet = sanitizeStreetValue({
+      district: queriedKsaAddress.district || "",
+      shortCode: queriedKsaAddress.short_address || "",
+      street: queriedKsaAddress.address1 || queriedKsaAddress.street || "",
+    });
+    addressForm.setValue(AddressFormField.BuildingName, sanitizedStreet, {
+      shouldDirty: false,
+      shouldTouch: false,
+    });
   }, [
     addDeliveryAddressContext,
     addressForm,
     addDeliveryAddressContext?.selectedLocation,
+    queriedKsaAddress,
   ]);
 
   const handleSubmitForm = handleSubmit(

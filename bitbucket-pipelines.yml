@@ -85,3 +85,62 @@ pipelines:
             - git add argo.yaml
             - git commit -m "Pipeline Update magnext-web image tag to $BITBUCKET_BUILD_NUMBER for ArgoCD sync"
             - git push
+    uat:
+       - step:
+          name: "Build Next.js Application"
+          image: node:24-alpine
+          size: 2x
+          caches:
+            - node
+            - nextcache
+          script:
+            - apk add --no-cache libc6-compat git aws-cli jq
+            - |
+              aws secretsmanager get-secret-value \
+                --secret-id "dev-magnext-uat-web" \
+                --region eu-central-1 \
+                --query SecretString \
+                --output text | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' > .env
+            - cat .env
+            - npm ci --frozen-lockfile
+            # Build the application
+            - npm run build
+          artifacts:
+            - .next/standalone/**
+            - .next/static/**
+            - public/**
+            - .env
+       - step:
+          name: "Docker Build and Push"
+          services:
+            - docker
+          caches:
+            - docker
+          script:
+            - aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 439413061158.dkr.ecr.eu-central-1.amazonaws.com
+            # Build Docker image (now with pre-built Next.js app)
+            - docker build -t uat_magnext_web .
+            - docker tag uat_magnext_web:latest 439413061158.dkr.ecr.eu-central-1.amazonaws.com/uat_magnext_web:latest
+            - docker tag uat_magnext_web:latest 439413061158.dkr.ecr.eu-central-1.amazonaws.com/uat_magnext_web:$BITBUCKET_BUILD_NUMBER
+            # Push images to AWS ECR
+            - docker push 439413061158.dkr.ecr.eu-central-1.amazonaws.com/uat_magnext_web:latest
+            - docker push 439413061158.dkr.ecr.eu-central-1.amazonaws.com/uat_magnext_web:$BITBUCKET_BUILD_NUMBER
+       - step:
+          name: Refresh ArgoCD App
+          image: amazon/aws-cli
+          script:
+            - yum update -y && yum install -y git
+
+            # Clone config repo
+            - git clone -b uat --single-branch https://$BITBUCKET_USERNAME:$BITBUCKET_APP_PASSWORD@bitbucket.org/goldenscent/magnext_config.git
+            - cd magnext_config/magnext_web
+
+            # Update image tag in argo.yml
+            - sed -i "s|uat_magnext_web:[^ ]*|uat_magnext_web:$BITBUCKET_BUILD_NUMBER|g" argo.yaml
+
+            # Commit & Push
+            - git config user.name "Bitbucket Pipelines"
+            - git config user.email "pipelines@bitbucket.org"
+            - git add argo.yaml
+            - git commit -m "Pipeline Update magnext-web-uat image tag to $BITBUCKET_BUILD_NUMBER for ArgoCD sync"
+            - git push origin uat

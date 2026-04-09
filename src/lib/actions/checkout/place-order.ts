@@ -5,19 +5,16 @@ import { redirect as nextRedirect, RedirectType } from "next/navigation";
 
 import { getLocale, getTranslations } from "next-intl/server";
 
-import { PlaceOrderOutput } from "@/graphql/graphql";
 import { getAuthToken } from "@/lib/actions/auth/get-auth-token";
 import { estimateShippingMethodsAction } from "@/lib/actions/checkout/estimate-shipping-methods";
 import { makePaymentAction } from "@/lib/actions/checkout/make-payment";
 import { payfortPaymentAction } from "@/lib/actions/checkout/payfort-payment";
+import { validateCartForPlaceOrder } from "@/lib/actions/checkout/validate-cart-for-place-order";
 import { deleteCartId, getCartId } from "@/lib/actions/cookies/cart";
 import { setPendingOrderInfo } from "@/lib/actions/cookies/checkout";
 import { updatePaymentCardCheckoutPaymentId } from "@/lib/actions/customer/update-payment-card-checkout-payment-id";
 import { graphqlRequest } from "@/lib/clients/graphql";
-import {
-  CART_GRAPHQL_MUTATIONS,
-  CART_GRAPHQL_QUERIES,
-} from "@/lib/constants/api/graphql/cart";
+import { CART_GRAPHQL_MUTATIONS } from "@/lib/constants/api/graphql/cart";
 import { Locale } from "@/lib/constants/i18n";
 import { ROUTES } from "@/lib/constants/routes";
 import {
@@ -27,6 +24,8 @@ import {
 import { getCommonErrorMessage } from "@/lib/utils/common-error-message";
 import { getStoreCode } from "@/lib/utils/country";
 import { failure, isOk } from "@/lib/utils/service-result";
+
+import type { PlaceOrderOutput } from "@/graphql/graphql";
 
 export type PlaceOrderResult = {
   checkoutUrl?: string;
@@ -61,6 +60,7 @@ export async function placeOrderAction({
   } | null;
 }) {
   const tCommonErrors = await getTranslations("CommonErrors");
+  const tCheckoutErrors = await getTranslations("CheckoutPage.errors");
   let checkoutUrl: string | undefined;
   const locale = (await getLocale()) as Locale;
   let orderV2: null | PlaceOrderOutput["orderV2"] | undefined;
@@ -72,30 +72,18 @@ export async function placeOrderAction({
     const authToken = await getAuthToken();
     const cartId = await getCartId();
 
-    if (!cartId) {
-      return failure("No active cart found");
-    }
-
-    const validationResponse = await graphqlRequest({
+    const cartValidationResult = await validateCartForPlaceOrder({
       authToken,
-      query: CART_GRAPHQL_QUERIES.GET_CART_VALIDATION,
-      storeCode: getStoreCode(locale),
-      variables: {
-        cartId,
-      },
+      cartId,
+      fallbackErrorMessage: tCheckoutErrors("invalidCart"),
+      locale,
     });
 
-    if (validationResponse.errors?.length) {
-      const errorMessage =
-        validationResponse.errors?.[0]?.message || "Failed to validate cart";
-      return failure(errorMessage);
+    if ("error" in cartValidationResult) {
+      return cartValidationResult;
     }
 
-    const cart = validationResponse.data?.cart;
-
-    if (!cart) {
-      return failure("Cart not found");
-    }
+    const cart = cartValidationResult.cart;
 
     const shippingAddresses = cart.shipping_addresses ?? [];
     if (shippingAddresses.length === 0) {
@@ -172,7 +160,7 @@ export async function placeOrderAction({
       query: CART_GRAPHQL_MUTATIONS.PLACE_ORDER,
       storeCode: getStoreCode(locale),
       variables: {
-        cartId,
+        cartId: cartId as string,
       },
     });
 

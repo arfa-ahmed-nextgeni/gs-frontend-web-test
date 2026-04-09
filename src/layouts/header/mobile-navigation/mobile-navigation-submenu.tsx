@@ -3,9 +3,9 @@
 import { useState } from "react";
 
 import { ArrowDownIcon } from "@/components/icons/arrow-down-icon";
-import { usePathname } from "@/i18n/navigation";
-import { trackMobileNavigationClick } from "@/layouts/header/mobile-navigation/mobile-navigation-click-origin";
+import { serializeMobileNavigationClickOriginPayload } from "@/layouts/header/mobile-navigation/mobile-navigation-click-origin-dataset";
 import { MobileNavigationLink } from "@/layouts/header/mobile-navigation/mobile-navigation-link";
+import { MOBILE_NAVIGATION_CLICK_ORIGIN_DATA_ATTRIBUTE } from "@/lib/constants/tracking-data-attributes";
 import { cn } from "@/lib/utils";
 
 import type { MainMenuType } from "@/lib/types/ui-types";
@@ -17,15 +17,21 @@ export const MobileNavigationSubmenu = ({
   item: MainMenuType;
   position: number;
 }) => {
-  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const serializedClickOriginPayload =
+    serializeMobileNavigationClickOriginPayload({
+      position,
+    });
 
   return (
     <div className="transition-default relative flex flex-col items-center overflow-hidden">
       <button
+        {...{
+          [MOBILE_NAVIGATION_CLICK_ORIGIN_DATA_ATTRIBUTE]:
+            serializedClickOriginPayload,
+        }}
         className="text-text-primary relative inline-flex items-center gap-1 text-xl font-medium"
         onClick={() => {
-          trackMobileNavigationClick(pathname, position);
           setIsOpen((prev) => !prev);
         }}
         style={item.style}

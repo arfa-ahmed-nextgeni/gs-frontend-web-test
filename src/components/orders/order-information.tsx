@@ -6,6 +6,8 @@ import { Star } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 
 import ConfettiIcon from "@/assets/gifs/Confetti.gif";
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
+import { ProductReviewWriteLink } from "@/components/product/product-reviews/product-review-write-link";
 import { JoinBanner } from "@/components/shared/join-banner";
 import { LocalizedPrice } from "@/components/shared/localized-price";
 import { Tooltip } from "@/components/shared/tooltip";
@@ -13,6 +15,7 @@ import { useStoreConfig } from "@/contexts/store-config-context";
 import { useCart } from "@/contexts/use-cart";
 import { useStoreCode } from "@/hooks/i18n/use-store-code";
 import { useCustomerQuery } from "@/hooks/queries/use-customer-query";
+import { ROUTES } from "@/lib/constants/routes";
 import { cn } from "@/lib/utils";
 import { formatPrice } from "@/lib/utils/price";
 
@@ -82,6 +85,8 @@ const fallbackItems: DisplayOrderItem[] = [
 
 const highlightTextClass = "text-[#374957]";
 const mutedTextClass = "text-[#85878A]";
+const rateItClassName =
+  "inline-flex items-center gap-2 text-[14px] font-medium text-[#374957] transition hover:text-[#111827]";
 
 export function OrderInformation({ order, orderId }: OrderInformationProps) {
   const { storeConfig } = useStoreConfig();
@@ -160,6 +165,10 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
 
   const effectiveOrderId = orderId || order?.tracking_number || "—";
 
+  const getProductReviewHref = (sku: string) => {
+    return ROUTES.CHECKOUT.ADD_PRODUCT_REVIEW(encodeURIComponent(sku));
+  };
+
   const deliveryEstimate =
     order?.deliveryLabel || t("fallbackDeliveryEstimate");
 
@@ -236,6 +245,36 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
           />
         )}
       </div>
+    );
+  };
+
+  const renderRateAction = (product: DisplayOrderItem) => {
+    const content = (
+      <>
+        <Star className="h-5 w-5 text-[#C2995B]" strokeWidth={1.5} />
+        {t("rateIt")}
+      </>
+    );
+
+    if (!product.sku) {
+      return (
+        <button
+          className={cn(rateItClassName, "opacity-60")}
+          disabled
+          type="button"
+        >
+          {content}
+        </button>
+      );
+    }
+
+    return (
+      <ProductReviewWriteLink
+        href={getProductReviewHref(product.sku)}
+        loadingLinkProps={{ className: rateItClassName }}
+      >
+        {content}
+      </ProductReviewWriteLink>
     );
   };
 
@@ -328,17 +367,14 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                             })}
                           </div>
                           <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-[#F7F8FA]">
-                            {product.image?.thumbnail ? (
-                              <Image
-                                alt={product.name}
-                                className="h-18 w-18 rounded-xl object-contain"
-                                height={72}
-                                src={product.image.thumbnail}
-                                width={72}
-                              />
-                            ) : (
-                              <div className="h-18 w-18 rounded-xl bg-[#E3E6EA]" />
-                            )}
+                            <ProductImageWithFallback
+                              alt={product.name}
+                              className="h-18 w-18 rounded-xl object-contain"
+                              height={72}
+                              key={product.image?.thumbnail || "placeholder"}
+                              src={product.image?.thumbnail || ""}
+                              width={72}
+                            />
                           </div>
                           <div className="flex flex-1 flex-col gap-1">
                             <p
@@ -364,16 +400,7 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                             </span>
                           )}
                           {renderPrice(product)}
-                          <button
-                            className="inline-flex items-center gap-2 text-[14px] font-medium text-[#374957] transition hover:text-[#111827]"
-                            type="button"
-                          >
-                            <Star
-                              className="h-5 w-5 text-[#C2995B]"
-                              strokeWidth={1.5}
-                            />
-                            {t("rateIt")}
-                          </button>
+                          {renderRateAction(product)}
                         </div>
                       </div>
                     ))}

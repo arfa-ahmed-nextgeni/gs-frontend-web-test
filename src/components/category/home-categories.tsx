@@ -1,3 +1,4 @@
+import { HomeCategoriesScrollContainer } from "@/components/category/home-categories-scroll-container";
 import { HomeCategoryLink } from "@/components/category/home-category-link";
 import { DesktopCategories } from "@/lib/models/desktop-categories";
 
@@ -11,23 +12,22 @@ export default function HomeCategories({ data, lpRow }: HomeCategoriesProps) {
     return null;
   }
   return (
-    <div className="flex min-h-[115px] items-center justify-between py-7 xl:justify-center xl:gap-4">
-      {data.categories.map((category, index) => (
-        <div
-          className="flex min-w-[91px] flex-col items-center"
-          key={category.id}
-        >
-          {category.imageUrl && (
+    <HomeCategoriesScrollContainer className="scrollbar-hidden min-h-28.75 w-full min-w-0 overflow-x-auto py-7">
+      <div className="flex w-max min-w-full items-start justify-between gap-5 xl:justify-center">
+        {data.categories.map((category, index) =>
+          category.imageUrl ? (
             <HomeCategoryLink
+              className="w-22.75 shrink-0"
               imageUrl={category.imageUrl}
+              key={category.id}
               label={category.label}
               lpColumn={index + 1}
               lpRow={lpRow}
               url={category.url}
             />
-          )}
-        </div>
-      ))}
-    </div>
+          ) : null
+        )}
+      </div>
+    </HomeCategoriesScrollContainer>
   );
 }

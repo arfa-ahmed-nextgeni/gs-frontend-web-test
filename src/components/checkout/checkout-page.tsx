@@ -56,6 +56,7 @@ import {
   trackPurchaseError,
 } from "@/lib/analytics/events";
 import { buildCartProperties } from "@/lib/analytics/utils/build-properties";
+import { CheckoutError } from "@/lib/constants/checkout-error";
 import {
   CHECKOUT_ADDRESS_SAVED_EVENT,
   CHECKOUT_ADDRESS_SAVED_FLAG,
@@ -95,6 +96,7 @@ import { CheckoutShippingOptionDrawer } from "./shipping-methods/checkout-shippi
 import type { DeliveryMethod } from "./delivery/delivery-methods/types";
 import type { CartAddressInput } from "@/graphql/graphql";
 import type { CustomerAddress as CustomerAddressModel } from "@/lib/models/customer-addresses";
+import type { PlaceOrderFailureResult } from "@/lib/types/checkout/place-order";
 
 export type CheckoutAddress = {
   customerAddress: CheckoutCustomerAddress;
@@ -1107,7 +1109,7 @@ function CheckoutPage({
       const nonGiftItems = cart.items.filter((item) => !item.isGwp);
       // If no items left (excluding gifts), redirect to cart page
       if (nonGiftItems.length === 0) {
-        router.push(ROUTES.CART.ROOT);
+        router.replace(ROUTES.CART.ROOT);
       }
     }
   }, [cart, router]);
@@ -3777,8 +3779,8 @@ function CheckoutPage({
 
         // Handle errors
         if (result && typeof result === "object" && "error" in result) {
-          const errorMessage =
-            (result as { error: string }).error ?? "Unknown error";
+          const errorResult = result as PlaceOrderFailureResult;
+          const errorMessage = errorResult.error ?? "Unknown error";
 
           // Check if this is a redirect error (shouldn't happen now, but handle it just in case)
           if (errorMessage === "NEXT_REDIRECT") {
@@ -3832,6 +3834,18 @@ function CheckoutPage({
             title: finalErrorMessage,
             type: "error",
           });
+
+          if (
+            errorResult.errorCode === CheckoutError.InvalidCart &&
+            errorResult.redirectTo
+          ) {
+            queryClient.invalidateQueries({
+              queryKey: QUERY_KEYS.CART.ROOT(locale),
+            });
+            router.replace(errorResult.redirectTo);
+            return;
+          }
+
           await sleep(DEFAULT_TOAST_DURATION);
           return;
         }
@@ -3920,6 +3934,7 @@ function CheckoutPage({
     storeConfig,
     selectedLockerAddressType,
     setSelectedLockerAddressType,
+    router,
   ]);
 
   // Check if selected payment method uses cards

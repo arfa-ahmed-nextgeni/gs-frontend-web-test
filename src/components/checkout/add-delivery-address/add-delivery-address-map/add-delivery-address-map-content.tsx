@@ -88,16 +88,15 @@ export const AddDeliveryAddressMapContent = ({
           lat: e.latLng.lat(),
           lng: e.latLng.lng(),
         };
+        // Let the selectedLocation effect perform the single reverse-geocode pass.
         setSelectedLocation(newPosition);
-        // Get address for the new position
-        reverseGeocode(newPosition);
         // Center map on the new marker position
         if (map) {
           map.panTo(newPosition);
         }
       }
     },
-    [setSelectedLocation, reverseGeocode, map]
+    [map, setSelectedLocation]
   );
 
   // const handleZoomIn = useCallback(() => {
@@ -136,6 +135,7 @@ export const AddDeliveryAddressMapContent = ({
   // Reverse geocode selected location to get formatted address
   useEffect(() => {
     if (selectedLocation && geocoder) {
+      // This effect centralizes reverse geocoding for drag, search, and locate flows.
       reverseGeocode(selectedLocation);
     }
   }, [selectedLocation, geocoder, reverseGeocode]);

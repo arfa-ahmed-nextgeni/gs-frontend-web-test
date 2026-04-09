@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { z } from "zod";
 
+import { useToastContext } from "@/components/providers/toast-provider";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -20,7 +21,7 @@ import { isOk } from "@/lib/utils/service-result";
 
 const createJoinSchema = (hasPhoneNumber: boolean) =>
   z.object({
-    email: z.string().email("Please enter a valid email address"),
+    email: z.string().min(1, "requiredField").email("invalidEmail"),
     phoneNumber: hasPhoneNumber
       ? z.object({
           countryCode: z.string(),
@@ -90,7 +91,10 @@ export function JoinModal({
   storeCode = "sa_en" as StoreCode,
 }: JoinModalProps) {
   const t = useTranslations("JoinModal");
+  const tCommonErrors = useTranslations("CommonErrors");
+  const tFormErrors = useTranslations("formErrorMessages");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { showError, showSuccess } = useToastContext();
   const { data: currentCustomer } = useCustomerQuery();
   const countryCode = getDefaultCountryCode(storeCode);
   const resolvedPhoneNumber = currentCustomer?.phoneNumber;
@@ -135,15 +139,18 @@ export function JoinModal({
       });
 
       if (isOk(result)) {
+        showSuccess(t("joinSuccess"), " ");
         if (onJoin) {
           onJoin(data);
         }
         onClose();
       } else {
         console.error("Failed to update email:", result.error);
+        showError(tCommonErrors("unknownError"), " ");
       }
     } catch (error) {
       console.error("Error updating email:", error);
+      showError(tCommonErrors("unknownError"), " ");
     } finally {
       setIsSubmitting(false);
     }
@@ -151,7 +158,7 @@ export function JoinModal({
 
   return (
     <Dialog onOpenChange={onClose} open={open}>
-      <DialogContent className="fixed bottom-0 left-0 right-0 top-auto h-auto max-h-[90dvh] !w-full !max-w-full translate-x-0 translate-y-0 gap-0 overflow-y-auto rounded-none p-0 pb-[max(30px,_env(safe-area-inset-bottom))] sm:bottom-auto sm:left-[50%] sm:right-auto sm:top-[50%] sm:h-[426px] sm:max-h-[90vh] sm:!w-[400px] sm:!max-w-[400px] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:overflow-y-auto sm:rounded-3xl sm:pb-0">
+      <DialogContent className="fixed bottom-0 left-0 right-0 top-auto h-auto max-h-[90dvh] !w-full !max-w-full translate-x-0 translate-y-0 gap-0 overflow-y-auto rounded-none p-0 pb-[max(30px,_env(safe-area-inset-bottom))] sm:bottom-auto sm:left-[50%] sm:right-auto sm:top-[50%] sm:h-[446px] sm:max-h-[90vh] sm:!w-[400px] sm:!max-w-[400px] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:overflow-y-auto sm:rounded-3xl sm:pb-0">
         {/* Header */}
         <div className="space-y-2 px-6 pb-6 pt-8 sm:pt-6">
           <h2 className="pt-4 text-center text-[20px] font-normal text-[#374957] lg:text-[35px]">
@@ -195,6 +202,13 @@ export function JoinModal({
               type="email"
               {...register("email")}
             />
+            {errors.email && (
+              <p className="mt-1 text-xs text-red-500">
+                {tFormErrors.has(errors.email.message as any)
+                  ? tFormErrors(errors.email.message as any)
+                  : errors.email.message}
+              </p>
+            )}
           </div>
 
           {/* Join Button */}

@@ -10,11 +10,22 @@ import { OrderInformation } from "@/components/orders/order-information";
 import Container from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 import { useCheckoutContext } from "@/contexts/checkout-context";
-import { Link, useRouter } from "@/i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { Locale } from "@/lib/constants/i18n";
 import { QUERY_KEYS } from "@/lib/constants/query-keys";
 import { ROUTES } from "@/lib/constants/routes";
+import { SessionStorageKey } from "@/lib/constants/session-storage";
 import { Order } from "@/lib/types/ui-types";
+import {
+  getSessionStorage,
+  removeSessionStorage,
+} from "@/lib/utils/session-storage";
+
+const orderConfirmationBackTrapState = "orderConfirmationBackTrap";
+
+type OrderConfirmationHistoryState = {
+  [orderConfirmationBackTrapState]?: true;
+};
 
 export default function OrderConfirmationContent({
   order,
@@ -23,6 +34,7 @@ export default function OrderConfirmationContent({
   order: Order;
   orderId: string;
 }) {
+  const pathname = usePathname();
   const router = useRouter();
   const queryClient = useQueryClient();
   const locale = useLocale() as Locale;
@@ -40,12 +52,20 @@ export default function OrderConfirmationContent({
   // Handle browser back button to navigate to cart
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
+      const skipCartRedirect = getSessionStorage(
+        SessionStorageKey.CHECKOUT_PRODUCT_REVIEW_BACK_NAVIGATION
+      );
+
+      if (skipCartRedirect) {
+        removeSessionStorage(
+          SessionStorageKey.CHECKOUT_PRODUCT_REVIEW_BACK_NAVIGATION
+        );
+        return;
+      }
+
       event.preventDefault();
       router.push(ROUTES.CART.ROOT);
     };
-
-    // Push a state to the history so we can intercept back navigation
-    window.history.pushState({}, "");
 
     window.addEventListener("popstate", handlePopState);
 
@@ -53,6 +73,28 @@ export default function OrderConfirmationContent({
       window.removeEventListener("popstate", handlePopState);
     };
   }, [router]);
+
+  useEffect(() => {
+    if (pathname.includes("/checkout/order-confirmation/reviews/add/")) {
+      return;
+    }
+
+    const currentState =
+      window.history.state && typeof window.history.state === "object"
+        ? (window.history.state as OrderConfirmationHistoryState)
+        : {};
+
+    if (currentState[orderConfirmationBackTrapState]) {
+      return;
+    }
+
+    // Push a state to the history so we can intercept back navigation.
+    window.history.pushState(
+      { ...currentState, [orderConfirmationBackTrapState]: true },
+      ""
+    );
+  }, [pathname]);
+
   return (
     <div className="bg-[#F7F8FA]">
       <CheckoutHeader />
