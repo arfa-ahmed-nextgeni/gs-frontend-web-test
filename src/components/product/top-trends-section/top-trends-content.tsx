@@ -1,8 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 
-import { DeviceOnlyContent } from "@/components/common/device-only-content";
 import { SectionHeader } from "@/components/common/section-header";
-import { DeviceOnlyCategoryProductsContent } from "@/components/product/device-only-category-products-content";
 import { TopTrendsBannerImage } from "@/components/product/top-trends-section/top-trends-banner-image";
 import { TopTrendsCarousel } from "@/components/product/top-trends-section/top-trends-carousel";
 import { TopTrendsCashbackCard } from "@/components/product/top-trends-section/top-trends-cashback-card";
@@ -11,6 +9,7 @@ import { getProductsByCategory } from "@/lib/actions/products/get-products-by-ca
 import { Locale } from "@/lib/constants/i18n";
 import { ROUTES } from "@/lib/constants/routes";
 import { TopTrendsCategoryProducts } from "@/lib/models/top-trends-category-products";
+import { getIsMobileRequest } from "@/lib/utils/request-device";
 import { isOk } from "@/lib/utils/service-result";
 
 import type { ProductCardModel } from "@/lib/models/product-card-model";
@@ -43,17 +42,22 @@ export const TopTrendsContent = async ({
 
   const carouselIdPrefix = "top-trends";
 
-  const [isBulletDeliveryEnabled, productsByCatergoryResponse, t] =
-    await Promise.all([
-      getBulletDeliveryEnabled({ locale }),
-      getProductsByCategory({
-        category: productsCategoryId,
-        locale,
-        pageSize: maximumProducts,
-        variant,
-      }),
-      getTranslations("HomePage.categoryProducts"),
-    ]);
+  const [
+    isBulletDeliveryEnabled,
+    isMobileRequest,
+    productsByCatergoryResponse,
+    t,
+  ] = await Promise.all([
+    getBulletDeliveryEnabled({ locale }),
+    getIsMobileRequest(),
+    getProductsByCategory({
+      category: productsCategoryId,
+      locale,
+      pageSize: maximumProducts,
+      variant,
+    }),
+    getTranslations("HomePage.categoryProducts"),
+  ]);
 
   let products: ProductCardModel[] = [];
 
@@ -65,8 +69,7 @@ export const TopTrendsContent = async ({
 
   return (
     <div className="gap-4.5 flex flex-col">
-      {/* Top banner - mobile only */}
-      <DeviceOnlyContent device="mobile">
+      {isMobileRequest && (
         <TopTrendsBannerImage
           bannerColumn={bannerColumn}
           bannerInnerPosition={2}
@@ -85,10 +88,9 @@ export const TopTrendsContent = async ({
           }}
           redirectUrl={bannerImages?.[2].redirectUrl}
         />
-      </DeviceOnlyContent>
+      )}
 
-      {/* Section Header */}
-      <DeviceOnlyContent device="mobile">
+      {isMobileRequest ? (
         <div className="w-[calc(100dvw-10px)] lg:hidden">
           <div className="gap-4.5 relative flex flex-col ps-3 pt-5">
             <div className="h-75 bg-bg-success absolute start-0 top-0 w-full rounded-s-2xl" />
@@ -107,28 +109,17 @@ export const TopTrendsContent = async ({
                 text: t("seeAll"),
               }}
             />
-            {Array.isArray(products) && products.length > 0 && (
-              <DeviceOnlyCategoryProductsContent
-                device="mobile"
-                maximumProducts={2}
-                variant={variant}
-              >
-                <TopTrendsCarousel
-                  autoSliding={autoSliding}
-                  carouselIdPrefix={carouselIdPrefix}
-                  isBulletDeliveryEnabled={isBulletDeliveryEnabled}
-                  lpRow={lpRow}
-                  mode="mobile"
-                  products={products}
-                />
-              </DeviceOnlyCategoryProductsContent>
-            )}
+            <TopTrendsCarousel
+              autoSliding={autoSliding}
+              carouselIdPrefix={carouselIdPrefix}
+              isBulletDeliveryEnabled={isBulletDeliveryEnabled}
+              lpRow={lpRow}
+              mode="mobile"
+              products={products}
+            />
           </div>
         </div>
-      </DeviceOnlyContent>
-
-      {/* Desktop Section Header */}
-      <DeviceOnlyContent device="desktop">
+      ) : (
         <div className="hidden lg:block">
           <SectionHeader
             lpColumn={1}
@@ -144,12 +135,11 @@ export const TopTrendsContent = async ({
             }}
           />
         </div>
-      </DeviceOnlyContent>
+      )}
 
       {/* Main Content Area */}
       <div className="lg:h-93.75 grid grid-cols-12 gap-2 lg:gap-2.5">
-        {/* Mobile Layout */}
-        <DeviceOnlyContent device="mobile">
+        {isMobileRequest ? (
           <div className="col-span-12 lg:hidden">
             <div className="grid grid-cols-12 gap-2">
               <TopTrendsBannerImage
@@ -200,36 +190,25 @@ export const TopTrendsContent = async ({
               />
             </div>
           </div>
-        </DeviceOnlyContent>
-
-        {/* Desktop Layout */}
-        <DeviceOnlyContent device="desktop">
+        ) : (
           <div className="relative hidden lg:col-span-5 lg:block">
             <div className="h-82.25 bg-bg-success absolute bottom-0 w-full rounded-2xl" />
             <div className="relative">
               <div className="px-12">
-                {Array.isArray(products) && products.length > 0 && (
-                  <DeviceOnlyCategoryProductsContent
-                    device="desktop"
-                    maximumProducts={2}
-                    variant={variant}
-                  >
-                    <TopTrendsCarousel
-                      autoSliding={autoSliding}
-                      carouselIdPrefix={carouselIdPrefix}
-                      isBulletDeliveryEnabled={isBulletDeliveryEnabled}
-                      lpRow={lpRow}
-                      mode="desktop"
-                      products={products}
-                    />
-                  </DeviceOnlyCategoryProductsContent>
-                )}
+                <TopTrendsCarousel
+                  autoSliding={autoSliding}
+                  carouselIdPrefix={carouselIdPrefix}
+                  isBulletDeliveryEnabled={isBulletDeliveryEnabled}
+                  lpRow={lpRow}
+                  mode="desktop"
+                  products={products}
+                />
               </div>
             </div>
           </div>
-        </DeviceOnlyContent>
+        )}
 
-        <DeviceOnlyContent device="desktop">
+        {!isMobileRequest && (
           <div className="hidden lg:col-span-7 lg:grid lg:grid-cols-7 lg:grid-rows-12 lg:gap-2.5">
             <TopTrendsBannerImage
               bannerColumn={bannerColumn}
@@ -296,7 +275,7 @@ export const TopTrendsContent = async ({
               redirectUrl={bannerImages?.[2].redirectUrl}
             />
           </div>
-        </DeviceOnlyContent>
+        )}
       </div>
     </div>
   );
