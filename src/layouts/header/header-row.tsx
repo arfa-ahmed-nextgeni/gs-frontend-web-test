@@ -1,5 +1,3 @@
-import { Suspense } from "react";
-
 import { AsyncBoundary } from "@/components/common/async-boundary";
 import { CartIcon } from "@/components/icons/cart-icon";
 import { GoldenScentLogo } from "@/components/icons/golden-scent-logo";
@@ -32,9 +30,7 @@ export const HeaderRow = ({
       <Link aria-label="Home" href={ROUTES.ROOT} title="Go to homepage">
         <GoldenScentLogo />
       </Link>
-      <Suspense>
-        <SearchBar isSticky={isSticky} />
-      </Suspense>
+      <SearchBar isSticky={isSticky} />
     </>
   );
 
@@ -56,7 +52,7 @@ export const HeaderRow = ({
     <Container
       className={cn(
         "border-border-base bg-bg-default relative border-b",
-        zIndexLevel
+        zIndexLevel,
       )}
       variant="FullWidth"
     >

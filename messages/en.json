@@ -26,7 +26,7 @@
       },
       "search": {
         "placeholder": "Search scents, brands, or notes",
-        "mobilePlaceholder": "Search all brands...",
+        "mobilePlaceholder": "Search scents, brands, or notes",
         "trendingNow": "Trending Now",
         "ourPicks": "Our Picks for You",
         "recentSearches": "Recent Searches",
