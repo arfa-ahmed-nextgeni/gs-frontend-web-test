@@ -11,6 +11,7 @@
     "start": "next start",
     "lint": "eslint .",
     "format": "prettier --write .",
+    "postinstall": "node scripts/patch-next-polyfills.mjs",
     "prepare": "husky",
     "check-types": "tsc --noEmit",
     "process-staged-files": "lint-staged",
