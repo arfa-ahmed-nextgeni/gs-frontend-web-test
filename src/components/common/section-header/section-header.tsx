@@ -1,5 +1,5 @@
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import { BLOCKS, Document, MARKS } from "@contentful/rich-text-types";
+import { BLOCKS, type Document, MARKS } from "@contentful/rich-text-types";
 
 import { SectionHeaderSeeAllLink } from "@/components/common/section-header/section-header-see-all-link";
 import { serializeSectionHeaderClickOrigin } from "@/components/common/section-header/utils/section-header-click-origin-dataset";
@@ -113,7 +113,6 @@ export const SectionHeader = ({
               lpExtra={lpExtra}
               lpRow={lpRow}
               mobileScroll={seeAllButton.mobileScroll}
-              prefetch={false}
               scroll={seeAllButton.scroll}
             >
               {seeAllButton.text}
@@ -126,7 +125,6 @@ export const SectionHeader = ({
                 seeAllButton.className
               )}
               href={seeAllButton.href}
-              prefetch={false}
               scroll={seeAllButton.scroll}
             >
               {seeAllButton.text}

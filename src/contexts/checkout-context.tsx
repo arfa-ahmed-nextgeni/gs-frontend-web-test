@@ -12,15 +12,40 @@ import { useSessionStorage } from "@/hooks/use-session-storage";
 import { LockerType } from "@/lib/constants/checkout/locker-locations";
 import { CHECKOUT_STORAGE_KEYS } from "@/lib/constants/checkout/storage-keys";
 
-export type CheckoutContextType = {
+type CheckoutContextType = {
   cameFromShippingOptionDrawer: boolean;
+  deliveryAddressFlowState: DeliveryAddressFlowState | null;
   isShippingOptionDrawerOpen: boolean;
   selectedLockerAddressType: LockerType | null;
   selectedPayment: string;
   setCameFromShippingOptionDrawer: (value: boolean) => void;
+  setDeliveryAddressFlowState: (value: DeliveryAddressFlowState | null) => void;
   setIsShippingOptionDrawerOpen: (value: boolean) => void;
   setSelectedLockerAddressType: (type: LockerType | null) => void;
   setSelectedPayment: Dispatch<SetStateAction<string>>;
+};
+
+type DeliveryAddressFlowContactData = {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+};
+
+type DeliveryAddressFlowSnapshot = {
+  city: string;
+  district: string;
+  formattedAddress: string;
+  isDefault: boolean;
+  postalCode: string;
+  shortCode: string;
+  street: string;
+};
+
+type DeliveryAddressFlowState = {
+  editingAddressId: null | string;
+  initialAddressSnapshot: DeliveryAddressFlowSnapshot | null;
+  initialContactData: DeliveryAddressFlowContactData | null;
+  initialSelectedLocation: google.maps.LatLngLiteral | null;
 };
 
 const CheckoutContext = createContext<CheckoutContextType | undefined>(
@@ -47,6 +72,8 @@ export const CheckoutProvider = ({
 }) => {
   const [cameFromShippingOptionDrawer, setCameFromShippingOptionDrawer] =
     useState(false);
+  const [deliveryAddressFlowState, setDeliveryAddressFlowState] =
+    useState<DeliveryAddressFlowState | null>(null);
   const [isShippingOptionDrawerOpen, setIsShippingOptionDrawerOpen] =
     useState(false);
   const [selectedLockerAddressType, setSelectedLockerAddressType] =
@@ -60,10 +87,12 @@ export const CheckoutProvider = ({
     <CheckoutContext.Provider
       value={{
         cameFromShippingOptionDrawer,
+        deliveryAddressFlowState,
         isShippingOptionDrawerOpen,
         selectedLockerAddressType,
         selectedPayment,
         setCameFromShippingOptionDrawer,
+        setDeliveryAddressFlowState,
         setIsShippingOptionDrawerOpen,
         setSelectedLockerAddressType,
         setSelectedPayment,

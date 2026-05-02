@@ -10,9 +10,10 @@ import CancelIcon from "@/assets/icons/cancel.svg";
 import Download from "@/assets/icons/download.svg";
 import LocateIcon from "@/assets/icons/locate.svg";
 import ReorderIcon from "@/assets/icons/re-order.svg";
-import { productPlaceholder } from "@/assets/placeholders";
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import { useToastContext } from "@/components/providers/toast-provider";
 import { LocalizedPrice } from "@/components/shared/localized-price";
+import { ProductDetailsLink } from "@/components/shared/product-details-link";
 import { useOrdersContext } from "@/contexts/orders-context";
 import { useViewOrderContext } from "@/contexts/view-order-context";
 import { useIsMobile } from "@/hooks/use-is-mobile";
@@ -25,6 +26,7 @@ import {
 } from "@/lib/analytics/events";
 import { buildTrackOrderPropertiesFromOrder } from "@/lib/analytics/utils/build-properties";
 import { QueryParamsKey } from "@/lib/constants/query-params";
+import { getProductDetailsHref } from "@/lib/utils/get-product-details-href";
 import { formatPrice } from "@/lib/utils/price";
 
 import type { Locale } from "@/lib/constants/i18n";
@@ -188,13 +190,12 @@ export const ViewOrderDetails = () => {
         `/api/customer/orders/invoice-url?orderId=${orderData.id}&${QueryParamsKey.Locale}=${locale}`
       );
       const data = await response.json();
-      if (data && data.pdf_url) {
-        window.open(data.pdf_url, "_blank");
-      } else {
-        console.error("PDF URL not found in response:", data.message);
-      }
+
+      if (data.success) window.open(data.pdf_url, "_blank");
+      else showError("Download Invoice", data.error);
     } catch (error) {
       console.error("Error downloading invoice:", error);
+      showError("Download Invoice");
     }
   };
 
@@ -316,6 +317,10 @@ export const ViewOrderDetails = () => {
   };
 
   const config = getStatusConfig(orderData.status || "Processed");
+  const orderCurrencyCode =
+    orderData.total?.subtotal?.currency ||
+    orderData.total?.grand_total?.currency ||
+    "SAR";
   // const progressSteps = getProgressSteps(orderData.status || "Processed");
 
   return (
@@ -405,61 +410,81 @@ export const ViewOrderDetails = () => {
                 width: "100%",
               }}
             >
-              {orderData.items?.map((item: any, index: number) => (
-                <div
-                  className="w-[265px] min-w-[265px] flex-shrink-0 rounded-[10px] bg-white"
-                  key={`${item.id}-${index}`}
-                >
-                  <div className="flex items-center gap-1 px-2">
-                    <div className="my-2.5 h-20 w-20 items-center justify-center overflow-hidden rounded-[10px] bg-gray-100">
-                      <Image
-                        alt={item.product_name || "Product image"}
-                        className="h-full w-full object-cover"
-                        height={80}
-                        src={
-                          item.product?.image?.url &&
-                          item.product.image.url.trim() !== ""
-                            ? item.product.image.url
-                            : productPlaceholder
-                        }
-                        width={80}
-                      />
-                    </div>
+              {orderData.items?.map((item: any, index: number) => {
+                const productHref = getProductDetailsHref({
+                  sku: item.product?.sku || item.product_sku,
+                  urlKey: item.product?.url_key || item.product_url_key,
+                });
+                const productBrand =
+                  item.product?.brand_new_label || item.product?.brand || "";
+                const productName =
+                  item.product?.name ||
+                  item.product_name ||
+                  item.product?.short_name ||
+                  "Product";
 
-                    <div className="flex-1">
-                      <div>
-                        <h4 className="text-text-primary line-clamp-1 text-xs font-semibold">
-                          {item.product_name ||
-                            item.product?.short_name ||
-                            "Product"}
-                        </h4>
-                        <p className="text-text-primary line-clamp-2 text-xs">
-                          SKU: {item.product_sku}
-                        </p>
-                      </div>
+                return (
+                  <div
+                    className="w-[265px] min-w-[265px] flex-shrink-0 rounded-[10px] bg-white"
+                    key={`${item.id}-${index}`}
+                  >
+                    <div className="flex items-center gap-1 px-2">
+                      <ProductDetailsLink
+                        className="my-2.5 h-20 w-20 items-center justify-center overflow-hidden rounded-[10px] bg-gray-100"
+                        href={productHref || "#"}
+                        title={productName}
+                      >
+                        <ProductImageWithFallback
+                          alt={productName}
+                          className="h-full w-full object-cover"
+                          height={80}
+                          src={
+                            item.product?.image?.url &&
+                            item.product.image.url.trim() !== ""
+                              ? item.product.image.url
+                              : ""
+                          }
+                          width={80}
+                        />
+                      </ProductDetailsLink>
 
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2 text-base">
-                          {item.product_sale_price && (
-                            <span className="font-semibold text-[#5D5D5D]">
-                              <LocalizedPrice
-                                price={formatPrice({
-                                  amount: item.product_sale_price.value || 0,
-                                  currencyCode:
-                                    item.product_sale_price.currency || "SAR",
-                                })}
-                              />
-                            </span>
-                          )}
+                      <div className="min-w-0 flex-1">
+                        <ProductDetailsLink
+                          className="block"
+                          href={productHref || "#"}
+                          title={productName}
+                        >
+                          <h4 className="text-text-primary line-clamp-1 text-xs font-semibold">
+                            {productBrand}
+                          </h4>
+                          <p className="text-text-primary line-clamp-2 text-xs font-normal">
+                            {productName}
+                          </p>
+                        </ProductDetailsLink>
+
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2 text-base">
+                            {item.product_sale_price && (
+                              <span className="font-semibold text-[#5D5D5D]">
+                                <LocalizedPrice
+                                  price={formatPrice({
+                                    amount: item.product_sale_price.value || 0,
+                                    currencyCode:
+                                      item.product_sale_price.currency || "SAR",
+                                  })}
+                                />
+                              </span>
+                            )}
+                          </div>
+                          <span className="single-line text-xs text-gray-600">
+                            {t("quantity")}: {item.quantity_ordered}
+                          </span>
                         </div>
-                        <span className="single-line text-xs text-gray-600">
-                          {t("quantity")}: {item.quantity_ordered}
-                        </span>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -475,11 +500,24 @@ export const ViewOrderDetails = () => {
                 <LocalizedPrice
                   price={formatPrice({
                     amount: orderData.total?.subtotal?.value || 0,
-                    currencyCode: orderData.total?.subtotal?.currency || "SAR",
+                    currencyCode: orderCurrencyCode,
                   })}
                 />
               </span>
             </div>
+            {(orderData.points_to_spend ?? 0) > 0 && (
+              <div className="mb-2 flex justify-between">
+                <span className="text-[#FE5000]">{t("loyalityPoints")}</span>
+                <span className="text-[#FE5000]">
+                  <LocalizedPrice
+                    price={formatPrice({
+                      amount: orderData.points_to_spend ?? 0,
+                      currencyCode: orderCurrencyCode,
+                    })}
+                  />
+                </span>
+              </div>
+            )}
             {orderData.total?.discounts &&
               orderData.total.discounts.length > 0 && (
                 <div className="mb-2 flex justify-between">
@@ -492,44 +530,52 @@ export const ViewOrderDetails = () => {
                             sum + (discount.amount?.value || 0),
                           0
                         ),
-                        currencyCode:
-                          orderData.total.discounts[0]?.amount?.currency ||
-                          "SAR",
+                        currencyCode: orderCurrencyCode,
                       })}
                     />
                   </span>
                 </div>
               )}
-            <div className="mb-4 flex justify-between">
+            <div className="mb-2 flex justify-between">
               <span className="text-text-primary text-sm">
                 {t("shippingFee")}
               </span>
               <span className="text-text-secondary text-xs">
-                {orderData.total?.shipping_handling?.total_amount?.value ===
-                0 ? (
+                {orderData.total?.shipping_handling?.amount_including_tax
+                  ?.value === 0 ? (
                   t("free")
                 ) : (
                   <LocalizedPrice
                     price={formatPrice({
                       amount:
-                        orderData.total?.shipping_handling?.total_amount
+                        orderData.total?.shipping_handling?.amount_including_tax
                           ?.value || 0,
-                      currencyCode:
-                        orderData.total?.shipping_handling?.total_amount
-                          ?.currency || "SAR",
+                      currencyCode: orderCurrencyCode,
                     })}
                   />
                 )}
               </span>
             </div>
-            <div className="flex justify-between font-semibold">
+            {orderData.total?.cod_fee && orderData.total.cod_fee.value > 0 && (
+              <div className="mb-2 flex justify-between">
+                <span className="text-text-primary text-sm">{t("codFee")}</span>
+                <span className="text-text-secondary text-xs">
+                  <LocalizedPrice
+                    price={formatPrice({
+                      amount: orderData.total.cod_fee.value,
+                      currencyCode: orderCurrencyCode,
+                    })}
+                  />
+                </span>
+              </div>
+            )}
+            <div className="mt-2 flex justify-between font-semibold">
               <span className="text-text-primary">{t("grandTotal")}</span>
               <span className="text-[#5D5D5D]">
                 <LocalizedPrice
                   price={formatPrice({
                     amount: orderData.total?.grand_total?.value || 0,
-                    currencyCode:
-                      orderData.total?.grand_total?.currency || "SAR",
+                    currencyCode: orderCurrencyCode,
                   })}
                 />
               </span>

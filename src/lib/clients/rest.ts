@@ -1,3 +1,10 @@
+import "server-only";
+
+import {
+  ApiActivityFeatures,
+  ApiActivityServices,
+} from "@/lib/api-activity/api-activity-meta";
+import { loggedFetch } from "@/lib/api-activity/fetch/logged-fetch";
 import { REST_BASE_URL } from "@/lib/config/client-env";
 import { API_CONSTANTS, HEADERS } from "@/lib/constants/api";
 import { StoreCode } from "@/lib/constants/i18n";
@@ -26,12 +33,20 @@ export async function restRequest<T>({
   headers.set(HEADERS.X_PLATFORM, "web");
   if (authToken) headers.set(HEADERS.AUTHORIZATION, `Bearer ${authToken}`);
 
-  const response = await fetch(url, {
-    ...options,
-    headers,
-    signal: AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT),
-    ...requestInit,
-  });
+  const response = await loggedFetch(
+    url,
+    {
+      ...options,
+      headers,
+      signal: AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT),
+      ...requestInit,
+    },
+    {
+      feature: ApiActivityFeatures.Storefront,
+      initiator: "src/lib/clients/rest.ts#restRequest",
+      service: ApiActivityServices.Rest,
+    }
+  );
 
   const contentType = response.headers.get("content-type");
 

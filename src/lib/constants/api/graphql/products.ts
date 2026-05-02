@@ -156,7 +156,46 @@ export const PRODUCTS_GRAPHQL_QUERIES = {
           id
           name
           sku
+          url_key
           brand_new
+          brand_new_label
+          short_description {
+            html
+          }
+          thumbnail {
+            url
+          }
+          rating_summary
+          review_count
+          price_range {
+            minimum_price {
+              final_price {
+                currency
+                value
+              }
+              regular_price {
+                currency
+                value
+              }
+            }
+          }
+        }
+      }
+    }
+  `),
+
+  GET_PRODUCT_BASIC_INFO_BY_SKU: graphql(`
+    query GetProductBasicInfoBySku($sku: String!) {
+      products(filter: { sku: { eq: $sku } }) {
+        items {
+          __typename
+          uid
+          id
+          name
+          sku
+          url_key
+          brand_new
+          brand_new_label
           short_description {
             html
           }

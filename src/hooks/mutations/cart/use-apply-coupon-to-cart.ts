@@ -3,6 +3,7 @@ import { useLocale } from "next-intl";
 
 import { useStoreConfig } from "@/contexts/store-config-context";
 import { useCart } from "@/contexts/use-cart";
+import { useHandleAuthRevoked } from "@/hooks/auth/use-handle-auth-revoked";
 import { useOfflineToast } from "@/hooks/ui/use-offline-toast";
 import { useRouteMatch } from "@/hooks/use-route-match";
 import { applyCouponToCartAction } from "@/lib/actions/cart/apply-coupon-to-cart";
@@ -16,7 +17,7 @@ import { buildCartProperties } from "@/lib/analytics/utils/build-properties";
 import { Locale } from "@/lib/constants/i18n";
 import { MUTATION_KEYS } from "@/lib/constants/mutation-keys";
 import { QUERY_KEYS } from "@/lib/constants/query-keys";
-import { isError } from "@/lib/utils/service-result";
+import { isError, isUnauthenticated } from "@/lib/utils/service-result";
 
 import type { Cart } from "@/lib/models/cart";
 
@@ -29,6 +30,8 @@ export const useApplyCouponToCart = () => {
 
   const { showOfflineMessage } = useOfflineToast();
 
+  const handleAuthRevoked = useHandleAuthRevoked();
+
   return useMutation({
     mutationFn: applyCouponToCartAction,
     mutationKey: MUTATION_KEYS.COUPON.APPLY({ locale }),
@@ -40,6 +43,11 @@ export const useApplyCouponToCart = () => {
     },
 
     onSettled: async (data, error, variables) => {
+      if (isUnauthenticated(data!)) {
+        await handleAuthRevoked();
+        return;
+      }
+
       if (isError(data!)) {
         if (cart) {
           const cartProperties = buildCartProperties(

@@ -2,11 +2,14 @@ import "server-only";
 
 import { cache } from "react";
 
+import { cacheTag } from "next/cache";
+
 import {
   getBrands,
   groupBrandsAlphabetically,
 } from "@/lib/actions/category/get-brands";
 import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
+import { CacheTags } from "@/lib/constants/cache/tags";
 import { PageLandingSlug } from "@/lib/constants/contentful";
 import { ARABIC_ALPHABETS, Locale } from "@/lib/constants/i18n";
 import { NavigationItem } from "@/lib/models/site-navigation";
@@ -29,6 +32,10 @@ export const getBrandsPageData = ({ locale }: { locale: Locale }) =>
 
 const getBrandsPageDataCached = cache(
   async (locale: Locale): Promise<BrandsPageData | null> => {
+    "use cache";
+    cacheTag(CacheTags.Contentful);
+    cacheTag(CacheTags.Magento);
+
     const { language } = getLocaleInfo(locale);
 
     const [pageLandingResult, getBrandsResult] = await Promise.allSettled([

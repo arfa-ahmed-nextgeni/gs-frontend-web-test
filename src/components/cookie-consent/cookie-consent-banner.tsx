@@ -4,21 +4,14 @@ import type { ReactNode } from "react";
 
 import Image from "next/image";
 
-import {
-  documentToReactComponents,
-  type Options,
-} from "@contentful/rich-text-react-renderer";
-import { BLOCKS, type Document, INLINES } from "@contentful/rich-text-types";
-
 import CookieIcon from "@/assets/icons/cookie-icon.svg";
-import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 type CookieConsentBannerProps = {
   allowButtonLabel: string;
   className?: string;
   declineButtonLabel: string;
-  description: Document;
+  description: ReactNode;
   onAllowAction?: () => void;
   onDeclineAction?: () => void;
 };
@@ -52,10 +45,7 @@ export function CookieConsentBanner({
         </div>
 
         <div className="text-text-inverse min-w-0 flex-1 text-start text-sm font-medium leading-5 tracking-[0.02em] rtl:text-xs rtl:leading-4 lg:rtl:text-sm lg:rtl:leading-5 [&_p]:m-0">
-          {documentToReactComponents(
-            description,
-            getCookieConsentRenderOptions()
-          )}
+          {description}
         </div>
       </div>
 
@@ -76,60 +66,5 @@ export function CookieConsentBanner({
         </button>
       </div>
     </section>
-  );
-}
-
-function getCookieConsentRenderOptions(): Options {
-  return {
-    renderNode: {
-      [BLOCKS.PARAGRAPH]: (_node, children) => <p>{children}</p>,
-      [INLINES.HYPERLINK]: (node, children) =>
-        renderCookieConsentLink(node.data.uri, children),
-    },
-  };
-}
-
-function isInternalHref(href: string) {
-  if (href.startsWith("/") || href.startsWith("#")) {
-    return true;
-  }
-
-  if (typeof window === "undefined") {
-    return false;
-  }
-
-  try {
-    return new URL(href).origin === window.location.origin;
-  } catch {
-    return false;
-  }
-}
-
-function normalizeInternalHref(href: string) {
-  if (
-    typeof window !== "undefined" &&
-    href.startsWith(window.location.origin)
-  ) {
-    return href.slice(window.location.origin.length) || "/";
-  }
-
-  return href;
-}
-
-function renderCookieConsentLink(href: string, children: ReactNode) {
-  const className = "text-text-success no-underline hover:underline";
-
-  if (isInternalHref(href)) {
-    return (
-      <Link className={className} href={normalizeInternalHref(href)}>
-        {children}
-      </Link>
-    );
-  }
-
-  return (
-    <a className={className} href={href}>
-      {children}
-    </a>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, PropsWithChildren, useContext } from "react";
+import { createContext, PropsWithChildren, useContext, useRef } from "react";
 
 import { useTranslations } from "next-intl";
 
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "@/i18n/navigation";
+import { isMobileViewport } from "@/lib/utils/responsive";
 
 const NotifyMeDialogContext = createContext<{
   closeDialog: () => void;
@@ -36,6 +37,7 @@ export function NotifyMeDialog({
 }>) {
   const router = useRouter();
   const t = useTranslations("NotifyMeDialog");
+  const titleRef = useRef<HTMLHeadingElement>(null);
 
   const closeDialog = () => {
     router.back();
@@ -47,15 +49,29 @@ export function NotifyMeDialog({
     }
   };
 
+  const handleOpenAutoFocus = (event: Event) => {
+    if (!isMobileViewport()) {
+      return;
+    }
+
+    event.preventDefault();
+    titleRef.current?.focus({ preventScroll: true });
+  };
+
   return (
     <NotifyMeDialogContext.Provider value={{ closeDialog }}>
       <Dialog onOpenChange={handleOpenChange} open>
         <DialogContent
           aria-describedby={undefined}
           className="w-100 bg-bg-body max-h-[90dvh] overflow-y-auto"
+          onOpenAutoFocus={handleOpenAutoFocus}
         >
           <DialogHeader className="mt-7 gap-4">
-            <DialogTitle className="text-text-primary text-4xl font-normal">
+            <DialogTitle
+              className="text-text-primary text-4xl font-normal"
+              ref={titleRef}
+              tabIndex={-1}
+            >
               {t("title")}
             </DialogTitle>
             {productName ? (

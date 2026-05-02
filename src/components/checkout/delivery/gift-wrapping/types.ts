@@ -1,6 +1,8 @@
 export interface GiftWrappingProduct {
+  externalId: string;
   id: string;
   imageUrl?: string;
+  inStock: boolean;
   name: string;
   priceLabel: string;
   sku: string;

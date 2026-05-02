@@ -1,3 +1,10 @@
+import "server-only";
+
+import {
+  ApiActivityFeatures,
+  ApiActivityServices,
+} from "@/lib/api-activity/api-activity-meta";
+import { loggedFetch } from "@/lib/api-activity/fetch/logged-fetch";
 import {
   OPERATIONS_API_SECRET,
   OPERATIONS_BASE_URL,
@@ -20,13 +27,21 @@ export async function operationsApiRequest<T>({
   headers.set(HEADERS.CONTENT_TYPE, "application/json");
   headers.set(HEADERS.API_SECRET, OPERATIONS_API_SECRET);
 
-  const response = await fetch(url, {
-    ...options,
-    body: body ? JSON.stringify(body) : undefined,
-    headers,
-    method: options?.method || "POST",
-    signal: AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT),
-  });
+  const response = await loggedFetch(
+    url,
+    {
+      ...options,
+      body: body ? JSON.stringify(body) : undefined,
+      headers,
+      method: options?.method || "POST",
+      signal: AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT),
+    },
+    {
+      feature: ApiActivityFeatures.Operations,
+      initiator: "src/lib/clients/operations.ts#operationsApiRequest",
+      service: ApiActivityServices.Operations,
+    }
+  );
 
   if (!response.ok) {
     const errorText = await response.text();

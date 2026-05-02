@@ -10,6 +10,7 @@ import { ProductImageWithFallback } from "@/components/product/product-image-wit
 import { ProductReviewWriteLink } from "@/components/product/product-reviews/product-review-write-link";
 import { JoinBanner } from "@/components/shared/join-banner";
 import { LocalizedPrice } from "@/components/shared/localized-price";
+import { ProductDetailsLink } from "@/components/shared/product-details-link";
 import { Tooltip } from "@/components/shared/tooltip";
 import { useStoreConfig } from "@/contexts/store-config-context";
 import { useCart } from "@/contexts/use-cart";
@@ -17,6 +18,7 @@ import { useStoreCode } from "@/hooks/i18n/use-store-code";
 import { useCustomerQuery } from "@/hooks/queries/use-customer-query";
 import { ROUTES } from "@/lib/constants/routes";
 import { cn } from "@/lib/utils";
+import { getProductDetailsHref } from "@/lib/utils/get-product-details-href";
 import { formatPrice } from "@/lib/utils/price";
 
 import type { Order, OrderItem } from "@/lib/types/ui-types";
@@ -355,55 +357,73 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                   </div>
                 ) : (
                   <div className="divide-y divide-[#EEF0F2]">
-                    {items.map((product, index) => (
-                      <div
-                        className="flex flex-col gap-4 px-5 py-2.5 lg:flex-row lg:items-center lg:gap-6"
-                        key={`${String(product.id ?? "")}-${index}`}
-                      >
-                        <div className="flex items-center gap-4 lg:w-[50%]">
-                          <div className="w-10 text-[14px] font-medium text-[#9CA3AF]">
-                            {t("quantityPrefix", {
-                              count: String(product.quantity),
-                            })}
-                          </div>
-                          <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-[#F7F8FA]">
-                            <ProductImageWithFallback
-                              alt={product.name}
-                              className="h-18 w-18 rounded-xl object-contain"
-                              height={72}
-                              key={product.image?.thumbnail || "placeholder"}
-                              src={product.image?.thumbnail || ""}
-                              width={72}
-                            />
-                          </div>
-                          <div className="flex flex-1 flex-col gap-1">
-                            <p
-                              className={cn(
-                                "text-[12px] font-semibold",
-                                highlightTextClass
-                              )}
-                            >
-                              {product.name}
-                            </p>
-                            {product.description && (
-                              <p className="text-[12px] leading-relaxed text-[#6B7280]">
-                                {product.description}
-                              </p>
-                            )}
-                          </div>
-                        </div>
+                    {items.map((product, index) => {
+                      const productHref = getProductDetailsHref({
+                        sku: product.sku,
+                        urlKey: product.urlKey,
+                      });
 
-                        <div className="flex flex-1 items-center justify-between gap-4 lg:gap-8">
-                          {product.size && (
-                            <span className="inline-flex w-fit items-center rounded-full bg-[##AF97680D] px-3 py-1 text-[11px] text-[#4B5563]">
-                              {product.size}
-                            </span>
-                          )}
-                          {renderPrice(product)}
-                          {renderRateAction(product)}
+                      return (
+                        <div
+                          className="flex flex-col gap-4 px-5 py-2.5 lg:flex-row lg:items-center lg:gap-6"
+                          key={`${String(product.id ?? "")}-${index}`}
+                        >
+                          <div className="flex items-center gap-4 lg:w-[50%]">
+                            <div className="w-10 text-[14px] font-medium text-[#9CA3AF]">
+                              {t("quantityPrefix", {
+                                count: String(product.quantity),
+                              })}
+                            </div>
+                            <ProductDetailsLink
+                              className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-[#F7F8FA]"
+                              href={productHref || "#"}
+                              title={product.name}
+                            >
+                              <ProductImageWithFallback
+                                alt={product.name}
+                                className="h-18 w-18 rounded-xl object-contain"
+                                height={72}
+                                key={product.image?.thumbnail || "placeholder"}
+                                src={product.image?.thumbnail || ""}
+                                width={72}
+                              />
+                            </ProductDetailsLink>
+                            <ProductDetailsLink
+                              className="flex flex-1 flex-col gap-1"
+                              href={productHref || "#"}
+                              title={product.name}
+                            >
+                              <p
+                                className={cn(
+                                  "text-text-primary line-clamp-1 text-xs font-semibold",
+                                  highlightTextClass
+                                )}
+                              >
+                                {product.brand}
+                              </p>
+                              <p
+                                className={cn(
+                                  "text-text-primary line-clamp-2 text-xs font-normal",
+                                  highlightTextClass
+                                )}
+                              >
+                                {product.name}
+                              </p>
+                            </ProductDetailsLink>
+                          </div>
+
+                          <div className="flex flex-1 items-center justify-between gap-4 lg:gap-8">
+                            {product.size && (
+                              <span className="inline-flex w-fit items-center rounded-full bg-[##AF97680D] px-3 py-1 text-[11px] text-[#4B5563]">
+                                {product.size}
+                              </span>
+                            )}
+                            {renderPrice(product)}
+                            {renderRateAction(product)}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
               </>

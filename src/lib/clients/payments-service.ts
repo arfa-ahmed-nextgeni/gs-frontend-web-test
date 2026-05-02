@@ -1,5 +1,12 @@
+import "server-only";
+
 import { headers } from "next/headers";
 
+import {
+  ApiActivityFeatures,
+  ApiActivityServices,
+} from "@/lib/api-activity/api-activity-meta";
+import { loggedFetch } from "@/lib/api-activity/fetch/logged-fetch";
 import {
   PAYMENTS_API_KEY,
   PAYMENTS_SERVICE_BASE_URL,
@@ -46,11 +53,19 @@ export async function paymentsServiceRequest<T>({
     requestHeaders.set(HEADERS.AUTHORIZATION, `Bearer ${authToken}`);
   }
 
-  const response = await fetch(url, {
-    ...options,
-    headers: requestHeaders,
-    signal: AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT),
-  });
+  const response = await loggedFetch(
+    url,
+    {
+      ...options,
+      headers: requestHeaders,
+      signal: AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT),
+    },
+    {
+      feature: ApiActivityFeatures.Payments,
+      initiator: "src/lib/clients/payments-service.ts#paymentsServiceRequest",
+      service: ApiActivityServices.Payments,
+    }
+  );
 
   let data: T;
   const contentType = response.headers.get("content-type");

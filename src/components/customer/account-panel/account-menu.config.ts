@@ -90,7 +90,7 @@ export const ACCOUNT_MENU_SECONDARY: AccountNavEntry[] = [
     labelKey: "customerService",
   },
   {
-    href: "#",
+    href: ROUTES.ABOUT_US,
     icon: InfoIcon,
     id: AccountNavId.About,
     labelKey: "aboutGoldenScent",

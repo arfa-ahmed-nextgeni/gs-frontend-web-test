@@ -1,4 +1,4 @@
-import { Document } from "@contentful/rich-text-types";
+import type { Document } from "@contentful/rich-text-types";
 
 import { ProductCardVariant } from "@/lib/constants/product/product-card";
 import { TabContentType } from "@/lib/models/page-landing";

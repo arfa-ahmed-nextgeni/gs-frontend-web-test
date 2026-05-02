@@ -6,8 +6,13 @@ import { ProductCardWishlistButton } from "@/components/product/product-card/pro
 
 import type { ProductCardInteractionProps } from "@/components/product/product-card/types/product-card-click-origin-types";
 
+type ProductCardActionsContentProps = {
+  isWishlistItem?: boolean;
+} & ProductCardInteractionProps;
+
 export const ProductCardActionsContent = ({
   categoryId,
+  isWishlistItem,
   lpColumn,
   lpExtra,
   lpInnerPosition,
@@ -15,7 +20,7 @@ export const ProductCardActionsContent = ({
   position,
   product,
   searchTerm,
-}: ProductCardInteractionProps) => {
+}: ProductCardActionsContentProps) => {
   const { cartAction, isConfigurable, isInCart, isWishlisted } =
     useProductCardActionsState(product);
 
@@ -37,6 +42,7 @@ export const ProductCardActionsContent = ({
         isConfigurable={isConfigurable}
         isInCart={isInCart}
         isWishlisted={isWishlisted}
+        isWishlistItem={isWishlistItem}
         lpColumn={lpColumn}
         lpExtra={lpExtra}
         lpInnerPosition={lpInnerPosition}

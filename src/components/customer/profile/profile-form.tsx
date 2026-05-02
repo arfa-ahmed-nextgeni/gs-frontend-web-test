@@ -10,7 +10,7 @@ import z from "zod";
 import { useProfileForm } from "@/components/customer/profile/hooks/use-profile-form";
 import { FloatingLabelInput } from "@/components/ui/floating-label-input";
 import { FormSubmitButton } from "@/components/ui/form-submit-button";
-import { DateInput } from "@/components/ui/inputs/date-input";
+import { DatePickerInput } from "@/components/ui/inputs/date-picker-input";
 import { Label } from "@/components/ui/label";
 import { PhoneNumberInput } from "@/components/ui/phone-number-input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -155,7 +155,7 @@ export const ProfileForm = ({
             control={control}
             name={UpdateProfileFormField.DateOfBirth}
             render={({ field, fieldState }) => (
-              <DateInput
+              <DatePickerInput
                 containerProps={{
                   className: "col-span-2",
                 }}
@@ -165,14 +165,12 @@ export const ProfileForm = ({
                     ? t(fieldState.error?.message as any)
                     : undefined
                 }
-                inputProps={{
-                  ...field,
-                  lang: "en-US",
-                  max: dayjs().subtract(1, "year").format("YYYY-MM-DD"),
-                  placeholder: t("birthdayPlaceholder"),
-                  type: "date",
-                }}
                 label={t("birthday")}
+                max={dayjs().subtract(1, "year").format("YYYY-MM-DD")}
+                name={field.name}
+                onBlur={field.onBlur}
+                onChange={field.onChange}
+                value={field.value ?? ""}
               />
             )}
           />

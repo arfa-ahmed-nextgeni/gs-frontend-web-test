@@ -1,32 +1,8 @@
 @import "tailwindcss";
 
-@font-face {
-  font-display: swap;
-  font-family: "GoldenScent Cairo";
-  font-style: normal;
-  font-weight: 200 900;
-  src: url("/fonts/cairo-variable.woff2") format("woff2");
-}
-
-@font-face {
-  font-display: swap;
-  font-family: "GoldenScent Gilroy";
-  font-style: normal;
-  font-weight: 400;
-  src: url("/fonts/gilroy-regular.woff2") format("woff2");
-}
-
 @theme inline {
-  --font-gilroy: "GoldenScent Gilroy", ui-sans-serif, system-ui, sans-serif;
-  --font-cairo: "GoldenScent Cairo", ui-sans-serif, system-ui, sans-serif;
-}
-
-html[data-locale="ar"] {
-  font-family: var(--font-cairo);
-}
-
-html[data-locale="en"] {
-  font-family: var(--font-gilroy);
+  --font-gilroy: var(--font-gilroy);
+  --font-cairo: var(--font-cairo);
 }
 
 body.cursor-wait,
@@ -251,6 +227,14 @@ body.cursor-wait * {
     -webkit-tap-highlight-color: transparent;
   }
 
+  html[data-locale="ar"] body {
+    font-family: var(--font-cairo);
+  }
+
+  html[data-locale="en"] body {
+    font-family: var(--font-gilroy);
+  }
+
   button {
     cursor: pointer;
   }
@@ -353,6 +337,40 @@ body.cursor-wait * {
   transform: scaleX(1);
   transform-origin: left center;
   transition: transform 200ms ease-out;
+}
+
+@layer components {
+  .address-form-filled-ui input[data-slot="input"],
+  .address-form-filled-ui textarea[data-slot="textarea"] {
+    background: #f3f3f3 !important;
+    border-color: transparent !important;
+  }
+
+  .address-form-filled-ui input[data-slot="input"]:focus,
+  .address-form-filled-ui input[data-slot="input"]:not(:placeholder-shown),
+  .address-form-filled-ui textarea[data-slot="textarea"]:focus,
+  .address-form-filled-ui
+    textarea[data-slot="textarea"]:not(:placeholder-shown) {
+    background: #fff !important;
+    border-color: #d1d5db !important;
+  }
+
+  .address-form-filled-ui input[data-slot="input"]:focus + label,
+  .address-form-filled-ui
+    input[data-slot="input"]:not(:placeholder-shown)
+    + label,
+  .address-form-filled-ui textarea[data-slot="textarea"]:focus + label,
+  .address-form-filled-ui
+    textarea[data-slot="textarea"]:not(:placeholder-shown)
+    + label,
+  .address-form-filled-ui input[data-slot="input"]:focus + label > span,
+  .address-form-filled-ui
+    input[data-slot="input"]:not(:placeholder-shown)
+    + label
+    > span {
+    background: linear-gradient(180deg, #f9f9f9 0%, #fff 100%) !important;
+    transition-delay: 120ms;
+  }
 }
 
 /* Safari mobile bottom navigation fix */

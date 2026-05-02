@@ -2,16 +2,14 @@
 
 import { useRef } from "react";
 
-import Image from "next/image";
-
-import MoveToWishlistIcon from "@/assets/icons/move-to-wishlist-icon.svg";
 import { CartQuantityControl } from "@/components/cart/cart-quantity-control";
-import { useProductCardActionsState } from "@/components/product/product-card/hooks/use-product-card-actions-state";
+import { CartItemWishlistButton } from "@/components/cart/order/cart-item-wishlist-button";
 import { ProductCardDiscount } from "@/components/product/product-card/product-card-discount";
 import { ProductCardLabel } from "@/components/product/product-card/product-card-label";
 import { ProductCardPrice } from "@/components/product/product-card/product-card-price";
-import { ProductCardWishlistButton } from "@/components/product/product-card/product-card-wishlist-button";
 import { StoreConfiguredProductCardBulletDelivery } from "@/components/product/product-card/store-configured-product-card-bullet-delivery";
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
+import { ProductDetailsLink } from "@/components/shared/product-details-link";
 import { useCart } from "@/contexts/use-cart";
 import { useRemoveProductFromCart } from "@/hooks/mutations/cart/use-remove-product-from-cart";
 import { useUpdateCartItemQuantity } from "@/hooks/mutations/cart/use-update-cart-item-quantity";
@@ -22,6 +20,7 @@ import {
 } from "@/lib/analytics/utils/build-properties";
 import { CartItem as CartItemModel } from "@/lib/models/cart";
 import { cn } from "@/lib/utils";
+import { getProductDetailsHref } from "@/lib/utils/get-product-details-href";
 
 export function CartItem({ item }: { item: CartItemModel }) {
   const { cart } = useCart();
@@ -56,8 +55,10 @@ export function CartItem({ item }: { item: CartItemModel }) {
   const isLoading = isPending || isRemovingItem;
   const selectedOptionLabel = item.options?.choices?.[0]?.label;
   const discountPercent = item.discountPercent ?? null;
-  const { isConfigurable, isInCart, isWishlisted } =
-    useProductCardActionsState(item);
+  const productHref = getProductDetailsHref({
+    sku: item.sku,
+    urlKey: item.urlKey,
+  });
 
   return (
     <div className="border-border-base bg-bg-default lg:h-37.5 h-52.5 relative flex flex-row gap-5 overflow-hidden rounded-none border-b p-5 first:rounded-t-xl last:rounded-b-xl last:border-none lg:gap-2.5 lg:p-2.5">
@@ -68,16 +69,20 @@ export function CartItem({ item }: { item: CartItemModel }) {
 
       {/* Product Image */}
       <div className="w-32.5 lg:max-w-32.5 lg:w-32.5 flex flex-col justify-between gap-2">
-        <div className="relative aspect-square w-full overflow-hidden rounded-xl">
+        <ProductDetailsLink
+          className="relative aspect-square w-full overflow-hidden rounded-xl"
+          href={productHref || "#"}
+          title={item.name}
+        >
           {item.imageUrl && (
-            <Image
+            <ProductImageWithFallback
               alt={item.name}
               className="object-contain"
               fill
               src={item.imageUrl}
             />
           )}
-        </div>
+        </ProductDetailsLink>
         <CartQuantityControl
           containerProps={{ className: "flex w-full lg:hidden" }}
           disableIncrement={item.isWrap}
@@ -93,16 +98,20 @@ export function CartItem({ item }: { item: CartItemModel }) {
         <div className="flex flex-1 flex-row justify-between gap-5 lg:flex-col lg:gap-2.5">
           <div className="flex h-full flex-1 flex-col justify-between lg:pb-2">
             {/* Product Info */}
-            <div>
+            <ProductDetailsLink
+              className="block"
+              href={productHref || "#"}
+              title={item.name}
+            >
               <p className="text-text-primary pt-8.5 line-clamp-1 text-xs font-semibold lg:pt-2.5">
-                {item.name}
+                {item.brand || item.name}
               </p>
-              {item.description && (
+              {item.name && (
                 <p className="text-text-primary line-clamp-2 text-xs font-normal">
-                  {item.description}
+                  {item.name}
                 </p>
               )}
-            </div>
+            </ProductDetailsLink>
             <div className="flex">
               {
                 <ProductCardLabel
@@ -147,15 +156,7 @@ export function CartItem({ item }: { item: CartItemModel }) {
               {/* Wishlist Button */}
               {!item.isWrap && (
                 <div className="flex items-center justify-center pb-0 lg:mr-2.5 lg:pb-2 rtl:ml-2.5">
-                  <ProductCardWishlistButton
-                    addIcon={MoveToWishlistIcon}
-                    className="border-border-base flex h-[50px] w-[50px] items-center justify-center rounded-xl border shadow-none"
-                    isConfigurable={isConfigurable}
-                    isInCart={isInCart}
-                    isWishlisted={isWishlisted}
-                    product={item}
-                    size={24}
-                  />
+                  <CartItemWishlistButton item={item} />
                 </div>
               )}
             </div>

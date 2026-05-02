@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import dynamic from "next/dynamic";
 
 import { useTranslations } from "next-intl";
@@ -68,16 +70,25 @@ export const SearchBar = ({ isSticky }: { isSticky?: boolean }) => {
 
   const t = useTranslations("HomePage.header.search");
 
-  const isMobile = useIsMobile();
+  const responsiveIsMobile = useIsMobile();
+  const [hasMounted, setHasMounted] = useState(false);
 
-  const placeholder = isMobile ? t("mobilePlaceholder") : t("placeholder");
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  const effectiveIsMobile = hasMounted ? responsiveIsMobile : true;
+
+  const placeholder = effectiveIsMobile
+    ? t("mobilePlaceholder")
+    : t("placeholder");
 
   const enableInputFocus = isSticky
     ? openStickyDesktopSearch
     : openStaticDesktopSearch;
 
   const handleFocus = () => {
-    if (isMobile) {
+    if (responsiveIsMobile) {
       openMobileSearch();
       return;
     }
@@ -90,7 +101,7 @@ export const SearchBar = ({ isSticky }: { isSticky?: boolean }) => {
 
   return (
     <>
-      {!isMobile ? (
+      {!effectiveIsMobile ? (
         <DesktopSearchChrome inputFocus={inputFocus} onClear={clear} />
       ) : null}
       <div className="flex-1">

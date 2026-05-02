@@ -5,7 +5,7 @@ import { useEffect, useEffectEvent, useRef } from "react";
 import { useStoreConfig } from "@/contexts/store-config-context";
 import { useCart } from "@/contexts/use-cart";
 import { useIsReturningFromPaymentError } from "@/hooks/checkout/use-is-returning-from-payment-error";
-import { trackCheckoutInit } from "@/lib/analytics/events";
+import { trackBeginCheckout, trackCheckoutInit } from "@/lib/analytics/events";
 import { CartProperties } from "@/lib/analytics/models/event-models";
 import { buildCartProperties } from "@/lib/analytics/utils/build-properties";
 
@@ -28,6 +28,7 @@ export function CheckoutTracker() {
       }
 
       trackCheckoutInit(cartProperties);
+      trackBeginCheckout(cart!);
       hasTracked.current = true;
     }
   );

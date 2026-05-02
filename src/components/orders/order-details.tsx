@@ -1,9 +1,8 @@
 import React from "react";
 
-import Image from "next/image";
-
 import { Printer } from "lucide-react";
 
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import { useOrderQuery } from "@/hooks/order/use-order";
 import usePrice from "@/hooks/product/use-price";
 import { OrderItem } from "@/lib/types/ui-types";
@@ -16,7 +15,7 @@ const OrderItemCard = ({ product }: { product: OrderItem }) => {
   return (
     <div className="flex gap-4" key={product.id}>
       <div className="border-border-base flex h-16 w-16 shrink-0 rounded-md border">
-        <Image
+        <ProductImageWithFallback
           alt="Product image"
           className="rounded-md"
           height={64}

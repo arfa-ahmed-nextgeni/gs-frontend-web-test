@@ -14,7 +14,7 @@ export type GalleryItem = {
 
 type AssociatedProduct = {
   color_swatch: any;
-  countdown_timer: {
+  countdown_timer?: {
     countdown_timer_enabled: boolean;
     countdown_timer_end_date: null | string;
     countdown_timer_start_date: null | string;
@@ -26,7 +26,7 @@ type AssociatedProduct = {
   externalId: string;
   final_price: number;
   gallery?: GalleryItem[];
-  image: string;
+  image?: string;
   is_new: string;
   low_stock_qty: null | string;
   news_from_date: string;

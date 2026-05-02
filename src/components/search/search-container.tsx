@@ -69,7 +69,11 @@ export function SearchContainer({ children }: { children: React.ReactNode }) {
   const handleSearch = useCallback(
     (e: React.SyntheticEvent) => {
       e.preventDefault();
-      const currentQueryText = queryTextRef.current;
+      const currentQueryText = queryTextRef.current.trim();
+      if (!currentQueryText) {
+        return;
+      }
+
       // Track search_freetext when search is submitted
       trackSearchFreetext(currentQueryText);
       saveRecentSearch(currentQueryText);
@@ -81,7 +85,10 @@ export function SearchContainer({ children }: { children: React.ReactNode }) {
   );
 
   const handleViewAll = useCallback(() => {
-    const currentQueryText = queryTextRef.current;
+    const currentQueryText = queryTextRef.current.trim();
+    if (!currentQueryText) {
+      return;
+    }
 
     saveRecentSearch(currentQueryText);
     clear();

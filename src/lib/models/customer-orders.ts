@@ -36,6 +36,7 @@ export interface Order {
   order_date: string;
   order_invoice_url?: string;
   payment_methods?: PaymentMethod[];
+  points_to_spend?: number;
   shipments?: Shipment[];
   shipping_address?: Address;
   shipping_method?: string;
@@ -50,18 +51,28 @@ export interface OrderItem {
   // New optional product details
   product?: OrderItemProduct;
   product_name: string;
+  product_regular_price?: MoneyAmount;
   // Kept for backward compatibility (may not exist in expanded query)
   product_sale_price?: MoneyAmount;
   product_sku: string;
+  product_url_key?: string;
   quantity_ordered: number;
 }
 
 export interface OrderItemProduct {
+  brand?: string;
+  child_id?: string;
+  color?: string;
   id?: number | string;
   image?: OrderItemProductImage;
+  name?: string;
+  product_type?: string;
   short_name?: string;
+  size?: string;
   sku?: string;
+  stock_status?: string;
   type_id?: string;
+  url_key?: string;
 }
 
 export interface OrderItemProductImage {
@@ -161,27 +172,56 @@ export class CustomerOrders {
         id: order?.id?.toString?.() || "",
         increment_id: order?.increment_id,
         items: Array.isArray(order?.items)
-          ? (order.items as any[]).map(
-              (item: any): OrderItem => ({
+          ? (order.items as any[]).map((item: any): OrderItem => {
+              const matchedVariant = this.findProductVariant(item);
+
+              const brand =
+                item?.product?.brand_new_label ||
+                this.findProductCustomAttribute(item, "brand_new");
+
+              const priceRange = item?.product?.price_range;
+              const salePaid = item?.product_sale_price?.value;
+
+              const regularPrice = this.productRegularPrice(
+                priceRange,
+                salePaid
+              );
+
+              return {
                 id: item?.id?.toString?.() || "",
                 product: item?.product && {
+                  brand,
+                  child_id: matchedVariant?.product?.id || item?.product?.id,
+                  color: this.findProductAttributes(matchedVariant, "color"),
                   id: item?.product?.id,
                   image: item?.product?.image && {
                     url: item?.product?.image?.url,
                   },
+                  name: item?.product?.name,
+                  product_type: item?.product?.product_type_new2,
                   short_name: item?.product?.short_name,
+                  size:
+                    this.findProductAttributes(matchedVariant, "size_new") ??
+                    this.findProductAttributes(matchedVariant, "size"),
                   sku: item?.product?.sku,
+                  stock_status: item?.product?.stock_status,
                   type_id: item?.product?.type_id,
+                  url_key: item?.product?.url_key,
                 },
                 product_name: item?.product_name || "",
+                product_regular_price: regularPrice && {
+                  currency: regularPrice?.currency ?? "SAR",
+                  value: regularPrice?.value ?? 0,
+                },
                 product_sale_price: item?.product_sale_price && {
                   currency: item?.product_sale_price?.currency ?? "SAR",
                   value: item?.product_sale_price?.value ?? 0,
                 },
                 product_sku: item?.product_sku || "",
+                product_url_key: item?.product_url_key,
                 quantity_ordered: item?.quantity_ordered ?? 0,
-              })
-            )
+              };
+            })
           : [],
         number: order?.number || "",
         order_date: order?.order_date || "",
@@ -198,6 +238,7 @@ export class CustomerOrders {
               type: pm?.type || "",
             }))
           : undefined,
+        points_to_spend: order?.points_to_spend ?? undefined,
         shipments: Array.isArray(order?.shipments)
           ? (order.shipments as any[]).map((sh) => ({
               id: sh?.id?.toString?.() || "",
@@ -328,5 +369,32 @@ export class CustomerOrders {
           new Date(b.order_date).getTime() - new Date(a.order_date).getTime()
       )
       .slice(0, limit);
+  }
+
+  private findProductAttributes(item: any, code: string) {
+    return item?.attributes?.find((a: any) => a?.code === code)?.label;
+  }
+
+  private findProductCustomAttribute(item: any, code: string) {
+    return item?.product?.custom_attributesV2?.items?.find(
+      (attr: any) => attr?.code === code
+    )?.selected_options?.[0]?.label;
+  }
+
+  private findProductVariant(item: any) {
+    if (Array.isArray(item?.product?.variants))
+      return item.product.variants.find(
+        (v: any) => v?.product?.sku === item?.product_sku
+      );
+
+    return undefined;
+  }
+
+  private productRegularPrice(priceRange: any, salePaid: number | undefined) {
+    return priceRange?.minimum_price?.final_price?.value === salePaid
+      ? priceRange?.minimum_price?.regular_price
+      : priceRange?.maximum_price?.final_price?.value === salePaid
+        ? priceRange?.maximum_price?.regular_price
+        : priceRange?.maximum_price?.regular_price;
   }
 }

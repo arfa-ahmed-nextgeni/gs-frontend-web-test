@@ -1,6 +1,4 @@
-import Image from "next/image";
-
-import { searchProductPlaceholder } from "@/assets/placeholders";
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import { LocalizedPrice } from "@/components/shared/localized-price";
 import usePrice from "@/hooks/product/use-price";
 import { Link } from "@/i18n/navigation";
@@ -32,11 +30,11 @@ const SearchCard: React.FC<SearchProductProps> = ({ product }) => {
       href={ROUTES.PRODUCT.BY_URL_KEY(product?.urlKey)}
     >
       <div className="size-30 relative overflow-hidden rounded-xl">
-        <Image
+        <ProductImageWithFallback
           alt={name || "Product Image"}
           className="size-full object-cover"
           height={100}
-          src={image?.thumbnail ?? searchProductPlaceholder}
+          src={image?.thumbnail}
           width={100}
         />
       </div>

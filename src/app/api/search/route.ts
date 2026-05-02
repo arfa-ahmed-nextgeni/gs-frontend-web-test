@@ -4,7 +4,10 @@ import { hasLocale } from "next-intl";
 
 import { routing } from "@/i18n/routing";
 import { getSearchListingData } from "@/lib/actions/search/get-search-route-listing";
-import { parseFiltersFromUrlSearchParams } from "@/lib/category/query";
+import {
+  parseFiltersFromUrlSearchParams,
+  parseSortParam,
+} from "@/lib/category/query";
 import { type Locale } from "@/lib/constants/i18n";
 import { QueryParamsKey } from "@/lib/constants/query-params";
 import { failure, isOk, ok } from "@/lib/utils/service-result";
@@ -130,7 +133,9 @@ function parseSearchRequest(
   }
 
   const phrase = normalizeString(searchParams.get(QueryParamsKey.Search));
-  const sortBy = normalizeString(searchParams.get(QueryParamsKey.Sort));
+  const sortBy = parseSortParam(
+    searchParams.get(QueryParamsKey.Sort) ?? undefined
+  );
   const filters = parseFiltersFromUrlSearchParams(searchParams);
 
   return {
@@ -140,7 +145,7 @@ function parseSearchRequest(
       page,
       pageSize,
       phrase: phrase || undefined,
-      sortBy: sortBy || undefined,
+      sortBy,
     },
     ok: true,
   };

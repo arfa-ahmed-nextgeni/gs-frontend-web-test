@@ -1,5 +1,6 @@
 import { ArrowDownIcon } from "@/components/icons/arrow-down-icon";
 import { DesktopNavigationLink } from "@/layouts/header/desktop-navigation/desktop-navigation-link";
+import { getCategoryUrl } from "@/layouts/header/navigation-utils";
 import { ZIndexLevel } from "@/lib/constants/ui";
 import { MainMenuType, SubMenuType } from "@/lib/types/ui-types";
 import { cn } from "@/lib/utils";
@@ -13,26 +14,6 @@ function getUrlType(path: string): DesktopNavigationUrlType {
   if (p.includes("brands")) return "brands";
   return "category";
 }
-
-const getCategoryUrl = (path: string): string => {
-  if (!path || typeof path !== "string") {
-    return "/";
-  }
-
-  if (path.includes("/category/") || path.includes("/categories/")) {
-    const parts = path.split("/");
-    const categorySlug = parts[parts.length - 1];
-    return `/c/${categorySlug}`;
-  }
-  if (path.startsWith("/c/")) {
-    return path;
-  }
-  if (!path.startsWith("/") && !path.includes("http")) {
-    return `/c/${path}`;
-  }
-
-  return path;
-};
 
 const getTrackingPayload = (
   item: MainMenuType,
@@ -126,32 +107,34 @@ export const DesktopNavigationList = ({
             {hasSubmenu && (
               <div
                 className={cn(
-                  "transition-default group-hover:max-h-50 bg-bg-default absolute max-h-0 w-48 overflow-hidden rounded-b-xl group-hover:opacity-100",
+                  "transition-default bg-bg-default absolute grid w-48 grid-rows-[0fr] overflow-hidden rounded-b-xl opacity-0 group-hover:grid-rows-[1fr] group-hover:opacity-100",
                   shouldAlignSubmenuToEnd ? "end-0" : "start-0"
                 )}
               >
-                {item.subMenu?.map((menu) => {
-                  if (!menu || !menu.id || !menu.label) {
-                    return null;
-                  }
-                  const submenuPath = getCategoryUrl(menu.path || "");
-                  return (
-                    <DesktopNavigationLink
-                      className={cn(
-                        "text-text-primary border-border-base transition-default hover:bg-bg-surface flex items-center justify-between border-b px-7 py-2 text-sm last:border-none",
-                        "hover:pl-10 hover:pr-7 rtl:hover:pl-7 rtl:hover:pr-10"
-                      )}
-                      hoverLevel={ZIndexLevel.z5}
-                      href={submenuPath}
-                      key={menu.id}
-                      style={menu.style || undefined}
-                      title={menu.label}
-                      tracking={getTrackingPayload(item, menu, index + 1)}
-                    >
-                      {menu.label}
-                    </DesktopNavigationLink>
-                  );
-                })}
+                <div className="min-h-0 overflow-hidden">
+                  {item.subMenu?.map((menu) => {
+                    if (!menu || !menu.id || !menu.label) {
+                      return null;
+                    }
+                    const submenuPath = getCategoryUrl(menu.path || "");
+                    return (
+                      <DesktopNavigationLink
+                        className={cn(
+                          "text-text-primary border-border-base transition-default hover:bg-bg-surface flex items-center justify-between border-b px-7 py-2 text-sm last:border-none",
+                          "hover:pl-10 hover:pr-7 rtl:hover:pl-7 rtl:hover:pr-10"
+                        )}
+                        hoverLevel={ZIndexLevel.z5}
+                        href={submenuPath}
+                        key={menu.id}
+                        style={menu.style || undefined}
+                        title={menu.label}
+                        tracking={getTrackingPayload(item, menu, index + 1)}
+                      >
+                        {menu.label}
+                      </DesktopNavigationLink>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>

@@ -1,16 +1,18 @@
-import { Document } from "@contentful/rich-text-types";
+import type { Document } from "@contentful/rich-text-types";
 
-import { WishlistState } from "@/lib/constants/product/product-card";
-import { TabContentType } from "@/lib/models/page-landing";
-import {
+import type { WishlistState } from "@/lib/constants/product/product-card";
+import type { TabContentType } from "@/lib/models/page-landing";
+import type {
   WebsiteFooterContactAndSocialLinks,
   WebsiteFooterLinks,
   WebsiteFooterPromoAndFeatures,
 } from "@/lib/models/website-footer";
-import {
+import type {
   NavHeaderData,
   PromoBannerData,
 } from "@/lib/types/contentful/nav-header";
+
+export type BannerDisplayOn = "all" | "desktop" | "mobile";
 
 export type BannerSliderData = {
   autoSliding?: boolean;
@@ -210,6 +212,11 @@ export type PageLandingData = {
       fields?: {
         countryCode: string;
         internalName: string;
+        lcpPriorityContent?: {
+          sys?: {
+            id?: string;
+          };
+        };
         mobileHeaderTitle?: string;
         seo?: {
           fields?: ComponentSeoData;
@@ -287,6 +294,7 @@ export type WebsiteBannerData = {
       };
     };
   };
+  displayOn?: BannerDisplayOn;
   elementId?: string;
   flexPercent?: number;
   height?: number;
@@ -323,6 +331,7 @@ export type WebsiteMultipleBannersData = {
     fields: ContentfulImageData;
     sys: { id: string };
   }[];
+  displayOn?: BannerDisplayOn;
   imagesHeight?: number;
   imagesHeightMobile?: number;
   imagesWidth?: number;

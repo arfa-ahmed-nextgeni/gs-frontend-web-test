@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 import { useOrdersContext } from "@/contexts/orders-context";
 
@@ -8,13 +8,10 @@ import { CustomerOrdersList } from "./customer-orders-list";
 
 export const CustomerOrdersPage = () => {
   const { error, hasLoaded, isLoading, loadOrders } = useOrdersContext();
-  const hasInitialized = useRef(false);
 
-  // Load orders on mount only once.
   useEffect(() => {
-    if (!hasInitialized.current && !hasLoaded && !isLoading) {
-      hasInitialized.current = true;
-      loadOrders();
+    if (!hasLoaded && !isLoading) {
+      void loadOrders();
     }
   }, [hasLoaded, isLoading, loadOrders]);
 

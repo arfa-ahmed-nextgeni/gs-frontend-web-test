@@ -4,6 +4,8 @@ import { useTranslations } from "next-intl";
 
 import { LocalizedPrice } from "@/components/shared/localized-price";
 import { useProductDetails } from "@/contexts/product-details-context";
+import { trackViewProduct } from "@/lib/analytics/events";
+import { buildProductPropertiesFromDetails } from "@/lib/analytics/utils/build-properties";
 import { ProductType } from "@/lib/constants/product/product-details";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +18,15 @@ export const ProductDetailsVariants = () => {
   if (!product.variants.length) {
     return null;
   }
+
+  const handleVariantChange = (index: number) => {
+    const variant = product.variants[index];
+
+    if (variant) {
+      trackViewProduct(buildProductPropertiesFromDetails(variant, product));
+    }
+    setSelectedVariantIndex(index);
+  };
 
   if (product.type === ProductType.Beauty) {
     const colorOptions = product.variants.map(({ color, inStock, label }) => ({
@@ -33,14 +44,14 @@ export const ProductDetailsVariants = () => {
           {colorOptions.map(({ color, outOfStock }, index) => (
             <button
               className={cn(
-                "transition-default size-6.25 relative flex-shrink-0 rounded-sm",
+                "transition-default size-6.25 relative shrink-0 rounded-sm",
                 {
                   "outline-2 outline-offset-2 outline-[#2568F2]":
                     index === selectedVariantIndex,
                 }
               )}
               key={index}
-              onClick={() => setSelectedVariantIndex(index)}
+              onClick={() => handleVariantChange(index)}
               style={{
                 backgroundColor: color,
               }}
@@ -48,7 +59,7 @@ export const ProductDetailsVariants = () => {
             >
               {outOfStock && (
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <div className="bg-bg-primary h-[35px] w-0.5 origin-center rotate-45 transform rounded-full"></div>
+                  <div className="bg-bg-primary h-8.75 w-0.5 origin-center rotate-45 transform rounded-full"></div>
                 </div>
               )}
             </button>
@@ -63,14 +74,14 @@ export const ProductDetailsVariants = () => {
       {product.variants.map(({ label, price }, index) => (
         <button
           className={cn(
-            "transition-default max-w-22.75 h-15 border-border-base bg-bg-default flex w-[21.1vw] flex-shrink-0 flex-col items-center justify-center gap-2 rounded-[10px] border",
+            "transition-default max-w-22.75 h-15 border-border-base bg-bg-default flex w-[21.1vw] shrink-0 flex-col items-center justify-center gap-2 rounded-xl border",
             {
               "bg-btn-bg-cool border-border-info":
                 index === selectedVariantIndex,
             }
           )}
           key={index}
-          onClick={() => setSelectedVariantIndex(index)}
+          onClick={() => handleVariantChange(index)}
           type="button"
         >
           <p className="text-text-primary text-lg font-semibold leading-none">

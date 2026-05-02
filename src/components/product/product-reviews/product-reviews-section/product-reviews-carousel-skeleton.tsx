@@ -1,7 +1,7 @@
 import { ProductReviewCardSkeleton } from "@/components/product/product-reviews/product-review-card-skeleton";
 import Container from "@/components/shared/container";
-import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
-import { CarouselItem } from "@/components/ui/carousel/carousel-item";
+import { CardRailScrollSnapCarousel } from "@/components/ui/card-rail-scroll-snap-carousel";
+import { ScrollSnapCarouselItem } from "@/components/ui/scroll-snap-carousel";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const ProductReviewsCarouselSkeleton = () => {
@@ -9,7 +9,7 @@ export const ProductReviewsCarouselSkeleton = () => {
     <Container className="mb-7.5 !px-0">
       <div className="gap-4.5 flex flex-col">
         <Skeleton className="w-43 h-8" />
-        <CarouselContainer
+        <CardRailScrollSnapCarousel
           contentProps={{
             className: "px-2.5 lg:!px-0",
           }}
@@ -27,11 +27,11 @@ export const ProductReviewsCarouselSkeleton = () => {
           }}
         >
           {[...Array(4)].map((_, index) => (
-            <CarouselItem key={`review-${index}`}>
+            <ScrollSnapCarouselItem key={`review-${index}`}>
               <ProductReviewCardSkeleton />
-            </CarouselItem>
+            </ScrollSnapCarouselItem>
           ))}
-        </CarouselContainer>
+        </CardRailScrollSnapCarousel>
         <Skeleton className="h-8.75 w-32.75" />
       </div>
     </Container>

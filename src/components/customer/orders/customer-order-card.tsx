@@ -11,6 +11,7 @@ import CancelIcon from "@/assets/icons/cancel.svg";
 import Download from "@/assets/icons/download.svg";
 import TrackIcon from "@/assets/icons/locate.svg";
 import ReorderIcon from "@/assets/icons/re-order.svg";
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import { useToastContext } from "@/components/providers/toast-provider";
 import { LocalizedPrice } from "@/components/shared/localized-price";
 import { useOrdersContext } from "@/contexts/orders-context";
@@ -294,7 +295,7 @@ export const CustomerOrderCard = ({
                         className="relative"
                         key={`${item.product_sku}-${index}`}
                       >
-                        <Image
+                        <ProductImageWithFallback
                           alt={item.product_name || "Product image"}
                           className="rounded-5xl size-5 object-cover shadow-2xl"
                           height={20}

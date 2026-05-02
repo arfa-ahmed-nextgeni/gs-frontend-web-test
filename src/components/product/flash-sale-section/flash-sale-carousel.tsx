@@ -1,8 +1,8 @@
 import { ProductCard } from "@/components/product/product-card";
 import {
-  ProductCardsScrollSnapCarousel,
-  ProductCardsScrollSnapCarouselItem,
-} from "@/components/product/product-cards-scroll-snap-carousel";
+  CardRailScrollSnapCarousel,
+  CardRailScrollSnapCarouselItem,
+} from "@/components/ui/card-rail-scroll-snap-carousel";
 
 import type { ProductCardModel } from "@/lib/models/product-card-model";
 
@@ -22,7 +22,7 @@ export const FlashSaleCarousel = ({
   products: ProductCardModel[];
 }) => {
   return (
-    <ProductCardsScrollSnapCarousel
+    <CardRailScrollSnapCarousel
       carouselProps={{
         autoPlay: {
           delay: autoSlideDelay,
@@ -74,7 +74,7 @@ export const FlashSaleCarousel = ({
       }
     >
       {products.map((product, index) => (
-        <ProductCardsScrollSnapCarouselItem
+        <CardRailScrollSnapCarouselItem
           className={
             mode === "mobile"
               ? "w-[190px] flex-shrink-0"
@@ -94,8 +94,8 @@ export const FlashSaleCarousel = ({
             lpRow={lpRow}
             product={product}
           />
-        </ProductCardsScrollSnapCarouselItem>
+        </CardRailScrollSnapCarouselItem>
       ))}
-    </ProductCardsScrollSnapCarousel>
+    </CardRailScrollSnapCarousel>
   );
 };

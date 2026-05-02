@@ -126,13 +126,22 @@ export type Order = {
 };
 
 export type OrderItem = {
+  brand?: string;
+  color?: string;
   id: number | string;
   image: Attachment;
   name: string;
   price: number;
   productId?: number | string;
+  productType?: string;
   quantity: number;
+  regularPrice?: number;
+  size?: string;
   sku?: string;
+  stockStatus?: string;
+  urlKey?: string;
+  variantId?: number | string;
+  variantSKU?: string;
 };
 
 export interface PaginatedProduct {

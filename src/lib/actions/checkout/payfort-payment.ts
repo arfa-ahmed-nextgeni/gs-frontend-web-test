@@ -7,6 +7,11 @@ import {
   setPayfortResponseCode,
   setPendingOrderInfo,
 } from "@/lib/actions/cookies/checkout";
+import {
+  ApiActivityFeatures,
+  ApiActivityServices,
+} from "@/lib/api-activity/api-activity-meta";
+import { loggedFetch } from "@/lib/api-activity/fetch/logged-fetch";
 import { Locale } from "@/lib/constants/i18n";
 import { PaymentStatus } from "@/lib/constants/payment-status";
 import { ROUTES } from "@/lib/constants/routes";
@@ -110,13 +115,23 @@ export async function payfortPaymentAction({
 
   let payfortResponse: Response;
   try {
-    payfortResponse = await fetch(payfortDetail.url, {
-      body: requestBody,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+    payfortResponse = await loggedFetch(
+      payfortDetail.url,
+      {
+        body: requestBody,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        method: "POST",
       },
-      method: "POST",
-    });
+      {
+        action: "payfort payment",
+        feature: ApiActivityFeatures.Checkout,
+        initiator:
+          "src/lib/actions/checkout/payfort-payment.ts#payfortPaymentAction",
+        service: ApiActivityServices.Payfort,
+      }
+    );
   } catch (error) {
     console.error(error);
     return ok({ checkoutUrl });

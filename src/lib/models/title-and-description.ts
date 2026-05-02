@@ -1,4 +1,4 @@
-import { Document } from "@contentful/rich-text-types";
+import type { Document } from "@contentful/rich-text-types";
 
 import { TabContentType } from "@/lib/models/page-landing";
 import { TitleAndDescriptionData } from "@/lib/types/contentful/page-landing";

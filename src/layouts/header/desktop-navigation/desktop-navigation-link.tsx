@@ -39,7 +39,6 @@ export const DesktopNavigationLink = ({
         className={className}
         hoverLevel={hoverLevel}
         href={href}
-        prefetch={false}
         style={style}
         title={title}
       >
@@ -53,7 +52,6 @@ export const DesktopNavigationLink = ({
       {...trackingAttributes}
       className={className}
       href={href}
-      prefetch={false}
       style={style}
       title={title}
     >

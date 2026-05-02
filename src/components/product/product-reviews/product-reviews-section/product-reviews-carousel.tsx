@@ -7,8 +7,8 @@ import { SectionHeader } from "@/components/common/section-header";
 import { ProductReviewCard } from "@/components/product/product-reviews/product-review-card";
 import { ProductReviewWriteLink } from "@/components/product/product-reviews/product-review-write-link";
 import Container from "@/components/shared/container";
-import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
-import { CarouselItem } from "@/components/ui/carousel/carousel-item";
+import { CardRailScrollSnapCarousel } from "@/components/ui/card-rail-scroll-snap-carousel";
+import { ScrollSnapCarouselItem } from "@/components/ui/scroll-snap-carousel";
 import { getProductReviews } from "@/lib/actions/products/get-product-reviews";
 import { ProductType } from "@/lib/constants/product/product-details";
 import { ROUTES } from "@/lib/constants/routes";
@@ -66,7 +66,7 @@ export const ProductReviewsCarousel = async ({
             </p>
           </div>
         ) : (
-          <CarouselContainer
+          <CardRailScrollSnapCarousel
             contentProps={{
               className: "px-2.5 lg:!px-0",
             }}
@@ -84,7 +84,7 @@ export const ProductReviewsCarousel = async ({
             }}
           >
             {productReviewsResponse.data.reviews.map((review) => (
-              <CarouselItem key={`review-${review.id}`}>
+              <ScrollSnapCarouselItem key={`review-${review.id}`}>
                 <ProductReviewCard
                   author={review.author}
                   date={review.date}
@@ -93,9 +93,9 @@ export const ProductReviewsCarousel = async ({
                   rating={review.rating}
                   reviewId={review.id}
                 />
-              </CarouselItem>
+              </ScrollSnapCarouselItem>
             ))}
-          </CarouselContainer>
+          </CardRailScrollSnapCarousel>
         )}
         <ProductReviewWriteLink
           loadingLinkProps={{

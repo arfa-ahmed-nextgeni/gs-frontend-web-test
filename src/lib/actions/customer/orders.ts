@@ -113,8 +113,8 @@ function mapCustomerOrderToUiOrder(order: CustomerOrderModel): UiOrder {
   const shippingHandling = order.total?.shipping_handling;
 
   const shippingFee =
-    shippingHandling?.total_amount?.value ??
     shippingHandling?.amount_including_tax?.value ??
+    shippingHandling?.total_amount?.value ??
     0;
 
   const grandTotal =
@@ -140,6 +140,15 @@ function mapCustomerOrderToUiOrder(order: CustomerOrderModel): UiOrder {
     const sku = item.product?.sku || item.id;
     const key = `${sku}::${unitPrice}`;
 
+    const regularPrice = item.product_regular_price?.value;
+    const variantSKU = item.product_sku;
+    const variantId = item.product?.child_id;
+    const brand = item.product?.brand;
+    const productType = item.product?.product_type;
+    const size = item.product?.size;
+    const color = item.product?.color;
+    const stockStatus = item.product?.stock_status;
+
     const existing = productMap.get(key);
 
     if (existing) {
@@ -148,13 +157,22 @@ function mapCustomerOrderToUiOrder(order: CustomerOrderModel): UiOrder {
     }
 
     productMap.set(key, {
+      brand,
+      color,
       id: sku,
       image,
       name: item.product_name,
       price: unitPrice,
       productId: item.product?.id,
+      productType,
       quantity: item.quantity_ordered,
+      regularPrice: regularPrice,
+      size,
       sku: item.product?.sku,
+      stockStatus,
+      urlKey: item.product?.url_key || item.product_url_key,
+      variantId,
+      variantSKU,
     });
   });
 
@@ -236,10 +254,16 @@ export const getCustomerOrderByNumber = cache(
         },
       });
 
+      if (response.errors?.length) {
+        console.error(
+          "[getCustomerOrderByNumber] GraphQL errors:",
+          JSON.stringify(response.errors, null, 2)
+        );
+      }
+
       if (!response.data?.customer) {
         return unauthenticated();
       }
-
       const customerOrders = new CustomerOrders(response.data);
       const order = customerOrders.orders[0] as CustomerOrderModel | undefined;
 

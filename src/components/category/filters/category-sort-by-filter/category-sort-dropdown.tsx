@@ -15,7 +15,10 @@ import {
 } from "@/components/ui/select";
 import { useFilters } from "@/contexts/category-filter-context";
 import { useSortStatusDropdown } from "@/contexts/sort-status-dropdown-context";
-import { CATEGORY_SORT_OPTIONS } from "@/lib/constants/category/category-sort";
+import {
+  CATEGORY_SORT_OPTIONS,
+  CategorySortKey,
+} from "@/lib/constants/category/category-sort";
 import { cn } from "@/lib/utils";
 
 export const CategorySortDropdown = () => {
@@ -73,7 +76,7 @@ export const CategorySortDropdown = () => {
         }}
       >
         {CATEGORY_SORT_OPTIONS.map(({ label, value }) => {
-          const isSelected = sortBy === value;
+          const isSelected = (sortBy ?? CategorySortKey.Relevance) === value;
 
           return (
             <SelectItem

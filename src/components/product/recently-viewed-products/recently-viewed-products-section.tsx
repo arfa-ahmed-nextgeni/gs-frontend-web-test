@@ -5,9 +5,9 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { SectionHeader } from "@/components/common/section-header";
 import { ProductCard } from "@/components/product/product-card";
 import {
-  ProductCardsScrollSnapCarousel,
-  ProductCardsScrollSnapCarouselItem,
-} from "@/components/product/product-cards-scroll-snap-carousel";
+  CardRailScrollSnapCarousel,
+  CardRailScrollSnapCarouselItem,
+} from "@/components/ui/card-rail-scroll-snap-carousel";
 import { getAuthToken } from "@/lib/actions/auth/get-auth-token";
 import { getBulletDeliveryEnabled } from "@/lib/actions/config/get-bullet-delivery-enabled";
 import { getDeviceIdCookie } from "@/lib/actions/cookies/device-id";
@@ -106,7 +106,7 @@ export async function RecentlyViewedProductsSection({
         }}
       />
 
-      <ProductCardsScrollSnapCarousel
+      <CardRailScrollSnapCarousel
         carouselProps={{
           deferUntilInView: true,
         }}
@@ -124,7 +124,7 @@ export async function RecentlyViewedProductsSection({
         }}
       >
         {products.map((product, index) => (
-          <ProductCardsScrollSnapCarouselItem key={`${product.id}-${index}`}>
+          <CardRailScrollSnapCarouselItem key={`${product.id}-${index}`}>
             <ProductCard
               isBulletDeliveryEnabled={isBulletDeliveryEnabled}
               lpColumn={1}
@@ -137,9 +137,9 @@ export async function RecentlyViewedProductsSection({
               lpRow={lpRow}
               product={product}
             />
-          </ProductCardsScrollSnapCarouselItem>
+          </CardRailScrollSnapCarouselItem>
         ))}
-      </ProductCardsScrollSnapCarousel>
+      </CardRailScrollSnapCarousel>
     </div>
   );
 }

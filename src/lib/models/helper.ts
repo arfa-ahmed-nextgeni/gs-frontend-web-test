@@ -1,6 +1,12 @@
 import { parseProductTagAttributes } from "@/lib/utils/product-tags";
 
+export type FlagValue = boolean | null | number | undefined;
+
 export class Helper {
+  static isFlagEnabled(value: FlagValue): boolean {
+    return value === true || value === 1;
+  }
+
   convertRating(rating: null | number | undefined): number {
     if (!rating) return 0;
 
@@ -41,8 +47,10 @@ export class Helper {
       const attribute = attributes?.find(
         (attr) => attr?.name === attributeName
       );
-      return attribute?.label
-        ? ({ label: attribute.label, value: attribute?.value || "" } as T)
+      const label = attribute?.label;
+      const value = attribute?.value;
+      return label && label !== "null" && value && value !== "null"
+        ? ({ label, value } as T)
         : defaultValue;
     } catch (error) {
       console.error(`Error getting attribute "${attributeName}":`, error);
@@ -65,6 +73,18 @@ export class Helper {
     }
   }
 
+  getValidUrl(url?: string) {
+    if (!url) return undefined;
+
+    try {
+      const trimmedUrl = url.trim();
+
+      return new URL(trimmedUrl).toString();
+    } catch {
+      return undefined;
+    }
+  }
+
   normalizeUrl(url?: string) {
     if (!url) return "";
 
@@ -77,6 +97,29 @@ export class Helper {
     }
 
     return `https://${url}`;
+  }
+
+  parseAttribute<T>(
+    attributes: any[],
+    attributeName: string,
+    defaultValue: T
+  ): T {
+    try {
+      const attribute = attributes?.find(
+        (attr) => attr?.name === attributeName
+      );
+      const label = attribute?.label;
+      const value = attribute?.value;
+      return label && label !== "null" && value && value !== "null"
+        ? ({
+            label,
+            value: JSON.parse(value),
+          } as T)
+        : defaultValue;
+    } catch (error) {
+      console.error(`Error getting attribute "${attributeName}":`, error);
+      return defaultValue;
+    }
   }
 
   parseAttributeValue<T>(
@@ -97,6 +140,17 @@ export class Helper {
 
   parseProductTagAttributes(tagAttributes: string) {
     return parseProductTagAttributes(tagAttributes);
+  }
+
+  removeDuplicateUrls<T extends { url: string }>(items: T[]) {
+    const seenUrls = new Set<string>();
+
+    return items.filter((item) => {
+      if (seenUrls.has(item.url)) return false;
+
+      seenUrls.add(item.url);
+      return true;
+    });
   }
 
   toInteger(input?: number | string, defaultValue?: number) {

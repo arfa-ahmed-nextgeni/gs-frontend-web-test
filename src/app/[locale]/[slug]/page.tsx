@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 
 import { getTranslations } from "next-intl/server";
 
-import { BannerSliderCarousel } from "@/components/banner/banner-slider-carousel";
+import { BannerSliderSection } from "@/components/banner/banner-slider-section";
 import { WebsiteBannerComponent } from "@/components/banner/website-banner";
 import WebsiteMultipleBannersComponent from "@/components/banner/website-multiple-banners";
 import HomeCategories from "@/components/category/home-categories";
@@ -38,8 +38,6 @@ import {
 } from "@/lib/utils/seo";
 
 import type { Locale } from "@/lib/constants/i18n";
-
-const BANNER_LCP_CANDIDATE_INDEX = 0;
 
 export async function generateMetadata({
   params,
@@ -182,7 +180,7 @@ export default async function StaticPage({
                   const bannerSlider = content as BannerSlider;
                   return (
                     <div key={`content-${index}`}>
-                      <BannerSliderCarousel
+                      <BannerSliderSection
                         bannerColumn={1}
                         bannerContainerProps={{
                           className:
@@ -204,7 +202,7 @@ export default async function StaticPage({
                             },
                           },
                         }}
-                        isLcpCandidate={index === BANNER_LCP_CANDIDATE_INDEX}
+                        isLcpCandidate={bannerSlider.isLcpCandidate}
                       />
                     </div>
                   );
@@ -271,7 +269,9 @@ export default async function StaticPage({
                         bannerLpId={slug}
                         bannerOrigin="lp"
                         bannerRow={index + 1}
-                        isLcpCandidate={index === BANNER_LCP_CANDIDATE_INDEX}
+                        isLcpCandidate={
+                          (content as WebsiteBanner).isLcpCandidate
+                        }
                       />
                     </div>
                   );

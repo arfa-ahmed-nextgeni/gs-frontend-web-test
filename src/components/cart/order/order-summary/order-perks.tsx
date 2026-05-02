@@ -34,6 +34,10 @@ export function OrderPerks({ currencyCode, grandTotal }: OrderPerksProps) {
       ? "ae"
       : "other";
 
+  const localizeStyle = {
+    className: "ms-0.75",
+  };
+
   const cashbackPercent = storeConfig?.cashbackPercent || 0.05;
   const tamaraInstallments = storeConfig?.tamaraInstallments?.installments || 4;
 
@@ -48,6 +52,7 @@ export function OrderPerks({ currencyCode, grandTotal }: OrderPerksProps) {
             label={t.rich("perks.cashback", {
               amount: () => (
                 <LocalizedPrice
+                  currencySymbolProps={localizeStyle}
                   price={String(
                     formatPrice({ amount: cashbackAmount, currencyCode })
                   )}
@@ -78,6 +83,7 @@ export function OrderPerks({ currencyCode, grandTotal }: OrderPerksProps) {
               label={t.rich("perks.installments", {
                 amount: () => (
                   <LocalizedPrice
+                    currencySymbolProps={localizeStyle}
                     price={String(
                       formatPrice({ amount: installmentAmount, currencyCode })
                     )}

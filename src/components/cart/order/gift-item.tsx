@@ -1,11 +1,12 @@
 "use client";
 
-import Image from "next/image";
-
 import { useTranslations } from "next-intl";
 
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import { LocalizedPrice } from "@/components/shared/localized-price";
+import { ProductDetailsLink } from "@/components/shared/product-details-link";
 import { CartItem } from "@/lib/models/cart";
+import { getProductDetailsHref } from "@/lib/utils/get-product-details-href";
 
 interface GiftItemProps {
   index: number;
@@ -14,6 +15,10 @@ interface GiftItemProps {
 
 export const GiftItem = ({ index, item }: GiftItemProps) => {
   const t = useTranslations("CartPage.giftItems");
+  const productHref = getProductDetailsHref({
+    sku: item.sku,
+    urlKey: item.urlKey,
+  });
 
   return (
     <div className="lg:h-25 flex flex-col p-2.5 lg:w-[797px] lg:flex-row lg:items-center lg:justify-between lg:p-2.5 lg:pl-5 lg:rtl:pr-5">
@@ -24,20 +29,28 @@ export const GiftItem = ({ index, item }: GiftItemProps) => {
         </span>
 
         {/* Image */}
-        <div className="h-[52px] w-[52px] shrink-0 overflow-hidden rounded-md bg-white">
-          <Image
+        <ProductDetailsLink
+          className="h-[52px] w-[52px] shrink-0 overflow-hidden rounded-md bg-white"
+          href={productHref || "#"}
+          title={item.name}
+        >
+          <ProductImageWithFallback
             alt={item.name}
             className="h-full w-full object-cover"
             height={52}
             src={item.imageUrl}
             width={52}
           />
-        </div>
+        </ProductDetailsLink>
 
         {/* Title, Description, and Mobile Price */}
         <div className="flex min-w-0 flex-1 items-center">
           <div className="flex min-h-[52px] w-full items-center justify-between gap-4">
-            <div className="min-w-0 flex-1">
+            <ProductDetailsLink
+              className="block min-w-0 flex-1"
+              href={productHref || "#"}
+              title={item.name}
+            >
               <p className="text-text-primary truncate text-xs font-semibold">
                 {item.name}
               </p>
@@ -46,7 +59,7 @@ export const GiftItem = ({ index, item }: GiftItemProps) => {
                   {item.description}
                 </p>
               )}
-            </div>
+            </ProductDetailsLink>
 
             {/* Price section - shown inline on mobile */}
             <div className="me-2.5 flex shrink-0 flex-col items-end lg:hidden rtl:items-start">

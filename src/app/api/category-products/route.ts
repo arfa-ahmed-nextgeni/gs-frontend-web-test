@@ -4,7 +4,10 @@ import { hasLocale } from "next-intl";
 
 import { routing } from "@/i18n/routing";
 import { getCategoryListingData } from "@/lib/actions/category/get-category-route-listing";
-import { parseFiltersFromUrlSearchParams } from "@/lib/category/query";
+import {
+  parseFiltersFromUrlSearchParams,
+  parseSortParam,
+} from "@/lib/category/query";
 import { type Locale } from "@/lib/constants/i18n";
 import { QueryParamsKey } from "@/lib/constants/query-params";
 import { failure, isOk, ok } from "@/lib/utils/service-result";
@@ -78,7 +81,9 @@ function parseCategoryProductsRequest(
   const currentPageRaw = searchParams.get(QueryParamsKey.Page);
   const pageSizeRaw = searchParams.get(QueryParamsKey.PageSize);
   const locale = searchParams.get(QueryParamsKey.Locale);
-  const sortBy = searchParams.get(QueryParamsKey.Sort);
+  const sortBy = parseSortParam(
+    searchParams.get(QueryParamsKey.Sort) ?? undefined
+  );
 
   if (!categoryUid || !categoryPath) {
     return {
@@ -120,7 +125,7 @@ function parseCategoryProductsRequest(
       filters,
       locale,
       pageSize,
-      sortBy: sortBy || undefined,
+      sortBy,
     },
     ok: true,
   };

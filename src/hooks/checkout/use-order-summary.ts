@@ -10,6 +10,7 @@ export function useOrderSummary() {
       return {
         baseShippingFee: 0,
         grandTotal: 0,
+        hasSelectedShippingMethod: false,
         serviceFee: 0,
         shippingFee: 0,
         subtotal: 0,
@@ -19,6 +20,7 @@ export function useOrderSummary() {
     return {
       baseShippingFee: cart.baseShippingFee || 0,
       grandTotal: cart.grandTotalPrice || 0,
+      hasSelectedShippingMethod: cart.hasSelectedShippingMethod,
       serviceFee: cart.serviceFee || 0,
       shippingFee: cart.shippingFee || 0,
       subtotal: cart.subTotalPrice || 0,

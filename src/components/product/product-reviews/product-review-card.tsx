@@ -2,8 +2,7 @@ import { ComponentProps } from "react";
 
 import { ProductRating } from "@/components/product/product-rating";
 import { ProductReviewDate } from "@/components/product/product-reviews/product-review-date";
-import { ProductReviewDisikeButton } from "@/components/product/product-reviews/product-review-dislike-button";
-import { ProductReviewLikeButton } from "@/components/product/product-reviews/product-review-like-button";
+import { ProductReviewVoteButtons } from "@/components/product/product-reviews/product-review-vote-buttons";
 import { cn } from "@/lib/utils";
 
 // import { ProductReviewReportButton } from "@/components/product/product-reviews/product-review-report-button";
@@ -45,13 +44,7 @@ export const ProductReviewCard = ({
       </p>
       <div className="flex flex-row items-end justify-between">
         <ProductReviewDate date={date} />
-        <div className="gap-7.5 flex flex-row">
-          <ProductReviewDisikeButton
-            productId={productId}
-            reviewId={reviewId}
-          />
-          <ProductReviewLikeButton productId={productId} reviewId={reviewId} />
-        </div>
+        <ProductReviewVoteButtons productId={productId} reviewId={reviewId} />
       </div>
     </div>
   );

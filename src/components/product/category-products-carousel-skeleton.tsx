@@ -1,5 +1,5 @@
 import { ProductGridSkeleton } from "@/components/category/skeletons/product-grid-skeleton";
-import { SectionHeaderSkeleton } from "@/components/common/section-header";
+import { SectionHeaderSkeleton } from "@/components/common/section-header/section-header-skeleton";
 import { CategoryProductsCarouselItemsSkeleton } from "@/components/product/category-products-carousel-items-skeleton";
 import { ProductCardVariant } from "@/lib/constants/product/product-card";
 

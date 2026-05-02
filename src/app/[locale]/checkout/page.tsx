@@ -7,6 +7,7 @@ import { CheckoutTracker } from "@/components/analytics/checkout-tracker";
 import CheckoutPage, {
   type CheckoutAddress,
 } from "@/components/checkout/checkout-page";
+import { SiteLogo } from "@/components/shared/site-logo";
 import { redirect } from "@/i18n/navigation";
 import { getCountries } from "@/lib/actions/config/get-countries";
 import { getStates } from "@/lib/actions/config/get-states";
@@ -225,6 +226,7 @@ async function Checkout({ locale }: { locale: Locale }) {
         customerInfo={customerInfo}
         initialAddresses={initialAddresses}
         initialPaymentCards={initialPaymentCards}
+        logoSlot={<SiteLogo className="h-10 w-auto" />}
       />
     </>
   );

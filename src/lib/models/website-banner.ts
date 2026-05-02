@@ -1,13 +1,20 @@
 import { TabContentType } from "@/lib/models/page-landing";
-import { WebsiteBannerData } from "@/lib/types/contentful/page-landing";
+
+import type {
+  BannerDisplayOn,
+  WebsiteBannerData,
+} from "@/lib/types/contentful/page-landing";
 
 export class WebsiteBanner {
   public contentType: TabContentType;
   public desktopImageUrl?: string;
+  public displayOn: BannerDisplayOn;
   public elementId?: string;
+  public entryId: string;
   public flexPercent?: number;
   public height?: number;
   public internalName?: string;
+  public isLcpCandidate = false;
   public margin?: Record<string, any>;
   public mobileImageHeight?: number;
   public mobileImageUrl?: string;
@@ -16,8 +23,14 @@ export class WebsiteBanner {
   public url: string;
   public width?: number;
 
-  constructor(data: WebsiteBannerData, contentType: TabContentType) {
+  constructor(
+    data: WebsiteBannerData,
+    contentType: TabContentType,
+    entryId: string
+  ) {
     this.contentType = contentType;
+    this.entryId = entryId;
+    this.displayOn = data.displayOn ?? "all";
     this.elementId = data.elementId;
     this.internalName = data.internalName;
     this.url = data.url;

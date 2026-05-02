@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { LpTracker } from "@/components/analytics/lp-tracker";
-import { BannerSliderCarousel } from "@/components/banner/banner-slider-carousel";
+import { BannerSliderSection } from "@/components/banner/banner-slider-section";
 import { WebsiteBannerComponent } from "@/components/banner/website-banner";
 import WebsiteMultipleBannersComponent from "@/components/banner/website-multiple-banners";
 import HomeCategories from "@/components/category/home-categories";
@@ -34,8 +34,6 @@ import {
 } from "@/lib/utils/seo";
 
 import type { Locale } from "@/lib/constants/i18n";
-
-const BANNER_LCP_CANDIDATE_INDEX = 0;
 
 export async function generateMetadata({
   params,
@@ -176,7 +174,7 @@ export default async function LandingPage({
             const bannerSlider = content as BannerSlider;
             return (
               <Container className="mt-2" key={`content-${index}`}>
-                <BannerSliderCarousel
+                <BannerSliderSection
                   bannerColumn={1}
                   bannerContainerProps={{
                     className:
@@ -198,7 +196,7 @@ export default async function LandingPage({
                       },
                     },
                   }}
-                  isLcpCandidate={index === BANNER_LCP_CANDIDATE_INDEX}
+                  isLcpCandidate={bannerSlider.isLcpCandidate}
                 />
               </Container>
             );
@@ -288,7 +286,7 @@ export default async function LandingPage({
                   bannerLpId={slug}
                   bannerOrigin="lp"
                   bannerRow={index + 1}
-                  isLcpCandidate={index === BANNER_LCP_CANDIDATE_INDEX}
+                  isLcpCandidate={(content as WebsiteBanner).isLcpCandidate}
                 />
               </Container>
             );

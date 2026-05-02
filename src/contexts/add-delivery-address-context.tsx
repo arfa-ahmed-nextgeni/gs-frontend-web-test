@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, type ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import type { GoogleAddressData } from "@/lib/utils/google-address";
 
@@ -8,9 +14,12 @@ interface AddDeliveryAddressContextType {
   currentLocation: google.maps.LatLngLiteral | null;
   customerData: CustomerData;
   deliveryType: string;
+  editingAddressId: null | string;
   googleAddressData: GoogleAddressData | null;
+  initialAddressSnapshot: InitialAddressSnapshot | null;
   initialContactData: InitialContactData | null;
   initialSelectedLocation: google.maps.LatLngLiteral | null;
+  isFirstAddressInCheckout: boolean;
   isManualEntryMode: boolean;
   isSelectedLocationInSaudiArabia: boolean | null;
   ksaAddress: KsaNationalAddress | null;
@@ -33,6 +42,16 @@ interface CustomerData {
   firstName?: string;
   lastName?: string;
   phoneNumber?: string;
+}
+
+interface InitialAddressSnapshot {
+  city: string;
+  district: string;
+  formattedAddress: string;
+  isDefault: boolean;
+  postalCode: string;
+  shortCode: string;
+  street: string;
 }
 
 interface InitialContactData {
@@ -65,16 +84,22 @@ interface AddDeliveryAddressContextProviderProps {
   children: ReactNode;
   customerData: CustomerData;
   deliveryType: string;
+  editingAddressId?: null | string;
+  initialAddressSnapshot?: InitialAddressSnapshot | null;
   initialContactData?: InitialContactData | null;
   initialSelectedLocation?: google.maps.LatLngLiteral | null;
+  isFirstAddressInCheckout?: boolean;
 }
 
 export function AddDeliveryAddressContextProvider({
   children,
   customerData,
   deliveryType,
+  editingAddressId = null,
+  initialAddressSnapshot = null,
   initialContactData = null,
   initialSelectedLocation = null,
+  isFirstAddressInCheckout = false,
 }: AddDeliveryAddressContextProviderProps) {
   const [currentLocation, setCurrentLocation] =
     useState<google.maps.LatLngLiteral | null>(null);
@@ -85,9 +110,22 @@ export function AddDeliveryAddressContextProvider({
     useState<boolean | null>(null);
   const [selectedLocation, setSelectedLocation] =
     useState<google.maps.LatLngLiteral | null>(initialSelectedLocation);
-  const [selectedAddress, setSelectedAddress] = useState<null | string>(null);
+  const [selectedAddress, setSelectedAddress] = useState<null | string>(
+    initialAddressSnapshot?.formattedAddress || null
+  );
   const [ksaAddress, setKsaAddress] = useState<KsaNationalAddress | null>(null);
   const [showSaveForm, setShowSaveForm] = useState(false);
+
+  useEffect(() => {
+    setCurrentLocation(null);
+    setGoogleAddressData(null);
+    setIsManualEntryMode(false);
+    setIsSelectedLocationInSaudiArabia(null);
+    setKsaAddress(null);
+    setSelectedAddress(initialAddressSnapshot?.formattedAddress || null);
+    setSelectedLocation(initialSelectedLocation);
+    setShowSaveForm(false);
+  }, [editingAddressId, initialAddressSnapshot, initialSelectedLocation]);
 
   const resetFlowState = () => {
     // Fully reset the transient add-address flow so a reopened drawer starts fresh.
@@ -97,7 +135,7 @@ export function AddDeliveryAddressContextProvider({
     setIsSelectedLocationInSaudiArabia(null);
     setKsaAddress(null);
     setSelectedAddress(null);
-    setSelectedLocation(null);
+    setSelectedLocation(initialSelectedLocation);
     setShowSaveForm(false);
   };
 
@@ -107,9 +145,12 @@ export function AddDeliveryAddressContextProvider({
         currentLocation,
         customerData,
         deliveryType,
+        editingAddressId,
         googleAddressData,
+        initialAddressSnapshot,
         initialContactData,
         initialSelectedLocation,
+        isFirstAddressInCheckout,
         isManualEntryMode,
         isSelectedLocationInSaudiArabia,
         ksaAddress,

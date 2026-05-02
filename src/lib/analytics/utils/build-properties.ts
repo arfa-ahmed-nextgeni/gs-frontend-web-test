@@ -1,7 +1,9 @@
 import dayjs from "dayjs";
-import { parsePhoneNumberWithError } from "libphonenumber-js";
 
-import { ProductOptionType } from "@/lib/constants/product/product-card";
+import {
+  ProductOptionType,
+  StockStatus,
+} from "@/lib/constants/product/product-card";
 import {
   isBulletDeliveryVisible,
   isCartBulletEligible,
@@ -11,16 +13,24 @@ import {
   resolveCustomerId,
   resolveCustomerUuid,
 } from "@/lib/utils/customer-id-storage";
+import { isPerfumeAttributeSet } from "@/lib/utils/product-type";
 
 import type {
+  AddPaymentInfoEcommerceProperties,
+  BeginCheckoutEcommerceProperties,
+  CartInsiderProperties,
   CartProperties,
+  InsiderItemProperties,
   OrderProperties,
   ProductProperties,
+  PurchaseCustomerDetails,
+  PurchaseEcommerceProperties,
+  PurchaseInsiderProperties,
   PurchaseProperties,
   UserInsiderProperties,
   UserProperties,
 } from "../models/event-models";
-import type { Cart } from "@/lib/models/cart";
+import type { Cart, CartItem } from "@/lib/models/cart";
 import type { CartItem as CartItemModel } from "@/lib/models/cart";
 import type { Customer } from "@/lib/models/customer";
 import type { Order } from "@/lib/models/customer-orders";
@@ -28,7 +38,7 @@ import type { ProductBasicInfo } from "@/lib/models/product-basic-info";
 import type { ProductCardModel } from "@/lib/models/product-card-model";
 import type { ProductDetailsModel } from "@/lib/models/product-details-model";
 import type { Store } from "@/lib/models/stores";
-import type { Order as PurchaseOrder } from "@/lib/types/ui-types";
+import type { OrderItem, Order as PurchaseOrder } from "@/lib/types/ui-types";
 import type { Order as UiOrder } from "@/lib/types/ui-types";
 
 /**
@@ -51,6 +61,138 @@ export type CustomerProperties = {
   };
   uuid?: string;
 };
+
+// Helper to build the GA4 ecommerce payload for add_payment_info.
+// Extends the begin_checkout structure with payment_type and coupon.
+export function buildAddPaymentInfoProperties(
+  cart: Cart,
+  paymentType: string
+): AddPaymentInfoEcommerceProperties {
+  const base = buildBeginCheckoutProperties(cart);
+  return {
+    ...base,
+    coupon: cart.appliedCoupons?.join(",") ?? null,
+    payment_type: paymentType,
+  };
+}
+
+export function buildCartInsiderProperties(
+  properties: Record<string, unknown>
+): CartInsiderProperties {
+  const items = properties?.["cart.items"] as CartItem[];
+  const cartProps = properties as unknown as CartProperties;
+
+  const itemProperties: InsiderItemProperties[] = items.map((item) => ({
+    ...(item.color && { color: item.color }),
+    custom: {
+      brnd: item.brand || "",
+      groupcode: item.skuParent || "",
+      iis: item.stockStatus !== StockStatus.OutOfStock,
+      is_gwp: item.isGwp || false,
+      parent_product_integer_id: item.parentId || "",
+      product_integer_id: item.externalId || "",
+      pt: item.productType || "",
+    },
+    id: item.sku || "",
+    name: item.name,
+    product_image_url: item.imageUrl || "",
+    quantity: item.quantity || 0,
+    ...(item.size && { size: item.size }),
+    stock: item.stockLeft ?? 0,
+    taxonomy: [item.brand, item.productType].filter(Boolean) as string[],
+    unit_price: item.priceValue || 0,
+    unit_sale_price: item.priceValue || 0,
+    url: item.urlKey || "",
+  }));
+
+  return {
+    items: itemProperties,
+    shipping_cost: cartProps["cart.fees_shipping"] || 0,
+    total: cartProps["cart.grandTotal"] || 0,
+  };
+}
+const ANALYTICS_PHONE_LENGTH_BY_COUNTRY_CODE: Record<string, number> = {
+  "+1": 15,
+  "+964": 10,
+  "+965": 8,
+  "+966": 9,
+  "+968": 8,
+  "+971": 9,
+  "+973": 8,
+};
+
+const SUPPORTED_ANALYTICS_COUNTRY_CODES = Object.keys(
+  ANALYTICS_PHONE_LENGTH_BY_COUNTRY_CODE
+).sort((firstCode, secondCode) => secondCode.length - firstCode.length);
+
+export function buildAddRemoveCartInsiderProperties(
+  product: Record<string, unknown>
+): InsiderItemProperties {
+  let unitPrice: number | undefined = 0;
+
+  const oldPrice = product["product.old_price"] as string | undefined;
+  const price = product["product.price"] as number | undefined;
+  const salePrice = product["product.sale_price"] as number | undefined;
+
+  if (oldPrice && oldPrice.length > 0)
+    unitPrice = parseFloat(oldPrice.replace(/[^\d.]/g, ""));
+  else unitPrice = price || salePrice;
+
+  const color = product["product.color"] as string | undefined;
+  const size = product["product.size"] as string | undefined;
+  const brand = product["product.brand"] as string | undefined;
+  const type = product["product.type"] as string | undefined;
+  const url = (window.location.origin ?? "") + product["product.url"];
+  const groupcode = product["product.sku_parent"] ?? product["product.sku"];
+  const sku = product["product.sku"];
+  const parentProductId = product["product.parent_id"] ?? product["product.id"];
+
+  return {
+    ...(color && { color }),
+    custom: {
+      brnd: brand,
+      groupcode: groupcode as string,
+      iis: product["product.stock"] ? true : false,
+      is_gwp: (product["product.is_gwp"] as boolean) ?? false,
+      parent_product_integer_id: parentProductId as string,
+      product_integer_id: (product["product.id"] as string) ?? "",
+      pt: type ?? "",
+    },
+    id: (sku as string) ?? "",
+    name: (product["product.name"] as string) ?? "",
+    product_image_url: (product["product.image_url"] as string) ?? "",
+    quantity: (product[`product.${sku}.qty_in_cart`] as number) ?? 0,
+    ...(size && { size }),
+    stock: (product["product.stock"] as number) ?? 0,
+    taxonomy: [brand, type].filter(Boolean) as string[],
+    unit_price: unitPrice ?? 0,
+    unit_sale_price: salePrice ?? 0,
+    url,
+  };
+}
+
+// Helper to build the GA4 ecommerce payload for the begin_checkout event.
+// Maps Cart → { currency, value, items[] } as required by the GA4 spec.
+export function buildBeginCheckoutProperties(
+  cart: Cart
+): BeginCheckoutEcommerceProperties {
+  const currency = cart.items[0]?.currency || "SAR";
+
+  const items = cart.items.map((item) => ({
+    item_brand: item.brand || undefined,
+    item_category: item.productType || undefined,
+    item_id: item.externalId || item.sku || "",
+    item_name: item.name || "",
+    price: item.priceValue || 0,
+    quantity: item.quantity || 1,
+  }));
+
+  return {
+    currency,
+    items,
+    value: cart.grandTotalPrice,
+  };
+}
 
 // Helper to build cart properties from Cart model
 export function buildCartProperties(
@@ -96,13 +238,8 @@ export function buildCartProperties(
     cartProperties[`product.${sku}.price`] = item.priceValue || 0;
     cartProperties[`product.${sku}.sku`] = item.sku || "";
     cartProperties[`product.${sku}.qty_in_cart`] = item.quantity || 0;
-
-    if (item.parentId) {
-      cartProperties[`product.${sku}.parent_id`] = item.parentId;
-    }
-    if (item.skuParent) {
-      cartProperties[`product.${sku}.sku_parent`] = item.skuParent;
-    }
+    cartProperties[`product.${sku}.stockLeft`] = item.stockLeft || 0;
+    cartProperties[`product.${sku}.isGwp`] = item.isGwp || false;
   });
 
   // If caller provided storeConfig, compute live visibility and override flag.
@@ -255,6 +392,43 @@ export function buildOrderPropertiesFromUiOrder(
   return orderProperties as Partial<OrderProperties>;
 }
 
+export function buildProductInsiderProperties(
+  product: ProductProperties
+): InsiderItemProperties {
+  let unitPrice: number | undefined = 0;
+
+  if (product["product.old_price"] && product["product.old_price"].length > 0)
+    unitPrice = parseFloat(product["product.old_price"].replace(/[^\d.]/g, ""));
+  else unitPrice = product["product.price"] || product["product.sale_price"];
+
+  return {
+    ...(product["product.color"] && { color: product["product.color"] }),
+    custom: {
+      brnd: product["product.brand"],
+      groupcode: product["product.sku_parent"] ?? "",
+      iis: product["product.stock"] ? true : false,
+      is_gwp: product["product.is_gwp"] ?? false,
+      parent_product_integer_id: product["product.parent_id"] ?? "",
+      product_integer_id: product["product.id"],
+      pt: product["product.type"] ?? "",
+    },
+    id: product["product.sku"],
+    name: product["product.name"],
+    product_image_url: product["product.image_url"] ?? "",
+    quantity: 1,
+    ...(product["product.size"] && { size: product["product.size"] }),
+    stock: product["product.stock"] ?? 0,
+    taxonomy: [product["product.brand"], product["product.type"]].filter(
+      Boolean
+    ) as string[],
+    unit_price: unitPrice ?? 0,
+    unit_sale_price: product["product.sale_price"] ?? 0,
+    url: product["product.url"]
+      ? `${typeof window !== "undefined" ? window.location.origin : ""}${product["product.url"]}`
+      : "",
+  };
+}
+
 // Helper to build product properties from ProductBasicInfo
 export function buildProductPropertiesFromBasicInfo(
   product: ProductBasicInfo
@@ -301,17 +475,35 @@ export function buildProductPropertiesFromCard(
 export function buildProductPropertiesFromCartItem(
   item: CartItemModel
 ): Partial<ProductProperties> {
+  const productType =
+    item.productType ||
+    (item.attributeSet && isPerfumeAttributeSet(item.attributeSet)
+      ? "perfume"
+      : "beauty") ||
+    undefined;
+
   return {
+    "product.attribute_set": item.attributeSet || "Default",
     "product.brand": item.brand || undefined,
     "product.brand_id": item.brand || undefined,
     "product.id": item.externalId || "",
+    ...(item.imageUrl && { "product.image_url": item.imageUrl }),
+    "product.is_gwp": item.isGwp ?? false,
     "product.name": item.name || "",
+    ...(item.oldPrice && { "product.old_price": item.oldPrice }),
+    ...(item.parentId && { "product.parent_id": item.parentId }),
     "product.price": item.priceValue || 0,
+    "product.sale_price": item.priceValue || 0,
+    ...(item.options?.selected?.label
+      ? { "product.size": item.options.selected.label }
+      : item.options?.choices?.[0]?.label
+        ? { "product.size": item.options.choices[0].label }
+        : {}),
     "product.sku": item.sku || "",
-    "product.type": item.options?.type?.toString() || undefined,
-    ...(item.options?.selected?.label && {
-      "product.size": item.options.selected.label,
-    }),
+    ...(item.skuParent && { "product.sku_parent": item.skuParent }),
+    "product.stock": item.isOutOfStock ? 0 : 1,
+    "product.type": productType,
+    ...(item.urlKey && { "product.url": `/p/${item.urlKey}` }),
   };
 }
 
@@ -371,6 +563,7 @@ export function buildProductPropertiesFromDetails(
       "product.image_url":
         variant.mediaGallery?.[0]?.url || parentProduct.mediaGallery?.[0]?.url,
       "product.name": parentProduct.name || variant.label || "",
+      "product.old_price": variant.oldPrice || "",
       "product.parent_id": parentProduct.externalId || "",
       "product.price": variant.priceValue || 0,
       "product.sale_price": variant.priceValue || 0,
@@ -379,9 +572,7 @@ export function buildProductPropertiesFromDetails(
       "product.sku_parent": parentProduct.sku || "",
       "product.stock": variant.inStock ? 1 : 0,
       "product.type": parentProduct.type?.toString() || "",
-      "product.url": parentProduct.urlKey
-        ? `/p/${parentProduct.urlKey}`
-        : undefined,
+      "product.url": parentProduct.urlKey ? `/p/${parentProduct.urlKey}` : "",
     };
   }
 
@@ -412,6 +603,7 @@ export function buildProductPropertiesFromDetails(
     "product.id": productModel.externalId || productModel.id?.toString() || "",
     "product.image_url": productModel.mediaGallery?.[0]?.url,
     "product.name": productModel.name || "",
+    "product.old_price": productModel.oldPrice || "",
     "product.parent_id": productModel.externalId || "",
     "product.price": productPrice,
     "product.sale_price": productPrice,
@@ -420,9 +612,7 @@ export function buildProductPropertiesFromDetails(
     "product.sku_parent": productModel.sku || "",
     "product.stock": productModel.inStock ? 1 : 0,
     "product.type": productModel.productInfo?.type || "",
-    "product.url": productModel.urlKey
-      ? `/p/${productModel.urlKey}`
-      : undefined,
+    "product.url": productModel.urlKey ? `/p/${productModel.urlKey}` : "",
   };
 }
 
@@ -444,6 +634,93 @@ export function buildProductPropertiesFromMobileTopBar(productInfo: {
     "product.price": productInfo.priceValue || 0,
     "product.sku": productInfo.sku || "",
     "product.type": productInfo.type || "",
+  };
+}
+
+// Helper to build the GA4 ecommerce payload for the purchase event.
+// Maps the UI Order model → { currency, value, transaction_id, tax, shipping, payment_type, coupon, items[] }.
+// Returns both the ecommerce object and customer_details (top-level field in the dataLayer push).
+export function buildPurchaseEcommerceProperties(
+  order: UiOrder,
+  customer?: {
+    email?: string;
+    firstName?: string;
+    lastName?: string;
+    phoneNumber?: string;
+  } | null
+): {
+  customerDetails: PurchaseCustomerDetails[];
+  ecommerce: PurchaseEcommerceProperties;
+} {
+  const currency = "SAR";
+
+  const items = order.products.map((item) => ({
+    item_brand: item.brand || undefined,
+    item_category: item.productType || undefined,
+    item_id: String(item.id || ""),
+    item_name: item.name || "",
+    price: item.price || 0,
+    quantity: item.quantity || 1,
+  }));
+
+  const ecommerce: PurchaseEcommerceProperties = {
+    coupon: null,
+    currency,
+    items,
+    payment_type: order.paymentMethodType || order.paymentMethod || "",
+    shipping: order.shipping_fee || 0,
+    tax: order.tax || 0,
+    transaction_id: order.tracking_number || String(order.id || ""),
+    value: order.total || 0,
+  };
+
+  const customerDetails: PurchaseCustomerDetails[] = customer
+    ? [
+        {
+          email: customer.email || order.customer?.email || "",
+          first_name: customer.firstName || "",
+          last_name: customer.lastName || "",
+          phone: customer.phoneNumber || "",
+        },
+      ]
+    : [];
+
+  return { customerDetails, ecommerce };
+}
+
+export function buildPurchaseInsiderProperties(
+  properties: Record<string, unknown>
+): PurchaseInsiderProperties {
+  const items = properties?.products as OrderItem[];
+  const purchaseProps = properties as Record<string, unknown>;
+
+  const itemProperties: InsiderItemProperties[] = items.map((item) => ({
+    ...(item.color && { color: item.color }),
+    custom: {
+      brnd: item.brand || "",
+      groupcode: item.sku || "",
+      iis: item.stockStatus !== StockStatus.OutOfStock,
+      is_gwp: false,
+      parent_product_integer_id: String(item.productId ?? ""),
+      product_integer_id: String(item.variantId ?? ""),
+      pt: item.productType || "",
+    },
+    id: item.variantSKU || "",
+    name: item.name,
+    product_image_url: item.image.thumbnail || "",
+    quantity: item.quantity || 0,
+    ...(item.size && { size: item.size }),
+    stock: item.quantity ?? 0,
+    taxonomy: [item.brand, item.productType].filter(Boolean) as string[],
+    unit_price: item.regularPrice || 0,
+    unit_sale_price: item.price || 0,
+    url: item?.urlKey || "",
+  }));
+
+  return {
+    items: itemProperties,
+    order_id: (purchaseProps?.["order.id"] as string) || "",
+    total: (purchaseProps?.["order.grandTotal"] as number) || 0,
   };
 }
 
@@ -470,6 +747,7 @@ export function buildPurchasePropertiesFromOrder(
     "order.id": String(order.tracking_number || ""),
     "order.payment_method": order.paymentMethod || "",
     "order.subtotal": subtotal,
+    products: order.products,
     shipping_type: shippingType,
   };
 }
@@ -516,8 +794,8 @@ export function buildTrackOrderPropertiesFromOrder(order: Order): Partial<{
     item_ids: itemIds.join(","),
     "order.fees_COD": order.total?.cod_fee?.value,
     "order.fees_shipping":
-      order.total?.shipping_handling?.total_amount?.value ||
-      order.total?.shipping_handling?.amount_including_tax?.value,
+      order.total?.shipping_handling?.amount_including_tax?.value ||
+      order.total?.shipping_handling?.total_amount?.value,
     "order.grandTotal":
       order.total?.grand_total?.value || order.grand_total || 0,
     "order.id": order.increment_id || order.id || "",
@@ -525,10 +803,10 @@ export function buildTrackOrderPropertiesFromOrder(order: Order): Partial<{
   };
 }
 
-// Helper to build user properties from Customer model or customer properties
+// Helper to build insider user propertie from Customer model or customer properties
 export function buildUserInsiderProperties(
   customer: CustomerProperties
-): Partial<UserInsiderProperties> {
+): UserInsiderProperties {
   const resolvedId = resolveCustomerId(customer) ?? "";
   const resolvedUuid = resolveCustomerUuid() ?? "";
 
@@ -541,9 +819,10 @@ export function buildUserInsiderProperties(
     email: customer.email || "",
     email_optin: true,
     gdpr_optin: true,
-    gender: customer.gender?.toString() === "1" ? "M" : "F",
+    gender: customer.gender?.toString() === "2" ? "F" : "M",
     name: customer.fullName.split(" ")[0] || "",
     phone_number: customer.phoneNumber || "",
+    sms_optin: true,
     surname: customer.fullName.split(" ")[1] || "",
     uuid: resolvedId.toString(),
     whatsapp_optin: true,
@@ -598,6 +877,46 @@ export function buildUserPropertiesFromCustomer(
   };
 }
 
+export function buildWishlistViewInsiderProperties(
+  product: {
+    color?: string;
+    is_gwp?: boolean;
+    size?: string;
+    type?: string;
+  } & ProductCardModel
+): InsiderItemProperties {
+  let unitPrice: number | undefined = 0;
+
+  if (product.currentPrice && product.currentPrice.length > 0)
+    unitPrice = parseFloat(product.currentPrice.replace(/[^\d.]/g, ""));
+  else unitPrice = product.priceValue;
+
+  return {
+    ...(product.color && { color: product.color }),
+    custom: {
+      ...(product.brand && { brnd: product.brand }),
+      groupcode: product.skuParent ?? product.sku ?? "",
+      iis: product.stockStatus === StockStatus.InStock ? true : false,
+      is_gwp: product.is_gwp ?? false,
+      parent_product_integer_id: product.parentId ?? product.externalId ?? "",
+      product_integer_id: product.externalId ?? "",
+      pt: product.type ?? "",
+    },
+    id: product.sku ?? "",
+    name: product.name,
+    product_image_url: product.imageUrl ?? "",
+    quantity: 1,
+    ...(product.size && { size: product.size }),
+    stock: 1,
+    taxonomy: [product.type, product.brand].filter(Boolean) as string[],
+    unit_price: unitPrice ?? 0,
+    unit_sale_price: product.priceValue ?? 0,
+    url: product.urlKey
+      ? `${typeof window !== "undefined" ? window.location.origin : ""}/p/${product.urlKey}`
+      : "",
+  };
+}
+
 /**
  * Format a full phone string for analytics: single space between country code and number.
  * e.g. "+966512345678" → "+966 512345678"
@@ -605,15 +924,36 @@ export function buildUserPropertiesFromCustomer(
  */
 export function formatFullPhoneForAnalytics(phone: string): string {
   if (!phone?.trim()) return "";
-  try {
-    const cleaned = phone.trim().replace(/\s+/g, "");
-    const parsed = parsePhoneNumberWithError(
-      cleaned.startsWith("+") ? cleaned : `+${cleaned}`
-    );
-    return `+${parsed.countryCallingCode} ${parsed.nationalNumber}`;
-  } catch {
+
+  const cleanedPhone = phone.trim().replace(/\s+/g, "");
+  const normalizedPhone = cleanedPhone.startsWith("+")
+    ? cleanedPhone
+    : `+${cleanedPhone}`;
+  const matchingCountryCode = SUPPORTED_ANALYTICS_COUNTRY_CODES.find(
+    (countryCode) => normalizedPhone.startsWith(countryCode)
+  );
+
+  if (!matchingCountryCode) {
     return phone;
   }
+
+  let nationalNumber = normalizedPhone.slice(matchingCountryCode.length);
+  const expectedPhoneLength =
+    ANALYTICS_PHONE_LENGTH_BY_COUNTRY_CODE[matchingCountryCode];
+
+  if (
+    matchingCountryCode !== "+1" &&
+    nationalNumber.startsWith("0") &&
+    nationalNumber.length === expectedPhoneLength + 1
+  ) {
+    nationalNumber = nationalNumber.slice(1);
+  }
+
+  if (!nationalNumber) {
+    return phone;
+  }
+
+  return `${matchingCountryCode} ${nationalNumber}`;
 }
 
 /**

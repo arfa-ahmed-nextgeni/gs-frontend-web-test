@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ArrowDownIcon } from "@/components/icons/arrow-down-icon";
 import { serializeMobileNavigationClickOriginPayload } from "@/layouts/header/mobile-navigation/mobile-navigation-click-origin-dataset";
 import { MobileNavigationLink } from "@/layouts/header/mobile-navigation/mobile-navigation-link";
+import { getCategoryUrl } from "@/layouts/header/navigation-utils";
 import { MOBILE_NAVIGATION_CLICK_ORIGIN_DATA_ATTRIBUTE } from "@/lib/constants/tracking-data-attributes";
 import { cn } from "@/lib/utils";
 
@@ -50,17 +51,20 @@ export const MobileNavigationSubmenu = ({
           isOpen ? "max-h-50 py-2" : "max-h-0 py-0"
         )}
       >
-        {item.subMenu?.map((subItem) => (
-          <MobileNavigationLink
-            activePath={subItem.path}
-            className="transition-default before:transition-default focus:before:bg-bg-success text-text-primary relative text-base font-medium before:absolute before:bottom-[-1px] before:start-0 before:h-[2px] before:w-0 before:content-[''] focus:outline-none focus:before:w-full"
-            href={subItem.path}
-            key={subItem.id}
-            label={subItem.label}
-            position={position}
-            style={subItem.style}
-          />
-        ))}
+        {item.subMenu?.map((subItem) => {
+          const subPath = getCategoryUrl(subItem.path || "");
+          return (
+            <MobileNavigationLink
+              activePath={subPath}
+              className="transition-default before:transition-default focus:before:bg-bg-success text-text-primary relative text-base font-medium before:absolute before:bottom-[-1px] before:start-0 before:h-[2px] before:w-0 before:content-[''] focus:outline-none focus:before:w-full"
+              href={subPath}
+              key={subItem.id}
+              label={subItem.label}
+              position={position}
+              style={subItem.style}
+            />
+          );
+        })}
       </div>
     </div>
   );

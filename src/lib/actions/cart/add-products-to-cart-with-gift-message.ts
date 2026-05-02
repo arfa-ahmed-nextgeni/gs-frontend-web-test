@@ -4,13 +4,13 @@ import { getLocale } from "next-intl/server";
 
 import { getAuthToken } from "@/lib/actions/auth/get-auth-token";
 import { getCartId } from "@/lib/actions/cookies/cart";
-import { graphqlRequest } from "@/lib/clients/graphql";
+import { graphqlRequest, isGraphqlAuthError } from "@/lib/clients/graphql";
 import { CART_GRAPHQL_MUTATIONS } from "@/lib/constants/api/graphql/cart";
 import { DEFAULT_CART_ITEMS_QUERY_VARIABLES } from "@/lib/constants/api/graphql/cart-variables";
 import { Locale } from "@/lib/constants/i18n";
 import { Cart } from "@/lib/models/cart";
 import { getStoreCode } from "@/lib/utils/country";
-import { failure, ok } from "@/lib/utils/service-result";
+import { failure, ok, unauthenticated } from "@/lib/utils/service-result";
 
 export async function addProductsToCartWithGiftMessageAction({
   giftMessage,
@@ -62,6 +62,10 @@ export async function addProductsToCartWithGiftMessageAction({
         ...DEFAULT_CART_ITEMS_QUERY_VARIABLES,
       },
     });
+
+    if (authToken && isGraphqlAuthError(response)) {
+      return unauthenticated();
+    }
 
     const userErrors =
       response.data?.addProductsToCartWithGiftMessage?.user_errors || [];

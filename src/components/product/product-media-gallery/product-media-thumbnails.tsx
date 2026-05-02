@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import Image from "next/image";
-
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ProductMedia } from "@/lib/models/product-details-model";
 import { cn } from "@/lib/utils";
@@ -64,7 +63,7 @@ export const ProductMediaThumbnails = ({
               onClick={() => onSelect(index)}
             >
               {imageUrl && (
-                <Image
+                <ProductImageWithFallback
                   alt="Product thumbnail"
                   className={cn({
                     "transition-default opacity-50": index !== currentIndex,

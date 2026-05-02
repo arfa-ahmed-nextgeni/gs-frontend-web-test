@@ -9,23 +9,26 @@ import { useToastContext } from "@/components/providers/toast-provider";
 import { useOptionalAddDeliveryAddressContext } from "@/contexts/add-delivery-address-context";
 import { useStoreCode } from "@/hooks/i18n/use-store-code";
 import { useKsaAddressQuery } from "@/hooks/queries/use-ksa-address";
-import { addCustomerAddress } from "@/lib/actions/customer/add-customer-address";
+import {
+  addCustomerAddress,
+  type AddCustomerAddressResult,
+} from "@/lib/actions/customer/add-customer-address";
 import { updateCustomerAddress } from "@/lib/actions/customer/update-customer-address";
 import { updateProfileFromAddress } from "@/lib/actions/customer/update-profile";
 import { trackProfileUpdated } from "@/lib/analytics/events";
+import { StoreCode } from "@/lib/constants/i18n";
 import { QueryParamsKey } from "@/lib/constants/query-params";
 import {
   AddressFormField,
   addressFormSchema,
 } from "@/lib/forms/manage-address";
-import { CustomerAddress } from "@/lib/models/customer-addresses";
-import {
-  ServiceResultError,
-  ServiceResultOk,
-} from "@/lib/types/service-result";
-import { getDefaultCountryCode, getPhoneDetails } from "@/lib/utils/country";
+import { getDefaultCountryCode } from "@/lib/utils/country";
 import { sanitizeStreetValue } from "@/lib/utils/google-address";
+import { getPhoneDetails } from "@/lib/utils/phone-utils";
 import { isError, isOk } from "@/lib/utils/service-result";
+
+import type { CustomerAddress } from "@/lib/models/customer-addresses";
+import type { ServiceResult } from "@/lib/types/service-result";
 
 export const useAddressForm = ({
   closeDrawer,
@@ -50,7 +53,7 @@ export const useAddressForm = ({
   };
   initialAddressLabel?: string;
   isFirstAddressInCheckout?: boolean;
-  onSuccess?: () => void;
+  onSuccess?: (addressId?: string) => void;
 }) => {
   const params = useParams();
   const paramsId =
@@ -92,14 +95,18 @@ export const useAddressForm = ({
     ((customerAddress as any)?.raw?.ksa_additional_number as string) || "";
   const ksaBuildingNumber =
     ((customerAddress as any)?.raw?.ksa_building_number as string) || "";
+
+  const isManualEntryMode =
+    addDeliveryAddressContext?.isManualEntryMode ?? false;
+
   const latitude =
     ((customerAddress as any)?.raw?.latitude as string) ||
-    (addDeliveryAddressContext?.selectedLocation
+    (!isManualEntryMode && addDeliveryAddressContext?.selectedLocation
       ? `${addDeliveryAddressContext.selectedLocation.lat}`
       : "");
   const longitude =
     ((customerAddress as any)?.raw?.longitude as string) ||
-    (addDeliveryAddressContext?.selectedLocation
+    (!isManualEntryMode && addDeliveryAddressContext?.selectedLocation
       ? `${addDeliveryAddressContext.selectedLocation.lng}`
       : "");
 
@@ -155,7 +162,8 @@ export const useAddressForm = ({
       [AddressFormField.SaveAsDefault]:
         setAsDefaultRequested ||
         customerAddress?.isDefault ||
-        (isFirstAddressInCheckout && isNewAddress) ||
+        isNewAddress ||
+        isFirstAddressInCheckout ||
         false,
       [AddressFormField.SenderFirstName]: "",
       [AddressFormField.SenderLastName]: "",
@@ -177,7 +185,7 @@ export const useAddressForm = ({
   useEffect(() => {
     const selectedLocation = addDeliveryAddressContext?.selectedLocation;
 
-    if (!selectedLocation) {
+    if (!selectedLocation || addDeliveryAddressContext?.isManualEntryMode) {
       return;
     }
 
@@ -193,7 +201,26 @@ export const useAddressForm = ({
         shouldTouch: false,
       }
     );
-  }, [addDeliveryAddressContext?.selectedLocation, addressForm]);
+  }, [
+    addDeliveryAddressContext?.isManualEntryMode,
+    addDeliveryAddressContext?.selectedLocation,
+    addressForm,
+  ]);
+
+  useEffect(() => {
+    if (!addDeliveryAddressContext?.isManualEntryMode) {
+      return;
+    }
+
+    addressForm.setValue(AddressFormField.Latitude, "", {
+      shouldDirty: false,
+      shouldTouch: false,
+    });
+    addressForm.setValue(AddressFormField.Longitude, "", {
+      shouldDirty: false,
+      shouldTouch: false,
+    });
+  }, [addDeliveryAddressContext?.isManualEntryMode, addressForm]);
 
   const { data: queriedKsaAddress } = useKsaAddressQuery({
     enabled: !!addDeliveryAddressContext?.selectedLocation,
@@ -202,9 +229,11 @@ export const useAddressForm = ({
   });
 
   useEffect(() => {
+    const isSaudiStore =
+      storeCode === StoreCode.ar_sa || storeCode === StoreCode.en_sa;
     const selectedLocation = addDeliveryAddressContext?.selectedLocation;
 
-    if (!selectedLocation || !queriedKsaAddress) {
+    if (!isSaudiStore || !selectedLocation || !queriedKsaAddress) {
       return;
     }
 
@@ -245,17 +274,18 @@ export const useAddressForm = ({
       shouldDirty: false,
       shouldTouch: false,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    addDeliveryAddressContext,
-    addressForm,
     addDeliveryAddressContext?.selectedLocation,
+    addressForm,
     queriedKsaAddress,
+    storeCode,
   ]);
 
   const handleSubmitForm = handleSubmit(
     async (data) => {
-      let response: ServiceResultError | ServiceResultOk<string>;
-      let updateProfileResponse: ServiceResultError | ServiceResultOk<string>;
+      let response: ServiceResult<AddCustomerAddressResult | string>;
+      let updateProfileResponse: ServiceResult<string>;
 
       const email = data[AddressFormField.Email];
       const senderFirstName = data[AddressFormField.SenderFirstName];
@@ -309,8 +339,17 @@ export const useAddressForm = ({
       }
 
       if (isOk(response)) {
-        showSuccess(response.data, " ");
-        onSuccess?.();
+        const successMessage =
+          typeof response.data === "string"
+            ? response.data
+            : response.data.message;
+        const savedAddressId =
+          typeof response.data === "string"
+            ? effectiveId
+            : response.data.addressId;
+
+        showSuccess(successMessage, " ");
+        onSuccess?.(savedAddressId);
         closeDrawer();
       } else {
         showError(response.error, " ");

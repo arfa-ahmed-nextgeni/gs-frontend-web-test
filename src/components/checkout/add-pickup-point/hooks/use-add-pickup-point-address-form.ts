@@ -27,7 +27,8 @@ import {
 } from "@/lib/forms/add-pickup-point-address";
 import { storeLockerInfo } from "@/lib/utils/checkout/locker-storage";
 import { getShippingTypeFromOption } from "@/lib/utils/checkout/shipping-type";
-import { getDefaultCountryCode, getPhoneDetails } from "@/lib/utils/country";
+import { getDefaultCountryCode } from "@/lib/utils/country";
+import { getPhoneDetails } from "@/lib/utils/phone-utils";
 import { isError } from "@/lib/utils/service-result";
 
 export const useAddPickupPointAddressForm = () => {

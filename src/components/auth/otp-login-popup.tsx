@@ -17,7 +17,6 @@ import { OtpVerificationFeedback } from "@/components/auth/otp-verification-feed
 import { useToastContext } from "@/components/providers/toast-provider";
 import { Spinner } from "@/components/ui/spinner";
 import { useUI } from "@/contexts/use-ui";
-import { getCustomerQueryConfig } from "@/hooks/queries/use-customer-query";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { otpLogin, otpVerify } from "@/lib/actions/auth/otp";
@@ -35,7 +34,6 @@ import {
   formatPhoneForAnalytics,
 } from "@/lib/analytics/utils/build-properties";
 import { Locale, StoreCode } from "@/lib/constants/i18n";
-import { QUERY_KEYS } from "@/lib/constants/query-keys";
 import { cn } from "@/lib/utils";
 import {
   clearSuppressRegistration,
@@ -49,6 +47,7 @@ import {
   isGlobalStore,
   isValidPhoneNumber,
 } from "@/lib/utils/country";
+import { syncPostAuthQueries } from "@/lib/utils/sync-post-auth-queries";
 
 interface OtpLoginPopupProps {
   isOpen: boolean;
@@ -295,8 +294,9 @@ export const OtpLoginPopup: React.FC<OtpLoginPopupProps> = ({
             console.warn("Error in authorize():", error);
           }
 
-          queryClient.invalidateQueries({
-            queryKey: QUERY_KEYS.CART.ROOT(locale),
+          const { customer } = await syncPostAuthQueries({
+            locale,
+            queryClient,
           });
 
           if (result.data.is_registered && result.data.is_registered === "1") {
@@ -306,10 +306,6 @@ export const OtpLoginPopup: React.FC<OtpLoginPopupProps> = ({
             }
             clearSuppressRegistration();
           } else {
-            const customer = await queryClient.fetchQuery(
-              getCustomerQueryConfig(locale)
-            );
-
             // Track login event with user data
             trackLogin(buildUserPropertiesFromCustomer(customer));
             setVerificationSuccess(true);
@@ -837,6 +833,7 @@ export const OtpLoginPopup: React.FC<OtpLoginPopupProps> = ({
                           autoFocus={index === 0}
                           className={inputClass}
                           dir="ltr"
+                          disabled={isLoading || verificationSuccess}
                           key={index}
                           maxLength={1}
                           onBlur={() => {

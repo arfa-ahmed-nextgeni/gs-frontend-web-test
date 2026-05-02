@@ -5,12 +5,13 @@ import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 
 import { AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import LocationPinIcon from "@/assets/icons/location-pin-icon.svg";
 import { AddDeliveryAddressMapControls } from "@/components/checkout/add-delivery-address/add-delivery-address-map/add-delivery-address-map-controls";
 import { useAddDeliveryAddressContext } from "@/contexts/add-delivery-address-context";
 import { extractGoogleAddressData } from "@/lib/utils/google-address";
+import { getLocaleInfo } from "@/lib/utils/locale";
 
 export const AddDeliveryAddressMapContent = ({
   currentLocation,
@@ -23,6 +24,7 @@ export const AddDeliveryAddressMapContent = ({
   isBottomWarningVisible?: boolean;
   onLocateAction: () => void;
 }) => {
+  const locale = useLocale();
   const t = useTranslations("AddDeliveryAddressPage.map");
   const {
     selectedLocation,
@@ -34,6 +36,7 @@ export const AddDeliveryAddressMapContent = ({
 
   const map = useMap();
   const [geocoder, setGeocoder] = useState<google.maps.Geocoder | null>(null);
+  const { language: googleMapsLanguage } = getLocaleInfo(locale);
 
   // Initialize geocoder
   useEffect(() => {
@@ -47,33 +50,41 @@ export const AddDeliveryAddressMapContent = ({
     (location: google.maps.LatLngLiteral) => {
       if (!geocoder) return;
 
-      geocoder.geocode({ location }, (results, status) => {
-        if (status === google.maps.GeocoderStatus.OK && results?.[0]) {
-          const primaryResult = results[0];
-          const address = primaryResult.formatted_address;
-          const countryComponent = primaryResult.address_components?.find(
-            ({ types }) => types.includes("country")
-          );
+      geocoder.geocode(
+        { language: googleMapsLanguage, location, region: "SA" },
+        (results, status) => {
+          if (status === google.maps.GeocoderStatus.OK && results?.[0]) {
+            const primaryResult = results[0];
+            const googleAddressData = extractGoogleAddressData({
+              // Scan all reverse-geocode results because English components can
+              // appear after an Arabic or incomplete primary result.
+              addressResults: results,
+              formattedAddress: primaryResult.formatted_address,
+              preferEnglish: googleMapsLanguage === "en",
+            });
+            const address =
+              googleAddressData.formattedAddress ||
+              primaryResult.formatted_address;
+            const countryComponent = results
+              .flatMap((result) => result.address_components || [])
+              .find(({ types }) => types.includes("country"));
 
-          setSelectedAddress(address);
-          setGoogleAddressData(
-            extractGoogleAddressData({
-              addressComponents: primaryResult.address_components,
-              formattedAddress: address,
-            })
-          );
-          setIsSelectedLocationInSaudiArabia(
-            countryComponent?.short_name === "SA"
-          );
-          return;
+            setSelectedAddress(address);
+            setGoogleAddressData(googleAddressData);
+            setIsSelectedLocationInSaudiArabia(
+              countryComponent?.short_name === "SA"
+            );
+            return;
+          }
+
+          setIsSelectedLocationInSaudiArabia(null);
+          setGoogleAddressData(null);
         }
-
-        setIsSelectedLocationInSaudiArabia(null);
-        setGoogleAddressData(null);
-      });
+      );
     },
     [
       geocoder,
+      googleMapsLanguage,
       setGoogleAddressData,
       setIsSelectedLocationInSaudiArabia,
       setSelectedAddress,

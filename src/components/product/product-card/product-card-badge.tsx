@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import Image from "next/image";
 
 import { useTranslations } from "next-intl";
@@ -9,9 +11,21 @@ import {
   PRODUCT_BADGE_TO_BG_CLASS_NAME,
   ProductBadgeType,
 } from "@/lib/constants/product/product-card";
-import { ProductBadge } from "@/lib/models/product-card-model";
+import { cn } from "@/lib/utils";
 
-export const ProductCardBadge = ({ badge }: { badge: ProductBadge }) => {
+import type { ProductBadge } from "@/lib/models/product-card-model";
+
+const BadgeText = ({ children }: { children: ReactNode }) => (
+  <span className="min-w-0 truncate">{children}</span>
+);
+
+export const ProductCardBadge = ({
+  badge,
+  className,
+}: {
+  badge: ProductBadge;
+  className?: string;
+}) => {
   const { language } = useLocaleInfo();
 
   const t = useTranslations("productCard.badges");
@@ -20,37 +34,42 @@ export const ProductCardBadge = ({ badge }: { badge: ProductBadge }) => {
     switch (badge.type) {
       case ProductBadgeType.HourDelivery:
         return (
-          <span className="flex items-center gap-1">
+          <span className="flex min-w-0 items-center gap-1 overflow-hidden">
             <Image
               alt="Hour Delivery Icon"
-              className="aspect-square"
+              className="aspect-square shrink-0"
               height={12}
               src={RocketIcon}
               unoptimized
               width={12}
             />
-            {t(badge.type, {
-              hours: badge.value
-                ? new Intl.NumberFormat(
-                    language === "ar" ? "ar-SA" : "en-US"
-                  ).format(+badge.value)
-                : "",
-            })}
+            <BadgeText>
+              {t(badge.type, {
+                hours: badge.value
+                  ? new Intl.NumberFormat(
+                      language === "ar" ? "ar-SA" : "en-US"
+                    ).format(+badge.value)
+                  : "",
+              })}
+            </BadgeText>
           </span>
         );
       case ProductBadgeType.UseCode:
         return (
-          <span className="flex items-center gap-1">
+          <BadgeText>
             {t.rich(badge.type, {
               code: "BLVD",
               u: (chunks) => <u>{chunks}</u>,
             })}
-          </span>
+          </BadgeText>
         );
-      default:
-        return t.has(badge.type as any)
+      default: {
+        const label = t.has(badge.type as any)
           ? t(badge.type as any)
           : badge.value || null;
+
+        return label === null ? null : <BadgeText>{label}</BadgeText>;
+      }
     }
   };
   const content = badgeContent();
@@ -68,7 +87,7 @@ export const ProductCardBadge = ({ badge }: { badge: ProductBadge }) => {
 
   return (
     <ProductCardLabel
-      className={PRODUCT_BADGE_TO_BG_CLASS_NAME[badge.type]}
+      className={cn(PRODUCT_BADGE_TO_BG_CLASS_NAME[badge.type], className)}
       key={badge.type}
       style={style}
     >

@@ -7,14 +7,15 @@ import { useTranslations } from "next-intl";
 import { SectionHeader } from "@/components/common/section-header";
 import { ProductCard } from "@/components/product/product-card";
 import {
-  ProductCardsScrollSnapCarousel,
-  ProductCardsScrollSnapCarouselItem,
-} from "@/components/product/product-cards-scroll-snap-carousel";
+  CardRailScrollSnapCarousel,
+  CardRailScrollSnapCarouselItem,
+} from "@/components/ui/card-rail-scroll-snap-carousel";
 import { useBulletDeliveryEnabled } from "@/hooks/use-bullet-delivery-enabled";
 import { CategoryProducts } from "@/lib/models/category-products";
 
 export const CategoryProductsCarouselClient = ({
   carouselContainerProps,
+  isWishlistItem,
   lpRow,
   products,
   richTitle,
@@ -22,9 +23,8 @@ export const CategoryProductsCarouselClient = ({
   showClearHistory,
   showViewAll,
 }: {
-  carouselContainerProps?: ComponentProps<
-    typeof ProductCardsScrollSnapCarousel
-  >;
+  carouselContainerProps?: ComponentProps<typeof CardRailScrollSnapCarousel>;
+  isWishlistItem?: boolean;
   lpRow?: number;
   sectionHeaderProps?: ComponentProps<typeof SectionHeader>;
 } & CategoryProducts) => {
@@ -51,7 +51,7 @@ export const CategoryProductsCarouselClient = ({
           text: t("seeAll"),
         }}
       />
-      <ProductCardsScrollSnapCarousel
+      <CardRailScrollSnapCarousel
         {...carouselContainerProps}
         nextButtonProps={{
           className: "xl:translate-x-15 xl:rtl:-translate-x-15",
@@ -67,9 +67,10 @@ export const CategoryProductsCarouselClient = ({
         }}
       >
         {products?.map((product, index) => (
-          <ProductCardsScrollSnapCarouselItem key={`${product.id}`}>
+          <CardRailScrollSnapCarouselItem key={`${product.id}`}>
             <ProductCard
               isBulletDeliveryEnabled={isBulletDeliveryEnabled}
+              isWishlistItem={isWishlistItem}
               lpColumn={1}
               lpExtra={{
                 row_count: products?.length || 0,
@@ -80,9 +81,9 @@ export const CategoryProductsCarouselClient = ({
               lpRow={lpRow}
               product={product}
             />
-          </ProductCardsScrollSnapCarouselItem>
+          </CardRailScrollSnapCarouselItem>
         ))}
-      </ProductCardsScrollSnapCarousel>
+      </CardRailScrollSnapCarousel>
     </div>
   );
 };

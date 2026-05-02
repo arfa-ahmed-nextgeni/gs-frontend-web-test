@@ -2,7 +2,6 @@ import "server-only";
 
 import { cache } from "react";
 
-import { SortEnum } from "@/catalog-service-graphql/graphql";
 import { getStoreConfig } from "@/lib/actions/config/get-store-config";
 import {
   parseFiltersFromSearchParamsRecord,
@@ -27,7 +26,7 @@ import {
   serializeStringArrayRecord,
   type StringArrayRecord,
 } from "@/lib/utils/cache-key-records";
-import { convertSortToProductSearchSort } from "@/lib/utils/catalog-service-transformers";
+import { buildProductSearchSort } from "@/lib/utils/catalog-service-transformers";
 import { failure, isOk, ok } from "@/lib/utils/service-result";
 
 const ATTRIBUTE_ALIAS_MAP: Record<string, string> = {
@@ -147,10 +146,7 @@ const getCategoryListingDataCached = cache(
 
       const { store } = storeConfig.data;
       const filterClauses = buildCategorySearchClauses(categoryPath, filters);
-      const sort = [
-        { attribute: "inStock", direction: SortEnum.Desc },
-        ...(convertSortToProductSearchSort(sortBy) || []),
-      ];
+      const sort = buildProductSearchSort(sortBy);
 
       const response = await catalogServiceGraphqlRequest({
         catalogStoreCode: store.storeCode,

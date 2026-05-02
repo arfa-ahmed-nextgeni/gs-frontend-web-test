@@ -1,8 +1,8 @@
 import { ProductCard } from "@/components/product/product-card";
 import {
-  ProductCardsScrollSnapCarousel,
-  ProductCardsScrollSnapCarouselItem,
-} from "@/components/product/product-cards-scroll-snap-carousel";
+  CardRailScrollSnapCarousel,
+  CardRailScrollSnapCarouselItem,
+} from "@/components/ui/card-rail-scroll-snap-carousel";
 
 import type { ProductCardModel } from "@/lib/models/product-card-model";
 
@@ -25,7 +25,7 @@ export const TopTrendsCarousel = ({
   products: ProductCardModel[];
 }) => {
   return (
-    <ProductCardsScrollSnapCarousel
+    <CardRailScrollSnapCarousel
       carouselProps={{
         autoPlay: {
           delay: autoSliding.delay,
@@ -57,7 +57,7 @@ export const TopTrendsCarousel = ({
       }}
     >
       {products.map((product, index) => (
-        <ProductCardsScrollSnapCarouselItem
+        <CardRailScrollSnapCarouselItem
           id={`${carouselIdPrefix}-carousel-item-${index}`}
           key={product.id}
         >
@@ -73,8 +73,8 @@ export const TopTrendsCarousel = ({
             lpRow={lpRow}
             product={product}
           />
-        </ProductCardsScrollSnapCarouselItem>
+        </CardRailScrollSnapCarouselItem>
       ))}
-    </ProductCardsScrollSnapCarousel>
+    </CardRailScrollSnapCarousel>
   );
 };

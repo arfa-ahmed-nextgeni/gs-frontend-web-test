@@ -1,7 +1,6 @@
-import Image from "next/image";
-
 import { getTranslations } from "next-intl/server";
 
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import { ProductRating } from "@/components/product/product-rating";
 import { getProductBasicInfo } from "@/lib/actions/products/get-product-basic-info";
 import { isOk } from "@/lib/utils/service-result";
@@ -21,15 +20,19 @@ export const ProductReviewsSummary = async ({ urlKey }: { urlKey: string }) => {
         <div className="flex flex-1 flex-row gap-1.5">
           <div className="border-border-base bg-bg-default relative aspect-square h-full shrink-0 overflow-hidden rounded-xl border">
             {product.image && (
-              <Image alt="product image" fill src={product.image} />
+              <ProductImageWithFallback
+                alt="product image"
+                fill
+                src={product.image}
+              />
             )}
           </div>
           <div className="flex flex-col justify-center">
             <p className="text-text-primary line-clamp-1 text-xs font-semibold">
-              {product.name}
+              {product.brand}
             </p>
             <p className="text-text-primary line-clamp-2 text-xs font-normal">
-              {product.description}
+              {product.name}
             </p>
           </div>
         </div>

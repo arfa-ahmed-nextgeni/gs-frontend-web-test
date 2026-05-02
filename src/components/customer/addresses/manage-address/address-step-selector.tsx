@@ -23,6 +23,7 @@ export const AddressStepSelector = () => {
     <div className="flex flex-1 flex-col gap-5">
       <AddressStepBreadcrumb />
       <AddressStepSearchInput
+        key={currentStep}
         searchQuery={searchQuery}
         setSearchQueryAction={setSearchQuery}
       />

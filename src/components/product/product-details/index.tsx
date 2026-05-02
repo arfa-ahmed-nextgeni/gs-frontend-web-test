@@ -6,6 +6,7 @@ import { ProductDetailsInstallments } from "@/components/product/product-details
 import { ProductDetailsOriginalProduct } from "@/components/product/product-details/product-details-original-product";
 import { ProductDetailsPrice } from "@/components/product/product-details/product-details-price";
 import { ProductDetailsVariants } from "@/components/product/product-details/product-details-variants";
+import { getPdpDialogConfigData } from "@/lib/actions/contentful/get-pdp-dialog-config-data";
 import {
   Locale,
   TABBY_TAMARA_INSTALLMENTS_ENABLED_STORES,
@@ -15,13 +16,14 @@ import { ProductDetailsModel } from "@/lib/models/product-details-model";
 import { cn } from "@/lib/utils";
 import { getStoreCode } from "@/lib/utils/country";
 
-export const ProductDetails = ({
+export const ProductDetails = async ({
   locale,
   product,
 }: {
   locale: Locale;
   product: ProductDetailsModel;
 }) => {
+  const pdpDialogConfig = await getPdpDialogConfigData({ locale });
   const storeCode = getStoreCode(locale);
 
   return (
@@ -39,19 +41,27 @@ export const ProductDetails = ({
       )}
     >
       <div className="flex flex-col">
-        <ProductDetailsHeader product={product} />
+        <ProductDetailsHeader
+          originalProductDialogContent={pdpDialogConfig?.originalProduct}
+          product={product}
+        />
         {product.type !== ProductType.EGiftCard && (
           <div className="flex flex-row justify-between">
             <ProductDetailsPrice containerProps={{ className: "lg:mt-9" }} />
             <ProductDetailsOriginalProduct
               containerProps={{ className: "lg:hidden flex" }}
+              content={pdpDialogConfig?.originalProduct}
             />
           </div>
         )}
         {product.type &&
           ![ProductType.EGiftCard, ProductType.GiftCard].includes(
             product.type
-          ) && <ProductDetailsBadges />}
+          ) && (
+            <ProductDetailsBadges
+              cashbackDialogContent={pdpDialogConfig?.cashback}
+            />
+          )}
 
         {product.type &&
           ![ProductType.EGiftCard, ProductType.GiftCard].includes(

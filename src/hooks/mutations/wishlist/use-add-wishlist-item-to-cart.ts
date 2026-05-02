@@ -7,6 +7,7 @@ import { useLocale } from "next-intl";
 
 import { useToastContext } from "@/components/providers/toast-provider";
 import { useCartDrawer } from "@/contexts/cart-drawer-context";
+import { useHandleAuthRevoked } from "@/hooks/auth/use-handle-auth-revoked";
 import { useOfflineToast } from "@/hooks/ui/use-offline-toast";
 import { useRouteMatch } from "@/hooks/use-route-match";
 import { addWishlistItemToCartAction } from "@/lib/actions/customer/wishlist/add-wishlist-item-to-cart";
@@ -15,7 +16,7 @@ import { MUTATION_KEYS } from "@/lib/constants/mutation-keys";
 import { QUERY_KEYS } from "@/lib/constants/query-keys";
 import { Wishlist } from "@/lib/models/wishlist";
 import { mutationPrefix } from "@/lib/utils/mutation-key";
-import { isError } from "@/lib/utils/service-result";
+import { isError, isUnauthenticated } from "@/lib/utils/service-result";
 
 export const useAddWishlistItemToCart = ({ sku }: { sku: string }) => {
   const { isCart } = useRouteMatch();
@@ -26,6 +27,8 @@ export const useAddWishlistItemToCart = ({ sku }: { sku: string }) => {
   const { showOfflineMessage } = useOfflineToast();
 
   const { openCartDrawer } = useCartDrawer();
+
+  const handleAuthRevoked = useHandleAuthRevoked();
 
   const activeMoveToCartMutations = useIsMutating({
     mutationKey: mutationPrefix(
@@ -44,6 +47,11 @@ export const useAddWishlistItemToCart = ({ sku }: { sku: string }) => {
     },
 
     onSettled: async (data) => {
+      if (isUnauthenticated(data!)) {
+        await handleAuthRevoked();
+        return;
+      }
+
       if (isError(data!)) {
         showError(data.error, " ");
         return;

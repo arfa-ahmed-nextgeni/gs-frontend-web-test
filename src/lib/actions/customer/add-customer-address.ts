@@ -27,6 +27,11 @@ import { failure, ok } from "@/lib/utils/service-result";
 
 // const GENERIC_ADDRESS_ERROR_MESSAGE = "Something went wrong, please try again";
 
+export type AddCustomerAddressResult = {
+  addressId: string;
+  message: string;
+};
+
 export const addCustomerAddress = async (data: AddressFormSchemaType) => {
   const t = await getTranslations("CustomerAddAddressPage.messages");
   const commonT = await getTranslations("CommonErrors");
@@ -50,17 +55,24 @@ export const addCustomerAddress = async (data: AddressFormSchemaType) => {
 
     const payload = addressFormSchema(storeCode).parse(data);
 
+    const isGiftAddress =
+      payload[AddressFormField.AddressLabel]?.toLowerCase() === "gift";
+
     const input: CustomerAddressInput = {
       address_label: payload[AddressFormField.AddressLabel] || undefined,
       city:
         typeof payload[AddressFormField.City] === "string"
           ? payload[AddressFormField.City]
-          : payload[AddressFormField.City].value,
+          : payload[AddressFormField.City].label,
       country_code: globalStore
         ? (payload[AddressFormField.Country].value as CountryCodeEnum)
         : (region as CountryCodeEnum),
-      default_billing: payload[AddressFormField.SaveAsDefault],
-      default_shipping: payload[AddressFormField.SaveAsDefault],
+      default_billing: isGiftAddress
+        ? false
+        : payload[AddressFormField.SaveAsDefault],
+      default_shipping: isGiftAddress
+        ? false
+        : payload[AddressFormField.SaveAsDefault],
       firstname: payload[AddressFormField.FirstName],
       lastname: payload[AddressFormField.LastName],
       postcode: payload[AddressFormField.PostalCode],
@@ -106,6 +118,7 @@ export const addCustomerAddress = async (data: AddressFormSchemaType) => {
         input.middlename = payload[AddressFormField.MiddleName];
       }
     }
+    // console.info("[addCustomerAddress] input:", JSON.stringify(input, null, 2));
 
     const response = await graphqlRequest<
       CreateCustomerAddressMutation,
@@ -125,7 +138,10 @@ export const addCustomerAddress = async (data: AddressFormSchemaType) => {
     //   hasErrors: !!(response.errors && response.errors.length > 0),
     // });
 
-    if ((response.errors && response.errors.length > 0) || !response.data) {
+    if (
+      (response.errors && response.errors.length > 0) ||
+      !response.data?.createCustomerAddress
+    ) {
       const errorMessage =
         response?.errors?.[0]?.message || t("addressAddFailed");
 
@@ -134,7 +150,10 @@ export const addCustomerAddress = async (data: AddressFormSchemaType) => {
 
     revalidatePath(ROUTES.CUSTOMER.PROFILE.ADDRESSES.ROOT);
 
-    return ok(t("addressAddSuccess"));
+    return ok({
+      addressId: String(response.data.createCustomerAddress.id),
+      message: t("addressAddSuccess"),
+    });
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message.toLowerCase() : "";

@@ -2,11 +2,13 @@
 
 import { useEffect, useEffectEvent, useRef } from "react";
 
+import { useCustomerQuery } from "@/hooks/queries/use-customer-query";
 import { useAnalytics } from "@/lib/analytics";
 import {
   trackCatBeautyItemsSold,
   trackCatFragranceItemsSold,
   trackCatMixItemsSold,
+  trackGA4Purchase,
   trackGPurchase,
   trackPurchase,
   trackPurchaseSuccess,
@@ -42,6 +44,7 @@ export function PurchaseTracker({
 }) {
   const hasTracked = useRef(false);
   const { hasUserPropertiesSet } = useAnalytics();
+  const { data: customer } = useCustomerQuery();
 
   const categoryItemsSoldProperties = {
     item_count: order.products?.length ?? 0,
@@ -81,6 +84,8 @@ export function PurchaseTracker({
       shippingType
     );
     trackPurchase(purchaseProperties);
+    // Track GA4 ecommerce purchase event with nested ecommerce + customer_details
+    trackGA4Purchase(order, customer ?? null);
 
     // Track purchase_success event with required properties
     const purchaseSuccessProperties = {

@@ -2,9 +2,8 @@
 
 import type { RefObject } from "react";
 
-import Image from "next/image";
-
 import { VideoPlayerDialog } from "@/components/dialogs/video-player-dialog";
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import { ProductMediaVideoSlide } from "@/components/product/product-media-gallery/product-media-video-slide";
 import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
 import { CarouselItem } from "@/components/ui/carousel/carousel-item";
@@ -79,7 +78,7 @@ export const ProductMediaCarousel = ({
                 />
               )
             ) : (
-              <Image
+              <ProductImageWithFallback
                 alt="Product image"
                 className="transition-default object-contain group-focus-within:scale-105 group-hover:scale-105"
                 decoding={index === 0 ? "sync" : "async"}

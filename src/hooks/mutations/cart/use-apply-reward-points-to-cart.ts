@@ -3,12 +3,13 @@ import { useLocale } from "next-intl";
 
 import { useToastContext } from "@/components/providers/toast-provider";
 import { useStoreConfig } from "@/contexts/store-config-context";
+import { useHandleAuthRevoked } from "@/hooks/auth/use-handle-auth-revoked";
 import { useOfflineToast } from "@/hooks/ui/use-offline-toast";
 import { applyRewardPointsToCartAction } from "@/lib/actions/cart/apply-reward-points-to-cart";
 import { Locale, StoreCode } from "@/lib/constants/i18n";
 import { MUTATION_KEYS } from "@/lib/constants/mutation-keys";
 import { QUERY_KEYS } from "@/lib/constants/query-keys";
-import { isError } from "@/lib/utils/service-result";
+import { isError, isUnauthenticated } from "@/lib/utils/service-result";
 
 import type { Cart } from "@/lib/models/cart";
 
@@ -19,6 +20,8 @@ export const useApplyRewardPointsToCart = () => {
 
   const { showError } = useToastContext();
   const { showOfflineMessage } = useOfflineToast();
+
+  const handleAuthRevoked = useHandleAuthRevoked();
 
   return useMutation({
     mutationFn: () =>
@@ -34,6 +37,11 @@ export const useApplyRewardPointsToCart = () => {
     },
 
     onSettled: async (data) => {
+      if (isUnauthenticated(data!)) {
+        await handleAuthRevoked();
+        return;
+      }
+
       if (isError(data!)) {
         showError(data.error, " ");
         return;

@@ -9,6 +9,10 @@ import { cn } from "@/lib/utils";
 
 import type { ProductCardInteractionProps } from "@/components/product/product-card/types/product-card-click-origin-types";
 
+type ProductCardActionsProps = {
+  isWishlistItem?: boolean;
+} & ProductCardInteractionProps;
+
 const ProductCardActionsContent = lazy(() =>
   import("@/components/product/product-card/product-card-actions-content").then(
     (module) => ({
@@ -17,13 +21,14 @@ const ProductCardActionsContent = lazy(() =>
   )
 );
 
-export const ProductCardActions = (props: ProductCardInteractionProps) => {
+export const ProductCardActions = (props: ProductCardActionsProps) => {
   const { sentinelRef, shouldLoad: isVisible } =
     useProductCardVisibilityLoad<HTMLDivElement>({
       rootMargin: "120px 0px",
     });
   const [shouldLoad, setShouldLoad] = useState(false);
   const isConfigurable = !!props.product.options?.choices?.length;
+  const showWishlistButton = !isConfigurable || Boolean(props.isWishlistItem);
 
   const loadActions = useEffectEvent(() => {
     setShouldLoad(true);
@@ -36,17 +41,17 @@ export const ProductCardActions = (props: ProductCardInteractionProps) => {
 
     const productCard = sentinelRef.current.parentElement;
 
+    if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
+      loadActions();
+      return;
+    }
+
     productCard.addEventListener("focusin", loadActions, { once: true });
     productCard.addEventListener("pointerenter", loadActions, { once: true });
-    productCard.addEventListener("touchstart", loadActions, {
-      once: true,
-      passive: true,
-    });
 
     return () => {
       productCard.removeEventListener("focusin", loadActions);
       productCard.removeEventListener("pointerenter", loadActions);
-      productCard.removeEventListener("touchstart", loadActions);
     };
   }, [isVisible, sentinelRef, shouldLoad]);
 
@@ -61,13 +66,15 @@ export const ProductCardActions = (props: ProductCardInteractionProps) => {
       {shouldLoad ? (
         <AsyncBoundary
           loadingFallback={
-            <ProductCardActionsFallback isConfigurable={isConfigurable} />
+            <ProductCardActionsFallback
+              showWishlistButton={showWishlistButton}
+            />
           }
         >
           <ProductCardActionsContent {...props} />
         </AsyncBoundary>
       ) : (
-        <ProductCardActionsFallback isConfigurable={isConfigurable} />
+        <ProductCardActionsFallback showWishlistButton={showWishlistButton} />
       )}
     </div>
   );

@@ -28,8 +28,9 @@ export interface ProductOption {
 }
 
 export class ProductCardModel extends Helper {
+  attributeSet?: string;
   badges?: ProductBadge[];
-  brand?: string;
+  brand: string;
   bulletDelivery?: boolean;
   countdownTimer?: CountdownTimer | null = null;
   currency: string;
@@ -62,6 +63,7 @@ export class ProductCardModel extends Helper {
   }
 
   constructor({
+    attributeSet,
     badges,
     brand,
     bulletDelivery,
@@ -91,13 +93,14 @@ export class ProductCardModel extends Helper {
     urlKey,
     variant,
   }: {
+    attributeSet?: string;
     badges?: {
       backgroundColor?: string;
       color?: string;
       type: string;
       value?: string;
     }[];
-    brand?: string;
+    brand: string;
     bulletDelivery?: boolean;
     countdownTimer?: CountdownTimer | null;
     currency: string;
@@ -129,6 +132,7 @@ export class ProductCardModel extends Helper {
     variant?: ProductCardVariant;
   }) {
     super();
+    this.attributeSet = attributeSet;
     this.sku = sku;
     this.skuParent = skuParent;
     this.parentId = parentId;

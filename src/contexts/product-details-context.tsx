@@ -20,6 +20,7 @@ import {
   ProductVariant,
 } from "@/lib/models/product-details-model";
 import { CountdownTimer } from "@/lib/types/product/countdown-timer";
+import { findMatchingWishlistItem } from "@/lib/utils/wishlist";
 
 interface ProductDetailsContextValue {
   appLinks?:
@@ -93,19 +94,12 @@ export function ProductDetailsProvider({
 
   const isWishlisted = useMemo(
     () =>
-      !!wishlist?.items.find((item) =>
-        product.isConfigurable
-          ? product.sku === item.sku &&
-            product.variants[selectedVariantIndex].sku === item.childSku
-          : product.sku === item.sku
-      ),
-    [
-      product.isConfigurable,
-      product.sku,
-      product.variants,
-      selectedVariantIndex,
-      wishlist?.items,
-    ]
+      !!findMatchingWishlistItem({
+        product,
+        selectedProduct,
+        wishlist,
+      }),
+    [product, selectedProduct, wishlist]
   );
 
   const countdownTimer = useMemo(

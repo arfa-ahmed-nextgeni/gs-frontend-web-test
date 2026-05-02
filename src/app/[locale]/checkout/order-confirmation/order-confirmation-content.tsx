@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import type { ReactNode } from "react";
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
@@ -11,6 +12,7 @@ import Container from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 import { useCheckoutContext } from "@/contexts/checkout-context";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { trackCartClear } from "@/lib/analytics/events";
 import { Locale } from "@/lib/constants/i18n";
 import { QUERY_KEYS } from "@/lib/constants/query-keys";
 import { ROUTES } from "@/lib/constants/routes";
@@ -28,9 +30,11 @@ type OrderConfirmationHistoryState = {
 };
 
 export default function OrderConfirmationContent({
+  logoSlot,
   order,
   orderId,
 }: {
+  logoSlot?: ReactNode;
   order: Order;
   orderId: string;
 }) {
@@ -46,6 +50,7 @@ export default function OrderConfirmationContent({
     queryClient.invalidateQueries({
       queryKey: QUERY_KEYS.CART.ROOT(locale),
     });
+    trackCartClear();
     setSelectedLockerAddressType(null);
   }, [locale, queryClient, setSelectedLockerAddressType]);
 
@@ -97,9 +102,9 @@ export default function OrderConfirmationContent({
 
   return (
     <div className="bg-[#F7F8FA]">
-      <CheckoutHeader />
+      <CheckoutHeader logoSlot={logoSlot} />
 
-      <Container>
+      <Container className="pb-[140px] md:pb-24">
         <OrderInformation order={order} orderId={orderId} />
       </Container>
 

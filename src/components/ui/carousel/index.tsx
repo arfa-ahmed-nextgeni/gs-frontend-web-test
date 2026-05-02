@@ -17,18 +17,22 @@ import { CarouselHandle } from "@/lib/types/ui-types";
 import { cn } from "@/lib/utils";
 
 type CarouselApi = EmblaCarouselType;
+
 type CarouselCompatOptions = {
   breakpoints?: Record<string, CarouselCompatOptions>;
   draggable?: boolean;
   focus?: boolean;
   resize?: boolean;
   slideChanges?: boolean;
+  /** SSR slide sizes (pixels). Passed to embla's server API to generate critical CSS. */
+  ssr?: number[];
   startIndex?: number;
   watchDrag?: boolean;
   watchFocus?: boolean;
   watchResize?: boolean;
   watchSlides?: boolean;
 } & EmblaOptionsType;
+
 type CarouselContextProps = {
   api: CarouselApi | undefined;
   canScrollNext: boolean;
@@ -45,7 +49,6 @@ type CarouselDeferredActivation = {
   rootMargin?: string;
 };
 type CarouselOptions = CarouselCompatOptions;
-
 type CarouselProps = {
   apiRef?: React.Ref<CarouselHandle>;
   autoPlay?: {
@@ -59,6 +62,12 @@ type CarouselProps = {
   plugins?: EmblaPluginType[];
   setApi?: (api: CarouselApi) => void;
 };
+
+// ssrStyles is exposed by the embla server-side API (3rd element of useEmblaCarousel)
+// but not reflected in the published EmblaCarouselType for this RC version.
+type EmblaCarouselWithSsr = {
+  ssrStyles: (containerSelector: string, slidesSelector: string) => string;
+} & EmblaCarouselType;
 type NormalizedEmblaOptions = EmblaOptionsType;
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
@@ -135,10 +144,14 @@ function Carousel({
     () => !api && hasSsrConfiguration(opts),
     [api, opts]
   );
+
   const ssrStyles = React.useMemo(
     () =>
       shouldRenderSsrStyles
-        ? serverApi.ssrStyles(`#${containerId}`, `[data-slot='carousel-item']`)
+        ? (serverApi as EmblaCarouselWithSsr).ssrStyles(
+            `#${containerId}`,
+            `[data-slot='carousel-item']`
+          )
         : "",
     [containerId, serverApi, shouldRenderSsrStyles]
   );

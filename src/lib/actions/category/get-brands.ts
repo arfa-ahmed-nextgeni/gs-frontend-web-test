@@ -2,8 +2,11 @@ import "server-only";
 
 import { cache } from "react";
 
+import { cacheTag } from "next/cache";
+
 import { graphqlRequest } from "@/lib/clients/graphql";
 import { CATEGORIES_GRAPHQL_QUERIES } from "@/lib/constants/api/graphql/categories";
+import { CacheTags } from "@/lib/constants/cache/tags";
 import { ARABIC_ALPHABETS, Locale } from "@/lib/constants/i18n";
 import { ArabicAlphabet, Brand, GroupedBrands } from "@/lib/types/brands";
 import { getStoreCode } from "@/lib/utils/country";
@@ -115,6 +118,9 @@ export const getBrands = ({ locale }: { locale: Locale }) =>
   getBrandsCached(locale);
 
 const getBrandsCached = cache(async (locale: Locale) => {
+  "use cache";
+  cacheTag(CacheTags.Magento);
+
   try {
     const response = await graphqlRequest({
       query: CATEGORIES_GRAPHQL_QUERIES.GET_BRANDS,

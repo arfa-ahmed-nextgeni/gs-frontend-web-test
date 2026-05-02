@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import { Controller, FormProvider } from "react-hook-form";
 
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
 
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { useTranslations } from "next-intl";
@@ -22,15 +21,12 @@ import { useAddressFormContext } from "@/contexts/address-form-context";
 import { useStoreCode } from "@/hooks/i18n/use-store-code";
 import { AddressStepType } from "@/lib/constants/address";
 import { StoreCode } from "@/lib/constants/i18n";
-import { QueryParamsKey } from "@/lib/constants/query-params";
 import { AddressFormField } from "@/lib/forms/manage-address";
 
 export const AddressForm = () => {
   const t = useTranslations("CustomerAddAddressPage");
   const deliveryAddressT = useTranslations("AddDeliveryAddressPage.steps");
   const formErrorMessages = useTranslations("formErrorMessages");
-
-  const searchParams = useSearchParams();
 
   const {
     addressForm,
@@ -46,9 +42,6 @@ export const AddressForm = () => {
   const { isGlobal, storeCode } = useStoreCode();
   const isSaudiStore =
     storeCode === StoreCode.ar_sa || storeCode === StoreCode.en_sa;
-
-  const setAsDefaultRequested =
-    searchParams.get(QueryParamsKey.SetAsDefault) === "true";
 
   const {
     control,
@@ -72,7 +65,7 @@ export const AddressForm = () => {
   return (
     <FormProvider {...addressForm}>
       <form
-        className="flex h-full flex-col bg-[f9f9f9] lg:min-h-0 lg:flex-1"
+        className="address-form-filled-ui flex h-full flex-col bg-[f9f9f9] lg:min-h-0 lg:flex-1"
         onSubmit={handleSubmitForm}
       >
         {selectedStep ? (
@@ -626,11 +619,7 @@ export const AddressForm = () => {
                       <Checkbox
                         checked={field.value as CheckedState}
                         className="peer size-4"
-                        disabled={
-                          isFormDisabled ||
-                          setAsDefaultRequested ||
-                          (!isEditMode && isFirstAddressInCheckout)
-                        }
+                        disabled={isFormDisabled || isFirstAddressInCheckout}
                         id={field.name}
                         name={field.name}
                         onBlur={field.onBlur}

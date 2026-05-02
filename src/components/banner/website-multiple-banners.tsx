@@ -4,7 +4,14 @@ import {
   WebsiteMultipleBanner,
   WebsiteMultipleBanners,
 } from "@/lib/models/website-multiple-banners";
+import { cn } from "@/lib/utils";
 import { getShimmerPlaceholder } from "@/lib/utils/image";
+
+const displayOnClasses: Record<WebsiteMultipleBanners["displayOn"], string> = {
+  all: "",
+  desktop: "hidden sm:flex",
+  mobile: "flex sm:hidden",
+};
 
 export default function WebsiteMultipleBannersComponent({
   bannerLpId,
@@ -20,7 +27,7 @@ export default function WebsiteMultipleBannersComponent({
   if (!data || !data.banners || data.banners.length === 0) return null;
 
   return (
-    <div className="flex gap-2.5">
+    <div className={cn("flex gap-2.5", displayOnClasses[data.displayOn])}>
       {data.banners.map((banner: WebsiteMultipleBanner, index: number) => (
         <BannerTrackerLink
           bannerColumn={index + 1}

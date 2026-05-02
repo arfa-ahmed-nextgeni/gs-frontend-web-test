@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useToastContext } from "@/components/providers/toast-provider";
 import { useCartDrawer } from "@/contexts/cart-drawer-context";
 import { useStoreConfig } from "@/contexts/store-config-context";
+import { useHandleAuthRevoked } from "@/hooks/auth/use-handle-auth-revoked";
 import { useOfflineToast } from "@/hooks/ui/use-offline-toast";
 import { useRouteMatch } from "@/hooks/use-route-match";
 import { addProductToCartAction } from "@/lib/actions/cart/add-product-to-cart";
@@ -11,7 +12,7 @@ import { trackAddToCart } from "@/lib/analytics/events";
 import { Locale } from "@/lib/constants/i18n";
 import { MUTATION_KEYS } from "@/lib/constants/mutation-keys";
 import { QUERY_KEYS } from "@/lib/constants/query-keys";
-import { isError } from "@/lib/utils/service-result";
+import { isError, isUnauthenticated } from "@/lib/utils/service-result";
 
 import type { ProductProperties } from "@/lib/analytics/models/event-models";
 import type { Cart } from "@/lib/models/cart";
@@ -36,6 +37,8 @@ export const useAddProductToCart = ({
 
   const { openCartDrawer } = useCartDrawer();
 
+  const handleAuthRevoked = useHandleAuthRevoked();
+
   const t = useTranslations("CartPage");
 
   return useMutation({
@@ -49,6 +52,11 @@ export const useAddProductToCart = ({
     },
 
     onSettled: async (data) => {
+      if (isUnauthenticated(data!)) {
+        await handleAuthRevoked();
+        return;
+      }
+
       if (isError(data!)) {
         showError(data.error, " ");
         return;

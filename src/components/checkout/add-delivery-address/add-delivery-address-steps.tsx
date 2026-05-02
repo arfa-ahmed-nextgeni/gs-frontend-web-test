@@ -20,13 +20,27 @@ export const AddDeliveryAddressSteps = ({
 }: AddDeliveryAddressStepsProps) => {
   const t = useTranslations("AddDeliveryAddressPage.steps");
   const {
+    editingAddressId,
+    initialAddressSnapshot,
+    initialSelectedLocation,
     isSelectedLocationInSaudiArabia,
     selectedAddress,
+    selectedLocation,
     setIsManualEntryMode,
   } = useAddDeliveryAddressContext();
+  const shouldUseSavedAddress =
+    !!editingAddressId &&
+    !!initialSelectedLocation &&
+    !!selectedLocation &&
+    selectedLocation.lat === initialSelectedLocation.lat &&
+    selectedLocation.lng === initialSelectedLocation.lng;
+  const displayedAddress =
+    shouldUseSavedAddress && initialAddressSnapshot?.formattedAddress
+      ? initialAddressSnapshot.formattedAddress
+      : selectedAddress;
 
   const isConfirmDisabled =
-    !selectedAddress || isSelectedLocationInSaudiArabia === false;
+    !displayedAddress || isSelectedLocationInSaudiArabia === false;
 
   const handleConfirmAddress = async () => {
     if (isConfirmDisabled) {
@@ -63,7 +77,7 @@ export const AddDeliveryAddressSteps = ({
           />
           <div className="min-w-0 flex-1">
             <p className="break-words text-sm leading-relaxed text-gray-900">
-              {selectedAddress || t("selectAddressFromMap")}
+              {displayedAddress || t("selectAddressFromMap")}
             </p>
           </div>
         </div>

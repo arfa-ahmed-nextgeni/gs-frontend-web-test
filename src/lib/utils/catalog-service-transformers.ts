@@ -19,6 +19,30 @@ import {
 // ============================================================================
 
 /**
+ * Builds the `sort` argument for catalog-service `productSearch`.
+ * Default / relevance: same as before (in-stock first), plus explicit relevance
+ * now that the default `sort` query param no longer omits it.
+ * Other UI sorts: unchanged — in-stock first, then the mapped attribute sort.
+ */
+export function buildProductSearchSort(
+  sortBy?: string
+): ProductSearchSortInput[] {
+  const normalized = sortBy?.trim();
+  if (!normalized || normalized === "relevance") {
+    return [
+      { attribute: "inStock", direction: SortEnum.Desc },
+      { attribute: "relevance", direction: SortEnum.Desc },
+    ];
+  }
+
+  const userSort = convertSortToProductSearchSort(normalized);
+  return [
+    { attribute: "inStock", direction: SortEnum.Desc },
+    ...(userSort || []),
+  ];
+}
+
+/**
  * Convert array of Catalog Service Aggregations to DynamicCategoryFilters
  */
 export function convertFacetsToDynamicFilters(
@@ -33,13 +57,17 @@ export function convertFacetsToDynamicFilters(
     .filter((filter): filter is DynamicCategoryFilter => filter !== null);
 }
 
+// ============================================================================
+// Facet Transformation Functions
+// ============================================================================
+
 /**
  * Convert Catalog Service Aggregation to DynamicCategoryFilter
  */
 export function convertFacetToDynamicFilter(
   facet: Aggregation
 ): DynamicCategoryFilter | null {
-  if (!facet.attribute) {
+  if (!facet.attribute || facet?.attribute === "product_meta_type") {
     return null;
   }
 
@@ -84,10 +112,6 @@ export function convertFacetToDynamicFilter(
     title: facet.title,
   };
 }
-
-// ============================================================================
-// Facet Transformation Functions
-// ============================================================================
 
 /**
  * Convert UI sort option to Catalog Service ProductSearchSortInput format

@@ -12,6 +12,7 @@ import LogOutIcon from "@/assets/icons/log-out-icon.svg";
 import CardsIcon from "@/assets/icons/my-cards-icon.svg";
 import OrdersIcon from "@/assets/icons/orders-icon.svg";
 import ProfileMenuIcon from "@/assets/icons/profile-menu-icon.svg";
+import WishlistMenuIcon from "@/assets/icons/wishlist-menu-icon.svg";
 import { ProfileIcon } from "@/components/icons/profile-icon";
 import { BlurDiv } from "@/components/ui/blur-div";
 import { useAuthUI } from "@/contexts/auth-ui-context";
@@ -42,6 +43,11 @@ const accountMenuOptions = [
     href: ROUTES.CUSTOMER.PROFILE.ADDRESSES.ROOT,
     icon: AddressIcon,
     id: "address",
+  },
+  {
+    href: ROUTES.CUSTOMER.PROFILE.WISHLIST,
+    icon: WishlistMenuIcon,
+    id: "wishlist",
   },
   {
     href: ROUTES.CUSTOMER.CARDS,
@@ -123,7 +129,7 @@ export function AuthDropdown({
     <>
       {isAuthorized ? (
         <BlurDiv
-          className="group relative flex h-full items-center"
+          className="group relative flex h-full cursor-pointer items-center"
           hoverLevel={hoverZIndexLevel}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -214,7 +220,10 @@ export function AuthDropdown({
         </BlurDiv>
       ) : (
         <div className="relative">
-          <div className="cart-button" onClick={handleProfileClick}>
+          <div
+            className="cart-button cursor-pointer"
+            onClick={handleProfileClick}
+          >
             <ProfileIcon />
           </div>
         </div>

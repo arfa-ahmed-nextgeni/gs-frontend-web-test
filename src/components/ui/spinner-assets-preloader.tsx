@@ -11,6 +11,7 @@ export const SpinnerAssetsPreloader = () => {
     >
       <Image
         alt=""
+        fetchPriority="low"
         height={1}
         loading="lazy"
         src={SpinnerIcon}
@@ -19,6 +20,7 @@ export const SpinnerAssetsPreloader = () => {
       />
       <Image
         alt=""
+        fetchPriority="low"
         height={1}
         loading="lazy"
         src={SpinnerDarkIcon}

@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react";
 
-import Image from "next/image";
-
 import { PlayCircle } from "lucide-react";
 
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import { getShimmerPlaceholder } from "@/lib/utils/image";
 import {
   getVimeoEmbedUrl,
@@ -40,7 +39,7 @@ export function ProductMediaVideoSlide({
     return (
       <div className="bg-bg-default relative size-full">
         {posterUrl && (
-          <Image
+          <ProductImageWithFallback
             alt="Product video thumbnail"
             className="object-contain"
             decoding="async"
@@ -72,7 +71,7 @@ export function ProductMediaVideoSlide({
       type="button"
     >
       {posterUrl && (
-        <Image
+        <ProductImageWithFallback
           alt="Product video thumbnail"
           className="object-contain"
           decoding="async"

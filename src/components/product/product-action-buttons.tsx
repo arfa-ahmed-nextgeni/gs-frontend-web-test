@@ -34,8 +34,8 @@ export function ProductActionButtons({
 
   const selectedProduct = product.variants[selectedVariantIndex] || product;
   const selectedOptionId =
-    product.isConfigurable && selectedProduct.id.trim() !== ""
-      ? selectedProduct.id
+    product.isConfigurable && selectedProduct.id != null
+      ? String(selectedProduct.id)
       : undefined;
 
   const { mutate: addProductToCart } = useAddProductToCart({
@@ -103,12 +103,8 @@ export function ProductActionButtons({
         sku: product.sku,
       };
 
-      if (
-        product.isConfigurable &&
-        selectedProduct.id &&
-        selectedProduct.id.trim() !== ""
-      ) {
-        payload.selectedOptionId = selectedProduct.id;
+      if (selectedOptionId) {
+        payload.selectedOptionId = selectedOptionId;
       }
 
       addProductToCart(payload);

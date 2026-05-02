@@ -1,5 +1,9 @@
 import { TabContentType } from "@/lib/models/page-landing";
-import { WebsiteMultipleBannersData } from "@/lib/types/contentful/page-landing";
+
+import type {
+  BannerDisplayOn,
+  WebsiteMultipleBannersData,
+} from "@/lib/types/contentful/page-landing";
 
 export class WebsiteMultipleBanner {
   public contentType: TabContentType;
@@ -44,6 +48,7 @@ export class WebsiteMultipleBanner {
 export class WebsiteMultipleBanners {
   public banners: WebsiteMultipleBanner[] = [];
   public contentType: TabContentType;
+  public displayOn: BannerDisplayOn;
   public imagesHeight?: number;
   public imagesHeightMobile?: number;
   public imagesWidth?: number;
@@ -52,6 +57,7 @@ export class WebsiteMultipleBanners {
 
   constructor(data: WebsiteMultipleBannersData, contentType: TabContentType) {
     this.contentType = contentType;
+    this.displayOn = data.displayOn ?? "all";
     this.internalName = data.internalName;
     this.imagesHeight = data.imagesHeight;
     this.imagesWidth = data.imagesWidth;

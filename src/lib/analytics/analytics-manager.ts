@@ -33,6 +33,12 @@ const EVENTS_THAT_RESET_BANNER_TRACKING = [
  */
 export interface TrackOptions {
   /**
+   * If provided, only send this event to the listed tools.
+   * Use when calling track() alongside trackEcommerce() to avoid sending
+   * the flat event to GTM twice (since trackEcommerce() already handles GTM).
+   */
+  onlyTools?: AnalyticsTool[];
+  /**
    * Event properties to include
    */
   properties?: Record<string, unknown>;
@@ -335,16 +341,19 @@ class AnalyticsManager {
     // Handle both old API (properties) and new API (options object)
     let properties: Record<string, unknown> | undefined;
     let skipUserProperties = false;
+    let onlyTools: AnalyticsTool[] | undefined;
 
     if (optionsOrProperties) {
-      // Check if it's the new options format (has skipUserProperties or properties key)
+      // Check if it's the new options format (has skipUserProperties, properties, or onlyTools key)
       if (
         "skipUserProperties" in optionsOrProperties ||
-        "properties" in optionsOrProperties
+        "properties" in optionsOrProperties ||
+        "onlyTools" in optionsOrProperties
       ) {
         const options = optionsOrProperties as TrackOptions;
         properties = options.properties;
         skipUserProperties = options.skipUserProperties ?? false;
+        onlyTools = options.onlyTools;
       } else {
         // Old API: just properties object
         properties = optionsOrProperties as Record<string, unknown>;
@@ -368,13 +377,48 @@ class AnalyticsManager {
       };
     }
 
-    this.getEnabledProviders().forEach((provider) => {
+    const providers = onlyTools
+      ? this.getEnabledProviders().filter((p) => onlyTools.includes(p.tool))
+      : this.getEnabledProviders();
+
+    providers.forEach((provider) => {
       if (provider.isAvailable()) {
         try {
           provider.track(eventName, mergedProperties);
         } catch (error) {
           // Silently fail - analytics shouldn't break the app
           console.error("Analytics track error:", error);
+        }
+      }
+    });
+  }
+
+  /**
+   * Push a GA4-style ecommerce event.
+   * Only calls providers that implement trackEcommerce (currently GTM).
+   * Other providers (Amplitude, Insider) are skipped — use track() alongside
+   * this when you want those providers to also receive the event.
+   */
+  trackEcommerce(
+    eventName: string,
+    ecommerce: Record<string, unknown>,
+    additionalFields?: Record<string, unknown>
+  ): void {
+    if (this.enabledTools.size === 0) return;
+
+    if (!this.isReadyForTracking()) {
+      return;
+    }
+
+    this.getEnabledProviders().forEach((provider) => {
+      if (
+        provider.isAvailable() &&
+        typeof provider.trackEcommerce === "function"
+      ) {
+        try {
+          provider.trackEcommerce(eventName, ecommerce, additionalFields);
+        } catch (error) {
+          console.error("Analytics trackEcommerce error:", error);
         }
       }
     });

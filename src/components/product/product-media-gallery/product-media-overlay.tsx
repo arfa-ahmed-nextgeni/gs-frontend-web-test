@@ -23,7 +23,8 @@ export const ProductMediaOverlay = () => {
   return (
     <div
       className={cn(
-        "lg:h-25 absolute inset-0 top-0 h-20 bg-[linear-gradient(0deg,rgba(255,255,255,0)_0%,#FFF_50%)]",
+        "lg:h-25 absolute inset-0 top-0 h-20",
+        // "bg-[linear-gradient(0deg,rgba(255,255,255,0)_0%,#FFF_50%)]",
         {
           "lg:bg-none": noAnyBadge,
         }
@@ -32,10 +33,20 @@ export const ProductMediaOverlay = () => {
       <div className="flex w-full flex-row items-center justify-between px-5 pt-5">
         <div className="gap-1.25 flex flex-row">
           {isExclusive && (
-            <ProductCardBadge badge={{ type: ProductBadgeType.Exclusive }} />
+            <ProductCardBadge
+              badge={{
+                backgroundColor: "#ffa5004d",
+                type: ProductBadgeType.Exclusive,
+              }}
+            />
           )}
           {isNew && (
-            <ProductCardBadge badge={{ type: ProductBadgeType.NewArrival }} />
+            <ProductCardBadge
+              badge={{
+                backgroundColor: "#00c7b14d",
+                type: ProductBadgeType.NewArrival,
+              }}
+            />
           )}
           {hasProductTags &&
             productTags?.map(({ backgroundColor, color, title }) => (

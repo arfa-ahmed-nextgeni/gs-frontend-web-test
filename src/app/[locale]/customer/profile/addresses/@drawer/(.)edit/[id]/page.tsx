@@ -12,6 +12,7 @@ import { getCountries } from "@/lib/actions/config/get-countries";
 import { getStates } from "@/lib/actions/config/get-states";
 import { getCurrentCustomer } from "@/lib/actions/customer/get-current-customer";
 import { getCustomerAddress } from "@/lib/actions/customer/get-customer-address";
+import { getCustomerAddresses } from "@/lib/actions/customer/get-customer-addresses";
 import { Locale, LOCALE_TO_STORE, StoreCode } from "@/lib/constants/i18n";
 import { ROUTE_PLACEHOLDER, ROUTES } from "@/lib/constants/routes";
 import { isGlobalStore } from "@/lib/utils/country";
@@ -41,6 +42,10 @@ export default async function EditAddressPage({
   }
 
   const response = await getCustomerAddress({ id });
+  const customerAddressesResult = await getCustomerAddresses();
+  const isFirstAddressInCheckout = isOk(customerAddressesResult)
+    ? customerAddressesResult.data.addresses.length === 1
+    : false;
 
   if (isOk(response)) {
     const {
@@ -54,8 +59,13 @@ export default async function EditAddressPage({
       longitude?: string;
       telephone?: string;
     };
-    const latitude = Number(rawAddress.latitude);
-    const longitude = Number(rawAddress.longitude);
+    const hasSavedCoordinates =
+      rawAddress.latitude != null &&
+      rawAddress.latitude.trim() !== "" &&
+      rawAddress.longitude != null &&
+      rawAddress.longitude.trim() !== "";
+    const latitude = hasSavedCoordinates ? Number(rawAddress.latitude) : NaN;
+    const longitude = hasSavedCoordinates ? Number(rawAddress.longitude) : NaN;
     const initialSelectedLocation =
       Number.isFinite(latitude) && Number.isFinite(longitude)
         ? { lat: latitude, lng: longitude }
@@ -70,12 +80,23 @@ export default async function EditAddressPage({
         <AddDeliveryAddressContextProvider
           customerData={structuredClone(customerData)}
           deliveryType={deliveryType}
+          editingAddressId={id}
+          initialAddressSnapshot={{
+            city: address.city,
+            district: address.regionName,
+            formattedAddress: address.formattedAddress,
+            isDefault: address.isDefault,
+            postalCode: address.postcode,
+            shortCode: address.ksaShortAddress || "",
+            street: address.street?.[0] || "",
+          }}
           initialContactData={{
             firstName: address.firstName,
             lastName: address.lastName,
             phoneNumber: rawAddress.telephone || address.mobileNumber || "",
           }}
           initialSelectedLocation={initialSelectedLocation}
+          isFirstAddressInCheckout={isFirstAddressInCheckout}
         >
           <AddDeliveryAddressStandaloneContainer />
         </AddDeliveryAddressContextProvider>
@@ -135,6 +156,7 @@ export default async function EditAddressPage({
         customerData={structuredClone(customerData)}
         initialSkipArea={skipArea}
         initialSkipState={skipState}
+        isFirstAddressInCheckout={isFirstAddressInCheckout}
       >
         <ManageAddressView />
       </AddressFormContextProvider>

@@ -162,8 +162,10 @@ function mapProductSearchItemToGiftProduct(
       : "";
 
   return {
+    externalId: productView.externalId,
     id: productView.id,
     imageUrl,
+    inStock: productView.inStock ?? true,
     name: productView.name,
     priceLabel,
     sku: productView.sku,

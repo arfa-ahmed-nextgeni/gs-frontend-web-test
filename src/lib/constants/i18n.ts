@@ -7,7 +7,6 @@ import IraqFlag from "@/assets/flags/iq-flag.svg";
 import KuwaitFlag from "@/assets/flags/kw-flag.svg";
 import OmanFlag from "@/assets/flags/om-flag.svg";
 import SaudiFlag from "@/assets/flags/sa-flag.svg";
-import { CurrencyEnum } from "@/graphql/graphql";
 import {
   NEXT_PUBLIC_DOMAIN_AE,
   NEXT_PUBLIC_DOMAIN_BH,
@@ -99,25 +98,6 @@ export const enum StoreCode {
 }
 
 export const GLOBAL_STORES = [StoreCode.en_global, StoreCode.ar_global];
-
-export const STORE_TO_CURRENCY_CODE = {
-  [StoreCode.ar_ae]: CurrencyEnum.Aed,
-  [StoreCode.ar_bh]: CurrencyEnum.Bhd,
-  [StoreCode.ar_boulevard]: CurrencyEnum.Sar,
-  [StoreCode.ar_global]: CurrencyEnum.Usd,
-  [StoreCode.ar_iq]: CurrencyEnum.Iqd,
-  [StoreCode.ar_kw]: CurrencyEnum.Kwd,
-  [StoreCode.ar_om]: CurrencyEnum.Omr,
-  [StoreCode.ar_sa]: CurrencyEnum.Sar,
-  [StoreCode.en_ae]: CurrencyEnum.Aed,
-  [StoreCode.en_bh]: CurrencyEnum.Bhd,
-  [StoreCode.en_boulevard]: CurrencyEnum.Sar,
-  [StoreCode.en_global]: CurrencyEnum.Usd,
-  [StoreCode.en_iq]: CurrencyEnum.Iqd,
-  [StoreCode.en_kw]: CurrencyEnum.Kwd,
-  [StoreCode.en_om]: CurrencyEnum.Omr,
-  [StoreCode.en_sa]: CurrencyEnum.Sar,
-} as const;
 
 export const STORE_TO_LOCALE = {
   [StoreCode.ar_ae]: Locale.ar_AE,

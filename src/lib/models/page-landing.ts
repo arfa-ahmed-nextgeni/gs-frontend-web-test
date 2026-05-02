@@ -63,6 +63,8 @@ export const enum TabContentType {
   YoutubeVideo = "youtubeVideo",
 }
 
+const DEFAULT_BANNER_LCP_CANDIDATE_INDEX = 0;
+
 export class PageLanding {
   public cartSuggestedProducts?: CartSuggestedProducts;
   public contents?: (
@@ -81,6 +83,7 @@ export class PageLanding {
   public cookieConsentPrompt?: CookieConsentPromptModel;
   public homeBanner?: WebsiteBanner;
   public internalName?: string;
+  public lcpPriorityContentId?: string;
   public mobileHeaderTitle?: string;
   public openAppPrompt?: OpenAppPromptModel;
   public promoBanner?: PromoBanner;
@@ -90,6 +93,8 @@ export class PageLanding {
 
   constructor(data: PageLandingData) {
     this.internalName = data.items?.[0]?.fields?.internalName;
+    this.lcpPriorityContentId =
+      data.items?.[0]?.fields?.lcpPriorityContent?.sys?.id;
     this.mobileHeaderTitle = data.items?.[0]?.fields?.mobileHeaderTitle;
     const fields = data.items?.[0]?.fields;
     const resolvedSeo = parseComponentSeo(fields?.seo);
@@ -138,7 +143,8 @@ export class PageLanding {
     if (homeBannerData?.fields && homeBannerData.sys.contentType) {
       this.homeBanner = new WebsiteBanner(
         homeBannerData.fields as WebsiteBannerData,
-        homeBannerData.sys.contentType.sys.id
+        homeBannerData.sys.contentType.sys.id,
+        homeBannerData.sys.id
       );
     }
 
@@ -206,7 +212,8 @@ export class PageLanding {
           case TabContentType.BannerSlider:
             return new BannerSlider(
               filteredContent.fields as BannerSliderData,
-              filteredContent.sys.contentType.sys.id
+              filteredContent.sys.contentType.sys.id,
+              filteredContent.sys.id
             );
           case TabContentType.CategoryProducts:
             return new CategoryProducts(
@@ -247,7 +254,8 @@ export class PageLanding {
           case TabContentType.WebsiteBanner:
             return new WebsiteBanner(
               filteredContent.fields as WebsiteBannerData,
-              filteredContent.sys.contentType.sys.id
+              filteredContent.sys.contentType.sys.id,
+              filteredContent.sys.id
             );
           case TabContentType.WebsiteMultipleBanner:
             return new WebsiteMultipleBanners(
@@ -262,5 +270,60 @@ export class PageLanding {
         }
       })
       .filter((item) => !!item);
+
+    const bannerLcpCandidateEntryId =
+      PageLanding.resolveBannerLcpCandidateEntryId({
+        contents: this.contents,
+        fallbackIndex: DEFAULT_BANNER_LCP_CANDIDATE_INDEX,
+        lcpPriorityContentId: this.lcpPriorityContentId,
+      });
+
+    this.contents?.forEach((content) => {
+      if (PageLanding.isBannerLcpCandidateContent(content)) {
+        content.isLcpCandidate = content.entryId === bannerLcpCandidateEntryId;
+      }
+    });
+  }
+
+  private static isBannerLcpCandidateContent(
+    content: NonNullable<PageLanding["contents"]>[number]
+  ): content is BannerSlider | WebsiteBanner {
+    return (
+      content.contentType === TabContentType.BannerSlider ||
+      content.contentType === TabContentType.WebsiteBanner
+    );
+  }
+
+  private static resolveBannerLcpCandidateEntryId({
+    contents,
+    fallbackIndex,
+    lcpPriorityContentId,
+  }: {
+    contents?: PageLanding["contents"];
+    fallbackIndex?: number;
+    lcpPriorityContentId?: string;
+  }) {
+    if (
+      lcpPriorityContentId &&
+      contents?.some(
+        (content) =>
+          PageLanding.isBannerLcpCandidateContent(content) &&
+          content.entryId === lcpPriorityContentId
+      )
+    ) {
+      return lcpPriorityContentId;
+    }
+
+    const fallbackContent =
+      typeof fallbackIndex === "number" ? contents?.[fallbackIndex] : undefined;
+
+    if (
+      fallbackContent &&
+      PageLanding.isBannerLcpCandidateContent(fallbackContent)
+    ) {
+      return fallbackContent.entryId;
+    }
+
+    return undefined;
   }
 }

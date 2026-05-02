@@ -984,6 +984,7 @@ export type BundleOptionInput = {
 /** Defines bundle product options for `OrderItemInterface`. */
 export type BundleOrderItem = OrderItemInterface & {
   __typename?: "BundleOrderItem";
+  brand_new_label?: Maybe<Scalars["String"]["output"]>;
   /** A list of bundle options that are assigned to the bundle product. */
   bundle_options?: Maybe<Array<Maybe<ItemSelectedBundleOption>>>;
   /** The final discount information for the product. */
@@ -1035,15 +1036,24 @@ export type BundleProduct = CustomizableProductInterface &
   ProductInterface &
   RoutableInterface & {
     __typename?: "BundleProduct";
+    /** @deprecated Use the `custom_attributes` field instead. */
+    area_of_apply?: Maybe<Scalars["String"]["output"]>;
     /**
      * The attribute set assigned to the product.
      * @deprecated The field should not be used on the storefront.
      */
     attribute_set_id?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    brand?: Maybe<Scalars["Int"]["output"]>;
+    awards?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    awards_date?: Maybe<Scalars["Int"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    base_notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    bottle_design?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     brand_new?: Maybe<Scalars["Int"]["output"]>;
+    brand_new_label?: Maybe<Scalars["String"]["output"]>;
     /** The relative canonical URL. This value is returned only if the system setting 'Use Canonical Link Meta Tag For Products' is enabled. */
     canonical_url?: Maybe<Scalars["String"]["output"]>;
     /** The categories assigned to a product. */
@@ -1066,6 +1076,8 @@ export type BundleProduct = CustomizableProductInterface &
     countdown_timer_title?: Maybe<Scalars["String"]["output"]>;
     /** The product's country of origin. */
     country_of_manufacture?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    coverage?: Maybe<Scalars["String"]["output"]>;
     /**
      * Timestamp indicating when the product was created.
      * @deprecated The field should not be used on the storefront.
@@ -1083,21 +1095,27 @@ export type BundleProduct = CustomizableProductInterface &
     dynamic_sku?: Maybe<Scalars["Boolean"]["output"]>;
     /** Indicates whether the bundle product has a dynamically calculated weight. */
     dynamic_weight?: Maybe<Scalars["Boolean"]["output"]>;
-    estimated_delivery_days?: Maybe<Array<Maybe<EstimatedDeliveryDay>>>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    exclusive?: Maybe<Scalars["Int"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    express_delivery_available?: Maybe<Scalars["Int"]["output"]>;
+    express_delivery_available?: Maybe<Scalars["Boolean"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     extra?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    facts?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    finish?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    formulation?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     fragrance_notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    fulfillment_model?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     gender?: Maybe<Scalars["String"]["output"]>;
     /** Indicates whether a gift message is available. */
     gift_message_available?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    giftwrap_blacklisted?: Maybe<Scalars["Int"]["output"]>;
+    hair_concern?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    hair_type?: Maybe<Scalars["String"]["output"]>;
     /**
      * The ID number assigned to the product.
      * @deprecated Use the `uid` field instead.
@@ -1107,10 +1125,14 @@ export type BundleProduct = CustomizableProductInterface &
     image?: Maybe<ProductImage>;
     /** @deprecated Use the `custom_attributes` field instead. */
     ingredients?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    inspired_by?: Maybe<Scalars["String"]["output"]>;
     /** Indicates whether the product can be returned. */
     is_returnable?: Maybe<Scalars["String"]["output"]>;
     /** An array containing information about individual bundle items. */
     items?: Maybe<Array<Maybe<BundleItem>>>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    key_ingredients?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     makeup_color?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -1133,12 +1155,18 @@ export type BundleProduct = CustomizableProductInterface &
     meta_keyword?: Maybe<Scalars["String"]["output"]>;
     /** A string that is displayed in the title bar and tab of the browser and in search results lists. */
     meta_title?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    middle_notes?: Maybe<Scalars["String"]["output"]>;
     /** The product name. Customers use this name to identify the product. */
     name?: Maybe<Scalars["String"]["output"]>;
     /** The beginning date for new product listings, and determines if the product is featured as a new product. */
     new_from_date?: Maybe<Scalars["String"]["output"]>;
     /** The end date for new product listings. */
     new_to_date?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    occasion?: Maybe<Scalars["Int"]["output"]>;
     /** Product stock only x left count */
     only_x_left_in_stock?: Maybe<Scalars["Float"]["output"]>;
     /** An array of options for a customizable product. */
@@ -1149,6 +1177,8 @@ export type BundleProduct = CustomizableProductInterface &
     perfume_category?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     perfume_color?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    perfumer_name?: Maybe<Scalars["Int"]["output"]>;
     /**
      * Indicates the price of an item.
      * @deprecated Use `price_range` for product price information.
@@ -1166,6 +1196,8 @@ export type BundleProduct = CustomizableProductInterface &
     product_category?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_color?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    product_faq?: Maybe<Scalars["String"]["output"]>;
     /** An array of `ProductLinks` objects. */
     product_links?: Maybe<Array<Maybe<ProductLinksInterface>>>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -1176,8 +1208,6 @@ export type BundleProduct = CustomizableProductInterface &
     product_type_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_type_new2?: Maybe<Scalars["String"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    productcategory?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     quantity?: Maybe<Scalars["Int"]["output"]>;
     /** The average of all the ratings given to the product. */
@@ -1197,6 +1227,8 @@ export type BundleProduct = CustomizableProductInterface &
     /** @deprecated Use the `custom_attributes` field instead. */
     search_keywords?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    season?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     serie_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     series?: Maybe<Scalars["String"]["output"]>;
@@ -1210,6 +1242,12 @@ export type BundleProduct = CustomizableProductInterface &
     size?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     size_new?: Maybe<Scalars["Int"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skin_concern?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skin_type?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skincare_texture?: Maybe<Scalars["String"]["output"]>;
     /** A number or code assigned to a product to identify the product, options, price, and manufacturer. */
     sku?: Maybe<Scalars["String"]["output"]>;
     /** The relative path to the small image, which is used on catalog pages. */
@@ -1223,14 +1261,18 @@ export type BundleProduct = CustomizableProductInterface &
     special_price?: Maybe<Scalars["Float"]["output"]>;
     /** The end date for a product with a special price. */
     special_to_date?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    spf?: Maybe<Scalars["Int"]["output"]>;
     /** Indicates whether the product is staged for a future campaign. */
     staged: Scalars["Boolean"]["output"];
     /** Stock status of the product */
     stock_status?: Maybe<ProductStockStatus>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    supplier_id?: Maybe<Scalars["String"]["output"]>;
+    supplier_id?: Maybe<Scalars["Int"]["output"]>;
     /** The file name of a swatch image. */
     swatch_image?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    tag_keywords?: Maybe<Scalars["String"]["output"]>;
     /** The relative path to the product's thumbnail image. */
     thumbnail?: Maybe<ProductImage>;
     /**
@@ -1243,6 +1285,8 @@ export type BundleProduct = CustomizableProductInterface &
      * @deprecated Use `price_tiers` for product tier price information.
      */
     tier_prices?: Maybe<Array<Maybe<ProductTierPrices>>>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    top_notes?: Maybe<Scalars["String"]["output"]>;
     /** One of PRODUCT, CATEGORY, or CMS_PAGE. */
     type?: Maybe<UrlRewriteEntityTypeEnum>;
     /**
@@ -1868,6 +1912,7 @@ export type CategoryInterface = {
   addtocart?: Maybe<Scalars["String"]["output"]>;
   api_category_tab_order?: Maybe<Scalars["Int"]["output"]>;
   api_catnav_icon?: Maybe<Scalars["String"]["output"]>;
+  api_catnav_image?: Maybe<Scalars["String"]["output"]>;
   api_celebrity_thumbnail?: Maybe<Scalars["String"]["output"]>;
   api_include_in_category_tab?: Maybe<Scalars["Int"]["output"]>;
   app_menu_order?: Maybe<Scalars["Int"]["output"]>;
@@ -1877,7 +1922,6 @@ export type CategoryInterface = {
   breadcrumbs?: Maybe<Array<Maybe<Breadcrumb>>>;
   /** The relative canonical URL. This value is returned only if the system setting 'Use Canonical Link Meta Tag For Categories' is enabled. */
   canonical_url?: Maybe<Scalars["String"]["output"]>;
-  category_tab?: Maybe<Scalars["Int"]["output"]>;
   celebrity_banner?: Maybe<Scalars["String"]["output"]>;
   children_count?: Maybe<Scalars["String"]["output"]>;
   /** Contains a category CMS block. */
@@ -1902,14 +1946,27 @@ export type CategoryInterface = {
    */
   id?: Maybe<Scalars["Int"]["output"]>;
   image?: Maybe<Scalars["String"]["output"]>;
-  include_in_category_tab_menu?: Maybe<Scalars["Int"]["output"]>;
   include_in_menu?: Maybe<Scalars["Int"]["output"]>;
   is_anchor?: Maybe<Scalars["Int"]["output"]>;
   landing_page?: Maybe<Scalars["Int"]["output"]>;
   /** The depth of the category within the tree. */
   level?: Maybe<Scalars["Int"]["output"]>;
   mailtofriend?: Maybe<Scalars["String"]["output"]>;
+  meigee_cat_bg?: Maybe<Scalars["String"]["output"]>;
+  meigee_cat_bg_option?: Maybe<Scalars["String"]["output"]>;
+  meigee_cat_bg_retina?: Maybe<Scalars["String"]["output"]>;
+  meigee_cat_block_bottom?: Maybe<Scalars["String"]["output"]>;
+  meigee_cat_block_right?: Maybe<Scalars["String"]["output"]>;
+  meigee_cat_block_top?: Maybe<Scalars["String"]["output"]>;
+  meigee_cat_customlabel?: Maybe<Scalars["String"]["output"]>;
+  meigee_cat_customlink?: Maybe<Scalars["String"]["output"]>;
+  meigee_cat_labeltext?: Maybe<Scalars["String"]["output"]>;
   meigee_cat_linktarget?: Maybe<Scalars["String"]["output"]>;
+  meigee_cat_max_quantity?: Maybe<Scalars["String"]["output"]>;
+  meigee_cat_menutype?: Maybe<Scalars["String"]["output"]>;
+  meigee_cat_ratio?: Maybe<Scalars["String"]["output"]>;
+  meigee_cat_subcontent?: Maybe<Scalars["String"]["output"]>;
+  meigee_grid_layout?: Maybe<Scalars["String"]["output"]>;
   menu_dropdown_type?: Maybe<Scalars["Int"]["output"]>;
   menu_dropdown_width?: Maybe<Scalars["String"]["output"]>;
   menu_link?: Maybe<Scalars["String"]["output"]>;
@@ -2009,6 +2066,7 @@ export type CategoryTree = CategoryInterface &
     addtocart?: Maybe<Scalars["String"]["output"]>;
     api_category_tab_order?: Maybe<Scalars["Int"]["output"]>;
     api_catnav_icon?: Maybe<Scalars["String"]["output"]>;
+    api_catnav_image?: Maybe<Scalars["String"]["output"]>;
     api_celebrity_thumbnail?: Maybe<Scalars["String"]["output"]>;
     api_include_in_category_tab?: Maybe<Scalars["Int"]["output"]>;
     app_menu_order?: Maybe<Scalars["Int"]["output"]>;
@@ -2018,7 +2076,6 @@ export type CategoryTree = CategoryInterface &
     breadcrumbs?: Maybe<Array<Maybe<Breadcrumb>>>;
     /** The relative canonical URL. This value is returned only if the system setting 'Use Canonical Link Meta Tag For Categories' is enabled. */
     canonical_url?: Maybe<Scalars["String"]["output"]>;
-    category_tab?: Maybe<Scalars["Int"]["output"]>;
     celebrity_banner?: Maybe<Scalars["String"]["output"]>;
     /** A tree of child categories. */
     children?: Maybe<Array<Maybe<CategoryTree>>>;
@@ -2045,14 +2102,27 @@ export type CategoryTree = CategoryInterface &
      */
     id?: Maybe<Scalars["Int"]["output"]>;
     image?: Maybe<Scalars["String"]["output"]>;
-    include_in_category_tab_menu?: Maybe<Scalars["Int"]["output"]>;
     include_in_menu?: Maybe<Scalars["Int"]["output"]>;
     is_anchor?: Maybe<Scalars["Int"]["output"]>;
     landing_page?: Maybe<Scalars["Int"]["output"]>;
     /** The depth of the category within the tree. */
     level?: Maybe<Scalars["Int"]["output"]>;
     mailtofriend?: Maybe<Scalars["String"]["output"]>;
+    meigee_cat_bg?: Maybe<Scalars["String"]["output"]>;
+    meigee_cat_bg_option?: Maybe<Scalars["String"]["output"]>;
+    meigee_cat_bg_retina?: Maybe<Scalars["String"]["output"]>;
+    meigee_cat_block_bottom?: Maybe<Scalars["String"]["output"]>;
+    meigee_cat_block_right?: Maybe<Scalars["String"]["output"]>;
+    meigee_cat_block_top?: Maybe<Scalars["String"]["output"]>;
+    meigee_cat_customlabel?: Maybe<Scalars["String"]["output"]>;
+    meigee_cat_customlink?: Maybe<Scalars["String"]["output"]>;
+    meigee_cat_labeltext?: Maybe<Scalars["String"]["output"]>;
     meigee_cat_linktarget?: Maybe<Scalars["String"]["output"]>;
+    meigee_cat_max_quantity?: Maybe<Scalars["String"]["output"]>;
+    meigee_cat_menutype?: Maybe<Scalars["String"]["output"]>;
+    meigee_cat_ratio?: Maybe<Scalars["String"]["output"]>;
+    meigee_cat_subcontent?: Maybe<Scalars["String"]["output"]>;
+    meigee_grid_layout?: Maybe<Scalars["String"]["output"]>;
     menu_dropdown_type?: Maybe<Scalars["Int"]["output"]>;
     menu_dropdown_width?: Maybe<Scalars["String"]["output"]>;
     menu_link?: Maybe<Scalars["String"]["output"]>;
@@ -2393,15 +2463,24 @@ export type ConfigurableProduct = CustomizableProductInterface &
   ProductInterface &
   RoutableInterface & {
     __typename?: "ConfigurableProduct";
+    /** @deprecated Use the `custom_attributes` field instead. */
+    area_of_apply?: Maybe<Scalars["String"]["output"]>;
     /**
      * The attribute set assigned to the product.
      * @deprecated The field should not be used on the storefront.
      */
     attribute_set_id?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    brand?: Maybe<Scalars["Int"]["output"]>;
+    awards?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    awards_date?: Maybe<Scalars["Int"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    base_notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    bottle_design?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     brand_new?: Maybe<Scalars["Int"]["output"]>;
+    brand_new_label?: Maybe<Scalars["String"]["output"]>;
     /** The relative canonical URL. This value is returned only if the system setting 'Use Canonical Link Meta Tag For Products' is enabled. */
     canonical_url?: Maybe<Scalars["String"]["output"]>;
     /** The categories assigned to a product. */
@@ -2428,6 +2507,8 @@ export type ConfigurableProduct = CustomizableProductInterface &
     countdown_timer_title?: Maybe<Scalars["String"]["output"]>;
     /** The product's country of origin. */
     country_of_manufacture?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    coverage?: Maybe<Scalars["String"]["output"]>;
     /**
      * Timestamp indicating when the product was created.
      * @deprecated The field should not be used on the storefront.
@@ -2439,21 +2520,27 @@ export type ConfigurableProduct = CustomizableProductInterface &
     custom_attributesV2?: Maybe<ProductCustomAttributes>;
     /** Detailed information about the product. The value can include simple HTML tags. */
     description?: Maybe<ComplexTextValue>;
-    estimated_delivery_days?: Maybe<Array<Maybe<EstimatedDeliveryDay>>>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    exclusive?: Maybe<Scalars["Int"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    express_delivery_available?: Maybe<Scalars["Int"]["output"]>;
+    express_delivery_available?: Maybe<Scalars["Boolean"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     extra?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    facts?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    finish?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    formulation?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     fragrance_notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    fulfillment_model?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     gender?: Maybe<Scalars["String"]["output"]>;
     /** Indicates whether a gift message is available. */
     gift_message_available?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    giftwrap_blacklisted?: Maybe<Scalars["Int"]["output"]>;
+    hair_concern?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    hair_type?: Maybe<Scalars["String"]["output"]>;
     /**
      * The ID number assigned to the product.
      * @deprecated Use the `uid` field instead.
@@ -2463,8 +2550,12 @@ export type ConfigurableProduct = CustomizableProductInterface &
     image?: Maybe<ProductImage>;
     /** @deprecated Use the `custom_attributes` field instead. */
     ingredients?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    inspired_by?: Maybe<Scalars["String"]["output"]>;
     /** Indicates whether the product can be returned. */
     is_returnable?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    key_ingredients?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     makeup_color?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -2487,12 +2578,18 @@ export type ConfigurableProduct = CustomizableProductInterface &
     meta_keyword?: Maybe<Scalars["String"]["output"]>;
     /** A string that is displayed in the title bar and tab of the browser and in search results lists. */
     meta_title?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    middle_notes?: Maybe<Scalars["String"]["output"]>;
     /** The product name. Customers use this name to identify the product. */
     name?: Maybe<Scalars["String"]["output"]>;
     /** The beginning date for new product listings, and determines if the product is featured as a new product. */
     new_from_date?: Maybe<Scalars["String"]["output"]>;
     /** The end date for new product listings. */
     new_to_date?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    occasion?: Maybe<Scalars["Int"]["output"]>;
     /** Product stock only x left count */
     only_x_left_in_stock?: Maybe<Scalars["Float"]["output"]>;
     /** An array of options for a customizable product. */
@@ -2503,6 +2600,8 @@ export type ConfigurableProduct = CustomizableProductInterface &
     perfume_category?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     perfume_color?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    perfumer_name?: Maybe<Scalars["Int"]["output"]>;
     /**
      * Indicates the price of an item.
      * @deprecated Use `price_range` for product price information.
@@ -2516,6 +2615,8 @@ export type ConfigurableProduct = CustomizableProductInterface &
     product_category?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_color?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    product_faq?: Maybe<Scalars["String"]["output"]>;
     /** An array of `ProductLinks` objects. */
     product_links?: Maybe<Array<Maybe<ProductLinksInterface>>>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -2526,8 +2627,6 @@ export type ConfigurableProduct = CustomizableProductInterface &
     product_type_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_type_new2?: Maybe<Scalars["String"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    productcategory?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     quantity?: Maybe<Scalars["Int"]["output"]>;
     /** The average of all the ratings given to the product. */
@@ -2547,6 +2646,8 @@ export type ConfigurableProduct = CustomizableProductInterface &
     /** @deprecated Use the `custom_attributes` field instead. */
     search_keywords?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    season?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     serie_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     series?: Maybe<Scalars["String"]["output"]>;
@@ -2558,6 +2659,12 @@ export type ConfigurableProduct = CustomizableProductInterface &
     size?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     size_new?: Maybe<Scalars["Int"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skin_concern?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skin_type?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skincare_texture?: Maybe<Scalars["String"]["output"]>;
     /** A number or code assigned to a product to identify the product, options, price, and manufacturer. */
     sku?: Maybe<Scalars["String"]["output"]>;
     /** The relative path to the small image, which is used on catalog pages. */
@@ -2571,14 +2678,18 @@ export type ConfigurableProduct = CustomizableProductInterface &
     special_price?: Maybe<Scalars["Float"]["output"]>;
     /** The end date for a product with a special price. */
     special_to_date?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    spf?: Maybe<Scalars["Int"]["output"]>;
     /** Indicates whether the product is staged for a future campaign. */
     staged: Scalars["Boolean"]["output"];
     /** Stock status of the product */
     stock_status?: Maybe<ProductStockStatus>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    supplier_id?: Maybe<Scalars["String"]["output"]>;
+    supplier_id?: Maybe<Scalars["Int"]["output"]>;
     /** The file name of a swatch image. */
     swatch_image?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    tag_keywords?: Maybe<Scalars["String"]["output"]>;
     /** The relative path to the product's thumbnail image. */
     thumbnail?: Maybe<ProductImage>;
     /**
@@ -2591,6 +2702,8 @@ export type ConfigurableProduct = CustomizableProductInterface &
      * @deprecated Use `price_tiers` for product tier price information.
      */
     tier_prices?: Maybe<Array<Maybe<ProductTierPrices>>>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    top_notes?: Maybe<Scalars["String"]["output"]>;
     /** One of PRODUCT, CATEGORY, or CMS_PAGE. */
     type?: Maybe<UrlRewriteEntityTypeEnum>;
     /**
@@ -4932,6 +5045,7 @@ export type DownloadableItemsLinks = {
 /** Defines downloadable product options for `OrderItemInterface`. */
 export type DownloadableOrderItem = OrderItemInterface & {
   __typename?: "DownloadableOrderItem";
+  brand_new_label?: Maybe<Scalars["String"]["output"]>;
   /** The final discount information for the product. */
   discounts?: Maybe<Array<Maybe<Discount>>>;
   /** A list of downloadable links that are ordered from the downloadable product. */
@@ -4982,15 +5096,24 @@ export type DownloadableProduct = CustomizableProductInterface &
   ProductInterface &
   RoutableInterface & {
     __typename?: "DownloadableProduct";
+    /** @deprecated Use the `custom_attributes` field instead. */
+    area_of_apply?: Maybe<Scalars["String"]["output"]>;
     /**
      * The attribute set assigned to the product.
      * @deprecated The field should not be used on the storefront.
      */
     attribute_set_id?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    brand?: Maybe<Scalars["Int"]["output"]>;
+    awards?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    awards_date?: Maybe<Scalars["Int"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    base_notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    bottle_design?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     brand_new?: Maybe<Scalars["Int"]["output"]>;
+    brand_new_label?: Maybe<Scalars["String"]["output"]>;
     /** The relative canonical URL. This value is returned only if the system setting 'Use Canonical Link Meta Tag For Products' is enabled. */
     canonical_url?: Maybe<Scalars["String"]["output"]>;
     /** The categories assigned to a product. */
@@ -5013,6 +5136,8 @@ export type DownloadableProduct = CustomizableProductInterface &
     countdown_timer_title?: Maybe<Scalars["String"]["output"]>;
     /** The product's country of origin. */
     country_of_manufacture?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    coverage?: Maybe<Scalars["String"]["output"]>;
     /**
      * Timestamp indicating when the product was created.
      * @deprecated The field should not be used on the storefront.
@@ -5030,21 +5155,27 @@ export type DownloadableProduct = CustomizableProductInterface &
     downloadable_product_samples?: Maybe<
       Array<Maybe<DownloadableProductSamples>>
     >;
-    estimated_delivery_days?: Maybe<Array<Maybe<EstimatedDeliveryDay>>>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    exclusive?: Maybe<Scalars["Int"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    express_delivery_available?: Maybe<Scalars["Int"]["output"]>;
+    express_delivery_available?: Maybe<Scalars["Boolean"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     extra?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    facts?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    finish?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    formulation?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     fragrance_notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    fulfillment_model?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     gender?: Maybe<Scalars["String"]["output"]>;
     /** Indicates whether a gift message is available. */
     gift_message_available?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    giftwrap_blacklisted?: Maybe<Scalars["Int"]["output"]>;
+    hair_concern?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    hair_type?: Maybe<Scalars["String"]["output"]>;
     /**
      * The ID number assigned to the product.
      * @deprecated Use the `uid` field instead.
@@ -5054,8 +5185,12 @@ export type DownloadableProduct = CustomizableProductInterface &
     image?: Maybe<ProductImage>;
     /** @deprecated Use the `custom_attributes` field instead. */
     ingredients?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    inspired_by?: Maybe<Scalars["String"]["output"]>;
     /** Indicates whether the product can be returned. */
     is_returnable?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    key_ingredients?: Maybe<Scalars["String"]["output"]>;
     /** A value of 1 indicates that each link in the array must be purchased separately. */
     links_purchased_separately?: Maybe<Scalars["Int"]["output"]>;
     /** The heading above the list of downloadable products. */
@@ -5082,12 +5217,18 @@ export type DownloadableProduct = CustomizableProductInterface &
     meta_keyword?: Maybe<Scalars["String"]["output"]>;
     /** A string that is displayed in the title bar and tab of the browser and in search results lists. */
     meta_title?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    middle_notes?: Maybe<Scalars["String"]["output"]>;
     /** The product name. Customers use this name to identify the product. */
     name?: Maybe<Scalars["String"]["output"]>;
     /** The beginning date for new product listings, and determines if the product is featured as a new product. */
     new_from_date?: Maybe<Scalars["String"]["output"]>;
     /** The end date for new product listings. */
     new_to_date?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    occasion?: Maybe<Scalars["Int"]["output"]>;
     /** Product stock only x left count */
     only_x_left_in_stock?: Maybe<Scalars["Float"]["output"]>;
     /** An array of options for a customizable product. */
@@ -5098,6 +5239,8 @@ export type DownloadableProduct = CustomizableProductInterface &
     perfume_category?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     perfume_color?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    perfumer_name?: Maybe<Scalars["Int"]["output"]>;
     /**
      * Indicates the price of an item.
      * @deprecated Use `price_range` for product price information.
@@ -5111,6 +5254,8 @@ export type DownloadableProduct = CustomizableProductInterface &
     product_category?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_color?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    product_faq?: Maybe<Scalars["String"]["output"]>;
     /** An array of `ProductLinks` objects. */
     product_links?: Maybe<Array<Maybe<ProductLinksInterface>>>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -5121,8 +5266,6 @@ export type DownloadableProduct = CustomizableProductInterface &
     product_type_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_type_new2?: Maybe<Scalars["String"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    productcategory?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     quantity?: Maybe<Scalars["Int"]["output"]>;
     /** The average of all the ratings given to the product. */
@@ -5142,6 +5285,8 @@ export type DownloadableProduct = CustomizableProductInterface &
     /** @deprecated Use the `custom_attributes` field instead. */
     search_keywords?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    season?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     serie_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     series?: Maybe<Scalars["String"]["output"]>;
@@ -5153,6 +5298,12 @@ export type DownloadableProduct = CustomizableProductInterface &
     size?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     size_new?: Maybe<Scalars["Int"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skin_concern?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skin_type?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skincare_texture?: Maybe<Scalars["String"]["output"]>;
     /** A number or code assigned to a product to identify the product, options, price, and manufacturer. */
     sku?: Maybe<Scalars["String"]["output"]>;
     /** The relative path to the small image, which is used on catalog pages. */
@@ -5166,14 +5317,18 @@ export type DownloadableProduct = CustomizableProductInterface &
     special_price?: Maybe<Scalars["Float"]["output"]>;
     /** The end date for a product with a special price. */
     special_to_date?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    spf?: Maybe<Scalars["Int"]["output"]>;
     /** Indicates whether the product is staged for a future campaign. */
     staged: Scalars["Boolean"]["output"];
     /** Stock status of the product */
     stock_status?: Maybe<ProductStockStatus>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    supplier_id?: Maybe<Scalars["String"]["output"]>;
+    supplier_id?: Maybe<Scalars["Int"]["output"]>;
     /** The file name of a swatch image. */
     swatch_image?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    tag_keywords?: Maybe<Scalars["String"]["output"]>;
     /** The relative path to the product's thumbnail image. */
     thumbnail?: Maybe<ProductImage>;
     /**
@@ -5186,6 +5341,8 @@ export type DownloadableProduct = CustomizableProductInterface &
      * @deprecated Use `price_tiers` for product tier price information.
      */
     tier_prices?: Maybe<Array<Maybe<ProductTierPrices>>>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    top_notes?: Maybe<Scalars["String"]["output"]>;
     /** One of PRODUCT, CATEGORY, or CMS_PAGE. */
     type?: Maybe<UrlRewriteEntityTypeEnum>;
     /**
@@ -5763,6 +5920,7 @@ export type GiftCardOptions = {
 
 export type GiftCardOrderItem = OrderItemInterface & {
   __typename?: "GiftCardOrderItem";
+  brand_new_label?: Maybe<Scalars["String"]["output"]>;
   /** The final discount information for the product. */
   discounts?: Maybe<Array<Maybe<Discount>>>;
   /** Indicates whether the order item is eligible to be in a return request. */
@@ -5818,15 +5976,24 @@ export type GiftCardProduct = CustomizableProductInterface &
     allow_message?: Maybe<Scalars["Boolean"]["output"]>;
     /** Indicates whether shoppers have the ability to set the value of the gift card. */
     allow_open_amount?: Maybe<Scalars["Boolean"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    area_of_apply?: Maybe<Scalars["String"]["output"]>;
     /**
      * The attribute set assigned to the product.
      * @deprecated The field should not be used on the storefront.
      */
     attribute_set_id?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    brand?: Maybe<Scalars["Int"]["output"]>;
+    awards?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    awards_date?: Maybe<Scalars["Int"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    base_notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    bottle_design?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     brand_new?: Maybe<Scalars["Int"]["output"]>;
+    brand_new_label?: Maybe<Scalars["String"]["output"]>;
     /** The relative canonical URL. This value is returned only if the system setting 'Use Canonical Link Meta Tag For Products' is enabled. */
     canonical_url?: Maybe<Scalars["String"]["output"]>;
     /** The categories assigned to a product. */
@@ -5849,6 +6016,8 @@ export type GiftCardProduct = CustomizableProductInterface &
     countdown_timer_title?: Maybe<Scalars["String"]["output"]>;
     /** The product's country of origin. */
     country_of_manufacture?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    coverage?: Maybe<Scalars["String"]["output"]>;
     /**
      * Timestamp indicating when the product was created.
      * @deprecated The field should not be used on the storefront.
@@ -5860,15 +6029,19 @@ export type GiftCardProduct = CustomizableProductInterface &
     custom_attributesV2?: Maybe<ProductCustomAttributes>;
     /** Detailed information about the product. The value can include simple HTML tags. */
     description?: Maybe<ComplexTextValue>;
-    estimated_delivery_days?: Maybe<Array<Maybe<EstimatedDeliveryDay>>>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    exclusive?: Maybe<Scalars["Int"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    express_delivery_available?: Maybe<Scalars["Int"]["output"]>;
+    express_delivery_available?: Maybe<Scalars["Boolean"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     extra?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    facts?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    finish?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    formulation?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     fragrance_notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    fulfillment_model?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     gender?: Maybe<Scalars["String"]["output"]>;
     /** An array of customizable gift card options. */
@@ -5880,7 +6053,9 @@ export type GiftCardProduct = CustomizableProductInterface &
     /** An enumeration that specifies the type of gift card. */
     giftcard_type?: Maybe<GiftCardTypeEnum>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    giftwrap_blacklisted?: Maybe<Scalars["Int"]["output"]>;
+    hair_concern?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    hair_type?: Maybe<Scalars["String"]["output"]>;
     /**
      * The ID number assigned to the product.
      * @deprecated Use the `uid` field instead.
@@ -5890,10 +6065,14 @@ export type GiftCardProduct = CustomizableProductInterface &
     image?: Maybe<ProductImage>;
     /** @deprecated Use the `custom_attributes` field instead. */
     ingredients?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    inspired_by?: Maybe<Scalars["String"]["output"]>;
     /** Indicates whether the customer can redeem the value on the card for cash. */
     is_redeemable?: Maybe<Scalars["Boolean"]["output"]>;
     /** Indicates whether the product can be returned. */
     is_returnable?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    key_ingredients?: Maybe<Scalars["String"]["output"]>;
     /** The number of days after purchase until the gift card expires. A null value means there is no limit. */
     lifetime?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -5920,12 +6099,18 @@ export type GiftCardProduct = CustomizableProductInterface &
     meta_keyword?: Maybe<Scalars["String"]["output"]>;
     /** A string that is displayed in the title bar and tab of the browser and in search results lists. */
     meta_title?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    middle_notes?: Maybe<Scalars["String"]["output"]>;
     /** The product name. Customers use this name to identify the product. */
     name?: Maybe<Scalars["String"]["output"]>;
     /** The beginning date for new product listings, and determines if the product is featured as a new product. */
     new_from_date?: Maybe<Scalars["String"]["output"]>;
     /** The end date for new product listings. */
     new_to_date?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    occasion?: Maybe<Scalars["Int"]["output"]>;
     /** Product stock only x left count */
     only_x_left_in_stock?: Maybe<Scalars["Float"]["output"]>;
     /** The maximum acceptable value of an open amount gift card. */
@@ -5940,6 +6125,8 @@ export type GiftCardProduct = CustomizableProductInterface &
     perfume_category?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     perfume_color?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    perfumer_name?: Maybe<Scalars["Int"]["output"]>;
     /**
      * Indicates the price of an item.
      * @deprecated Use `price_range` for product price information.
@@ -5953,6 +6140,8 @@ export type GiftCardProduct = CustomizableProductInterface &
     product_category?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_color?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    product_faq?: Maybe<Scalars["String"]["output"]>;
     /** An array of `ProductLinks` objects. */
     product_links?: Maybe<Array<Maybe<ProductLinksInterface>>>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -5963,8 +6152,6 @@ export type GiftCardProduct = CustomizableProductInterface &
     product_type_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_type_new2?: Maybe<Scalars["String"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    productcategory?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     quantity?: Maybe<Scalars["Int"]["output"]>;
     /** The average of all the ratings given to the product. */
@@ -5984,6 +6171,8 @@ export type GiftCardProduct = CustomizableProductInterface &
     /** @deprecated Use the `custom_attributes` field instead. */
     search_keywords?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    season?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     serie_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     series?: Maybe<Scalars["String"]["output"]>;
@@ -5995,6 +6184,12 @@ export type GiftCardProduct = CustomizableProductInterface &
     size?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     size_new?: Maybe<Scalars["Int"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skin_concern?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skin_type?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skincare_texture?: Maybe<Scalars["String"]["output"]>;
     /** A number or code assigned to a product to identify the product, options, price, and manufacturer. */
     sku?: Maybe<Scalars["String"]["output"]>;
     /** The relative path to the small image, which is used on catalog pages. */
@@ -6008,14 +6203,18 @@ export type GiftCardProduct = CustomizableProductInterface &
     special_price?: Maybe<Scalars["Float"]["output"]>;
     /** The end date for a product with a special price. */
     special_to_date?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    spf?: Maybe<Scalars["Int"]["output"]>;
     /** Indicates whether the product is staged for a future campaign. */
     staged: Scalars["Boolean"]["output"];
     /** Stock status of the product */
     stock_status?: Maybe<ProductStockStatus>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    supplier_id?: Maybe<Scalars["String"]["output"]>;
+    supplier_id?: Maybe<Scalars["Int"]["output"]>;
     /** The file name of a swatch image. */
     swatch_image?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    tag_keywords?: Maybe<Scalars["String"]["output"]>;
     /** The relative path to the product's thumbnail image. */
     thumbnail?: Maybe<ProductImage>;
     /**
@@ -6028,6 +6227,8 @@ export type GiftCardProduct = CustomizableProductInterface &
      * @deprecated Use `price_tiers` for product tier price information.
      */
     tier_prices?: Maybe<Array<Maybe<ProductTierPrices>>>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    top_notes?: Maybe<Scalars["String"]["output"]>;
     /** One of PRODUCT, CATEGORY, or CMS_PAGE. */
     type?: Maybe<UrlRewriteEntityTypeEnum>;
     /**
@@ -6492,15 +6693,24 @@ export type GroupedProduct = PhysicalProductInterface &
   ProductInterface &
   RoutableInterface & {
     __typename?: "GroupedProduct";
+    /** @deprecated Use the `custom_attributes` field instead. */
+    area_of_apply?: Maybe<Scalars["String"]["output"]>;
     /**
      * The attribute set assigned to the product.
      * @deprecated The field should not be used on the storefront.
      */
     attribute_set_id?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    brand?: Maybe<Scalars["Int"]["output"]>;
+    awards?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    awards_date?: Maybe<Scalars["Int"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    base_notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    bottle_design?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     brand_new?: Maybe<Scalars["Int"]["output"]>;
+    brand_new_label?: Maybe<Scalars["String"]["output"]>;
     /** The relative canonical URL. This value is returned only if the system setting 'Use Canonical Link Meta Tag For Products' is enabled. */
     canonical_url?: Maybe<Scalars["String"]["output"]>;
     /** The categories assigned to a product. */
@@ -6523,6 +6733,8 @@ export type GroupedProduct = PhysicalProductInterface &
     countdown_timer_title?: Maybe<Scalars["String"]["output"]>;
     /** The product's country of origin. */
     country_of_manufacture?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    coverage?: Maybe<Scalars["String"]["output"]>;
     /**
      * Timestamp indicating when the product was created.
      * @deprecated The field should not be used on the storefront.
@@ -6534,21 +6746,27 @@ export type GroupedProduct = PhysicalProductInterface &
     custom_attributesV2?: Maybe<ProductCustomAttributes>;
     /** Detailed information about the product. The value can include simple HTML tags. */
     description?: Maybe<ComplexTextValue>;
-    estimated_delivery_days?: Maybe<Array<Maybe<EstimatedDeliveryDay>>>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    exclusive?: Maybe<Scalars["Int"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    express_delivery_available?: Maybe<Scalars["Int"]["output"]>;
+    express_delivery_available?: Maybe<Scalars["Boolean"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     extra?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    facts?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    finish?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    formulation?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     fragrance_notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    fulfillment_model?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     gender?: Maybe<Scalars["String"]["output"]>;
     /** Indicates whether a gift message is available. */
     gift_message_available?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    giftwrap_blacklisted?: Maybe<Scalars["Int"]["output"]>;
+    hair_concern?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    hair_type?: Maybe<Scalars["String"]["output"]>;
     /**
      * The ID number assigned to the product.
      * @deprecated Use the `uid` field instead.
@@ -6558,10 +6776,14 @@ export type GroupedProduct = PhysicalProductInterface &
     image?: Maybe<ProductImage>;
     /** @deprecated Use the `custom_attributes` field instead. */
     ingredients?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    inspired_by?: Maybe<Scalars["String"]["output"]>;
     /** Indicates whether the product can be returned. */
     is_returnable?: Maybe<Scalars["String"]["output"]>;
     /** An array containing grouped product items. */
     items?: Maybe<Array<Maybe<GroupedProductItem>>>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    key_ingredients?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     makeup_color?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -6584,12 +6806,18 @@ export type GroupedProduct = PhysicalProductInterface &
     meta_keyword?: Maybe<Scalars["String"]["output"]>;
     /** A string that is displayed in the title bar and tab of the browser and in search results lists. */
     meta_title?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    middle_notes?: Maybe<Scalars["String"]["output"]>;
     /** The product name. Customers use this name to identify the product. */
     name?: Maybe<Scalars["String"]["output"]>;
     /** The beginning date for new product listings, and determines if the product is featured as a new product. */
     new_from_date?: Maybe<Scalars["String"]["output"]>;
     /** The end date for new product listings. */
     new_to_date?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    occasion?: Maybe<Scalars["Int"]["output"]>;
     /** Product stock only x left count */
     only_x_left_in_stock?: Maybe<Scalars["Float"]["output"]>;
     /** If the product has multiple options, determines where they appear on the product page. */
@@ -6598,6 +6826,8 @@ export type GroupedProduct = PhysicalProductInterface &
     perfume_category?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     perfume_color?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    perfumer_name?: Maybe<Scalars["Int"]["output"]>;
     /**
      * Indicates the price of an item.
      * @deprecated Use `price_range` for product price information.
@@ -6611,6 +6841,8 @@ export type GroupedProduct = PhysicalProductInterface &
     product_category?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_color?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    product_faq?: Maybe<Scalars["String"]["output"]>;
     /** An array of `ProductLinks` objects. */
     product_links?: Maybe<Array<Maybe<ProductLinksInterface>>>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -6621,8 +6853,6 @@ export type GroupedProduct = PhysicalProductInterface &
     product_type_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_type_new2?: Maybe<Scalars["String"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    productcategory?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     quantity?: Maybe<Scalars["Int"]["output"]>;
     /** The average of all the ratings given to the product. */
@@ -6642,6 +6872,8 @@ export type GroupedProduct = PhysicalProductInterface &
     /** @deprecated Use the `custom_attributes` field instead. */
     search_keywords?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    season?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     serie_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     series?: Maybe<Scalars["String"]["output"]>;
@@ -6653,6 +6885,12 @@ export type GroupedProduct = PhysicalProductInterface &
     size?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     size_new?: Maybe<Scalars["Int"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skin_concern?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skin_type?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skincare_texture?: Maybe<Scalars["String"]["output"]>;
     /** A number or code assigned to a product to identify the product, options, price, and manufacturer. */
     sku?: Maybe<Scalars["String"]["output"]>;
     /** The relative path to the small image, which is used on catalog pages. */
@@ -6666,14 +6904,18 @@ export type GroupedProduct = PhysicalProductInterface &
     special_price?: Maybe<Scalars["Float"]["output"]>;
     /** The end date for a product with a special price. */
     special_to_date?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    spf?: Maybe<Scalars["Int"]["output"]>;
     /** Indicates whether the product is staged for a future campaign. */
     staged: Scalars["Boolean"]["output"];
     /** Stock status of the product */
     stock_status?: Maybe<ProductStockStatus>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    supplier_id?: Maybe<Scalars["String"]["output"]>;
+    supplier_id?: Maybe<Scalars["Int"]["output"]>;
     /** The file name of a swatch image. */
     swatch_image?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    tag_keywords?: Maybe<Scalars["String"]["output"]>;
     /** The relative path to the product's thumbnail image. */
     thumbnail?: Maybe<ProductImage>;
     /**
@@ -6686,6 +6928,8 @@ export type GroupedProduct = PhysicalProductInterface &
      * @deprecated Use `price_tiers` for product tier price information.
      */
     tier_prices?: Maybe<Array<Maybe<ProductTierPrices>>>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    top_notes?: Maybe<Scalars["String"]["output"]>;
     /** One of PRODUCT, CATEGORY, or CMS_PAGE. */
     type?: Maybe<UrlRewriteEntityTypeEnum>;
     /**
@@ -7926,6 +8170,7 @@ export type OrderInformationInput = {
 
 export type OrderItem = OrderItemInterface & {
   __typename?: "OrderItem";
+  brand_new_label?: Maybe<Scalars["String"]["output"]>;
   /** The final discount information for the product. */
   discounts?: Maybe<Array<Maybe<Discount>>>;
   /** Indicates whether the order item is eligible to be in a return request. */
@@ -7971,6 +8216,7 @@ export type OrderItem = OrderItemInterface & {
 
 /** Order item details. */
 export type OrderItemInterface = {
+  brand_new_label?: Maybe<Scalars["String"]["output"]>;
   /** The final discount information for the product. */
   discounts?: Maybe<Array<Maybe<Discount>>>;
   /** Indicates whether the order item is eligible to be in a return request. */
@@ -8032,6 +8278,13 @@ export type OrderPaymentMethod = {
   name: Scalars["String"]["output"];
   /** The payment method code that indicates how the order was paid for. */
   type: Scalars["String"]["output"];
+};
+
+export type OrderProcessingHealthCheckOutput = {
+  __typename?: "OrderProcessingHealthCheckOutput";
+  message: Scalars["String"]["output"];
+  order_count: Scalars["Int"]["output"];
+  success: Scalars["Boolean"]["output"];
 };
 
 /** Contains order shipment details. */
@@ -8652,8 +8905,8 @@ export type ProductAttribute = {
 export type ProductAttributeFilterInput = {
   /** Attribute label: Area of Application */
   area_of_apply?: InputMaybe<FilterEqualTypeInput>;
-  /** Attribute label: Brand */
-  brand?: InputMaybe<FilterEqualTypeInput>;
+  /** Attribute label: Base Notes */
+  base_notes?: InputMaybe<FilterMatchTypeInput>;
   /** Attribute label: Brand */
   brand_new?: InputMaybe<FilterEqualTypeInput>;
   /** Deprecated: use `category_uid` to filter product by category ID. */
@@ -8672,31 +8925,43 @@ export type ProductAttributeFilterInput = {
   description?: InputMaybe<FilterMatchTypeInput>;
   /** Attribute label: Extra */
   extra?: InputMaybe<FilterEqualTypeInput>;
-  /** Attribute label: Fragrance Notes */
+  /** Attribute label: Preferences */
+  formulation?: InputMaybe<FilterEqualTypeInput>;
+  /** Attribute label: Fragrance Family */
   fragrance_notes?: InputMaybe<FilterEqualTypeInput>;
   /** Attribute label: Gender */
   gender?: InputMaybe<FilterEqualTypeInput>;
-  /** Attribute label: Disable Gift Wrap for This Item */
-  giftwrap_blacklisted?: InputMaybe<FilterEqualTypeInput>;
+  /** Attribute label: Hair Concern */
+  hair_concern?: InputMaybe<FilterEqualTypeInput>;
+  /** Attribute label: Hair Type */
+  hair_type?: InputMaybe<FilterEqualTypeInput>;
   /** Attribute label: Ingredients */
   ingredients?: InputMaybe<FilterMatchTypeInput>;
+  /** Attribute label: Inspired By */
+  inspired_by?: InputMaybe<FilterEqualTypeInput>;
+  /** Attribute label: Key Ingredients */
+  key_ingredients?: InputMaybe<FilterEqualTypeInput>;
   /** Attribute label: Color */
   makeup_color?: InputMaybe<FilterEqualTypeInput>;
   /** Attribute label: Makeup Type */
   makeup_type?: InputMaybe<FilterEqualTypeInput>;
+  /** Attribute label: Middle Notes */
+  middle_notes?: InputMaybe<FilterMatchTypeInput>;
   /** Attribute label: Product Name */
   name?: InputMaybe<FilterMatchTypeInput>;
+  /** Attribute label: Set Product as New from Date */
+  news_from_date?: InputMaybe<FilterRangeTypeInput>;
   /** Attribute label: Category */
   perfume_category?: InputMaybe<FilterEqualTypeInput>;
   /** Attribute label: Color */
   perfume_color?: InputMaybe<FilterEqualTypeInput>;
   /** Attribute label: Price */
   price?: InputMaybe<FilterRangeTypeInput>;
-  /** Attribute label: Category */
+  /** Attribute label: Product Category */
   product_category?: InputMaybe<FilterEqualTypeInput>;
   /** Attribute label: Product Color */
   product_color?: InputMaybe<FilterEqualTypeInput>;
-  /** Attribute label: Meta Type */
+  /** Attribute label: Product Meta Type */
   product_meta_type?: InputMaybe<FilterEqualTypeInput>;
   /** Attribute label: Product Type */
   product_type_new2?: InputMaybe<FilterEqualTypeInput>;
@@ -8714,8 +8979,18 @@ export type ProductAttributeFilterInput = {
   short_description?: InputMaybe<FilterMatchTypeInput>;
   /** Attribute label: Short Name */
   short_name?: InputMaybe<FilterMatchTypeInput>;
+  /** Attribute label: Skin Concern */
+  skin_concern?: InputMaybe<FilterEqualTypeInput>;
+  /** Attribute label: Skin Type */
+  skin_type?: InputMaybe<FilterEqualTypeInput>;
+  /** Attribute label: Texture */
+  skincare_texture?: InputMaybe<FilterEqualTypeInput>;
   /** Attribute label: SKU */
   sku?: InputMaybe<FilterEqualTypeInput>;
+  /** Attribute label: SPF */
+  spf?: InputMaybe<FilterEqualTypeInput>;
+  /** Attribute label: Top Notes */
+  top_notes?: InputMaybe<FilterMatchTypeInput>;
   /** The part of the URL that identifies the product */
   url_key?: InputMaybe<FilterEqualTypeInput>;
   /** Attribute label: Use Time */
@@ -8728,12 +9003,12 @@ export type ProductAttributeSortInput = {
   name?: InputMaybe<SortEnum>;
   /** Attribute label: Set Product as New from Date */
   news_from_date?: InputMaybe<SortEnum>;
-  /** Attribute label: Set Product as New to Date */
-  news_to_date?: InputMaybe<SortEnum>;
   /** Sort by the position assigned to each product. */
   position?: InputMaybe<SortEnum>;
   /** Attribute label: Price */
   price?: InputMaybe<SortEnum>;
+  /** Attribute label: Quantity */
+  quantity_and_stock_status?: InputMaybe<SortEnum>;
   /** Sort by the search relevance score (default). */
   relevance?: InputMaybe<SortEnum>;
 };
@@ -8858,15 +9133,24 @@ export type ProductInfoInput = {
 
 /** Contains fields that are common to all types of products. */
 export type ProductInterface = {
+  /** @deprecated Use the `custom_attributes` field instead. */
+  area_of_apply?: Maybe<Scalars["String"]["output"]>;
   /**
    * The attribute set assigned to the product.
    * @deprecated The field should not be used on the storefront.
    */
   attribute_set_id?: Maybe<Scalars["Int"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
-  brand?: Maybe<Scalars["Int"]["output"]>;
+  awards?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  awards_date?: Maybe<Scalars["Int"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  base_notes?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  bottle_design?: Maybe<Scalars["String"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
   brand_new?: Maybe<Scalars["Int"]["output"]>;
+  brand_new_label?: Maybe<Scalars["String"]["output"]>;
   /** The relative canonical URL. This value is returned only if the system setting 'Use Canonical Link Meta Tag For Products' is enabled. */
   canonical_url?: Maybe<Scalars["String"]["output"]>;
   /** The categories assigned to a product. */
@@ -8889,6 +9173,8 @@ export type ProductInterface = {
   countdown_timer_title?: Maybe<Scalars["String"]["output"]>;
   /** The product's country of origin. */
   country_of_manufacture?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  coverage?: Maybe<Scalars["String"]["output"]>;
   /**
    * Timestamp indicating when the product was created.
    * @deprecated The field should not be used on the storefront.
@@ -8900,21 +9186,27 @@ export type ProductInterface = {
   custom_attributesV2?: Maybe<ProductCustomAttributes>;
   /** Detailed information about the product. The value can include simple HTML tags. */
   description?: Maybe<ComplexTextValue>;
-  estimated_delivery_days?: Maybe<Array<Maybe<EstimatedDeliveryDay>>>;
-  /** @deprecated Use the `custom_attributes` field instead. */
-  exclusive?: Maybe<Scalars["Int"]["output"]>;
-  /** @deprecated Use the `custom_attributes` field instead. */
-  express_delivery_available?: Maybe<Scalars["Int"]["output"]>;
+  express_delivery_available?: Maybe<Scalars["Boolean"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
   extra?: Maybe<Scalars["Int"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
+  facts?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  finish?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  formulation?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
   fragrance_notes?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  fulfillment_model?: Maybe<Scalars["Int"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
   gender?: Maybe<Scalars["String"]["output"]>;
   /** Indicates whether a gift message is available. */
   gift_message_available?: Maybe<Scalars["String"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
-  giftwrap_blacklisted?: Maybe<Scalars["Int"]["output"]>;
+  hair_concern?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  hair_type?: Maybe<Scalars["String"]["output"]>;
   /**
    * The ID number assigned to the product.
    * @deprecated Use the `uid` field instead.
@@ -8924,8 +9216,12 @@ export type ProductInterface = {
   image?: Maybe<ProductImage>;
   /** @deprecated Use the `custom_attributes` field instead. */
   ingredients?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  inspired_by?: Maybe<Scalars["String"]["output"]>;
   /** Indicates whether the product can be returned. */
   is_returnable?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  key_ingredients?: Maybe<Scalars["String"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
   makeup_color?: Maybe<Scalars["String"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
@@ -8948,12 +9244,18 @@ export type ProductInterface = {
   meta_keyword?: Maybe<Scalars["String"]["output"]>;
   /** A string that is displayed in the title bar and tab of the browser and in search results lists. */
   meta_title?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  middle_notes?: Maybe<Scalars["String"]["output"]>;
   /** The product name. Customers use this name to identify the product. */
   name?: Maybe<Scalars["String"]["output"]>;
   /** The beginning date for new product listings, and determines if the product is featured as a new product. */
   new_from_date?: Maybe<Scalars["String"]["output"]>;
   /** The end date for new product listings. */
   new_to_date?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  notes?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  occasion?: Maybe<Scalars["Int"]["output"]>;
   /** Product stock only x left count */
   only_x_left_in_stock?: Maybe<Scalars["Float"]["output"]>;
   /** If the product has multiple options, determines where they appear on the product page. */
@@ -8962,6 +9264,8 @@ export type ProductInterface = {
   perfume_category?: Maybe<Scalars["Int"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
   perfume_color?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  perfumer_name?: Maybe<Scalars["Int"]["output"]>;
   /**
    * Indicates the price of an item.
    * @deprecated Use `price_range` for product price information.
@@ -8975,6 +9279,8 @@ export type ProductInterface = {
   product_category?: Maybe<Scalars["Int"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
   product_color?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  product_faq?: Maybe<Scalars["String"]["output"]>;
   /** An array of `ProductLinks` objects. */
   product_links?: Maybe<Array<Maybe<ProductLinksInterface>>>;
   /** @deprecated Use the `custom_attributes` field instead. */
@@ -8985,8 +9291,6 @@ export type ProductInterface = {
   product_type_new?: Maybe<Scalars["String"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
   product_type_new2?: Maybe<Scalars["String"]["output"]>;
-  /** @deprecated Use the `custom_attributes` field instead. */
-  productcategory?: Maybe<Scalars["Int"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
   quantity?: Maybe<Scalars["Int"]["output"]>;
   /** The average of all the ratings given to the product. */
@@ -9002,6 +9306,8 @@ export type ProductInterface = {
   /** @deprecated Use the `custom_attributes` field instead. */
   search_keywords?: Maybe<Scalars["String"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
+  season?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
   serie_new?: Maybe<Scalars["String"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
   series?: Maybe<Scalars["String"]["output"]>;
@@ -9013,6 +9319,12 @@ export type ProductInterface = {
   size?: Maybe<Scalars["Int"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
   size_new?: Maybe<Scalars["Int"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  skin_concern?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  skin_type?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  skincare_texture?: Maybe<Scalars["String"]["output"]>;
   /** A number or code assigned to a product to identify the product, options, price, and manufacturer. */
   sku?: Maybe<Scalars["String"]["output"]>;
   /** The relative path to the small image, which is used on catalog pages. */
@@ -9026,14 +9338,18 @@ export type ProductInterface = {
   special_price?: Maybe<Scalars["Float"]["output"]>;
   /** The end date for a product with a special price. */
   special_to_date?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  spf?: Maybe<Scalars["Int"]["output"]>;
   /** Indicates whether the product is staged for a future campaign. */
   staged: Scalars["Boolean"]["output"];
   /** Stock status of the product */
   stock_status?: Maybe<ProductStockStatus>;
   /** @deprecated Use the `custom_attributes` field instead. */
-  supplier_id?: Maybe<Scalars["String"]["output"]>;
+  supplier_id?: Maybe<Scalars["Int"]["output"]>;
   /** The file name of a swatch image. */
   swatch_image?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  tag_keywords?: Maybe<Scalars["String"]["output"]>;
   /** The relative path to the product's thumbnail image. */
   thumbnail?: Maybe<ProductImage>;
   /**
@@ -9046,6 +9362,8 @@ export type ProductInterface = {
    * @deprecated Use `price_tiers` for product tier price information.
    */
   tier_prices?: Maybe<Array<Maybe<ProductTierPrices>>>;
+  /** @deprecated Use the `custom_attributes` field instead. */
+  top_notes?: Maybe<Scalars["String"]["output"]>;
   /**
    * One of simple, virtual, bundle, downloadable, grouped, or configurable.
    * @deprecated Use `__typename` instead.
@@ -9513,6 +9831,7 @@ export type Query = {
   guestOrderByToken: CustomerOrder;
   /** Check whether the specified email has already been used to create a customer account. */
   isEmailAvailable?: Maybe<IsEmailAvailableOutput>;
+  orderProcessingHealthCheck?: Maybe<OrderProcessingHealthCheckOutput>;
   /** The pickup locations query searches for locations that match the search request requirements. */
   pickupLocations?: Maybe<PickupLocations>;
   /** Return the active ratings attributes and the values each rating can have. */
@@ -9673,6 +9992,14 @@ export type QueryGuestOrderByTokenArgs = {
 
 export type QueryIsEmailAvailableArgs = {
   email: Scalars["String"]["input"];
+};
+
+export type QueryOrderProcessingHealthCheckArgs = {
+  payment_method?: InputMaybe<Scalars["String"]["input"]>;
+  period: Scalars["Int"]["input"];
+  platform: Scalars["String"]["input"];
+  shipping_method?: InputMaybe<Scalars["String"]["input"]>;
+  status: Scalars["String"]["input"];
 };
 
 export type QueryPickupLocationsArgs = {
@@ -10954,15 +11281,24 @@ export type SimpleProduct = CustomizableProductInterface &
   ProductInterface &
   RoutableInterface & {
     __typename?: "SimpleProduct";
+    /** @deprecated Use the `custom_attributes` field instead. */
+    area_of_apply?: Maybe<Scalars["String"]["output"]>;
     /**
      * The attribute set assigned to the product.
      * @deprecated The field should not be used on the storefront.
      */
     attribute_set_id?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    brand?: Maybe<Scalars["Int"]["output"]>;
+    awards?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    awards_date?: Maybe<Scalars["Int"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    base_notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    bottle_design?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     brand_new?: Maybe<Scalars["Int"]["output"]>;
+    brand_new_label?: Maybe<Scalars["String"]["output"]>;
     /** The relative canonical URL. This value is returned only if the system setting 'Use Canonical Link Meta Tag For Products' is enabled. */
     canonical_url?: Maybe<Scalars["String"]["output"]>;
     /** The categories assigned to a product. */
@@ -10985,6 +11321,8 @@ export type SimpleProduct = CustomizableProductInterface &
     countdown_timer_title?: Maybe<Scalars["String"]["output"]>;
     /** The product's country of origin. */
     country_of_manufacture?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    coverage?: Maybe<Scalars["String"]["output"]>;
     /**
      * Timestamp indicating when the product was created.
      * @deprecated The field should not be used on the storefront.
@@ -10996,21 +11334,27 @@ export type SimpleProduct = CustomizableProductInterface &
     custom_attributesV2?: Maybe<ProductCustomAttributes>;
     /** Detailed information about the product. The value can include simple HTML tags. */
     description?: Maybe<ComplexTextValue>;
-    estimated_delivery_days?: Maybe<Array<Maybe<EstimatedDeliveryDay>>>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    exclusive?: Maybe<Scalars["Int"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    express_delivery_available?: Maybe<Scalars["Int"]["output"]>;
+    express_delivery_available?: Maybe<Scalars["Boolean"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     extra?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    facts?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    finish?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    formulation?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     fragrance_notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    fulfillment_model?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     gender?: Maybe<Scalars["String"]["output"]>;
     /** Indicates whether a gift message is available. */
     gift_message_available?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    giftwrap_blacklisted?: Maybe<Scalars["Int"]["output"]>;
+    hair_concern?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    hair_type?: Maybe<Scalars["String"]["output"]>;
     /**
      * The ID number assigned to the product.
      * @deprecated Use the `uid` field instead.
@@ -11020,8 +11364,12 @@ export type SimpleProduct = CustomizableProductInterface &
     image?: Maybe<ProductImage>;
     /** @deprecated Use the `custom_attributes` field instead. */
     ingredients?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    inspired_by?: Maybe<Scalars["String"]["output"]>;
     /** Indicates whether the product can be returned. */
     is_returnable?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    key_ingredients?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     makeup_color?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -11044,12 +11392,18 @@ export type SimpleProduct = CustomizableProductInterface &
     meta_keyword?: Maybe<Scalars["String"]["output"]>;
     /** A string that is displayed in the title bar and tab of the browser and in search results lists. */
     meta_title?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    middle_notes?: Maybe<Scalars["String"]["output"]>;
     /** The product name. Customers use this name to identify the product. */
     name?: Maybe<Scalars["String"]["output"]>;
     /** The beginning date for new product listings, and determines if the product is featured as a new product. */
     new_from_date?: Maybe<Scalars["String"]["output"]>;
     /** The end date for new product listings. */
     new_to_date?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    occasion?: Maybe<Scalars["Int"]["output"]>;
     /** Product stock only x left count */
     only_x_left_in_stock?: Maybe<Scalars["Float"]["output"]>;
     /** An array of options for a customizable product. */
@@ -11060,6 +11414,8 @@ export type SimpleProduct = CustomizableProductInterface &
     perfume_category?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     perfume_color?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    perfumer_name?: Maybe<Scalars["Int"]["output"]>;
     /**
      * Indicates the price of an item.
      * @deprecated Use `price_range` for product price information.
@@ -11073,6 +11429,8 @@ export type SimpleProduct = CustomizableProductInterface &
     product_category?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_color?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    product_faq?: Maybe<Scalars["String"]["output"]>;
     /** An array of `ProductLinks` objects. */
     product_links?: Maybe<Array<Maybe<ProductLinksInterface>>>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -11083,8 +11441,6 @@ export type SimpleProduct = CustomizableProductInterface &
     product_type_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_type_new2?: Maybe<Scalars["String"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    productcategory?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     quantity?: Maybe<Scalars["Int"]["output"]>;
     /** The average of all the ratings given to the product. */
@@ -11104,6 +11460,8 @@ export type SimpleProduct = CustomizableProductInterface &
     /** @deprecated Use the `custom_attributes` field instead. */
     search_keywords?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    season?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     serie_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     series?: Maybe<Scalars["String"]["output"]>;
@@ -11115,6 +11473,12 @@ export type SimpleProduct = CustomizableProductInterface &
     size?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     size_new?: Maybe<Scalars["Int"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skin_concern?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skin_type?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skincare_texture?: Maybe<Scalars["String"]["output"]>;
     /** A number or code assigned to a product to identify the product, options, price, and manufacturer. */
     sku?: Maybe<Scalars["String"]["output"]>;
     /** The relative path to the small image, which is used on catalog pages. */
@@ -11128,14 +11492,18 @@ export type SimpleProduct = CustomizableProductInterface &
     special_price?: Maybe<Scalars["Float"]["output"]>;
     /** The end date for a product with a special price. */
     special_to_date?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    spf?: Maybe<Scalars["Int"]["output"]>;
     /** Indicates whether the product is staged for a future campaign. */
     staged: Scalars["Boolean"]["output"];
     /** Stock status of the product */
     stock_status?: Maybe<ProductStockStatus>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    supplier_id?: Maybe<Scalars["String"]["output"]>;
+    supplier_id?: Maybe<Scalars["Int"]["output"]>;
     /** The file name of a swatch image. */
     swatch_image?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    tag_keywords?: Maybe<Scalars["String"]["output"]>;
     /** The relative path to the product's thumbnail image. */
     thumbnail?: Maybe<ProductImage>;
     /**
@@ -11148,6 +11516,8 @@ export type SimpleProduct = CustomizableProductInterface &
      * @deprecated Use `price_tiers` for product tier price information.
      */
     tier_prices?: Maybe<Array<Maybe<ProductTierPrices>>>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    top_notes?: Maybe<Scalars["String"]["output"]>;
     /** One of PRODUCT, CATEGORY, or CMS_PAGE. */
     type?: Maybe<UrlRewriteEntityTypeEnum>;
     /**
@@ -12478,15 +12848,24 @@ export type VirtualProduct = CustomizableProductInterface &
   ProductInterface &
   RoutableInterface & {
     __typename?: "VirtualProduct";
+    /** @deprecated Use the `custom_attributes` field instead. */
+    area_of_apply?: Maybe<Scalars["String"]["output"]>;
     /**
      * The attribute set assigned to the product.
      * @deprecated The field should not be used on the storefront.
      */
     attribute_set_id?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    brand?: Maybe<Scalars["Int"]["output"]>;
+    awards?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    awards_date?: Maybe<Scalars["Int"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    base_notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    bottle_design?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     brand_new?: Maybe<Scalars["Int"]["output"]>;
+    brand_new_label?: Maybe<Scalars["String"]["output"]>;
     /** The relative canonical URL. This value is returned only if the system setting 'Use Canonical Link Meta Tag For Products' is enabled. */
     canonical_url?: Maybe<Scalars["String"]["output"]>;
     /** The categories assigned to a product. */
@@ -12509,6 +12888,8 @@ export type VirtualProduct = CustomizableProductInterface &
     countdown_timer_title?: Maybe<Scalars["String"]["output"]>;
     /** The product's country of origin. */
     country_of_manufacture?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    coverage?: Maybe<Scalars["String"]["output"]>;
     /**
      * Timestamp indicating when the product was created.
      * @deprecated The field should not be used on the storefront.
@@ -12520,21 +12901,27 @@ export type VirtualProduct = CustomizableProductInterface &
     custom_attributesV2?: Maybe<ProductCustomAttributes>;
     /** Detailed information about the product. The value can include simple HTML tags. */
     description?: Maybe<ComplexTextValue>;
-    estimated_delivery_days?: Maybe<Array<Maybe<EstimatedDeliveryDay>>>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    exclusive?: Maybe<Scalars["Int"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    express_delivery_available?: Maybe<Scalars["Int"]["output"]>;
+    express_delivery_available?: Maybe<Scalars["Boolean"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     extra?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    facts?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    finish?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    formulation?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     fragrance_notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    fulfillment_model?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     gender?: Maybe<Scalars["String"]["output"]>;
     /** Indicates whether a gift message is available. */
     gift_message_available?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    giftwrap_blacklisted?: Maybe<Scalars["Int"]["output"]>;
+    hair_concern?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    hair_type?: Maybe<Scalars["String"]["output"]>;
     /**
      * The ID number assigned to the product.
      * @deprecated Use the `uid` field instead.
@@ -12544,8 +12931,12 @@ export type VirtualProduct = CustomizableProductInterface &
     image?: Maybe<ProductImage>;
     /** @deprecated Use the `custom_attributes` field instead. */
     ingredients?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    inspired_by?: Maybe<Scalars["String"]["output"]>;
     /** Indicates whether the product can be returned. */
     is_returnable?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    key_ingredients?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     makeup_color?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -12568,12 +12959,18 @@ export type VirtualProduct = CustomizableProductInterface &
     meta_keyword?: Maybe<Scalars["String"]["output"]>;
     /** A string that is displayed in the title bar and tab of the browser and in search results lists. */
     meta_title?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    middle_notes?: Maybe<Scalars["String"]["output"]>;
     /** The product name. Customers use this name to identify the product. */
     name?: Maybe<Scalars["String"]["output"]>;
     /** The beginning date for new product listings, and determines if the product is featured as a new product. */
     new_from_date?: Maybe<Scalars["String"]["output"]>;
     /** The end date for new product listings. */
     new_to_date?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    notes?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    occasion?: Maybe<Scalars["Int"]["output"]>;
     /** Product stock only x left count */
     only_x_left_in_stock?: Maybe<Scalars["Float"]["output"]>;
     /** An array of options for a customizable product. */
@@ -12584,6 +12981,8 @@ export type VirtualProduct = CustomizableProductInterface &
     perfume_category?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     perfume_color?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    perfumer_name?: Maybe<Scalars["Int"]["output"]>;
     /**
      * Indicates the price of an item.
      * @deprecated Use `price_range` for product price information.
@@ -12597,6 +12996,8 @@ export type VirtualProduct = CustomizableProductInterface &
     product_category?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_color?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    product_faq?: Maybe<Scalars["String"]["output"]>;
     /** An array of `ProductLinks` objects. */
     product_links?: Maybe<Array<Maybe<ProductLinksInterface>>>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -12607,8 +13008,6 @@ export type VirtualProduct = CustomizableProductInterface &
     product_type_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_type_new2?: Maybe<Scalars["String"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    productcategory?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     quantity?: Maybe<Scalars["Int"]["output"]>;
     /** The average of all the ratings given to the product. */
@@ -12628,6 +13027,8 @@ export type VirtualProduct = CustomizableProductInterface &
     /** @deprecated Use the `custom_attributes` field instead. */
     search_keywords?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    season?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     serie_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     series?: Maybe<Scalars["String"]["output"]>;
@@ -12639,6 +13040,12 @@ export type VirtualProduct = CustomizableProductInterface &
     size?: Maybe<Scalars["Int"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     size_new?: Maybe<Scalars["Int"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skin_concern?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skin_type?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    skincare_texture?: Maybe<Scalars["String"]["output"]>;
     /** A number or code assigned to a product to identify the product, options, price, and manufacturer. */
     sku?: Maybe<Scalars["String"]["output"]>;
     /** The relative path to the small image, which is used on catalog pages. */
@@ -12652,14 +13059,18 @@ export type VirtualProduct = CustomizableProductInterface &
     special_price?: Maybe<Scalars["Float"]["output"]>;
     /** The end date for a product with a special price. */
     special_to_date?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    spf?: Maybe<Scalars["Int"]["output"]>;
     /** Indicates whether the product is staged for a future campaign. */
     staged: Scalars["Boolean"]["output"];
     /** Stock status of the product */
     stock_status?: Maybe<ProductStockStatus>;
     /** @deprecated Use the `custom_attributes` field instead. */
-    supplier_id?: Maybe<Scalars["String"]["output"]>;
+    supplier_id?: Maybe<Scalars["Int"]["output"]>;
     /** The file name of a swatch image. */
     swatch_image?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    tag_keywords?: Maybe<Scalars["String"]["output"]>;
     /** The relative path to the product's thumbnail image. */
     thumbnail?: Maybe<ProductImage>;
     /**
@@ -12672,6 +13083,8 @@ export type VirtualProduct = CustomizableProductInterface &
      * @deprecated Use `price_tiers` for product tier price information.
      */
     tier_prices?: Maybe<Array<Maybe<ProductTierPrices>>>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    top_notes?: Maybe<Scalars["String"]["output"]>;
     /** One of PRODUCT, CATEGORY, or CMS_PAGE. */
     type?: Maybe<UrlRewriteEntityTypeEnum>;
     /**
@@ -13235,9 +13648,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -13274,9 +13690,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -13313,9 +13732,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -13352,9 +13774,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -13391,9 +13816,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -13430,9 +13858,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -13469,9 +13900,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -13521,7 +13955,9 @@ export type CartDetailsFieldsFragment = {
           configured_variant:
             | {
                 __typename?: "BundleProduct";
-                express_delivery_available?: number | null;
+                id?: number | null;
+                sku?: string | null;
+                express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
                 countdown_timer_start_date?: string | null;
@@ -13551,7 +13987,9 @@ export type CartDetailsFieldsFragment = {
               }
             | {
                 __typename?: "ConfigurableProduct";
-                express_delivery_available?: number | null;
+                id?: number | null;
+                sku?: string | null;
+                express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
                 countdown_timer_start_date?: string | null;
@@ -13581,7 +14019,9 @@ export type CartDetailsFieldsFragment = {
               }
             | {
                 __typename?: "DownloadableProduct";
-                express_delivery_available?: number | null;
+                id?: number | null;
+                sku?: string | null;
+                express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
                 countdown_timer_start_date?: string | null;
@@ -13611,7 +14051,9 @@ export type CartDetailsFieldsFragment = {
               }
             | {
                 __typename?: "GiftCardProduct";
-                express_delivery_available?: number | null;
+                id?: number | null;
+                sku?: string | null;
+                express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
                 countdown_timer_start_date?: string | null;
@@ -13641,7 +14083,9 @@ export type CartDetailsFieldsFragment = {
               }
             | {
                 __typename?: "GroupedProduct";
-                express_delivery_available?: number | null;
+                id?: number | null;
+                sku?: string | null;
+                express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
                 countdown_timer_start_date?: string | null;
@@ -13671,7 +14115,9 @@ export type CartDetailsFieldsFragment = {
               }
             | {
                 __typename?: "SimpleProduct";
-                express_delivery_available?: number | null;
+                id?: number | null;
+                sku?: string | null;
+                express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
                 countdown_timer_start_date?: string | null;
@@ -13701,7 +14147,9 @@ export type CartDetailsFieldsFragment = {
               }
             | {
                 __typename?: "VirtualProduct";
-                express_delivery_available?: number | null;
+                id?: number | null;
+                sku?: string | null;
+                express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
                 countdown_timer_start_date?: string | null;
@@ -13767,9 +14215,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -13806,9 +14257,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -13845,9 +14299,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -13884,9 +14341,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -13923,9 +14383,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -13962,9 +14425,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14001,9 +14467,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14080,9 +14549,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14119,9 +14591,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14158,9 +14633,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14197,9 +14675,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14236,9 +14717,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14275,9 +14759,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14314,9 +14801,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14393,9 +14883,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14432,9 +14925,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14471,9 +14967,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14510,9 +15009,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14549,9 +15051,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14588,9 +15093,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14627,9 +15135,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14672,7 +15183,7 @@ export type CartDetailsFieldsFragment = {
           product:
             | {
                 __typename?: "BundleProduct";
-                express_delivery_available?: number | null;
+                express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
                 countdown_timer_start_date?: string | null;
@@ -14681,9 +15192,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14717,7 +15231,7 @@ export type CartDetailsFieldsFragment = {
               }
             | {
                 __typename?: "ConfigurableProduct";
-                express_delivery_available?: number | null;
+                express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
                 countdown_timer_start_date?: string | null;
@@ -14726,9 +15240,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14762,7 +15279,7 @@ export type CartDetailsFieldsFragment = {
               }
             | {
                 __typename?: "DownloadableProduct";
-                express_delivery_available?: number | null;
+                express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
                 countdown_timer_start_date?: string | null;
@@ -14771,9 +15288,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14807,7 +15327,7 @@ export type CartDetailsFieldsFragment = {
               }
             | {
                 __typename?: "GiftCardProduct";
-                express_delivery_available?: number | null;
+                express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
                 countdown_timer_start_date?: string | null;
@@ -14816,9 +15336,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14852,7 +15375,7 @@ export type CartDetailsFieldsFragment = {
               }
             | {
                 __typename?: "GroupedProduct";
-                express_delivery_available?: number | null;
+                express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
                 countdown_timer_start_date?: string | null;
@@ -14861,9 +15384,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14897,7 +15423,7 @@ export type CartDetailsFieldsFragment = {
               }
             | {
                 __typename?: "SimpleProduct";
-                express_delivery_available?: number | null;
+                express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
                 countdown_timer_start_date?: string | null;
@@ -14906,9 +15432,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -14942,7 +15471,7 @@ export type CartDetailsFieldsFragment = {
               }
             | {
                 __typename?: "VirtualProduct";
-                express_delivery_available?: number | null;
+                express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
                 countdown_timer_start_date?: string | null;
@@ -14951,9 +15480,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -15062,9 +15594,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -15101,9 +15636,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -15140,9 +15678,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -15179,9 +15720,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -15218,9 +15762,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -15257,9 +15804,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -15296,9 +15846,12 @@ export type CartDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
+                url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
+                product_type_new2?: string | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -15533,9 +16086,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -15572,9 +16128,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -15611,9 +16170,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -15650,9 +16212,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -15689,9 +16254,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -15728,9 +16296,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -15767,9 +16338,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -15819,7 +16393,9 @@ export type GetCartDetailsQuery = {
             configured_variant:
               | {
                   __typename?: "BundleProduct";
-                  express_delivery_available?: number | null;
+                  id?: number | null;
+                  sku?: string | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -15849,7 +16425,9 @@ export type GetCartDetailsQuery = {
                 }
               | {
                   __typename?: "ConfigurableProduct";
-                  express_delivery_available?: number | null;
+                  id?: number | null;
+                  sku?: string | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -15879,7 +16457,9 @@ export type GetCartDetailsQuery = {
                 }
               | {
                   __typename?: "DownloadableProduct";
-                  express_delivery_available?: number | null;
+                  id?: number | null;
+                  sku?: string | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -15909,7 +16489,9 @@ export type GetCartDetailsQuery = {
                 }
               | {
                   __typename?: "GiftCardProduct";
-                  express_delivery_available?: number | null;
+                  id?: number | null;
+                  sku?: string | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -15939,7 +16521,9 @@ export type GetCartDetailsQuery = {
                 }
               | {
                   __typename?: "GroupedProduct";
-                  express_delivery_available?: number | null;
+                  id?: number | null;
+                  sku?: string | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -15969,7 +16553,9 @@ export type GetCartDetailsQuery = {
                 }
               | {
                   __typename?: "SimpleProduct";
-                  express_delivery_available?: number | null;
+                  id?: number | null;
+                  sku?: string | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -15999,7 +16585,9 @@ export type GetCartDetailsQuery = {
                 }
               | {
                   __typename?: "VirtualProduct";
-                  express_delivery_available?: number | null;
+                  id?: number | null;
+                  sku?: string | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -16065,9 +16653,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16104,9 +16695,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16143,9 +16737,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16182,9 +16779,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16221,9 +16821,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16260,9 +16863,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16299,9 +16905,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16378,9 +16987,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16417,9 +17029,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16456,9 +17071,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16495,9 +17113,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16534,9 +17155,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16573,9 +17197,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16612,9 +17239,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16691,9 +17321,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16730,9 +17363,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16769,9 +17405,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16808,9 +17447,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16847,9 +17489,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16886,9 +17531,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16925,9 +17573,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -16970,7 +17621,7 @@ export type GetCartDetailsQuery = {
             product:
               | {
                   __typename?: "BundleProduct";
-                  express_delivery_available?: number | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -16979,9 +17630,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -17015,7 +17669,7 @@ export type GetCartDetailsQuery = {
                 }
               | {
                   __typename?: "ConfigurableProduct";
-                  express_delivery_available?: number | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -17024,9 +17678,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -17060,7 +17717,7 @@ export type GetCartDetailsQuery = {
                 }
               | {
                   __typename?: "DownloadableProduct";
-                  express_delivery_available?: number | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -17069,9 +17726,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -17105,7 +17765,7 @@ export type GetCartDetailsQuery = {
                 }
               | {
                   __typename?: "GiftCardProduct";
-                  express_delivery_available?: number | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -17114,9 +17774,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -17150,7 +17813,7 @@ export type GetCartDetailsQuery = {
                 }
               | {
                   __typename?: "GroupedProduct";
-                  express_delivery_available?: number | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -17159,9 +17822,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -17195,7 +17861,7 @@ export type GetCartDetailsQuery = {
                 }
               | {
                   __typename?: "SimpleProduct";
-                  express_delivery_available?: number | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -17204,9 +17870,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -17240,7 +17909,7 @@ export type GetCartDetailsQuery = {
                 }
               | {
                   __typename?: "VirtualProduct";
-                  express_delivery_available?: number | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -17249,9 +17918,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -17360,9 +18032,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -17399,9 +18074,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -17438,9 +18116,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -17477,9 +18158,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -17516,9 +18200,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -17555,9 +18242,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -17594,9 +18284,12 @@ export type GetCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -17868,9 +18561,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -17907,9 +18603,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -17946,9 +18645,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -17985,9 +18687,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -18024,9 +18729,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -18063,9 +18771,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -18102,9 +18813,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -18154,7 +18868,9 @@ export type GetCustomerCartDetailsQuery = {
             configured_variant:
               | {
                   __typename?: "BundleProduct";
-                  express_delivery_available?: number | null;
+                  id?: number | null;
+                  sku?: string | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -18184,7 +18900,9 @@ export type GetCustomerCartDetailsQuery = {
                 }
               | {
                   __typename?: "ConfigurableProduct";
-                  express_delivery_available?: number | null;
+                  id?: number | null;
+                  sku?: string | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -18214,7 +18932,9 @@ export type GetCustomerCartDetailsQuery = {
                 }
               | {
                   __typename?: "DownloadableProduct";
-                  express_delivery_available?: number | null;
+                  id?: number | null;
+                  sku?: string | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -18244,7 +18964,9 @@ export type GetCustomerCartDetailsQuery = {
                 }
               | {
                   __typename?: "GiftCardProduct";
-                  express_delivery_available?: number | null;
+                  id?: number | null;
+                  sku?: string | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -18274,7 +18996,9 @@ export type GetCustomerCartDetailsQuery = {
                 }
               | {
                   __typename?: "GroupedProduct";
-                  express_delivery_available?: number | null;
+                  id?: number | null;
+                  sku?: string | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -18304,7 +19028,9 @@ export type GetCustomerCartDetailsQuery = {
                 }
               | {
                   __typename?: "SimpleProduct";
-                  express_delivery_available?: number | null;
+                  id?: number | null;
+                  sku?: string | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -18334,7 +19060,9 @@ export type GetCustomerCartDetailsQuery = {
                 }
               | {
                   __typename?: "VirtualProduct";
-                  express_delivery_available?: number | null;
+                  id?: number | null;
+                  sku?: string | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -18400,9 +19128,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -18439,9 +19170,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -18478,9 +19212,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -18517,9 +19254,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -18556,9 +19296,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -18595,9 +19338,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -18634,9 +19380,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -18713,9 +19462,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -18752,9 +19504,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -18791,9 +19546,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -18830,9 +19588,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -18869,9 +19630,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -18908,9 +19672,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -18947,9 +19714,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19026,9 +19796,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19065,9 +19838,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19104,9 +19880,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19143,9 +19922,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19182,9 +19964,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19221,9 +20006,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19260,9 +20048,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19305,7 +20096,7 @@ export type GetCustomerCartDetailsQuery = {
             product:
               | {
                   __typename?: "BundleProduct";
-                  express_delivery_available?: number | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -19314,9 +20105,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19350,7 +20144,7 @@ export type GetCustomerCartDetailsQuery = {
                 }
               | {
                   __typename?: "ConfigurableProduct";
-                  express_delivery_available?: number | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -19359,9 +20153,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19395,7 +20192,7 @@ export type GetCustomerCartDetailsQuery = {
                 }
               | {
                   __typename?: "DownloadableProduct";
-                  express_delivery_available?: number | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -19404,9 +20201,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19440,7 +20240,7 @@ export type GetCustomerCartDetailsQuery = {
                 }
               | {
                   __typename?: "GiftCardProduct";
-                  express_delivery_available?: number | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -19449,9 +20249,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19485,7 +20288,7 @@ export type GetCustomerCartDetailsQuery = {
                 }
               | {
                   __typename?: "GroupedProduct";
-                  express_delivery_available?: number | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -19494,9 +20297,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19530,7 +20336,7 @@ export type GetCustomerCartDetailsQuery = {
                 }
               | {
                   __typename?: "SimpleProduct";
-                  express_delivery_available?: number | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -19539,9 +20345,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19575,7 +20384,7 @@ export type GetCustomerCartDetailsQuery = {
                 }
               | {
                   __typename?: "VirtualProduct";
-                  express_delivery_available?: number | null;
+                  express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
                   countdown_timer_start_date?: string | null;
@@ -19584,9 +20393,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19695,9 +20507,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19734,9 +20549,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19773,9 +20591,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19812,9 +20633,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19851,9 +20675,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19890,9 +20717,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -19929,9 +20759,12 @@ export type GetCustomerCartDetailsQuery = {
                   uid: string;
                   id?: number | null;
                   name?: string | null;
+                  brand_new_label?: string | null;
                   sku?: string | null;
+                  url_key?: string | null;
                   rating_summary: number;
                   stock_status?: ProductStockStatus | null;
+                  product_type_new2?: string | null;
                   short_description?: {
                     __typename?: "ComplexTextValue";
                     html: string;
@@ -20182,9 +21015,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -20221,9 +21057,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -20260,9 +21099,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -20299,9 +21141,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -20338,9 +21183,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -20377,9 +21225,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -20416,9 +21267,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -20468,7 +21322,9 @@ export type AddProductsToCartMutation = {
               configured_variant:
                 | {
                     __typename?: "BundleProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -20498,7 +21354,9 @@ export type AddProductsToCartMutation = {
                   }
                 | {
                     __typename?: "ConfigurableProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -20528,7 +21386,9 @@ export type AddProductsToCartMutation = {
                   }
                 | {
                     __typename?: "DownloadableProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -20558,7 +21418,9 @@ export type AddProductsToCartMutation = {
                   }
                 | {
                     __typename?: "GiftCardProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -20588,7 +21450,9 @@ export type AddProductsToCartMutation = {
                   }
                 | {
                     __typename?: "GroupedProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -20618,7 +21482,9 @@ export type AddProductsToCartMutation = {
                   }
                 | {
                     __typename?: "SimpleProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -20648,7 +21514,9 @@ export type AddProductsToCartMutation = {
                   }
                 | {
                     __typename?: "VirtualProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -20714,9 +21582,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -20753,9 +21624,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -20792,9 +21666,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -20831,9 +21708,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -20870,9 +21750,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -20909,9 +21792,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -20948,9 +21834,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21027,9 +21916,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21066,9 +21958,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21105,9 +22000,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21144,9 +22042,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21183,9 +22084,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21222,9 +22126,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21261,9 +22168,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21340,9 +22250,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21379,9 +22292,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21418,9 +22334,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21457,9 +22376,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21496,9 +22418,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21535,9 +22460,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21574,9 +22502,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21619,7 +22550,7 @@ export type AddProductsToCartMutation = {
               product:
                 | {
                     __typename?: "BundleProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -21628,9 +22559,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21664,7 +22598,7 @@ export type AddProductsToCartMutation = {
                   }
                 | {
                     __typename?: "ConfigurableProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -21673,9 +22607,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21709,7 +22646,7 @@ export type AddProductsToCartMutation = {
                   }
                 | {
                     __typename?: "DownloadableProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -21718,9 +22655,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21754,7 +22694,7 @@ export type AddProductsToCartMutation = {
                   }
                 | {
                     __typename?: "GiftCardProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -21763,9 +22703,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21799,7 +22742,7 @@ export type AddProductsToCartMutation = {
                   }
                 | {
                     __typename?: "GroupedProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -21808,9 +22751,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21844,7 +22790,7 @@ export type AddProductsToCartMutation = {
                   }
                 | {
                     __typename?: "SimpleProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -21853,9 +22799,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -21889,7 +22838,7 @@ export type AddProductsToCartMutation = {
                   }
                 | {
                     __typename?: "VirtualProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -21898,9 +22847,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -22009,9 +22961,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -22048,9 +23003,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -22087,9 +23045,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -22126,9 +23087,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -22165,9 +23129,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -22204,9 +23171,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -22243,9 +23213,12 @@ export type AddProductsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -22491,9 +23464,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -22530,9 +23506,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -22569,9 +23548,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -22608,9 +23590,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -22647,9 +23632,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -22686,9 +23674,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -22725,9 +23716,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -22777,7 +23771,9 @@ export type AddProductsToCartWithGiftMessageMutation = {
               configured_variant:
                 | {
                     __typename?: "BundleProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -22807,7 +23803,9 @@ export type AddProductsToCartWithGiftMessageMutation = {
                   }
                 | {
                     __typename?: "ConfigurableProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -22837,7 +23835,9 @@ export type AddProductsToCartWithGiftMessageMutation = {
                   }
                 | {
                     __typename?: "DownloadableProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -22867,7 +23867,9 @@ export type AddProductsToCartWithGiftMessageMutation = {
                   }
                 | {
                     __typename?: "GiftCardProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -22897,7 +23899,9 @@ export type AddProductsToCartWithGiftMessageMutation = {
                   }
                 | {
                     __typename?: "GroupedProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -22927,7 +23931,9 @@ export type AddProductsToCartWithGiftMessageMutation = {
                   }
                 | {
                     __typename?: "SimpleProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -22957,7 +23963,9 @@ export type AddProductsToCartWithGiftMessageMutation = {
                   }
                 | {
                     __typename?: "VirtualProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -23023,9 +24031,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23062,9 +24073,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23101,9 +24115,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23140,9 +24157,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23179,9 +24199,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23218,9 +24241,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23257,9 +24283,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23336,9 +24365,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23375,9 +24407,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23414,9 +24449,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23453,9 +24491,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23492,9 +24533,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23531,9 +24575,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23570,9 +24617,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23649,9 +24699,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23688,9 +24741,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23727,9 +24783,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23766,9 +24825,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23805,9 +24867,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23844,9 +24909,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23883,9 +24951,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23928,7 +24999,7 @@ export type AddProductsToCartWithGiftMessageMutation = {
               product:
                 | {
                     __typename?: "BundleProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -23937,9 +25008,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -23973,7 +25047,7 @@ export type AddProductsToCartWithGiftMessageMutation = {
                   }
                 | {
                     __typename?: "ConfigurableProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -23982,9 +25056,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24018,7 +25095,7 @@ export type AddProductsToCartWithGiftMessageMutation = {
                   }
                 | {
                     __typename?: "DownloadableProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -24027,9 +25104,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24063,7 +25143,7 @@ export type AddProductsToCartWithGiftMessageMutation = {
                   }
                 | {
                     __typename?: "GiftCardProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -24072,9 +25152,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24108,7 +25191,7 @@ export type AddProductsToCartWithGiftMessageMutation = {
                   }
                 | {
                     __typename?: "GroupedProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -24117,9 +25200,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24153,7 +25239,7 @@ export type AddProductsToCartWithGiftMessageMutation = {
                   }
                 | {
                     __typename?: "SimpleProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -24162,9 +25248,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24198,7 +25287,7 @@ export type AddProductsToCartWithGiftMessageMutation = {
                   }
                 | {
                     __typename?: "VirtualProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -24207,9 +25296,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24318,9 +25410,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24357,9 +25452,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24396,9 +25494,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24435,9 +25536,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24474,9 +25578,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24513,9 +25620,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24552,9 +25662,12 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24800,9 +25913,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24839,9 +25955,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24878,9 +25997,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24917,9 +26039,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24956,9 +26081,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -24995,9 +26123,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -25034,9 +26165,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -25086,7 +26220,9 @@ export type ApplyCouponToCartMutation = {
               configured_variant:
                 | {
                     __typename?: "BundleProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -25116,7 +26252,9 @@ export type ApplyCouponToCartMutation = {
                   }
                 | {
                     __typename?: "ConfigurableProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -25146,7 +26284,9 @@ export type ApplyCouponToCartMutation = {
                   }
                 | {
                     __typename?: "DownloadableProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -25176,7 +26316,9 @@ export type ApplyCouponToCartMutation = {
                   }
                 | {
                     __typename?: "GiftCardProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -25206,7 +26348,9 @@ export type ApplyCouponToCartMutation = {
                   }
                 | {
                     __typename?: "GroupedProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -25236,7 +26380,9 @@ export type ApplyCouponToCartMutation = {
                   }
                 | {
                     __typename?: "SimpleProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -25266,7 +26412,9 @@ export type ApplyCouponToCartMutation = {
                   }
                 | {
                     __typename?: "VirtualProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -25332,9 +26480,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -25371,9 +26522,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -25410,9 +26564,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -25449,9 +26606,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -25488,9 +26648,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -25527,9 +26690,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -25566,9 +26732,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -25645,9 +26814,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -25684,9 +26856,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -25723,9 +26898,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -25762,9 +26940,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -25801,9 +26982,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -25840,9 +27024,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -25879,9 +27066,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -25958,9 +27148,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -25997,9 +27190,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26036,9 +27232,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26075,9 +27274,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26114,9 +27316,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26153,9 +27358,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26192,9 +27400,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26237,7 +27448,7 @@ export type ApplyCouponToCartMutation = {
               product:
                 | {
                     __typename?: "BundleProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -26246,9 +27457,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26282,7 +27496,7 @@ export type ApplyCouponToCartMutation = {
                   }
                 | {
                     __typename?: "ConfigurableProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -26291,9 +27505,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26327,7 +27544,7 @@ export type ApplyCouponToCartMutation = {
                   }
                 | {
                     __typename?: "DownloadableProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -26336,9 +27553,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26372,7 +27592,7 @@ export type ApplyCouponToCartMutation = {
                   }
                 | {
                     __typename?: "GiftCardProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -26381,9 +27601,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26417,7 +27640,7 @@ export type ApplyCouponToCartMutation = {
                   }
                 | {
                     __typename?: "GroupedProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -26426,9 +27649,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26462,7 +27688,7 @@ export type ApplyCouponToCartMutation = {
                   }
                 | {
                     __typename?: "SimpleProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -26471,9 +27697,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26507,7 +27736,7 @@ export type ApplyCouponToCartMutation = {
                   }
                 | {
                     __typename?: "VirtualProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -26516,9 +27745,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26627,9 +27859,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26666,9 +27901,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26705,9 +27943,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26744,9 +27985,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26783,9 +28027,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26822,9 +28069,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -26861,9 +28111,12 @@ export type ApplyCouponToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -27102,9 +28355,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -27141,9 +28397,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -27180,9 +28439,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -27219,9 +28481,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -27258,9 +28523,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -27297,9 +28565,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -27336,9 +28607,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -27388,7 +28662,9 @@ export type ApplyRewardPointsToCartMutation = {
               configured_variant:
                 | {
                     __typename?: "BundleProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -27418,7 +28694,9 @@ export type ApplyRewardPointsToCartMutation = {
                   }
                 | {
                     __typename?: "ConfigurableProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -27448,7 +28726,9 @@ export type ApplyRewardPointsToCartMutation = {
                   }
                 | {
                     __typename?: "DownloadableProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -27478,7 +28758,9 @@ export type ApplyRewardPointsToCartMutation = {
                   }
                 | {
                     __typename?: "GiftCardProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -27508,7 +28790,9 @@ export type ApplyRewardPointsToCartMutation = {
                   }
                 | {
                     __typename?: "GroupedProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -27538,7 +28822,9 @@ export type ApplyRewardPointsToCartMutation = {
                   }
                 | {
                     __typename?: "SimpleProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -27568,7 +28854,9 @@ export type ApplyRewardPointsToCartMutation = {
                   }
                 | {
                     __typename?: "VirtualProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -27634,9 +28922,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -27673,9 +28964,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -27712,9 +29006,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -27751,9 +29048,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -27790,9 +29090,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -27829,9 +29132,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -27868,9 +29174,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -27947,9 +29256,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -27986,9 +29298,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28025,9 +29340,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28064,9 +29382,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28103,9 +29424,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28142,9 +29466,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28181,9 +29508,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28260,9 +29590,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28299,9 +29632,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28338,9 +29674,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28377,9 +29716,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28416,9 +29758,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28455,9 +29800,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28494,9 +29842,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28539,7 +29890,7 @@ export type ApplyRewardPointsToCartMutation = {
               product:
                 | {
                     __typename?: "BundleProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -28548,9 +29899,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28584,7 +29938,7 @@ export type ApplyRewardPointsToCartMutation = {
                   }
                 | {
                     __typename?: "ConfigurableProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -28593,9 +29947,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28629,7 +29986,7 @@ export type ApplyRewardPointsToCartMutation = {
                   }
                 | {
                     __typename?: "DownloadableProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -28638,9 +29995,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28674,7 +30034,7 @@ export type ApplyRewardPointsToCartMutation = {
                   }
                 | {
                     __typename?: "GiftCardProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -28683,9 +30043,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28719,7 +30082,7 @@ export type ApplyRewardPointsToCartMutation = {
                   }
                 | {
                     __typename?: "GroupedProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -28728,9 +30091,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28764,7 +30130,7 @@ export type ApplyRewardPointsToCartMutation = {
                   }
                 | {
                     __typename?: "SimpleProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -28773,9 +30139,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28809,7 +30178,7 @@ export type ApplyRewardPointsToCartMutation = {
                   }
                 | {
                     __typename?: "VirtualProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -28818,9 +30187,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28929,9 +30301,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -28968,9 +30343,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -29007,9 +30385,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -29046,9 +30427,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -29085,9 +30469,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -29124,9 +30511,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -29163,9 +30553,12 @@ export type ApplyRewardPointsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -29513,9 +30906,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -29552,9 +30948,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -29591,9 +30990,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -29630,9 +31032,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -29669,9 +31074,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -29708,9 +31116,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -29747,9 +31158,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -29799,7 +31213,9 @@ export type RemoveCouponFromCartMutation = {
               configured_variant:
                 | {
                     __typename?: "BundleProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -29829,7 +31245,9 @@ export type RemoveCouponFromCartMutation = {
                   }
                 | {
                     __typename?: "ConfigurableProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -29859,7 +31277,9 @@ export type RemoveCouponFromCartMutation = {
                   }
                 | {
                     __typename?: "DownloadableProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -29889,7 +31309,9 @@ export type RemoveCouponFromCartMutation = {
                   }
                 | {
                     __typename?: "GiftCardProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -29919,7 +31341,9 @@ export type RemoveCouponFromCartMutation = {
                   }
                 | {
                     __typename?: "GroupedProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -29949,7 +31373,9 @@ export type RemoveCouponFromCartMutation = {
                   }
                 | {
                     __typename?: "SimpleProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -29979,7 +31405,9 @@ export type RemoveCouponFromCartMutation = {
                   }
                 | {
                     __typename?: "VirtualProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -30045,9 +31473,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30084,9 +31515,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30123,9 +31557,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30162,9 +31599,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30201,9 +31641,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30240,9 +31683,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30279,9 +31725,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30358,9 +31807,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30397,9 +31849,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30436,9 +31891,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30475,9 +31933,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30514,9 +31975,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30553,9 +32017,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30592,9 +32059,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30671,9 +32141,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30710,9 +32183,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30749,9 +32225,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30788,9 +32267,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30827,9 +32309,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30866,9 +32351,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30905,9 +32393,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30950,7 +32441,7 @@ export type RemoveCouponFromCartMutation = {
               product:
                 | {
                     __typename?: "BundleProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -30959,9 +32450,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -30995,7 +32489,7 @@ export type RemoveCouponFromCartMutation = {
                   }
                 | {
                     __typename?: "ConfigurableProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -31004,9 +32498,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -31040,7 +32537,7 @@ export type RemoveCouponFromCartMutation = {
                   }
                 | {
                     __typename?: "DownloadableProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -31049,9 +32546,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -31085,7 +32585,7 @@ export type RemoveCouponFromCartMutation = {
                   }
                 | {
                     __typename?: "GiftCardProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -31094,9 +32594,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -31130,7 +32633,7 @@ export type RemoveCouponFromCartMutation = {
                   }
                 | {
                     __typename?: "GroupedProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -31139,9 +32642,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -31175,7 +32681,7 @@ export type RemoveCouponFromCartMutation = {
                   }
                 | {
                     __typename?: "SimpleProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -31184,9 +32690,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -31220,7 +32729,7 @@ export type RemoveCouponFromCartMutation = {
                   }
                 | {
                     __typename?: "VirtualProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -31229,9 +32738,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -31340,9 +32852,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -31379,9 +32894,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -31418,9 +32936,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -31457,9 +32978,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -31496,9 +33020,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -31535,9 +33062,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -31574,9 +33104,12 @@ export type RemoveCouponFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -31815,9 +33348,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -31854,9 +33390,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -31893,9 +33432,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -31932,9 +33474,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -31971,9 +33516,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -32010,9 +33558,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -32049,9 +33600,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -32101,7 +33655,9 @@ export type RemoveFromCartMutation = {
               configured_variant:
                 | {
                     __typename?: "BundleProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -32131,7 +33687,9 @@ export type RemoveFromCartMutation = {
                   }
                 | {
                     __typename?: "ConfigurableProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -32161,7 +33719,9 @@ export type RemoveFromCartMutation = {
                   }
                 | {
                     __typename?: "DownloadableProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -32191,7 +33751,9 @@ export type RemoveFromCartMutation = {
                   }
                 | {
                     __typename?: "GiftCardProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -32221,7 +33783,9 @@ export type RemoveFromCartMutation = {
                   }
                 | {
                     __typename?: "GroupedProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -32251,7 +33815,9 @@ export type RemoveFromCartMutation = {
                   }
                 | {
                     __typename?: "SimpleProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -32281,7 +33847,9 @@ export type RemoveFromCartMutation = {
                   }
                 | {
                     __typename?: "VirtualProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -32347,9 +33915,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -32386,9 +33957,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -32425,9 +33999,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -32464,9 +34041,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -32503,9 +34083,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -32542,9 +34125,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -32581,9 +34167,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -32660,9 +34249,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -32699,9 +34291,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -32738,9 +34333,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -32777,9 +34375,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -32816,9 +34417,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -32855,9 +34459,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -32894,9 +34501,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -32973,9 +34583,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33012,9 +34625,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33051,9 +34667,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33090,9 +34709,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33129,9 +34751,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33168,9 +34793,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33207,9 +34835,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33252,7 +34883,7 @@ export type RemoveFromCartMutation = {
               product:
                 | {
                     __typename?: "BundleProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -33261,9 +34892,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33297,7 +34931,7 @@ export type RemoveFromCartMutation = {
                   }
                 | {
                     __typename?: "ConfigurableProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -33306,9 +34940,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33342,7 +34979,7 @@ export type RemoveFromCartMutation = {
                   }
                 | {
                     __typename?: "DownloadableProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -33351,9 +34988,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33387,7 +35027,7 @@ export type RemoveFromCartMutation = {
                   }
                 | {
                     __typename?: "GiftCardProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -33396,9 +35036,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33432,7 +35075,7 @@ export type RemoveFromCartMutation = {
                   }
                 | {
                     __typename?: "GroupedProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -33441,9 +35084,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33477,7 +35123,7 @@ export type RemoveFromCartMutation = {
                   }
                 | {
                     __typename?: "SimpleProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -33486,9 +35132,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33522,7 +35171,7 @@ export type RemoveFromCartMutation = {
                   }
                 | {
                     __typename?: "VirtualProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -33531,9 +35180,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33642,9 +35294,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33681,9 +35336,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33720,9 +35378,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33759,9 +35420,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33798,9 +35462,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33837,9 +35504,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -33876,9 +35546,12 @@ export type RemoveFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -34117,9 +35790,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -34156,9 +35832,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -34195,9 +35874,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -34234,9 +35916,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -34273,9 +35958,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -34312,9 +36000,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -34351,9 +36042,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -34403,7 +36097,9 @@ export type RemoveRewardPointsFromCartMutation = {
               configured_variant:
                 | {
                     __typename?: "BundleProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -34433,7 +36129,9 @@ export type RemoveRewardPointsFromCartMutation = {
                   }
                 | {
                     __typename?: "ConfigurableProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -34463,7 +36161,9 @@ export type RemoveRewardPointsFromCartMutation = {
                   }
                 | {
                     __typename?: "DownloadableProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -34493,7 +36193,9 @@ export type RemoveRewardPointsFromCartMutation = {
                   }
                 | {
                     __typename?: "GiftCardProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -34523,7 +36225,9 @@ export type RemoveRewardPointsFromCartMutation = {
                   }
                 | {
                     __typename?: "GroupedProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -34553,7 +36257,9 @@ export type RemoveRewardPointsFromCartMutation = {
                   }
                 | {
                     __typename?: "SimpleProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -34583,7 +36289,9 @@ export type RemoveRewardPointsFromCartMutation = {
                   }
                 | {
                     __typename?: "VirtualProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -34649,9 +36357,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -34688,9 +36399,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -34727,9 +36441,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -34766,9 +36483,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -34805,9 +36525,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -34844,9 +36567,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -34883,9 +36609,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -34962,9 +36691,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35001,9 +36733,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35040,9 +36775,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35079,9 +36817,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35118,9 +36859,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35157,9 +36901,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35196,9 +36943,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35275,9 +37025,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35314,9 +37067,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35353,9 +37109,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35392,9 +37151,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35431,9 +37193,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35470,9 +37235,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35509,9 +37277,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35554,7 +37325,7 @@ export type RemoveRewardPointsFromCartMutation = {
               product:
                 | {
                     __typename?: "BundleProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -35563,9 +37334,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35599,7 +37373,7 @@ export type RemoveRewardPointsFromCartMutation = {
                   }
                 | {
                     __typename?: "ConfigurableProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -35608,9 +37382,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35644,7 +37421,7 @@ export type RemoveRewardPointsFromCartMutation = {
                   }
                 | {
                     __typename?: "DownloadableProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -35653,9 +37430,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35689,7 +37469,7 @@ export type RemoveRewardPointsFromCartMutation = {
                   }
                 | {
                     __typename?: "GiftCardProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -35698,9 +37478,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35734,7 +37517,7 @@ export type RemoveRewardPointsFromCartMutation = {
                   }
                 | {
                     __typename?: "GroupedProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -35743,9 +37526,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35779,7 +37565,7 @@ export type RemoveRewardPointsFromCartMutation = {
                   }
                 | {
                     __typename?: "SimpleProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -35788,9 +37574,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35824,7 +37613,7 @@ export type RemoveRewardPointsFromCartMutation = {
                   }
                 | {
                     __typename?: "VirtualProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -35833,9 +37622,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35944,9 +37736,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -35983,9 +37778,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -36022,9 +37820,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -36061,9 +37862,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -36100,9 +37904,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -36139,9 +37946,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -36178,9 +37988,12 @@ export type RemoveRewardPointsFromCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -36684,9 +38497,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -36723,9 +38539,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -36762,9 +38581,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -36801,9 +38623,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -36840,9 +38665,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -36879,9 +38707,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -36918,9 +38749,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -36970,7 +38804,9 @@ export type UpdateCartItemsMutation = {
               configured_variant:
                 | {
                     __typename?: "BundleProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -37000,7 +38836,9 @@ export type UpdateCartItemsMutation = {
                   }
                 | {
                     __typename?: "ConfigurableProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -37030,7 +38868,9 @@ export type UpdateCartItemsMutation = {
                   }
                 | {
                     __typename?: "DownloadableProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -37060,7 +38900,9 @@ export type UpdateCartItemsMutation = {
                   }
                 | {
                     __typename?: "GiftCardProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -37090,7 +38932,9 @@ export type UpdateCartItemsMutation = {
                   }
                 | {
                     __typename?: "GroupedProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -37120,7 +38964,9 @@ export type UpdateCartItemsMutation = {
                   }
                 | {
                     __typename?: "SimpleProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -37150,7 +38996,9 @@ export type UpdateCartItemsMutation = {
                   }
                 | {
                     __typename?: "VirtualProduct";
-                    express_delivery_available?: number | null;
+                    id?: number | null;
+                    sku?: string | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -37216,9 +39064,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37255,9 +39106,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37294,9 +39148,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37333,9 +39190,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37372,9 +39232,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37411,9 +39274,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37450,9 +39316,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37529,9 +39398,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37568,9 +39440,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37607,9 +39482,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37646,9 +39524,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37685,9 +39566,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37724,9 +39608,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37763,9 +39650,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37842,9 +39732,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37881,9 +39774,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37920,9 +39816,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37959,9 +39858,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -37998,9 +39900,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -38037,9 +39942,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -38076,9 +39984,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -38121,7 +40032,7 @@ export type UpdateCartItemsMutation = {
               product:
                 | {
                     __typename?: "BundleProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -38130,9 +40041,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -38166,7 +40080,7 @@ export type UpdateCartItemsMutation = {
                   }
                 | {
                     __typename?: "ConfigurableProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -38175,9 +40089,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -38211,7 +40128,7 @@ export type UpdateCartItemsMutation = {
                   }
                 | {
                     __typename?: "DownloadableProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -38220,9 +40137,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -38256,7 +40176,7 @@ export type UpdateCartItemsMutation = {
                   }
                 | {
                     __typename?: "GiftCardProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -38265,9 +40185,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -38301,7 +40224,7 @@ export type UpdateCartItemsMutation = {
                   }
                 | {
                     __typename?: "GroupedProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -38310,9 +40233,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -38346,7 +40272,7 @@ export type UpdateCartItemsMutation = {
                   }
                 | {
                     __typename?: "SimpleProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -38355,9 +40281,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -38391,7 +40320,7 @@ export type UpdateCartItemsMutation = {
                   }
                 | {
                     __typename?: "VirtualProduct";
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
                     countdown_timer_start_date?: string | null;
@@ -38400,9 +40329,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -38511,9 +40443,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -38550,9 +40485,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -38589,9 +40527,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -38628,9 +40569,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -38667,9 +40611,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -38706,9 +40653,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -38745,9 +40695,12 @@ export type UpdateCartItemsMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
+                    url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -38831,193 +40784,14 @@ export type GetBrandsQuery = {
         url_key?: string | null;
         url_path?: string | null;
         image?: string | null;
-        children?: Array<{
-          __typename?: "CategoryTree";
-          include_in_menu?: number | null;
-        } | null> | null;
-      } | null> | null;
-    } | null> | null;
-  } | null;
-};
-
-export type GetCategoriesDetailedQueryVariables = Exact<{
-  [key: string]: never;
-}>;
-
-export type GetCategoriesDetailedQuery = {
-  __typename?: "Query";
-  categories?: {
-    __typename?: "CategoryResult";
-    items?: Array<{
-      __typename?: "CategoryTree";
-      uid: string;
-      name?: string | null;
-      url_key?: string | null;
-      url_path?: string | null;
-      level?: number | null;
-      include_in_menu?: number | null;
-      children_count?: string | null;
-      category_tab?: number | null;
-      celebrity_banner?: string | null;
-      children?: Array<{
-        __typename?: "CategoryTree";
-        uid: string;
-        name?: string | null;
-        url_key?: string | null;
-        url_path?: string | null;
-        level?: number | null;
-        children_count?: string | null;
-        product_count?: number | null;
-        include_in_menu?: number | null;
-        category_tab?: number | null;
+        api_catnav_image?: string | null;
+        api_catnav_icon?: string | null;
+        api_celebrity_thumbnail?: string | null;
         celebrity_banner?: string | null;
         children?: Array<{
           __typename?: "CategoryTree";
           include_in_menu?: number | null;
-          category_tab?: number | null;
-          celebrity_banner?: string | null;
-          name?: string | null;
-          path?: string | null;
-          children?: Array<{
-            __typename?: "CategoryTree";
-            include_in_menu?: number | null;
-            category_tab?: number | null;
-            celebrity_banner?: string | null;
-            name?: string | null;
-            path?: string | null;
-            path_in_store?: string | null;
-            children?: Array<{
-              __typename?: "CategoryTree";
-              product_count?: number | null;
-              include_in_menu?: number | null;
-              category_tab?: number | null;
-              celebrity_banner?: string | null;
-              name?: string | null;
-              path?: string | null;
-              uid: string;
-              url_key?: string | null;
-              url_path?: string | null;
-              breadcrumbs?: Array<{
-                __typename?: "Breadcrumb";
-                category_level?: number | null;
-                category_name?: string | null;
-                category_uid: string;
-                category_url_key?: string | null;
-                category_url_path?: string | null;
-              } | null> | null;
-            } | null> | null;
-          } | null> | null;
         } | null> | null;
-      } | null> | null;
-    } | null> | null;
-  } | null;
-};
-
-export type GetCategoryByUidDetailedQueryVariables = Exact<{
-  categoryUid: Scalars["String"]["input"];
-}>;
-
-export type GetCategoryByUidDetailedQuery = {
-  __typename?: "Query";
-  categories?: {
-    __typename?: "CategoryResult";
-    items?: Array<{
-      __typename?: "CategoryTree";
-      uid: string;
-      name?: string | null;
-      url_key?: string | null;
-      url_path?: string | null;
-      level?: number | null;
-      include_in_menu?: number | null;
-      children_count?: string | null;
-      category_tab?: number | null;
-      celebrity_banner?: string | null;
-      children?: Array<{
-        __typename?: "CategoryTree";
-        uid: string;
-        name?: string | null;
-        url_key?: string | null;
-        url_path?: string | null;
-        level?: number | null;
-        children_count?: string | null;
-        product_count?: number | null;
-        include_in_menu?: number | null;
-        category_tab?: number | null;
-        celebrity_banner?: string | null;
-        children?: Array<{
-          __typename?: "CategoryTree";
-          include_in_menu?: number | null;
-          category_tab?: number | null;
-          celebrity_banner?: string | null;
-          name?: string | null;
-          path?: string | null;
-          children?: Array<{
-            __typename?: "CategoryTree";
-            include_in_menu?: number | null;
-            category_tab?: number | null;
-            celebrity_banner?: string | null;
-            name?: string | null;
-            path?: string | null;
-            path_in_store?: string | null;
-            children?: Array<{
-              __typename?: "CategoryTree";
-              product_count?: number | null;
-              include_in_menu?: number | null;
-              category_tab?: number | null;
-              celebrity_banner?: string | null;
-              name?: string | null;
-              path?: string | null;
-              uid: string;
-              url_key?: string | null;
-              url_path?: string | null;
-              breadcrumbs?: Array<{
-                __typename?: "Breadcrumb";
-                category_level?: number | null;
-                category_name?: string | null;
-                category_uid: string;
-                category_url_key?: string | null;
-                category_url_path?: string | null;
-              } | null> | null;
-            } | null> | null;
-          } | null> | null;
-        } | null> | null;
-      } | null> | null;
-    } | null> | null;
-  } | null;
-};
-
-export type GetCategoryByUrlKeyDetailedQueryVariables = Exact<{
-  urlKey: Scalars["String"]["input"];
-}>;
-
-export type GetCategoryByUrlKeyDetailedQuery = {
-  __typename?: "Query";
-  categories?: {
-    __typename?: "CategoryResult";
-    items?: Array<{
-      __typename?: "CategoryTree";
-      uid: string;
-      name?: string | null;
-      url_key?: string | null;
-      url_path?: string | null;
-      level?: number | null;
-      include_in_menu?: number | null;
-      children_count?: string | null;
-      product_count?: number | null;
-      category_tab?: number | null;
-      celebrity_banner?: string | null;
-      children?: Array<{
-        __typename?: "CategoryTree";
-        uid: string;
-        name?: string | null;
-        url_key?: string | null;
-        url_path?: string | null;
-        level?: number | null;
-        children_count?: string | null;
-        product_count?: number | null;
-        include_in_menu?: number | null;
-        category_tab?: number | null;
-        celebrity_banner?: string | null;
       } | null> | null;
     } | null> | null;
   } | null;
@@ -39064,305 +40838,6 @@ export type GetCategoryRouteShellByPathQuery = {
   } | null;
 };
 
-export type GetProductsByCategoryUidQueryVariables = Exact<{
-  categoryUid: Scalars["String"]["input"];
-  pageSize: Scalars["Int"]["input"];
-  currentPage: Scalars["Int"]["input"];
-}>;
-
-export type GetProductsByCategoryUidQuery = {
-  __typename?: "Query";
-  products?: {
-    __typename?: "Products";
-    total_count?: number | null;
-    items?: Array<
-      | {
-          __typename: "BundleProduct";
-          uid: string;
-          sku?: string | null;
-          name?: string | null;
-          url_key?: string | null;
-          stock_status?: ProductStockStatus | null;
-          rating_summary: number;
-          review_count: number;
-          small_image?: {
-            __typename?: "ProductImage";
-            url?: string | null;
-            label?: string | null;
-          } | null;
-          price_range: {
-            __typename?: "PriceRange";
-            minimum_price: {
-              __typename?: "ProductPrice";
-              regular_price: {
-                __typename?: "Money";
-                value?: number | null;
-                currency?: CurrencyEnum | null;
-              };
-            };
-            maximum_price?: {
-              __typename?: "ProductPrice";
-              regular_price: {
-                __typename?: "Money";
-                value?: number | null;
-                currency?: CurrencyEnum | null;
-              };
-            } | null;
-          };
-          short_description?: {
-            __typename?: "ComplexTextValue";
-            html: string;
-          } | null;
-        }
-      | {
-          __typename: "ConfigurableProduct";
-          uid: string;
-          sku?: string | null;
-          name?: string | null;
-          url_key?: string | null;
-          stock_status?: ProductStockStatus | null;
-          rating_summary: number;
-          review_count: number;
-          configurable_options?: Array<{
-            __typename?: "ConfigurableProductOptions";
-            attribute_code?: string | null;
-            label?: string | null;
-            values?: Array<{
-              __typename?: "ConfigurableProductOptionsValues";
-              uid?: string | null;
-              label?: string | null;
-            } | null> | null;
-          } | null> | null;
-          small_image?: {
-            __typename?: "ProductImage";
-            url?: string | null;
-            label?: string | null;
-          } | null;
-          price_range: {
-            __typename?: "PriceRange";
-            minimum_price: {
-              __typename?: "ProductPrice";
-              regular_price: {
-                __typename?: "Money";
-                value?: number | null;
-                currency?: CurrencyEnum | null;
-              };
-            };
-            maximum_price?: {
-              __typename?: "ProductPrice";
-              regular_price: {
-                __typename?: "Money";
-                value?: number | null;
-                currency?: CurrencyEnum | null;
-              };
-            } | null;
-          };
-          short_description?: {
-            __typename?: "ComplexTextValue";
-            html: string;
-          } | null;
-        }
-      | {
-          __typename: "DownloadableProduct";
-          uid: string;
-          sku?: string | null;
-          name?: string | null;
-          url_key?: string | null;
-          stock_status?: ProductStockStatus | null;
-          rating_summary: number;
-          review_count: number;
-          small_image?: {
-            __typename?: "ProductImage";
-            url?: string | null;
-            label?: string | null;
-          } | null;
-          price_range: {
-            __typename?: "PriceRange";
-            minimum_price: {
-              __typename?: "ProductPrice";
-              regular_price: {
-                __typename?: "Money";
-                value?: number | null;
-                currency?: CurrencyEnum | null;
-              };
-            };
-            maximum_price?: {
-              __typename?: "ProductPrice";
-              regular_price: {
-                __typename?: "Money";
-                value?: number | null;
-                currency?: CurrencyEnum | null;
-              };
-            } | null;
-          };
-          short_description?: {
-            __typename?: "ComplexTextValue";
-            html: string;
-          } | null;
-        }
-      | {
-          __typename: "GiftCardProduct";
-          uid: string;
-          sku?: string | null;
-          name?: string | null;
-          url_key?: string | null;
-          stock_status?: ProductStockStatus | null;
-          rating_summary: number;
-          review_count: number;
-          small_image?: {
-            __typename?: "ProductImage";
-            url?: string | null;
-            label?: string | null;
-          } | null;
-          price_range: {
-            __typename?: "PriceRange";
-            minimum_price: {
-              __typename?: "ProductPrice";
-              regular_price: {
-                __typename?: "Money";
-                value?: number | null;
-                currency?: CurrencyEnum | null;
-              };
-            };
-            maximum_price?: {
-              __typename?: "ProductPrice";
-              regular_price: {
-                __typename?: "Money";
-                value?: number | null;
-                currency?: CurrencyEnum | null;
-              };
-            } | null;
-          };
-          short_description?: {
-            __typename?: "ComplexTextValue";
-            html: string;
-          } | null;
-        }
-      | {
-          __typename: "GroupedProduct";
-          uid: string;
-          sku?: string | null;
-          name?: string | null;
-          url_key?: string | null;
-          stock_status?: ProductStockStatus | null;
-          rating_summary: number;
-          review_count: number;
-          small_image?: {
-            __typename?: "ProductImage";
-            url?: string | null;
-            label?: string | null;
-          } | null;
-          price_range: {
-            __typename?: "PriceRange";
-            minimum_price: {
-              __typename?: "ProductPrice";
-              regular_price: {
-                __typename?: "Money";
-                value?: number | null;
-                currency?: CurrencyEnum | null;
-              };
-            };
-            maximum_price?: {
-              __typename?: "ProductPrice";
-              regular_price: {
-                __typename?: "Money";
-                value?: number | null;
-                currency?: CurrencyEnum | null;
-              };
-            } | null;
-          };
-          short_description?: {
-            __typename?: "ComplexTextValue";
-            html: string;
-          } | null;
-        }
-      | {
-          __typename: "SimpleProduct";
-          uid: string;
-          sku?: string | null;
-          name?: string | null;
-          url_key?: string | null;
-          stock_status?: ProductStockStatus | null;
-          rating_summary: number;
-          review_count: number;
-          small_image?: {
-            __typename?: "ProductImage";
-            url?: string | null;
-            label?: string | null;
-          } | null;
-          price_range: {
-            __typename?: "PriceRange";
-            minimum_price: {
-              __typename?: "ProductPrice";
-              regular_price: {
-                __typename?: "Money";
-                value?: number | null;
-                currency?: CurrencyEnum | null;
-              };
-            };
-            maximum_price?: {
-              __typename?: "ProductPrice";
-              regular_price: {
-                __typename?: "Money";
-                value?: number | null;
-                currency?: CurrencyEnum | null;
-              };
-            } | null;
-          };
-          short_description?: {
-            __typename?: "ComplexTextValue";
-            html: string;
-          } | null;
-        }
-      | {
-          __typename: "VirtualProduct";
-          uid: string;
-          sku?: string | null;
-          name?: string | null;
-          url_key?: string | null;
-          stock_status?: ProductStockStatus | null;
-          rating_summary: number;
-          review_count: number;
-          small_image?: {
-            __typename?: "ProductImage";
-            url?: string | null;
-            label?: string | null;
-          } | null;
-          price_range: {
-            __typename?: "PriceRange";
-            minimum_price: {
-              __typename?: "ProductPrice";
-              regular_price: {
-                __typename?: "Money";
-                value?: number | null;
-                currency?: CurrencyEnum | null;
-              };
-            };
-            maximum_price?: {
-              __typename?: "ProductPrice";
-              regular_price: {
-                __typename?: "Money";
-                value?: number | null;
-                currency?: CurrencyEnum | null;
-              };
-            } | null;
-          };
-          short_description?: {
-            __typename?: "ComplexTextValue";
-            html: string;
-          } | null;
-        }
-      | null
-    > | null;
-    page_info?: {
-      __typename?: "SearchResultPageInfo";
-      current_page?: number | null;
-      page_size?: number | null;
-      total_pages?: number | null;
-    } | null;
-  } | null;
-};
-
 export type GetCountriesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetCountriesQuery = {
@@ -39400,6 +40875,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -39458,6 +40934,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -39533,6 +41010,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -39591,6 +41069,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -39649,6 +41128,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -39707,6 +41187,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -39765,6 +41246,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -39834,49 +41316,49 @@ export type WishlistDetailsFieldsFragment = {
                 __typename?: "BundleProduct";
                 id?: number | null;
                 stock_status?: ProductStockStatus | null;
-                express_delivery_available?: number | null;
+                express_delivery_available?: boolean | null;
                 sku?: string | null;
               }
             | {
                 __typename?: "ConfigurableProduct";
                 id?: number | null;
                 stock_status?: ProductStockStatus | null;
-                express_delivery_available?: number | null;
+                express_delivery_available?: boolean | null;
                 sku?: string | null;
               }
             | {
                 __typename?: "DownloadableProduct";
                 id?: number | null;
                 stock_status?: ProductStockStatus | null;
-                express_delivery_available?: number | null;
+                express_delivery_available?: boolean | null;
                 sku?: string | null;
               }
             | {
                 __typename?: "GiftCardProduct";
                 id?: number | null;
                 stock_status?: ProductStockStatus | null;
-                express_delivery_available?: number | null;
+                express_delivery_available?: boolean | null;
                 sku?: string | null;
               }
             | {
                 __typename?: "GroupedProduct";
                 id?: number | null;
                 stock_status?: ProductStockStatus | null;
-                express_delivery_available?: number | null;
+                express_delivery_available?: boolean | null;
                 sku?: string | null;
               }
             | {
                 __typename?: "SimpleProduct";
                 id?: number | null;
                 stock_status?: ProductStockStatus | null;
-                express_delivery_available?: number | null;
+                express_delivery_available?: boolean | null;
                 sku?: string | null;
               }
             | {
                 __typename?: "VirtualProduct";
                 id?: number | null;
                 stock_status?: ProductStockStatus | null;
-                express_delivery_available?: number | null;
+                express_delivery_available?: boolean | null;
                 sku?: string | null;
               }
             | null;
@@ -39886,6 +41368,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -39944,6 +41427,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40019,6 +41503,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40077,6 +41562,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40135,6 +41621,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40193,6 +41680,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40251,6 +41739,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40315,6 +41804,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40373,6 +41863,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40448,6 +41939,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40506,6 +41998,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40564,6 +42057,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40622,6 +42116,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40680,6 +42175,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40744,6 +42240,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40802,6 +42299,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40877,6 +42375,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40935,6 +42434,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40993,6 +42493,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41051,6 +42552,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41109,6 +42611,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41173,6 +42676,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41231,6 +42735,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41306,6 +42811,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41364,6 +42870,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41422,6 +42929,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41480,6 +42988,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41538,6 +43047,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41602,6 +43112,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41660,6 +43171,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41735,6 +43247,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41793,6 +43306,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41851,6 +43365,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41909,6 +43424,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41967,6 +43483,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42031,6 +43548,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42089,6 +43607,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42164,6 +43683,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42222,6 +43742,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42280,6 +43801,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42338,6 +43860,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42396,6 +43919,7 @@ export type WishlistDetailsFieldsFragment = {
                 uid: string;
                 id?: number | null;
                 name?: string | null;
+                brand_new_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42581,6 +44105,7 @@ export type GetCustomerOrdersListQuery = {
         grand_total?: number | null;
         shipping_method?: string | null;
         tracking_status?: string | null;
+        points_to_spend?: number | null;
         user_actions?: Array<{
           __typename?: "UserAction";
           action?: string | null;
@@ -42592,6 +44117,7 @@ export type GetCustomerOrdersListQuery = {
               id: string;
               product_name?: string | null;
               product_sku: string;
+              product_url_key?: string | null;
               quantity_ordered?: number | null;
               product_sale_price: {
                 __typename?: "Money";
@@ -42603,70 +44129,461 @@ export type GetCustomerOrdersListQuery = {
                     __typename?: "BundleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
+                    variants?: Array<{
+                      __typename?: "ConfigurableVariant";
+                      attributes?: Array<{
+                        __typename?: "ConfigurableAttributeOption";
+                        code?: string | null;
+                        label?: string | null;
+                      } | null> | null;
+                      product?: {
+                        __typename?: "SimpleProduct";
+                        id?: number | null;
+                        sku?: string | null;
+                      } | null;
+                    } | null> | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | null;
@@ -42676,6 +44593,7 @@ export type GetCustomerOrdersListQuery = {
               id: string;
               product_name?: string | null;
               product_sku: string;
+              product_url_key?: string | null;
               quantity_ordered?: number | null;
               product_sale_price: {
                 __typename?: "Money";
@@ -42687,70 +44605,461 @@ export type GetCustomerOrdersListQuery = {
                     __typename?: "BundleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
+                    variants?: Array<{
+                      __typename?: "ConfigurableVariant";
+                      attributes?: Array<{
+                        __typename?: "ConfigurableAttributeOption";
+                        code?: string | null;
+                        label?: string | null;
+                      } | null> | null;
+                      product?: {
+                        __typename?: "SimpleProduct";
+                        id?: number | null;
+                        sku?: string | null;
+                      } | null;
+                    } | null> | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | null;
@@ -42760,6 +45069,7 @@ export type GetCustomerOrdersListQuery = {
               id: string;
               product_name?: string | null;
               product_sku: string;
+              product_url_key?: string | null;
               quantity_ordered?: number | null;
               product_sale_price: {
                 __typename?: "Money";
@@ -42771,70 +45081,461 @@ export type GetCustomerOrdersListQuery = {
                     __typename?: "BundleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
+                    variants?: Array<{
+                      __typename?: "ConfigurableVariant";
+                      attributes?: Array<{
+                        __typename?: "ConfigurableAttributeOption";
+                        code?: string | null;
+                        label?: string | null;
+                      } | null> | null;
+                      product?: {
+                        __typename?: "SimpleProduct";
+                        id?: number | null;
+                        sku?: string | null;
+                      } | null;
+                    } | null> | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | null;
@@ -42844,6 +45545,7 @@ export type GetCustomerOrdersListQuery = {
               id: string;
               product_name?: string | null;
               product_sku: string;
+              product_url_key?: string | null;
               quantity_ordered?: number | null;
               product_sale_price: {
                 __typename?: "Money";
@@ -42855,70 +45557,461 @@ export type GetCustomerOrdersListQuery = {
                     __typename?: "BundleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
+                    variants?: Array<{
+                      __typename?: "ConfigurableVariant";
+                      attributes?: Array<{
+                        __typename?: "ConfigurableAttributeOption";
+                        code?: string | null;
+                        label?: string | null;
+                      } | null> | null;
+                      product?: {
+                        __typename?: "SimpleProduct";
+                        id?: number | null;
+                        sku?: string | null;
+                      } | null;
+                    } | null> | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
                     sku?: string | null;
+                    name?: string | null;
+                    brand_new_label?: string | null;
+                    url_key?: string | null;
                     type_id?: string | null;
+                    stock_status?: ProductStockStatus | null;
+                    product_type_new2?: string | null;
                     image?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                    } | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      };
+                      maximum_price?: {
+                        __typename?: "ProductPrice";
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                      } | null;
+                    };
+                    custom_attributesV2?: {
+                      __typename?: "ProductCustomAttributes";
+                      items: Array<
+                        | {
+                            __typename?: "AttributeSelectedOptions";
+                            code: string;
+                            selected_options: Array<{
+                              __typename?: "AttributeSelectedOption";
+                              label: string;
+                              value: string;
+                            } | null>;
+                          }
+                        | {
+                            __typename?: "AttributeValue";
+                            value: string;
+                            code: string;
+                          }
+                        | null
+                      >;
                     } | null;
                   }
                 | null;
@@ -43160,6 +46253,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -43218,6 +46312,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -43293,6 +46388,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -43351,6 +46447,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -43409,6 +46506,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -43467,6 +46565,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -43525,6 +46624,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -43594,49 +46694,49 @@ export type GetCustomerWishlistQuery = {
                     __typename?: "BundleProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | null;
@@ -43646,6 +46746,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -43704,6 +46805,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -43779,6 +46881,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -43837,6 +46940,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -43895,6 +46999,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -43953,6 +47058,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -44011,6 +47117,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -44075,6 +47182,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -44133,6 +47241,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -44208,6 +47317,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -44266,6 +47376,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -44324,6 +47435,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -44382,6 +47494,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -44440,6 +47553,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -44504,6 +47618,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -44562,6 +47677,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -44637,6 +47753,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -44695,6 +47812,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -44753,6 +47871,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -44811,6 +47930,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -44869,6 +47989,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -44933,6 +48054,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -44991,6 +48113,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -45066,6 +48189,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -45124,6 +48248,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -45182,6 +48307,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -45240,6 +48366,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -45298,6 +48425,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -45362,6 +48490,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -45420,6 +48549,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -45495,6 +48625,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -45553,6 +48684,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -45611,6 +48743,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -45669,6 +48802,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -45727,6 +48861,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -45791,6 +48926,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -45849,6 +48985,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -45924,6 +49061,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -45982,6 +49120,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46040,6 +49179,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46098,6 +49238,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46156,6 +49297,7 @@ export type GetCustomerWishlistQuery = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46294,6 +49436,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46352,6 +49495,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46427,6 +49571,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46485,6 +49630,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46543,6 +49689,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46601,6 +49748,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46659,6 +49807,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46728,49 +49877,49 @@ export type AddProductsToWishlistMutation = {
                     __typename?: "BundleProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | null;
@@ -46780,6 +49929,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46838,6 +49988,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46913,6 +50064,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46971,6 +50123,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47029,6 +50182,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47087,6 +50241,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47145,6 +50300,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47209,6 +50365,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47267,6 +50424,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47342,6 +50500,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47400,6 +50559,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47458,6 +50618,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47516,6 +50677,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47574,6 +50736,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47638,6 +50801,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47696,6 +50860,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47771,6 +50936,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47829,6 +50995,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47887,6 +51054,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47945,6 +51113,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48003,6 +51172,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48067,6 +51237,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48125,6 +51296,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48200,6 +51372,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48258,6 +51431,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48316,6 +51490,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48374,6 +51549,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48432,6 +51608,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48496,6 +51673,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48554,6 +51732,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48629,6 +51808,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48687,6 +51867,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48745,6 +51926,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48803,6 +51985,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48861,6 +52044,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48925,6 +52109,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48983,6 +52168,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49058,6 +52244,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49116,6 +52303,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49174,6 +52362,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49232,6 +52421,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49290,6 +52480,7 @@ export type AddProductsToWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49396,6 +52587,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49454,6 +52646,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49529,6 +52722,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49587,6 +52781,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49645,6 +52840,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49703,6 +52899,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49761,6 +52958,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49830,49 +53028,49 @@ export type AddWishlistItemsToCartMutation = {
                     __typename?: "BundleProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | null;
@@ -49882,6 +53080,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49940,6 +53139,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50015,6 +53215,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50073,6 +53274,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50131,6 +53333,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50189,6 +53392,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50247,6 +53451,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50311,6 +53516,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50369,6 +53575,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50444,6 +53651,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50502,6 +53710,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50560,6 +53769,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50618,6 +53828,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50676,6 +53887,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50740,6 +53952,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50798,6 +54011,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50873,6 +54087,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50931,6 +54146,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50989,6 +54205,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51047,6 +54264,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51105,6 +54323,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51169,6 +54388,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51227,6 +54447,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51302,6 +54523,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51360,6 +54582,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51418,6 +54641,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51476,6 +54700,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51534,6 +54759,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51598,6 +54824,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51656,6 +54883,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51731,6 +54959,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51789,6 +55018,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51847,6 +55077,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51905,6 +55136,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51963,6 +55195,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52027,6 +55260,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52085,6 +55319,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52160,6 +55395,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52218,6 +55454,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52276,6 +55513,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52334,6 +55572,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52392,6 +55631,7 @@ export type AddWishlistItemsToCartMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52584,6 +55824,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52642,6 +55883,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52717,6 +55959,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52775,6 +56018,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52833,6 +56077,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52891,6 +56136,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52949,6 +56195,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53018,49 +56265,49 @@ export type RemoveProductsFromWishlistMutation = {
                     __typename?: "BundleProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
                     stock_status?: ProductStockStatus | null;
-                    express_delivery_available?: number | null;
+                    express_delivery_available?: boolean | null;
                     sku?: string | null;
                   }
                 | null;
@@ -53070,6 +56317,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53128,6 +56376,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53203,6 +56452,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53261,6 +56511,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53319,6 +56570,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53377,6 +56629,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53435,6 +56688,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53499,6 +56753,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53557,6 +56812,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53632,6 +56888,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53690,6 +56947,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53748,6 +57006,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53806,6 +57065,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53864,6 +57124,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53928,6 +57189,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53986,6 +57248,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54061,6 +57324,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54119,6 +57383,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54177,6 +57442,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54235,6 +57501,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54293,6 +57560,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54357,6 +57625,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54415,6 +57684,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54490,6 +57760,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54548,6 +57819,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54606,6 +57878,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54664,6 +57937,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54722,6 +57996,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54786,6 +58061,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54844,6 +58120,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54919,6 +58196,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54977,6 +58255,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55035,6 +58314,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55093,6 +58373,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55151,6 +58432,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55215,6 +58497,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55273,6 +58556,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55348,6 +58632,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55406,6 +58691,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55464,6 +58750,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55522,6 +58809,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55580,6 +58868,7 @@ export type RemoveProductsFromWishlistMutation = {
                     uid: string;
                     id?: number | null;
                     name?: string | null;
+                    brand_new_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -56091,7 +59380,9 @@ export type GetProductBasicInfoQuery = {
           id?: number | null;
           name?: string | null;
           sku?: string | null;
+          url_key?: string | null;
           brand_new?: number | null;
+          brand_new_label?: string | null;
           rating_summary: number;
           review_count: number;
           short_description?: {
@@ -56125,7 +59416,9 @@ export type GetProductBasicInfoQuery = {
           id?: number | null;
           name?: string | null;
           sku?: string | null;
+          url_key?: string | null;
           brand_new?: number | null;
+          brand_new_label?: string | null;
           rating_summary: number;
           review_count: number;
           short_description?: {
@@ -56159,7 +59452,9 @@ export type GetProductBasicInfoQuery = {
           id?: number | null;
           name?: string | null;
           sku?: string | null;
+          url_key?: string | null;
           brand_new?: number | null;
+          brand_new_label?: string | null;
           rating_summary: number;
           review_count: number;
           short_description?: {
@@ -56193,7 +59488,9 @@ export type GetProductBasicInfoQuery = {
           id?: number | null;
           name?: string | null;
           sku?: string | null;
+          url_key?: string | null;
           brand_new?: number | null;
+          brand_new_label?: string | null;
           rating_summary: number;
           review_count: number;
           short_description?: {
@@ -56227,7 +59524,9 @@ export type GetProductBasicInfoQuery = {
           id?: number | null;
           name?: string | null;
           sku?: string | null;
+          url_key?: string | null;
           brand_new?: number | null;
+          brand_new_label?: string | null;
           rating_summary: number;
           review_count: number;
           short_description?: {
@@ -56261,7 +59560,9 @@ export type GetProductBasicInfoQuery = {
           id?: number | null;
           name?: string | null;
           sku?: string | null;
+          url_key?: string | null;
           brand_new?: number | null;
+          brand_new_label?: string | null;
           rating_summary: number;
           review_count: number;
           short_description?: {
@@ -56295,7 +59596,275 @@ export type GetProductBasicInfoQuery = {
           id?: number | null;
           name?: string | null;
           sku?: string | null;
+          url_key?: string | null;
           brand_new?: number | null;
+          brand_new_label?: string | null;
+          rating_summary: number;
+          review_count: number;
+          short_description?: {
+            __typename?: "ComplexTextValue";
+            html: string;
+          } | null;
+          thumbnail?: {
+            __typename?: "ProductImage";
+            url?: string | null;
+          } | null;
+          price_range: {
+            __typename?: "PriceRange";
+            minimum_price: {
+              __typename?: "ProductPrice";
+              final_price: {
+                __typename?: "Money";
+                currency?: CurrencyEnum | null;
+                value?: number | null;
+              };
+              regular_price: {
+                __typename?: "Money";
+                currency?: CurrencyEnum | null;
+                value?: number | null;
+              };
+            };
+          };
+        }
+      | null
+    > | null;
+  } | null;
+};
+
+export type GetProductBasicInfoBySkuQueryVariables = Exact<{
+  sku: Scalars["String"]["input"];
+}>;
+
+export type GetProductBasicInfoBySkuQuery = {
+  __typename?: "Query";
+  products?: {
+    __typename?: "Products";
+    items?: Array<
+      | {
+          __typename: "BundleProduct";
+          uid: string;
+          id?: number | null;
+          name?: string | null;
+          sku?: string | null;
+          url_key?: string | null;
+          brand_new?: number | null;
+          brand_new_label?: string | null;
+          rating_summary: number;
+          review_count: number;
+          short_description?: {
+            __typename?: "ComplexTextValue";
+            html: string;
+          } | null;
+          thumbnail?: {
+            __typename?: "ProductImage";
+            url?: string | null;
+          } | null;
+          price_range: {
+            __typename?: "PriceRange";
+            minimum_price: {
+              __typename?: "ProductPrice";
+              final_price: {
+                __typename?: "Money";
+                currency?: CurrencyEnum | null;
+                value?: number | null;
+              };
+              regular_price: {
+                __typename?: "Money";
+                currency?: CurrencyEnum | null;
+                value?: number | null;
+              };
+            };
+          };
+        }
+      | {
+          __typename: "ConfigurableProduct";
+          uid: string;
+          id?: number | null;
+          name?: string | null;
+          sku?: string | null;
+          url_key?: string | null;
+          brand_new?: number | null;
+          brand_new_label?: string | null;
+          rating_summary: number;
+          review_count: number;
+          short_description?: {
+            __typename?: "ComplexTextValue";
+            html: string;
+          } | null;
+          thumbnail?: {
+            __typename?: "ProductImage";
+            url?: string | null;
+          } | null;
+          price_range: {
+            __typename?: "PriceRange";
+            minimum_price: {
+              __typename?: "ProductPrice";
+              final_price: {
+                __typename?: "Money";
+                currency?: CurrencyEnum | null;
+                value?: number | null;
+              };
+              regular_price: {
+                __typename?: "Money";
+                currency?: CurrencyEnum | null;
+                value?: number | null;
+              };
+            };
+          };
+        }
+      | {
+          __typename: "DownloadableProduct";
+          uid: string;
+          id?: number | null;
+          name?: string | null;
+          sku?: string | null;
+          url_key?: string | null;
+          brand_new?: number | null;
+          brand_new_label?: string | null;
+          rating_summary: number;
+          review_count: number;
+          short_description?: {
+            __typename?: "ComplexTextValue";
+            html: string;
+          } | null;
+          thumbnail?: {
+            __typename?: "ProductImage";
+            url?: string | null;
+          } | null;
+          price_range: {
+            __typename?: "PriceRange";
+            minimum_price: {
+              __typename?: "ProductPrice";
+              final_price: {
+                __typename?: "Money";
+                currency?: CurrencyEnum | null;
+                value?: number | null;
+              };
+              regular_price: {
+                __typename?: "Money";
+                currency?: CurrencyEnum | null;
+                value?: number | null;
+              };
+            };
+          };
+        }
+      | {
+          __typename: "GiftCardProduct";
+          uid: string;
+          id?: number | null;
+          name?: string | null;
+          sku?: string | null;
+          url_key?: string | null;
+          brand_new?: number | null;
+          brand_new_label?: string | null;
+          rating_summary: number;
+          review_count: number;
+          short_description?: {
+            __typename?: "ComplexTextValue";
+            html: string;
+          } | null;
+          thumbnail?: {
+            __typename?: "ProductImage";
+            url?: string | null;
+          } | null;
+          price_range: {
+            __typename?: "PriceRange";
+            minimum_price: {
+              __typename?: "ProductPrice";
+              final_price: {
+                __typename?: "Money";
+                currency?: CurrencyEnum | null;
+                value?: number | null;
+              };
+              regular_price: {
+                __typename?: "Money";
+                currency?: CurrencyEnum | null;
+                value?: number | null;
+              };
+            };
+          };
+        }
+      | {
+          __typename: "GroupedProduct";
+          uid: string;
+          id?: number | null;
+          name?: string | null;
+          sku?: string | null;
+          url_key?: string | null;
+          brand_new?: number | null;
+          brand_new_label?: string | null;
+          rating_summary: number;
+          review_count: number;
+          short_description?: {
+            __typename?: "ComplexTextValue";
+            html: string;
+          } | null;
+          thumbnail?: {
+            __typename?: "ProductImage";
+            url?: string | null;
+          } | null;
+          price_range: {
+            __typename?: "PriceRange";
+            minimum_price: {
+              __typename?: "ProductPrice";
+              final_price: {
+                __typename?: "Money";
+                currency?: CurrencyEnum | null;
+                value?: number | null;
+              };
+              regular_price: {
+                __typename?: "Money";
+                currency?: CurrencyEnum | null;
+                value?: number | null;
+              };
+            };
+          };
+        }
+      | {
+          __typename: "SimpleProduct";
+          uid: string;
+          id?: number | null;
+          name?: string | null;
+          sku?: string | null;
+          url_key?: string | null;
+          brand_new?: number | null;
+          brand_new_label?: string | null;
+          rating_summary: number;
+          review_count: number;
+          short_description?: {
+            __typename?: "ComplexTextValue";
+            html: string;
+          } | null;
+          thumbnail?: {
+            __typename?: "ProductImage";
+            url?: string | null;
+          } | null;
+          price_range: {
+            __typename?: "PriceRange";
+            minimum_price: {
+              __typename?: "ProductPrice";
+              final_price: {
+                __typename?: "Money";
+                currency?: CurrencyEnum | null;
+                value?: number | null;
+              };
+              regular_price: {
+                __typename?: "Money";
+                currency?: CurrencyEnum | null;
+                value?: number | null;
+              };
+            };
+          };
+        }
+      | {
+          __typename: "VirtualProduct";
+          uid: string;
+          id?: number | null;
+          name?: string | null;
+          sku?: string | null;
+          url_key?: string | null;
+          brand_new?: number | null;
+          brand_new_label?: string | null;
           rating_summary: number;
           review_count: number;
           short_description?: {
@@ -57582,7 +61151,9 @@ export const CartDetailsFieldsFragmentDoc = new TypedDocumentString(
         uid
         id
         name
+        brand_new_label
         sku
+        url_key
         rating_summary
         short_description {
           html
@@ -57592,6 +61163,7 @@ export const CartDetailsFieldsFragmentDoc = new TypedDocumentString(
           label
         }
         stock_status
+        product_type_new2
         price_range {
           minimum_price {
             discount {
@@ -57619,6 +61191,8 @@ export const CartDetailsFieldsFragmentDoc = new TypedDocumentString(
           configurable_product_option_value_uid
         }
         configured_variant {
+          id
+          sku
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -57693,6 +61267,7 @@ export const WishlistDetailsFieldsFragmentDoc = new TypedDocumentString(
         uid
         id
         name
+        brand_new_label
         sku
         url_key
         rating_summary
@@ -57980,7 +61555,9 @@ export const GetCartDetailsDocument = new TypedDocumentString(`
         uid
         id
         name
+        brand_new_label
         sku
+        url_key
         rating_summary
         short_description {
           html
@@ -57990,6 +61567,7 @@ export const GetCartDetailsDocument = new TypedDocumentString(`
           label
         }
         stock_status
+        product_type_new2
         price_range {
           minimum_price {
             discount {
@@ -58017,6 +61595,8 @@ export const GetCartDetailsDocument = new TypedDocumentString(`
           configurable_product_option_value_uid
         }
         configured_variant {
+          id
+          sku
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -58246,7 +61826,9 @@ export const GetCustomerCartDetailsDocument = new TypedDocumentString(`
         uid
         id
         name
+        brand_new_label
         sku
+        url_key
         rating_summary
         short_description {
           html
@@ -58256,6 +61838,7 @@ export const GetCustomerCartDetailsDocument = new TypedDocumentString(`
           label
         }
         stock_status
+        product_type_new2
         price_range {
           minimum_price {
             discount {
@@ -58283,6 +61866,8 @@ export const GetCustomerCartDetailsDocument = new TypedDocumentString(`
           configurable_product_option_value_uid
         }
         configured_variant {
+          id
+          sku
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -58496,7 +62081,9 @@ export const AddProductsToCartDocument = new TypedDocumentString(`
         uid
         id
         name
+        brand_new_label
         sku
+        url_key
         rating_summary
         short_description {
           html
@@ -58506,6 +62093,7 @@ export const AddProductsToCartDocument = new TypedDocumentString(`
           label
         }
         stock_status
+        product_type_new2
         price_range {
           minimum_price {
             discount {
@@ -58533,6 +62121,8 @@ export const AddProductsToCartDocument = new TypedDocumentString(`
           configurable_product_option_value_uid
         }
         configured_variant {
+          id
+          sku
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -58744,7 +62334,9 @@ export const AddProductsToCartWithGiftMessageDocument =
         uid
         id
         name
+        brand_new_label
         sku
+        url_key
         rating_summary
         short_description {
           html
@@ -58754,6 +62346,7 @@ export const AddProductsToCartWithGiftMessageDocument =
           label
         }
         stock_status
+        product_type_new2
         price_range {
           minimum_price {
             discount {
@@ -58781,6 +62374,8 @@ export const AddProductsToCartWithGiftMessageDocument =
           configurable_product_option_value_uid
         }
         configured_variant {
+          id
+          sku
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -58980,7 +62575,9 @@ export const ApplyCouponToCartDocument = new TypedDocumentString(`
         uid
         id
         name
+        brand_new_label
         sku
+        url_key
         rating_summary
         short_description {
           html
@@ -58990,6 +62587,7 @@ export const ApplyCouponToCartDocument = new TypedDocumentString(`
           label
         }
         stock_status
+        product_type_new2
         price_range {
           minimum_price {
             discount {
@@ -59017,6 +62615,8 @@ export const ApplyCouponToCartDocument = new TypedDocumentString(`
           configurable_product_option_value_uid
         }
         configured_variant {
+          id
+          sku
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -59216,7 +62816,9 @@ export const ApplyRewardPointsToCartDocument = new TypedDocumentString(`
         uid
         id
         name
+        brand_new_label
         sku
+        url_key
         rating_summary
         short_description {
           html
@@ -59226,6 +62828,7 @@ export const ApplyRewardPointsToCartDocument = new TypedDocumentString(`
           label
         }
         stock_status
+        product_type_new2
         price_range {
           minimum_price {
             discount {
@@ -59253,6 +62856,8 @@ export const ApplyRewardPointsToCartDocument = new TypedDocumentString(`
           configurable_product_option_value_uid
         }
         configured_variant {
+          id
+          sku
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -59553,7 +63158,9 @@ export const RemoveCouponFromCartDocument = new TypedDocumentString(`
         uid
         id
         name
+        brand_new_label
         sku
+        url_key
         rating_summary
         short_description {
           html
@@ -59563,6 +63170,7 @@ export const RemoveCouponFromCartDocument = new TypedDocumentString(`
           label
         }
         stock_status
+        product_type_new2
         price_range {
           minimum_price {
             discount {
@@ -59590,6 +63198,8 @@ export const RemoveCouponFromCartDocument = new TypedDocumentString(`
           configurable_product_option_value_uid
         }
         configured_variant {
+          id
+          sku
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -59789,7 +63399,9 @@ export const RemoveFromCartDocument = new TypedDocumentString(`
         uid
         id
         name
+        brand_new_label
         sku
+        url_key
         rating_summary
         short_description {
           html
@@ -59799,6 +63411,7 @@ export const RemoveFromCartDocument = new TypedDocumentString(`
           label
         }
         stock_status
+        product_type_new2
         price_range {
           minimum_price {
             discount {
@@ -59826,6 +63439,8 @@ export const RemoveFromCartDocument = new TypedDocumentString(`
           configurable_product_option_value_uid
         }
         configured_variant {
+          id
+          sku
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -60025,7 +63640,9 @@ export const RemoveRewardPointsFromCartDocument = new TypedDocumentString(`
         uid
         id
         name
+        brand_new_label
         sku
+        url_key
         rating_summary
         short_description {
           html
@@ -60035,6 +63652,7 @@ export const RemoveRewardPointsFromCartDocument = new TypedDocumentString(`
           label
         }
         stock_status
+        product_type_new2
         price_range {
           minimum_price {
             discount {
@@ -60062,6 +63680,8 @@ export const RemoveRewardPointsFromCartDocument = new TypedDocumentString(`
           configurable_product_option_value_uid
         }
         configured_variant {
+          id
+          sku
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -60477,7 +64097,9 @@ export const UpdateCartItemsDocument = new TypedDocumentString(`
         uid
         id
         name
+        brand_new_label
         sku
+        url_key
         rating_summary
         short_description {
           html
@@ -60487,6 +64109,7 @@ export const UpdateCartItemsDocument = new TypedDocumentString(`
           label
         }
         stock_status
+        product_type_new2
         price_range {
           minimum_price {
             discount {
@@ -60514,6 +64137,8 @@ export const UpdateCartItemsDocument = new TypedDocumentString(`
           configurable_product_option_value_uid
         }
         configured_variant {
+          id
+          sku
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -60590,6 +64215,10 @@ export const GetBrandsDocument = new TypedDocumentString(`
         url_key
         url_path
         image
+        api_catnav_image
+        api_catnav_icon
+        api_celebrity_thumbnail
+        celebrity_banner
         children {
           include_in_menu
         }
@@ -60600,169 +64229,6 @@ export const GetBrandsDocument = new TypedDocumentString(`
     `) as unknown as TypedDocumentString<
   GetBrandsQuery,
   GetBrandsQueryVariables
->;
-export const GetCategoriesDetailedDocument = new TypedDocumentString(`
-    query GetCategoriesDetailed {
-  categories(filters: {}) {
-    items {
-      uid
-      name
-      url_key
-      url_path
-      level
-      include_in_menu
-      children_count
-      children {
-        uid
-        name
-        url_key
-        url_path
-        level
-        children_count
-        product_count
-        include_in_menu
-        category_tab
-        celebrity_banner
-        children {
-          include_in_menu
-          category_tab
-          celebrity_banner
-          name
-          path
-          children {
-            include_in_menu
-            category_tab
-            celebrity_banner
-            name
-            path
-            children {
-              breadcrumbs {
-                category_level
-                category_name
-                category_uid
-                category_url_key
-                category_url_path
-              }
-              product_count
-              include_in_menu
-              category_tab
-              celebrity_banner
-              name
-              path
-              uid
-              url_key
-              url_path
-            }
-            path_in_store
-          }
-        }
-      }
-      category_tab
-      celebrity_banner
-    }
-  }
-}
-    `) as unknown as TypedDocumentString<
-  GetCategoriesDetailedQuery,
-  GetCategoriesDetailedQueryVariables
->;
-export const GetCategoryByUidDetailedDocument = new TypedDocumentString(`
-    query GetCategoryByUidDetailed($categoryUid: String!) {
-  categories(filters: {category_uid: {eq: $categoryUid}}) {
-    items {
-      uid
-      name
-      url_key
-      url_path
-      level
-      include_in_menu
-      children_count
-      children {
-        uid
-        name
-        url_key
-        url_path
-        level
-        children_count
-        product_count
-        include_in_menu
-        category_tab
-        celebrity_banner
-        children {
-          include_in_menu
-          category_tab
-          celebrity_banner
-          name
-          path
-          children {
-            include_in_menu
-            category_tab
-            celebrity_banner
-            name
-            path
-            children {
-              breadcrumbs {
-                category_level
-                category_name
-                category_uid
-                category_url_key
-                category_url_path
-              }
-              product_count
-              include_in_menu
-              category_tab
-              celebrity_banner
-              name
-              path
-              uid
-              url_key
-              url_path
-            }
-            path_in_store
-          }
-        }
-      }
-      category_tab
-      celebrity_banner
-    }
-  }
-}
-    `) as unknown as TypedDocumentString<
-  GetCategoryByUidDetailedQuery,
-  GetCategoryByUidDetailedQueryVariables
->;
-export const GetCategoryByUrlKeyDetailedDocument = new TypedDocumentString(`
-    query GetCategoryByUrlKeyDetailed($urlKey: String!) {
-  categories(filters: {url_key: {eq: $urlKey}}) {
-    items {
-      uid
-      name
-      url_key
-      url_path
-      level
-      include_in_menu
-      children_count
-      product_count
-      category_tab
-      celebrity_banner
-      children {
-        uid
-        name
-        url_key
-        url_path
-        level
-        children_count
-        product_count
-        include_in_menu
-        category_tab
-        celebrity_banner
-      }
-    }
-  }
-}
-    `) as unknown as TypedDocumentString<
-  GetCategoryByUrlKeyDetailedQuery,
-  GetCategoryByUrlKeyDetailedQueryVariables
 >;
 export const GetCategoryRouteShellByPathDocument = new TypedDocumentString(`
     query GetCategoryRouteShellByPath($urlPath: String!) {
@@ -60799,66 +64265,6 @@ export const GetCategoryRouteShellByPathDocument = new TypedDocumentString(`
     `) as unknown as TypedDocumentString<
   GetCategoryRouteShellByPathQuery,
   GetCategoryRouteShellByPathQueryVariables
->;
-export const GetProductsByCategoryUidDocument = new TypedDocumentString(`
-    query GetProductsByCategoryUid($categoryUid: String!, $pageSize: Int!, $currentPage: Int!) {
-  products(
-    filter: {category_uid: {eq: $categoryUid}}
-    pageSize: $pageSize
-    currentPage: $currentPage
-  ) {
-    total_count
-    items {
-      uid
-      __typename
-      sku
-      name
-      url_key
-      stock_status
-      small_image {
-        url
-        label
-      }
-      price_range {
-        minimum_price {
-          regular_price {
-            value
-            currency
-          }
-        }
-        maximum_price {
-          regular_price {
-            value
-            currency
-          }
-        }
-      }
-      rating_summary
-      review_count
-      short_description {
-        html
-      }
-      ... on ConfigurableProduct {
-        configurable_options {
-          attribute_code
-          label
-          values {
-            uid
-            label
-          }
-        }
-      }
-    }
-    page_info {
-      current_page
-      page_size
-      total_pages
-    }
-  }
-}
-    `) as unknown as TypedDocumentString<
-  GetProductsByCategoryUidQuery,
-  GetProductsByCategoryUidQueryVariables
 >;
 export const GetCountriesDocument = new TypedDocumentString(`
     query GetCountries {
@@ -60990,6 +64396,7 @@ export const GetCustomerOrdersListDocument = new TypedDocumentString(`
           id
           product_name
           product_sku
+          product_url_key
           quantity_ordered
           product_sale_price {
             currency
@@ -60998,10 +64405,64 @@ export const GetCustomerOrdersListDocument = new TypedDocumentString(`
           product {
             id
             sku
+            name
+            brand_new_label
+            url_key
             image {
               url
             }
             type_id
+            url_key
+            stock_status
+            product_type_new2
+            price_range {
+              minimum_price {
+                regular_price {
+                  value
+                  currency
+                }
+                final_price {
+                  value
+                  currency
+                }
+              }
+              maximum_price {
+                regular_price {
+                  value
+                  currency
+                }
+                final_price {
+                  value
+                  currency
+                }
+              }
+            }
+            custom_attributesV2(filters: {is_filterable: true}) {
+              items {
+                code
+                ... on AttributeValue {
+                  value
+                }
+                ... on AttributeSelectedOptions {
+                  selected_options {
+                    label
+                    value
+                  }
+                }
+              }
+            }
+            ... on ConfigurableProduct {
+              variants {
+                attributes {
+                  code
+                  label
+                }
+                product {
+                  id
+                  sku
+                }
+              }
+            }
           }
         }
         payment_methods {
@@ -61093,6 +64554,7 @@ export const GetCustomerOrdersListDocument = new TypedDocumentString(`
           }
         }
         tracking_status
+        points_to_spend
         shipments {
           tracking {
             carrier
@@ -61203,6 +64665,7 @@ export const GetCustomerWishlistDocument = new TypedDocumentString(`
         uid
         id
         name
+        brand_new_label
         sku
         url_key
         rating_summary
@@ -61340,6 +64803,7 @@ export const AddProductsToWishlistDocument = new TypedDocumentString(`
         uid
         id
         name
+        brand_new_label
         sku
         url_key
         rating_summary
@@ -61452,6 +64916,7 @@ export const AddWishlistItemsToCartDocument = new TypedDocumentString(`
         uid
         id
         name
+        brand_new_label
         sku
         url_key
         rating_summary
@@ -61621,6 +65086,7 @@ export const RemoveProductsFromWishlistDocument = new TypedDocumentString(`
         uid
         id
         name
+        brand_new_label
         sku
         url_key
         rating_summary
@@ -61902,7 +65368,9 @@ export const GetProductBasicInfoDocument = new TypedDocumentString(`
       id
       name
       sku
+      url_key
       brand_new
+      brand_new_label
       short_description {
         html
       }
@@ -61929,6 +65397,45 @@ export const GetProductBasicInfoDocument = new TypedDocumentString(`
     `) as unknown as TypedDocumentString<
   GetProductBasicInfoQuery,
   GetProductBasicInfoQueryVariables
+>;
+export const GetProductBasicInfoBySkuDocument = new TypedDocumentString(`
+    query GetProductBasicInfoBySku($sku: String!) {
+  products(filter: {sku: {eq: $sku}}) {
+    items {
+      __typename
+      uid
+      id
+      name
+      sku
+      url_key
+      brand_new
+      brand_new_label
+      short_description {
+        html
+      }
+      thumbnail {
+        url
+      }
+      rating_summary
+      review_count
+      price_range {
+        minimum_price {
+          final_price {
+            currency
+            value
+          }
+          regular_price {
+            currency
+            value
+          }
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<
+  GetProductBasicInfoBySkuQuery,
+  GetProductBasicInfoBySkuQueryVariables
 >;
 export const GetProductReviewRatingsMetadataDocument = new TypedDocumentString(`
     query GetProductReviewRatingsMetadata {

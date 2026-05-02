@@ -6,6 +6,7 @@ import UpArrowIcon from "@/assets/icons/up-arrow-icon.svg";
 import VerifiedIcon from "@/assets/icons/verified-icon.svg";
 import { ProductActionButtons } from "@/components/product/product-action-buttons";
 import { ProductDetailsPrice } from "@/components/product/product-details/product-details-price";
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import { useProductDetails } from "@/contexts/product-details-context";
 import { ProductType } from "@/lib/constants/product/product-details";
 import { cn } from "@/lib/utils";
@@ -58,7 +59,7 @@ export const StickyAddToCartDesktop = ({
         <div className="flex flex-row items-center gap-5">
           <div className="border-border-base overflow-hidden rounded-xl border">
             {productThumbnail && (
-              <Image
+              <ProductImageWithFallback
                 alt="product image"
                 className="size-17.5"
                 height={70}

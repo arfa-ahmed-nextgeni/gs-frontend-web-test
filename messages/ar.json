@@ -51,7 +51,8 @@
         "profile": "الملف الشخصي",
         "customerService": "خدمة الزبائن",
         "logout": "تسجيل خروج",
-        "logoutToast": "تم تسجيل خروجك"
+        "logoutToast": "تم تسجيل خروجك",
+        "wishlist": "قائمة الأمنيات"
       },
       "otpLogin": {
         "title": "مرحبا 👋",
@@ -344,8 +345,10 @@
     "items": "قطعة",
     "paymentSummary": "ملخص الدفع",
     "subtotal": "المجموع",
+    "loyalityPoints": "نقاط الولاء",
     "discount": "خصم",
     "shippingFee": "رسوم الشحن",
+    "codFee": "رسوم الدفع عند الاستلام",
     "free": "مجاني",
     "grandTotal": "المجموع الكلي",
     "paymentMethods": "طرق الدفع",
@@ -584,6 +587,10 @@
       "message": "تم إضافة العناصر لقائمة الأمنيات!",
       "description": "تم إضافة العنصر لقائمة أمنياتك."
     },
+    "sessionExpired": {
+      "message": "تم تسجيل خروجك",
+      "description": "انتهت صلاحية جلستك. يرجى تسجيل الدخول مرة أخرى للمتابعة."
+    },
     "updateSuccessToast": "تم تحديث بيانات العميل بنجاح",
     "updateErrorToast": "فشل في تحديث بيانات العميل",
     "A customer with the same email address already exists in an associated website": "يوجد عميل بنفس عنوان البريد الإلكتروني في موقع مرتبط."
@@ -695,7 +702,6 @@
         "offers": "عروض",
         "priceLowToHigh": "السعر من الأعلى لأقل",
         "priceHighToLow": "السعر من الأقل للأعلى",
-
         "shopByNotes": "تسوق حسب المكونات العطرية",
         "perfumeNotes": "مكونات العطر",
         "oriental": "شرقية",
@@ -708,7 +714,6 @@
         "aromatic": "أروماتيك",
         "woodyOriental": "شرقية خشبية",
         "leather": "جلدية",
-
         "character": "شخصية العطر",
         "shopByCharacter": "تسوق حسب شخصية العطر",
         "charismatic": "جذابة",
@@ -721,7 +726,6 @@
         "classical": "كلاسيكية",
         "glamorous": "متألقة",
         "modern": "عصرية",
-
         "concentration": "التركيز",
         "eauDeParfum": "أو دو برفيوم",
         "eauDeToilette": "أو دو تواليت",
@@ -733,7 +737,6 @@
         "eauDeSenteur": "أو دو سنتور",
         "parfumIntense": "برفيوم انتنس",
         "essenceDeParfum": "إيسنس دو برفيوم",
-
         "productCategory": "فئة المنتج",
         "eyes": "العيون",
         "face": "الوجه",
@@ -745,7 +748,6 @@
         "exfoliators": "مقشر للبشرة",
         "luxuryProducts": "منتجات فاخرة",
         "bestSeller": "الأفضل مبيعا",
-
         "makeUpColor": "لون المكياج",
         "black": "أسود",
         "multiColor": "متعدد الألوان",
@@ -756,13 +758,11 @@
         "red": "أحمر",
         "beige": "بيج",
         "goldBronze": "ذهبي, برونزي",
-
         "makeUpType": "نوع المكياج",
         "luminizer": "موحد للبشرة",
         "foundation": "كريم أساس",
         "mascara": "ماسكرا",
         "concealer": "مخفي عيوب",
-
         "areaOfApplication": "يستخدم على",
         "body": "الجسم",
         "hair": "الشعر",
@@ -772,7 +772,6 @@
         "feet": "القدم",
         "mouth": "الفم",
         "faceBody": "الوجه, الجسم",
-
         "shopByGender": "تسوق حسب الجنس",
         "gender": "الجنس",
         "unisex": "رجالي/نسائي",
@@ -780,7 +779,6 @@
         "men": "رجالي",
         "kids": "أطفال",
         "others": "أخر",
-
         "shopByBrand": "تسوق حسب الماركة",
         "brands": "الماركة",
         "areon": "أريون",
@@ -803,7 +801,6 @@
         "ahmedPerfume": "أحمد للعطور",
         "surrati": "السرتي",
         "fabian": "فابيان",
-
         "productType": "النوع",
         "type": "النوع",
         "shopByType": "تسوق حسب النوع",
@@ -1306,8 +1303,12 @@
     "reviewProduct": {
       "label": "قيّم المنتج"
     },
-    "firstName": { "label": "الاسم الأول" },
-    "lastName": { "label": "الاسم الأخير" },
+    "firstName": {
+      "label": "الاسم الأول"
+    },
+    "lastName": {
+      "label": "الاسم الأخير"
+    },
     "reviewTitle": {
       "label": "عنوان التقييم"
     },
@@ -1466,7 +1467,7 @@
       "days": "{days} أيام",
       "free": "مجاناً",
       "giftWrapping": "تغليف هدية",
-      "freeGiftLabel": "هدية مجانية",
+      "freeGiftLabel": "مجاناً",
       "noShippingMethods": "لا توجد وسائل توصيل لهذا العنوان",
       "waitingForMoreInfo": "في انتظار المزيد من المعلومات"
     },
@@ -1657,10 +1658,18 @@
     "operatingHours": "ساعات العمل",
     "selectLockerButton": "اِختر",
     "selectedLocker": "الخزانة المحددة",
-    "firstName": { "label": "الاسم الأول" },
-    "lastName": { "label": "الاسم الأخير" },
-    "mobileNumber": { "label": "رقم الجوال" },
-    "email": { "label": "الإيميل" },
+    "firstName": {
+      "label": "الاسم الأول"
+    },
+    "lastName": {
+      "label": "الاسم الأخير"
+    },
+    "mobileNumber": {
+      "label": "رقم الجوال"
+    },
+    "email": {
+      "label": "الإيميل"
+    },
     "submitButton": "اضافة متجر إستلام",
     "loadingLockerLocations": "يتم تحميل مواقع الخزائن...",
     "noLockerLocationsFound": "لا توجد مواقع خزانات قريبة.",
@@ -1703,7 +1712,10 @@
       "yourCurrentLocation": "موقعك الحالي",
       "moveMapInstructions": "حرك الخريطة أو اسحب العلامة لاختيار الموقع",
       "locateMe": "حدّد موقعي",
-      "enableLocationServices": "فعل خدمة الموقع لتحديد موقعك"
+      "enableLocationServices": "فعل خدمة الموقع لتحديد موقعك",
+      "noAddressesFound": "لم يتم العثور على عناوين. حاول استخدام مصطلح بحث آخر",
+      "loadingSearch": "جاري تحميل البحث...",
+      "initializingSearchService": "جاري تهيئة خدمة البحث..."
     },
     "steps": {
       "homeDeliveryTitle": "التوصيل المنزلي",
@@ -1733,7 +1745,9 @@
       "loadingCities": "جاري تحميل المدن...",
       "noMatchingCity": "لم يتم العثور على مدينة مطابقة",
       "noDistrictsFound": "لم يتم العثور على منطقة",
-      "validatingAddressLocation": "جاري التحقق من موقع العنوان..."
+      "validatingAddressLocation": "جاري التحقق من موقع العنوان...",
+      "selectCityFirst": "يرجى اختيار مدينة أولاً",
+      "senderInformation": "معلومات المُرسل"
     },
     "validationErrors": {
       "invalidPhoneNumber": "يرجى إدخال رقم هاتف صالح"

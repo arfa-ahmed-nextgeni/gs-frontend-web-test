@@ -58,4 +58,15 @@ export interface AnalyticsProvider {
    * @param properties - Optional event properties/metadata
    */
   track(eventName: string, properties?: Record<string, unknown>): void;
+
+  /**
+   * Optional: push a GA4-style ecommerce event with a nested ecommerce object.
+   * Providers that don't implement this (e.g. Amplitude, Insider) are skipped.
+   * @param additionalFields - Extra fields spread at the top level of the dataLayer push (e.g. customer_details)
+   */
+  trackEcommerce?(
+    eventName: string,
+    ecommerce: Record<string, unknown>,
+    additionalFields?: Record<string, unknown>
+  ): void;
 }

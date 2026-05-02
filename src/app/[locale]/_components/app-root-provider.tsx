@@ -6,12 +6,12 @@ import { getLangDir } from "rtl-detect";
 import { GoogleAnalyticsWrapper } from "@/app/[locale]/_components/google-analytics-wrapper";
 import { GoogleTagManagerWrapper } from "@/app/[locale]/_components/google-tag-manager-wrapper";
 import Providers from "@/app/provider/provider";
-import { CookieConsentSheetContainer } from "@/components/cookie-consent";
+import { CookieConsentBannerDescription } from "@/components/cookie-consent/cookie-consent-banner-description";
+import { CookieConsentSheetContainer } from "@/components/cookie-consent/cookie-consent-sheet-container";
 import { ConditionalHeaderFooter } from "@/components/layout/conditional-header-footer";
 import { OpenAppSheetContainer } from "@/components/open-app-prompt/open-app-sheet-container";
 import { GlobalLinkLoadingBar } from "@/components/ui/global-link-loading-bar";
 import { CookieConsentProvider } from "@/contexts/cookie-consent-context";
-import { WebsiteFooterProvider } from "@/contexts/website-footer-context";
 import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
 import { Locale } from "@/lib/constants/i18n";
 import { PromoBanner } from "@/lib/models/promo-banner";
@@ -56,30 +56,34 @@ export async function AppRootProvider({
   }
 
   const direction = getLangDir(locale);
+  const cookieConsentDescription = cookieConsentPrompt?.description ? (
+    <CookieConsentBannerDescription
+      description={cookieConsentPrompt.description}
+    />
+  ) : null;
 
   return (
     <NextIntlClientProvider>
       <CookieConsentProvider
         cookieConsentPrompt={structuredClone(cookieConsentPrompt)}
       >
-        <WebsiteFooterProvider websiteFooter={structuredClone(websiteFooter)}>
-          <Providers dir={direction}>
-            <GlobalLinkLoadingBar />
-            <ConditionalHeaderFooter
-              navigationItems={navigationItems}
-              promoBanner={promoBanner}
-              websiteFooter={websiteFooter}
-            >
-              {children}
-            </ConditionalHeaderFooter>
-            <CookieConsentSheetContainer
-              cookieConsentPrompt={structuredClone(cookieConsentPrompt)}
-            />
-            <OpenAppSheetContainer
-              openAppPrompt={structuredClone(openAppPrompt)}
-            />
-          </Providers>
-        </WebsiteFooterProvider>
+        <Providers dir={direction}>
+          <GlobalLinkLoadingBar />
+          <ConditionalHeaderFooter
+            navigationItems={navigationItems}
+            promoBanner={promoBanner}
+            websiteFooter={websiteFooter}
+          >
+            {children}
+          </ConditionalHeaderFooter>
+          <CookieConsentSheetContainer
+            cookieConsentPrompt={structuredClone(cookieConsentPrompt)}
+            descriptionContent={cookieConsentDescription}
+          />
+          <OpenAppSheetContainer
+            openAppPrompt={structuredClone(openAppPrompt)}
+          />
+        </Providers>
         <GoogleAnalyticsWrapper />
         <GoogleTagManagerWrapper />
       </CookieConsentProvider>

@@ -2,9 +2,8 @@ import { CurrencyEnum, GetProductBasicInfoQuery } from "@/graphql/graphql";
 import { Helper } from "@/lib/models/helper";
 
 export class ProductBasicInfo extends Helper {
-  brand?: string;
+  brand: string;
   brandId?: number;
-  description: string;
   id?: number;
   image: string;
   isConfigurable = false;
@@ -25,7 +24,7 @@ export class ProductBasicInfo extends Helper {
     this.sku = product?.sku || "";
     this.name = product?.name || "";
     this.id = product?.id || undefined;
-    this.description = product?.short_description?.html || "";
+    this.brand = product?.brand_new_label || "";
     this.image = product?.thumbnail?.url || "";
     this.ratingSummary = this.convertRating(product?.rating_summary);
     this.reviewsCount = product?.review_count || 0;

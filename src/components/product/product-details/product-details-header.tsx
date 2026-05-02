@@ -12,10 +12,13 @@ import { ProductType } from "@/lib/constants/product/product-details";
 import { cn } from "@/lib/utils";
 
 import type { ProductDetailsModel } from "@/lib/models/product-details-model";
+import type { OriginalProductDialogContent } from "@/lib/types/contentful/pdp-dialog-config";
 
 export const ProductDetailsHeader = ({
+  originalProductDialogContent,
   product,
 }: {
+  originalProductDialogContent?: OriginalProductDialogContent;
   product: ProductDetailsModel;
 }) => {
   const t = useTranslations("ProductPage.header");
@@ -57,7 +60,9 @@ export const ProductDetailsHeader = ({
         </div>
         {product.type && ![ProductType.EGiftCard].includes(product.type) && (
           <div className="mt-4 flex flex-row items-center gap-5">
-            <ProductDetailsOriginalProduct />
+            <ProductDetailsOriginalProduct
+              content={originalProductDialogContent}
+            />
             {!!product.averageRating && (
               <ProductRating rating={product.averageRating} />
             )}

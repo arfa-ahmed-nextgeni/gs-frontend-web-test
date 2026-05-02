@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
 
 import { useToastContext } from "@/components/providers/toast-provider";
+import { useHandleAuthRevoked } from "@/hooks/auth/use-handle-auth-revoked";
 import { useOfflineToast } from "@/hooks/ui/use-offline-toast";
 import { addProductsToCartWithGiftMessageAction } from "@/lib/actions/cart/add-products-to-cart-with-gift-message";
 import { trackAddGift } from "@/lib/analytics/events";
@@ -9,7 +10,7 @@ import { buildCartProperties } from "@/lib/analytics/utils/build-properties";
 import { Locale } from "@/lib/constants/i18n";
 import { MUTATION_KEYS } from "@/lib/constants/mutation-keys";
 import { QUERY_KEYS } from "@/lib/constants/query-keys";
-import { isError } from "@/lib/utils/service-result";
+import { isError, isUnauthenticated } from "@/lib/utils/service-result";
 
 import type { Cart } from "@/lib/models/cart";
 
@@ -31,6 +32,8 @@ export const useAddProductsToCartWithGiftMessage = ({
 
   const { showError, showSuccess } = useToastContext();
   const { showOfflineMessage } = useOfflineToast();
+
+  const handleAuthRevoked = useHandleAuthRevoked();
 
   const t = useTranslations("CheckoutPage.AddGiftWrappingDrawer");
 
@@ -64,6 +67,11 @@ export const useAddProductsToCartWithGiftMessage = ({
     },
 
     onSettled: async (data) => {
+      if (isUnauthenticated(data!)) {
+        await handleAuthRevoked();
+        return;
+      }
+
       if (isError(data!)) {
         showError(data.error, " ");
         return;

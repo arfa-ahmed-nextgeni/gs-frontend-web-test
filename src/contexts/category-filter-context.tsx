@@ -104,7 +104,7 @@ function getSelectedAttributes(
 }
 
 function normalizeSort(sortBy: null | string): string | undefined {
-  if (!sortBy || sortBy === CategorySortKey.Relevance) {
+  if (!sortBy) {
     return undefined;
   }
 

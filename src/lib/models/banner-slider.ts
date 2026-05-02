@@ -11,6 +11,8 @@ export class BannerSlider {
     enabled: false,
   };
   public contentType: TabContentType;
+  public entryId: string;
+  public isLcpCandidate = false;
   public items: BannerSliderItem[] = [];
   public sliderHeight: {
     desktop: number;
@@ -20,8 +22,13 @@ export class BannerSlider {
     mobile: 220,
   };
 
-  constructor(data: BannerSliderData, contentType: TabContentType) {
+  constructor(
+    data: BannerSliderData,
+    contentType: TabContentType,
+    entryId: string
+  ) {
     this.contentType = contentType;
+    this.entryId = entryId;
     this.autoSliding = {
       delay: data.autoSlidingDelay || 3000,
       enabled: data.autoSliding || false,

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 
 import Image from "next/image";
 
@@ -9,6 +10,7 @@ import { useTranslations } from "next-intl";
 import EditIcon from "@/assets/icons/edit-icon.svg";
 import InfoIconYellow from "@/assets/icons/info-icon-yellow.svg";
 import KSALogo from "@/assets/logos/ksa-na-logo.svg";
+import { ControlledPhoneNumberField } from "@/components/form-controlled-fields/controlled-phone-number-field";
 import { useToastContext } from "@/components/providers/toast-provider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FloatingLabelInput } from "@/components/ui/floating-label-input";
@@ -19,18 +21,26 @@ import { useOptionalCheckoutContext } from "@/contexts/checkout-context";
 import { useKsaAddressQuery } from "@/hooks/queries/use-ksa-address";
 import { useAddressOptionsQuery } from "@/hooks/use-address-options-query";
 import { addDeliveryAddress } from "@/lib/actions/checkout/add-delivery-address";
+import { updateCustomerAddress } from "@/lib/actions/customer/update-customer-address";
+import { updateProfileFromAddress } from "@/lib/actions/customer/update-profile";
+import { trackProfileUpdated } from "@/lib/analytics/events";
 import { AddressStepType } from "@/lib/constants/address";
 import {
   CHECKOUT_ADDRESS_SAVED_EVENT,
   CHECKOUT_ADDRESS_SAVED_FLAG,
 } from "@/lib/constants/checkout/events";
+import { AddressFormField } from "@/lib/forms/manage-address";
 import { cn } from "@/lib/utils";
 import { isValidPhoneNumber } from "@/lib/utils/country";
 import {
   emptyGoogleAddressData,
   sanitizeStreetValue,
 } from "@/lib/utils/google-address";
-import { isOk } from "@/lib/utils/service-result";
+import { isError, isOk } from "@/lib/utils/service-result";
+
+import type { CustomerAddress } from "@/graphql/graphql";
+import type { AddressFormSchemaType } from "@/lib/forms/manage-address";
+import type { ServiceResult } from "@/lib/types/service-result";
 
 // Helper to ensure phone number has +966 prefix
 const ensureSaudiPhonePrefix = (phoneNumber: string): string => {
@@ -53,12 +63,19 @@ export const AddDeliveryAddressSaveForm = () => {
   const [showDistrictSuggestions, setShowDistrictSuggestions] = useState(false);
   const [phoneNumberError, setPhoneNumberError] = useState<null | string>(null);
   const [selectedCityForDistricts, setSelectedCityForDistricts] = useState("");
+  const [senderFirstName, setSenderFirstName] = useState("");
+  const [senderLastName, setSenderLastName] = useState("");
 
   const {
     customerData,
     deliveryType,
+    editingAddressId,
     googleAddressData,
+    initialAddressSnapshot,
     initialContactData,
+    initialSelectedLocation,
+    isFirstAddressInCheckout,
+    isManualEntryMode,
     selectedAddress,
     selectedLocation,
     setGoogleAddressData,
@@ -80,13 +97,43 @@ export const AddDeliveryAddressSaveForm = () => {
     : (customerData?.lastName ?? "");
   const initialPhoneNumber = isGiftDelivery
     ? ensureSaudiPhonePrefix(initialContactData?.phoneNumber ?? "")
-    : ensureSaudiPhonePrefix(customerData?.phoneNumber ?? "");
+    : ensureSaudiPhonePrefix(
+        initialContactData?.phoneNumber ?? customerData?.phoneNumber ?? ""
+      );
+  const phoneForm = useForm({
+    defaultValues: {
+      phone: {
+        countryCode: "+966",
+        number: initialPhoneNumber.startsWith("+966")
+          ? initialPhoneNumber.slice(4)
+          : initialPhoneNumber,
+      },
+    },
+  });
+  const phoneWatch = phoneForm.watch("phone");
+  const shouldVerifyCoordinates = useMemo(() => {
+    if (!selectedLocation) {
+      return false;
+    }
+
+    if (!editingAddressId || !initialSelectedLocation) {
+      return true;
+    }
+
+    return (
+      selectedLocation.lat !== initialSelectedLocation.lat ||
+      selectedLocation.lng !== initialSelectedLocation.lng
+    );
+  }, [editingAddressId, initialSelectedLocation, selectedLocation]);
   const { data: queriedKsaAddress, isPending: isLoadingKsa } =
     useKsaAddressQuery({
-      enabled: !!selectedLocation,
+      enabled: shouldVerifyCoordinates,
       latitude: selectedLocation?.lat,
       longitude: selectedLocation?.lng,
     });
+  const showKsaValidationLoader = shouldVerifyCoordinates && isLoadingKsa;
+  const shouldUseSavedAddress =
+    !!editingAddressId && !!initialSelectedLocation && !shouldVerifyCoordinates;
 
   useEffect(() => {
     // Mirror the cached KSA lookup into context so the manual form can reuse it.
@@ -100,23 +147,50 @@ export const AddDeliveryAddressSaveForm = () => {
   // Build address data: prefer KSA data, fallback to Google reverse geocoding
   const addressData = useMemo(
     () => ({
-      city: ksaAddress?.city || fallbackAddressData.city,
-      district: ksaAddress?.district || fallbackAddressData.district,
-      postalCode: ksaAddress?.postCode || fallbackAddressData.postalCode,
-      shortCode: ksaAddress?.short_address || fallbackAddressData.shortCode,
+      city:
+        (shouldUseSavedAddress
+          ? initialAddressSnapshot?.city
+          : ksaAddress?.city || fallbackAddressData.city) || "",
+      district:
+        (shouldUseSavedAddress
+          ? initialAddressSnapshot?.district
+          : ksaAddress?.district || fallbackAddressData.district) || "",
+      postalCode:
+        (shouldUseSavedAddress
+          ? initialAddressSnapshot?.postalCode
+          : ksaAddress?.postCode || fallbackAddressData.postalCode) || "",
+      shortCode:
+        (shouldUseSavedAddress
+          ? initialAddressSnapshot?.shortCode
+          : ksaAddress?.short_address || fallbackAddressData.shortCode) || "",
       street: sanitizeStreetValue({
-        district: ksaAddress?.district || fallbackAddressData.district,
-        shortCode: ksaAddress?.short_address || fallbackAddressData.shortCode,
+        district: shouldUseSavedAddress
+          ? initialAddressSnapshot?.district || ""
+          : ksaAddress?.district || fallbackAddressData.district,
+        shortCode: shouldUseSavedAddress
+          ? initialAddressSnapshot?.shortCode || ""
+          : ksaAddress?.short_address || fallbackAddressData.shortCode,
         street:
-          ksaAddress?.address1 ||
-          ksaAddress?.street ||
-          fallbackAddressData.street ||
-          selectedAddress ||
-          "",
+          (shouldUseSavedAddress
+            ? initialAddressSnapshot?.street
+            : ksaAddress?.address1 ||
+              ksaAddress?.street ||
+              fallbackAddressData.street ||
+              selectedAddress) || "",
       }),
     }),
-    [fallbackAddressData, ksaAddress, selectedAddress]
+    [
+      fallbackAddressData,
+      initialAddressSnapshot,
+      ksaAddress,
+      selectedAddress,
+      shouldUseSavedAddress,
+    ]
   );
+  const displayedAddress =
+    shouldUseSavedAddress && initialAddressSnapshot?.formattedAddress
+      ? initialAddressSnapshot.formattedAddress
+      : selectedAddress;
 
   const [formData, setFormData] = useState({
     buildingName: "",
@@ -125,7 +199,9 @@ export const AddDeliveryAddressSaveForm = () => {
     firstName: initialFirstName,
     lastName: initialLastName,
     phoneNumber: initialPhoneNumber,
-    setAsDefault: true,
+    setAsDefault: editingAddressId
+      ? !!initialAddressSnapshot?.isDefault
+      : !isGiftDelivery,
     shortNationalAddress: "",
   });
 
@@ -143,6 +219,18 @@ export const AddDeliveryAddressSaveForm = () => {
     district: "",
     shortNationalAddress: "",
   });
+
+  useEffect(() => {
+    if (!isGiftDelivery) return;
+    const number = phoneWatch.number?.trim() ?? "";
+    if (!number) {
+      setPhoneNumberError(null);
+    } else if (!isValidPhoneNumber(number, "SA", undefined, true)) {
+      setPhoneNumberError(tValidationErrors("invalidPhoneNumber"));
+    } else {
+      setPhoneNumberError(null);
+    }
+  }, [phoneWatch.number, isGiftDelivery, tValidationErrors]);
 
   // Apply reverse-geocode fallback first, then replace with KSA data when it arrives,
   // without overwriting fields the user already edited.
@@ -248,38 +336,6 @@ export const AddDeliveryAddressSaveForm = () => {
       touchedFieldsRef.current[field] = true;
     }
 
-    // Phone number validation for receiver (gift delivery)
-    if (
-      field === "phoneNumber" &&
-      isGiftDelivery &&
-      typeof value === "string"
-    ) {
-      const cleanNumber = value.replace(/\D/g, "");
-      const trimmedValue = value.trim();
-
-      // If field is empty, clear error
-      if (!trimmedValue) {
-        setPhoneNumberError(null);
-      }
-      // If field has content, validate it properly
-      else if (!cleanNumber) {
-        // No digits at all
-        setPhoneNumberError(tValidationErrors("invalidPhoneNumber"));
-      } else {
-        // Strip country code if present (966) for Saudi validation
-        let numberToValidate = cleanNumber;
-        if (cleanNumber.startsWith("966")) {
-          numberToValidate = cleanNumber.slice(3); // Remove "966" prefix
-        }
-
-        if (!isValidPhoneNumber(numberToValidate, "SA", undefined, true)) {
-          setPhoneNumberError(tValidationErrors("invalidPhoneNumber"));
-        } else {
-          setPhoneNumberError(null);
-        }
-      }
-    }
-
     setFormData((prev) => {
       const updated = {
         ...prev,
@@ -323,17 +379,14 @@ export const AddDeliveryAddressSaveForm = () => {
 
   const isConfirmDisabled =
     isPending ||
-    isLoadingKsa ||
+    showKsaValidationLoader ||
     !selectedLocation ||
     !formData.city.trim() ||
     showNoMatchingCity ||
     !formData.firstName.trim() ||
     !formData.lastName.trim() ||
-    (!isGiftDelivery && !formData.phoneNumber.trim()) ||
-    (isGiftDelivery &&
-      (!formData.phoneNumber.trim() ||
-        formData.phoneNumber.trim() === "+966" ||
-        !!phoneNumberError));
+    (!isGiftDelivery && !phoneWatch.number?.trim()) ||
+    (isGiftDelivery && (!phoneWatch.number?.trim() || !!phoneNumberError));
 
   const handleConfirmAddress = async () => {
     if (isConfirmDisabled) {
@@ -343,69 +396,286 @@ export const AddDeliveryAddressSaveForm = () => {
     setIsPending(true);
 
     try {
+      // Build profile update payload if customer is missing name data
+      const profilePayload: Record<string, string> = {};
+
+      if (isGiftDelivery) {
+        // For gift delivery, use sender name to update profile if missing
+        if (!customerData?.firstName && senderFirstName?.trim()) {
+          profilePayload.firstName = senderFirstName.trim();
+        }
+        if (!customerData?.lastName && senderLastName?.trim()) {
+          profilePayload.lastName = senderLastName.trim();
+        }
+      } else {
+        // For home delivery, use recipient name to update profile if missing
+        if (!customerData?.firstName && formData.firstName?.trim()) {
+          profilePayload.firstName = formData.firstName.trim();
+        }
+        if (!customerData?.lastName && formData.lastName?.trim()) {
+          profilePayload.lastName = formData.lastName.trim();
+        }
+      }
+
+      // Update profile if there's data to update
+      if (Object.keys(profilePayload).length > 0) {
+        const profileResult = await updateProfileFromAddress(profilePayload);
+
+        if (isError(profileResult)) {
+          showError(profileResult.error, " ");
+          setIsPending(false);
+          return;
+        }
+
+        // Track profile_updated when user's profile updated from address form
+        if (isOk(profileResult)) {
+          trackProfileUpdated();
+        }
+      }
+
       // Call the server action to save the address
-      const result = await addDeliveryAddress({
-        addressLabel: deliveryType === "gift_delivery" ? "gift" : "home",
-        city: formData.city,
-        district: formData.district,
-        firstName: formData.firstName,
-        ksaShortAddress: formData.shortNationalAddress,
-        lastName: formData.lastName,
-        latitude: selectedLocation.lat,
-        longitude: selectedLocation.lng,
-        phoneNumber: formData.phoneNumber,
-        postalCode: addressData.postalCode,
-        setAsDefault: formData.setAsDefault,
-        street: formData.buildingName,
-      });
+      let result: ServiceResult<CustomerAddress> | ServiceResult<string>;
 
-      if (isOk(result)) {
-        console.info("[SaveForm] Address saved successfully:", {
-          createCustomerAddress: result.data,
-          isKsaVerified: result.data?.is_ksa_verified,
-        });
-        window.sessionStorage.setItem(CHECKOUT_ADDRESS_SAVED_FLAG, "true");
-        window.dispatchEvent(new CustomEvent(CHECKOUT_ADDRESS_SAVED_EVENT));
-
-        // Clear form and map data before navigating back
-        setFormData({
-          buildingName: "",
-          city: "",
-          district: "",
-          firstName: initialFirstName,
-          lastName: initialLastName,
-          phoneNumber: initialPhoneNumber,
-          setAsDefault: true,
-          shortNationalAddress: "",
-        });
-        setShowCitySuggestions(false);
-        setShowDistrictSuggestions(false);
-        setIsCityFocused(false);
-        setSelectedLocation(null);
-        setSelectedAddress(null);
-        setGoogleAddressData(null);
-        setKsaAddress(null);
-        touchedFieldsRef.current = {};
-        lastAutofillRef.current = {
-          buildingName: "",
-          city: "",
-          district: "",
-          shortNationalAddress: "",
+      if (editingAddressId) {
+        // Update existing address using the address form schema
+        const updateData: AddressFormSchemaType = {
+          [AddressFormField.AddressLabel]:
+            deliveryType === "gift_delivery" ? "gift" : "home",
+          [AddressFormField.Area]: {
+            label: formData.district,
+            value: formData.district,
+          },
+          [AddressFormField.BuildingName]: formData.buildingName,
+          [AddressFormField.City]: {
+            label: formData.city,
+            value: formData.city,
+          },
+          [AddressFormField.Country]: {
+            label: "Saudi Arabia",
+            value: "SA",
+          },
+          [AddressFormField.Email]: "",
+          [AddressFormField.FirstName]: formData.firstName,
+          [AddressFormField.KsaAdditionalNumber]:
+            queriedKsaAddress?.additionalNumber || "",
+          [AddressFormField.KsaBuildingNumber]:
+            queriedKsaAddress?.buildingNumber || "",
+          [AddressFormField.KsaShortAddress]: formData.shortNationalAddress,
+          [AddressFormField.LastName]: formData.lastName,
+          [AddressFormField.Latitude]: isManualEntryMode
+            ? ""
+            : `${selectedLocation.lat}`,
+          [AddressFormField.Longitude]: isManualEntryMode
+            ? ""
+            : `${selectedLocation.lng}`,
+          [AddressFormField.MiddleName]: "",
+          [AddressFormField.PhoneNumber]: {
+            countryCode: phoneForm.getValues("phone").countryCode ?? "+966",
+            number: phoneForm.getValues("phone").number ?? "",
+          },
+          [AddressFormField.PostalCode]: addressData.postalCode,
+          [AddressFormField.SaveAsDefault]: formData.setAsDefault,
+          [AddressFormField.SenderFirstName]: "",
+          [AddressFormField.SenderLastName]: "",
+          [AddressFormField.State]: {
+            label: "",
+            value: "",
+          },
+          [AddressFormField.Street]: formData.buildingName,
         };
 
-        // Close the save form first
-        setShowSaveForm(false);
-
-        // Ensure shipping option drawer is closed on mobile (if within CheckoutProvider)
-        checkoutContext?.setIsShippingOptionDrawerOpen(false);
-
-        // Small delay to ensure event is processed before navigation (especially on mobile)
-        setTimeout(() => {
-          window.history.back();
-        }, 100);
+        result = await updateCustomerAddress({
+          data: updateData,
+          id: Number(editingAddressId),
+        });
       } else {
-        console.error("[SaveForm] Error saving address:", result.error);
-        showError(result.error, " ");
+        // Create new address
+        result = await addDeliveryAddress({
+          addressLabel: deliveryType === "gift_delivery" ? "gift" : "home",
+          city: formData.city,
+          district: formData.district,
+          firstName: formData.firstName,
+          ksaShortAddress: formData.shortNationalAddress,
+          lastName: formData.lastName,
+          latitude: isManualEntryMode ? undefined : selectedLocation.lat,
+          longitude: isManualEntryMode ? undefined : selectedLocation.lng,
+          phoneNumber:
+            (phoneForm.getValues("phone").countryCode ?? "+966") +
+            (phoneForm.getValues("phone").number ?? ""),
+          postalCode: addressData.postalCode,
+          setAsDefault: formData.setAsDefault,
+          street: formData.buildingName,
+        });
+      }
+
+      if (editingAddressId) {
+        const updateResult = result as ServiceResult<string>;
+        if (isError(updateResult)) {
+          console.error("[SaveForm] Error saving address:", {
+            error: updateResult.error,
+            result: updateResult,
+            status: updateResult.status,
+          });
+          showError(updateResult.error, " ");
+        } else if (isOk(updateResult)) {
+          console.info("[SaveForm] Address updated successfully");
+          const savedAddressPayload = JSON.stringify({
+            addressId: editingAddressId,
+            mode: "update",
+            type: deliveryType,
+          });
+          window.sessionStorage.setItem(
+            CHECKOUT_ADDRESS_SAVED_FLAG,
+            savedAddressPayload
+          );
+          window.dispatchEvent(
+            new CustomEvent(CHECKOUT_ADDRESS_SAVED_EVENT, {
+              detail: {
+                addressId: editingAddressId,
+                mode: "update",
+                type: deliveryType,
+              },
+            })
+          );
+
+          // Clear form and map data before navigating back
+          setFormData({
+            buildingName: "",
+            city: "",
+            district: "",
+            firstName: initialFirstName,
+            lastName: initialLastName,
+            phoneNumber: initialPhoneNumber,
+            setAsDefault: editingAddressId
+              ? !!initialAddressSnapshot?.isDefault
+              : !isGiftDelivery,
+            shortNationalAddress: "",
+          });
+          phoneForm.reset({
+            phone: {
+              countryCode: "+966",
+              number: initialPhoneNumber.startsWith("+966")
+                ? initialPhoneNumber.slice(4)
+                : initialPhoneNumber,
+            },
+          });
+          setSenderFirstName("");
+          setSenderLastName("");
+          setShowCitySuggestions(false);
+          setShowDistrictSuggestions(false);
+          setIsCityFocused(false);
+          setSelectedLocation(null);
+          setSelectedAddress(null);
+          setGoogleAddressData(null);
+          setKsaAddress(null);
+          touchedFieldsRef.current = {};
+          lastAutofillRef.current = {
+            buildingName: "",
+            city: "",
+            district: "",
+            shortNationalAddress: "",
+          };
+
+          // Close the save form first
+          setShowSaveForm(false);
+
+          // Ensure shipping option drawer is closed on mobile (if within CheckoutProvider)
+          checkoutContext?.setDeliveryAddressFlowState(null);
+          checkoutContext?.setIsShippingOptionDrawerOpen(false);
+
+          // Small delay to ensure event is processed before navigation (especially on mobile)
+          setTimeout(() => {
+            window.history.back();
+          }, 100);
+        }
+      } else {
+        const createResult = result as ServiceResult<CustomerAddress>;
+        if (isError(createResult)) {
+          console.error("[SaveForm] Error saving address:", createResult.error);
+          showError(createResult.error, " ");
+        } else if (isOk(createResult)) {
+          // Type guard: only log CustomerAddress properties for create operations
+          const isCustomerAddress =
+            createResult.data &&
+            typeof createResult.data === "object" &&
+            "is_ksa_verified" in createResult.data;
+          console.info("[SaveForm] Address saved successfully:", {
+            createCustomerAddress: isCustomerAddress
+              ? createResult.data
+              : undefined,
+            isKsaVerified: isCustomerAddress
+              ? (createResult.data as any).is_ksa_verified
+              : undefined,
+          });
+          const savedAddressPayload = JSON.stringify({
+            addressId: createResult.data?.id,
+            mode: "create",
+            type: deliveryType,
+          });
+          window.sessionStorage.setItem(
+            CHECKOUT_ADDRESS_SAVED_FLAG,
+            savedAddressPayload
+          );
+          window.dispatchEvent(
+            new CustomEvent(CHECKOUT_ADDRESS_SAVED_EVENT, {
+              detail: {
+                addressId: createResult.data?.id,
+                mode: "create",
+                type: deliveryType,
+              },
+            })
+          );
+
+          // Clear form and map data before navigating back
+          setFormData({
+            buildingName: "",
+            city: "",
+            district: "",
+            firstName: initialFirstName,
+            lastName: initialLastName,
+            phoneNumber: initialPhoneNumber,
+            setAsDefault: editingAddressId
+              ? !!initialAddressSnapshot?.isDefault
+              : !isGiftDelivery,
+            shortNationalAddress: "",
+          });
+          phoneForm.reset({
+            phone: {
+              countryCode: "+966",
+              number: initialPhoneNumber.startsWith("+966")
+                ? initialPhoneNumber.slice(4)
+                : initialPhoneNumber,
+            },
+          });
+          setSenderFirstName("");
+          setSenderLastName("");
+          setShowCitySuggestions(false);
+          setShowDistrictSuggestions(false);
+          setIsCityFocused(false);
+          setSelectedLocation(null);
+          setSelectedAddress(null);
+          setGoogleAddressData(null);
+          setKsaAddress(null);
+          touchedFieldsRef.current = {};
+          lastAutofillRef.current = {
+            buildingName: "",
+            city: "",
+            district: "",
+            shortNationalAddress: "",
+          };
+
+          // Close the save form first
+          setShowSaveForm(false);
+
+          // Ensure shipping option drawer is closed on mobile (if within CheckoutProvider)
+          checkoutContext?.setDeliveryAddressFlowState(null);
+          checkoutContext?.setIsShippingOptionDrawerOpen(false);
+
+          // Small delay to ensure event is processed before navigation (especially on mobile)
+          setTimeout(() => {
+            window.history.back();
+          }, 100);
+        }
       }
     } catch (error) {
       console.error("[SaveForm] Exception saving address:", error);
@@ -427,7 +697,7 @@ export const AddDeliveryAddressSaveForm = () => {
   };
 
   return (
-    <div className="flex h-[90vh] flex-col overflow-y-auto bg-[#f9f9f9]">
+    <div className="address-form-filled-ui flex h-[90vh] flex-col overflow-y-auto bg-[#f9f9f9]">
       {/* Header */}
 
       {/* Address Display */}
@@ -443,7 +713,7 @@ export const AddDeliveryAddressSaveForm = () => {
             />
             <div className="flex-1">
               <p className="text-text-primary text-sm leading-relaxed">
-                {selectedAddress || "No address selected"}
+                {displayedAddress || "No address selected"}
               </p>
             </div>
           </div>
@@ -468,7 +738,7 @@ export const AddDeliveryAddressSaveForm = () => {
       <div className="flex flex-1 flex-col bg-[#f9f9f9] px-5 py-5">
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-5 pb-6">
-            {isLoadingKsa && (
+            {showKsaValidationLoader && (
               <div className="rounded-lg bg-blue-50 px-4 py-3 text-sm text-blue-700">
                 <div className="flex items-center gap-2">
                   <Spinner size={16} variant="dark" />
@@ -510,7 +780,7 @@ export const AddDeliveryAddressSaveForm = () => {
                     ) : (
                       filteredCities.map((city) => (
                         <button
-                          className="w-full px-4 py-2 text-left text-sm transition first:rounded-t-lg last:rounded-b-lg hover:bg-gray-50"
+                          className="w-full px-4 py-2 text-start text-sm transition first:rounded-t-lg last:rounded-b-lg hover:bg-gray-50"
                           key={city.value}
                           onMouseDown={(event) => {
                             event.preventDefault();
@@ -567,7 +837,7 @@ export const AddDeliveryAddressSaveForm = () => {
                         ) : (
                           filteredDistricts.map((district) => (
                             <button
-                              className="w-full px-4 py-2 text-left text-sm transition first:rounded-t-lg last:rounded-b-lg hover:bg-gray-50"
+                              className="w-full px-4 py-2 text-start text-sm transition first:rounded-t-lg last:rounded-b-lg hover:bg-gray-50"
                               key={district.value}
                               onClick={() =>
                                 handleSelectDistrict(district.label)
@@ -592,7 +862,7 @@ export const AddDeliveryAddressSaveForm = () => {
                 )}
               {!formData.city && (
                 <p className="mt-1 text-xs text-gray-500">
-                  Please select a city first
+                  {t("selectCityFirst")}
                 </p>
               )}
             </div>
@@ -648,11 +918,6 @@ export const AddDeliveryAddressSaveForm = () => {
             {/* Name Fields - Side by Side */}
             <div className="grid grid-cols-2 gap-x-2.5">
               <div>
-                <style>{`
-                  .recipient-first-name-input::placeholder {
-                    font-size: 12px;
-                  }
-                `}</style>
                 <FloatingLabelInput
                   alwaysShowLabel
                   inputProps={{
@@ -670,15 +935,14 @@ export const AddDeliveryAddressSaveForm = () => {
                   label={
                     isGiftDelivery ? t("recipientFirstName") : t("firstName")
                   }
+                  labelProps={{
+                    className:
+                      "peer-placeholder-shown:text-sm whitespace-nowrap",
+                  }}
                 />
               </div>
 
               <div>
-                <style>{`
-                  .recipient-last-name-input::placeholder {
-                    font-size: 12px;
-                  }
-                `}</style>
                 <FloatingLabelInput
                   alwaysShowLabel
                   inputProps={{
@@ -696,46 +960,92 @@ export const AddDeliveryAddressSaveForm = () => {
                   label={
                     isGiftDelivery ? t("recipientLastName") : t("lastName")
                   }
+                  labelProps={{
+                    className:
+                      "peer-placeholder-shown:text-sm whitespace-nowrap",
+                  }}
                 />
               </div>
             </div>
 
             {/* Phone Number */}
             <div>
-              <FloatingLabelInput
-                alwaysShowLabel
-                inputProps={{
-                  className: cn(
-                    formData.phoneNumber
-                      ? "bg-white border border-gray-300"
-                      : "bg-[#F3F3F3]",
-                    phoneNumberError && "border-red-500 bg-red-50",
-                    "rtl:text-right"
-                  ),
-                  dir: "ltr",
-                  onChange: (e) =>
-                    handleInputChange("phoneNumber", e.target.value),
-                  placeholder: "+966XXXXXXXXX",
-                  value: formData.phoneNumber,
-                }}
-                label={
-                  isGiftDelivery ? t("receiverPhoneNumber") : t("mobileNumber")
-                }
-              />
+              <FormProvider {...phoneForm}>
+                <ControlledPhoneNumberField
+                  disabled={!isGiftDelivery && !!customerData?.phoneNumber}
+                  floatingLabelInputProps={{
+                    label: isGiftDelivery
+                      ? t("receiverPhoneNumber")
+                      : t("mobileNumber"),
+                    labelProps: { className: "[&>span]:!opacity-100" },
+                  }}
+                  name="phone"
+                  showVerifyIcon={!isGiftDelivery}
+                />
+              </FormProvider>
               {phoneNumberError && isGiftDelivery && (
                 <p className="mt-1 text-xs text-red-500">{phoneNumberError}</p>
               )}
             </div>
+
+            {/* Sender Information - Only show for gift delivery if user doesn't have name data */}
+            {isGiftDelivery &&
+              (!customerData?.firstName || !customerData?.lastName) && (
+                <>
+                  <div className="col-span-2 mt-5">
+                    <Label className="text-text-secondary text-sm font-medium">
+                      {t("senderInformation")}
+                    </Label>
+                  </div>
+                  <div className="col-span-2 grid grid-cols-2 gap-x-2.5">
+                    <div>
+                      <FloatingLabelInput
+                        alwaysShowLabel
+                        inputProps={{
+                          className: cn(
+                            "sender-first-name-input",
+                            senderFirstName
+                              ? "bg-white border border-gray-300"
+                              : "bg-[#F3F3F3]"
+                          ),
+                          maxLength: 50,
+                          onChange: (e) => setSenderFirstName(e.target.value),
+                          value: senderFirstName,
+                        }}
+                        label={t("firstName")}
+                      />
+                    </div>
+                    <div>
+                      <FloatingLabelInput
+                        alwaysShowLabel
+                        inputProps={{
+                          className: cn(
+                            "sender-last-name-input",
+                            senderLastName
+                              ? "bg-white border border-gray-300"
+                              : "bg-[#F3F3F3]"
+                          ),
+                          maxLength: 50,
+                          onChange: (e) => setSenderLastName(e.target.value),
+                          value: senderLastName,
+                        }}
+                        label={t("lastName")}
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
           </div>
         </div>
 
         {/* Footer Actions */}
-        <div className="flex shrink-0 flex-col gap-6 pt-5">
+        <div className="flex shrink-0 flex-col gap-6 pb-8 pt-5">
           {!isGiftDelivery && (
             <div className="transition-default flex transform items-center gap-2.5 py-1.5">
               <Checkbox
                 checked={formData.setAsDefault}
                 className="peer size-4"
+                disabled={isFirstAddressInCheckout}
                 id="setAsDefault"
                 onCheckedChange={(checked) =>
                   handleInputChange("setAsDefault", checked as boolean)

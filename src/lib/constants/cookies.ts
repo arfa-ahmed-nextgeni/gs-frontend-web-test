@@ -1,4 +1,5 @@
 export const enum CookieName {
+  API_ACTIVITY_SESSION = "api-activity-session",
   AUTH_TOKEN = "auth_token",
   CART_ID = "cart-id",
   COOKIE_CONSENT = "cookie-consent",

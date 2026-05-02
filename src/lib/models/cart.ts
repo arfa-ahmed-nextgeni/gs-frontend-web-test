@@ -79,6 +79,7 @@ export class Cart extends Helper {
   giftMessage?: string;
   grandTotalFormattedPrice: string;
   grandTotalPrice: number;
+  hasSelectedShippingMethod: boolean;
   id: string;
   isBulletEligible?: boolean;
   items: CartItem[];
@@ -140,17 +141,24 @@ export class Cart extends Helper {
     this.serviceFee = cart?.prices?.small_order_fee?.value || undefined;
     this.serviceFeeMessage = (cart as any)?.service_fee_message || undefined;
     this.isBulletEligible = cart?.is_bullet_eligible || undefined;
-    this.shippingFee =
-      cart?.shipping_addresses?.[0]?.selected_shipping_method?.price_incl_tax
-        .value ?? undefined;
 
-    // Get base shipping fee from available shipping methods by matching selected method
     const selectedMethod =
       cart?.shipping_addresses?.[0]?.selected_shipping_method;
     const availableMethods =
       cart?.shipping_addresses?.[0]?.available_shipping_methods || [];
+    this.hasSelectedShippingMethod = Boolean(
+      selectedMethod?.carrier_code && selectedMethod?.method_code
+    );
+    this.shippingFee = this.hasSelectedShippingMethod
+      ? (selectedMethod?.price_incl_tax?.value ?? 0)
+      : undefined;
 
-    if (selectedMethod && availableMethods.length > 0) {
+    // Get base shipping fee from available shipping methods by matching selected method
+    if (
+      this.hasSelectedShippingMethod &&
+      selectedMethod &&
+      availableMethods.length > 0
+    ) {
       // Try to find exact match first
       let matchingMethod = availableMethods.find(
         (method) =>
@@ -189,7 +197,7 @@ export class Cart extends Helper {
     }
 
     // Fallback to base_amount if we still don't have a value
-    if (!this.baseShippingFee) {
+    if (this.hasSelectedShippingMethod && !this.baseShippingFee) {
       this.baseShippingFee =
         cart?.shipping_addresses?.[0]?.selected_shipping_method?.base_amount
           ?.value || undefined;
@@ -198,6 +206,7 @@ export class Cart extends Helper {
     // Final fallback: if we have free shipping (shippingFee = 0) but no baseShippingFee,
     // try to get the original fee from available methods (first method with non-zero amount)
     if (
+      this.hasSelectedShippingMethod &&
       !this.baseShippingFee &&
       this.shippingFee === 0 &&
       availableMethods.length > 0
@@ -248,8 +257,11 @@ export class Cart extends Helper {
 }
 
 export class CartItem extends ProductCardModel {
+  color?: string;
   countdownTimer: CountdownTimer | null = null;
   quantity: number;
+  size?: string;
+  stockLeft?: number;
   uidInCart: string;
 
   constructor(item: CartItemInterface) {
@@ -267,6 +279,11 @@ export class CartItem extends ProductCardModel {
     let sku = product?.sku || "";
     let parentId: string | undefined = undefined;
     let skuParent: string | undefined = undefined;
+    let size: string | undefined = undefined;
+    let color: string | undefined = undefined;
+    let stockLeft: number | undefined = undefined;
+    const attributeSet = (item as any).attribute_set || undefined;
+    const productType = (product as any).product_type_new2 || undefined;
 
     if ((item as any).__typename === "ConfigurableCartItem") {
       const confItem = item as ConfigurableCartItem;
@@ -274,9 +291,22 @@ export class CartItem extends ProductCardModel {
       if (confItem.configured_variant) {
         parentId = externalId;
         skuParent = sku;
-        externalId = `${confItem.configured_variant.id ?? ""}`;
+        externalId = `${(confItem.configured_variant as any).id ?? ""}`;
         sku = (confItem.configured_variant as any).sku || sku;
+        stockLeft =
+          (confItem.configured_variant as any).only_x_left_in_stock ??
+          undefined;
       }
+
+      const sizeOpt = confItem.configurable_options.find((opt) =>
+        opt?.option_label?.toLowerCase().includes("size")
+      );
+      size = sizeOpt?.value_label || undefined;
+
+      const colorOpt = confItem.configurable_options.find((opt) =>
+        opt?.option_label?.toLowerCase().includes("color")
+      );
+      color = colorOpt?.value_label || undefined;
 
       options = {
         choices: confItem.configurable_options.map((opt) => ({
@@ -288,9 +318,9 @@ export class CartItem extends ProductCardModel {
       };
       minPrice = confItem.configured_variant.price_range.minimum_price;
 
-      // Check express_delivery_available from configured_variant
-      bulletDelivery =
-        confItem.configured_variant.express_delivery_available === 1;
+      bulletDelivery = Helper.isFlagEnabled(
+        confItem.configured_variant.express_delivery_available
+      );
 
       if (confItem.configured_variant.countdown_timer_enabled === 1) {
         countdownTimer = {
@@ -304,7 +334,9 @@ export class CartItem extends ProductCardModel {
     } else {
       const simpleItem = item as SimpleCartItem;
 
-      bulletDelivery = simpleItem.product.express_delivery_available === 1;
+      bulletDelivery = Helper.isFlagEnabled(
+        simpleItem.product.express_delivery_available
+      );
 
       if (simpleItem.product.countdown_timer_enabled === 1) {
         countdownTimer = {
@@ -323,6 +355,8 @@ export class CartItem extends ProductCardModel {
     const savedAmount = minPrice?.discount?.amount_off || 0;
 
     super({
+      attributeSet,
+      brand: product.brand_new_label || "",
       bulletDelivery,
       currency,
       description: product?.short_description?.html || "",
@@ -338,6 +372,7 @@ export class CartItem extends ProductCardModel {
       options,
       parentId,
       price: finalPrice,
+      productType,
       ratingSummary: product.rating_summary,
       savedAmount,
       sku,
@@ -352,5 +387,8 @@ export class CartItem extends ProductCardModel {
     this.isGwp = isGwp || false;
     this.isWrap = isWrap || false;
     this.countdownTimer = countdownTimer;
+    this.size = size;
+    this.color = color;
+    this.stockLeft = stockLeft;
   }
 }

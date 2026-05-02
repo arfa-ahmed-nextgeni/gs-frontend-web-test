@@ -6,7 +6,7 @@ import { Locale } from "@/lib/constants/i18n";
 import { isOk } from "@/lib/utils/service-result";
 
 type ProductReviewProductInfoCardProps = {
-  description: string;
+  brand: string;
   image: string;
   name: string;
   oldPrice?: string;
@@ -14,7 +14,7 @@ type ProductReviewProductInfoCardProps = {
 };
 
 const ProductReviewProductInfoCard = ({
-  description,
+  brand,
   image,
   name,
   oldPrice,
@@ -26,11 +26,12 @@ const ProductReviewProductInfoCard = ({
     </div>
     <div className="flex flex-1 flex-col justify-between py-1">
       <p className="text-text-primary line-clamp-1 text-xs font-semibold">
-        {name}
+        {brand}
       </p>
-      <p className="text-text-primary line-clamp-2 text-xs font-normal">
-        {description}
-      </p>
+      <div
+        className="text-text-primary **:font-inherit **:leading-inherit **:text-inherit line-clamp-2 text-xs font-normal [&_p]:m-0"
+        dangerouslySetInnerHTML={{ __html: name }}
+      />
       {price ? (
         <ProductCardPrice
           containerProps={{
@@ -67,7 +68,7 @@ export const ProductReviewProductInfo = async ({
 
     return (
       <ProductReviewProductInfoCard
-        description={product.description}
+        brand={product.brand}
         image={product.image}
         name={product.name}
         oldPrice={product.oldPrice}
@@ -86,7 +87,7 @@ export const ProductReviewProductInfo = async ({
 
     return (
       <ProductReviewProductInfoCard
-        description={product.description}
+        brand={product.brand}
         image={product.mediaGallery[0]?.url || ""}
         name={product.name}
         oldPrice={product.oldPrice}

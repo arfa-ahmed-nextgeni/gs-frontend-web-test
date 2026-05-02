@@ -6,10 +6,11 @@ import { usePathname } from "@/i18n/navigation";
 export default function CheckoutPageLoading() {
   const pathname = usePathname();
 
-  // Don't show loading for drawer routes (add-gift-wrapping, add-pickup-point)
+  // Don't show loading for drawer routes (add-gift-wrapping, add-pickup-point, add-delivery-address)
   if (
     pathname?.includes("/add-gift-wrapping") ||
-    pathname?.includes("/add-pickup-point")
+    pathname?.includes("/add-pickup-point") ||
+    pathname?.includes("/add-delivery-address")
   ) {
     return null;
   }

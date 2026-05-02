@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 
+import { WishlistTracker } from "@/components/analytics/wishlist-tracker";
 import { ProductCard } from "@/components/product/product-card";
 import { PaginationWithSearchParams } from "@/components/shared/pagination-with-search-params";
 import { WishlistEmptyState } from "@/components/wishlist/wishlist-empty-state";
@@ -55,12 +56,14 @@ export const WishlistProductsSection = () => {
   return (
     <div className="flex flex-col gap-5">
       <div className="lg:mt-12.5 mt-2.5 grid grid-cols-2 justify-items-center gap-2.5 px-2.5 md:grid-cols-3 lg:px-0 xl:grid-cols-4">
+        <WishlistTracker wishlistProducts={wishlistProducts} />
         {wishlistProducts.map((wishlistProduct, index) => (
           <ProductCard
             containerProps={{
               className: "max-[400px]:w-auto",
             }}
             isBulletDeliveryEnabled={isBulletDeliveryEnabled}
+            isWishlistItem
             key={`${wishlistProduct.id}-${index}`}
             product={wishlistProduct}
           />

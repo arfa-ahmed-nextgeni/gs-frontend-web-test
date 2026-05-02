@@ -8,6 +8,10 @@ import { AddressForm } from "@/components/customer/addresses/manage-address/addr
 import { useAddDeliveryAddressContext } from "@/contexts/add-delivery-address-context";
 import { AddressFormContextProvider } from "@/contexts/address-form-context";
 import { useStoreConfig } from "@/contexts/store-config-context";
+import {
+  CHECKOUT_ADDRESS_SAVED_EVENT,
+  CHECKOUT_ADDRESS_SAVED_FLAG,
+} from "@/lib/constants/checkout/events";
 
 export const AddDeliveryAddressView = () => {
   const stepsRef = useRef<HTMLDivElement>(null);
@@ -23,10 +27,38 @@ export const AddDeliveryAddressView = () => {
   const {
     customerData,
     deliveryType,
+    isFirstAddressInCheckout,
     isManualEntryMode,
+    resetFlowState,
     setShowSaveForm,
     showSaveForm,
   } = useAddDeliveryAddressContext();
+
+  const notifyCheckoutAddressSaved = (addressId?: string) => {
+    if (!addressId) {
+      return;
+    }
+
+    const savedAddressPayload = JSON.stringify({
+      addressId,
+      mode: "create",
+      type: deliveryType,
+    });
+
+    window.sessionStorage.setItem(
+      CHECKOUT_ADDRESS_SAVED_FLAG,
+      savedAddressPayload
+    );
+    window.dispatchEvent(
+      new CustomEvent(CHECKOUT_ADDRESS_SAVED_EVENT, {
+        detail: {
+          addressId,
+          mode: "create",
+          type: deliveryType,
+        },
+      })
+    );
+  };
 
   useEffect(() => {
     const updateStepsHeight = () => {
@@ -62,15 +94,17 @@ export const AddDeliveryAddressView = () => {
           initialAddressLabel={
             deliveryType === "gift_delivery" ? "gift" : "home"
           }
-          isFirstAddressInCheckout
+          isFirstAddressInCheckout={isFirstAddressInCheckout}
           onClose={() => {
+            // Reset manual/map flow state so the next SA open starts from the map.
+            resetFlowState();
             window.history.back();
           }}
           onRootBack={() => {
             setShowSaveForm(false);
           }}
-          onSuccess={() => {
-            // Address form submission handled by the form itself
+          onSuccess={(addressId) => {
+            notifyCheckoutAddressSaved(addressId);
           }}
         >
           <div
@@ -101,9 +135,9 @@ export const AddDeliveryAddressView = () => {
     <AddressFormContextProvider
       customerData={customerData}
       initialAddressLabel={deliveryType === "gift_delivery" ? "gift" : "home"}
-      isFirstAddressInCheckout
-      onSuccess={() => {
-        // Address form submission handled by the form itself
+      isFirstAddressInCheckout={isFirstAddressInCheckout}
+      onSuccess={(addressId) => {
+        notifyCheckoutAddressSaved(addressId);
       }}
     >
       <div className="flex flex-1 flex-col overflow-hidden" ref={containerRef}>

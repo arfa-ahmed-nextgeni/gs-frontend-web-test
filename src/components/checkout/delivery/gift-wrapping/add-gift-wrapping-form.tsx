@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 
 import Image from "next/image";
 
@@ -10,10 +10,14 @@ import AlertIcon from "@/assets/icons/Alert.svg";
 import { GiftWrappingCard } from "@/components/checkout/delivery/gift-wrapping/gift-wrapping-card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FormSubmitButton } from "@/components/ui/form-submit-button";
+import { Spinner } from "@/components/ui/spinner";
+import { useNotifyMe } from "@/contexts/notify-me-context";
 import { useAddProductsToCartWithGiftMessage } from "@/hooks/mutations/cart/use-add-products-to-cart-with-gift-message";
 import { useRemoveProductFromCart } from "@/hooks/mutations/cart/use-remove-product-from-cart";
 import { useHorizontalScroll } from "@/hooks/use-horizontal-scroll";
 import { useRouter } from "@/i18n/navigation";
+import { ROUTES } from "@/lib/constants/routes";
+import { cn } from "@/lib/utils";
 
 import type {
   GiftWrappingProduct,
@@ -67,7 +71,10 @@ export const AddGiftWrappingForm = ({
 }: AddGiftWrappingFormProps) => {
   const router = useRouter();
   const t = useTranslations("CheckoutPage.AddGiftWrappingDrawer");
+  const notifyMeT = useTranslations("productCard.cartAction");
   const formRef = useRef<HTMLFormElement>(null);
+  const { setNotifyMeData } = useNotifyMe();
+  const [isNavigatingToNotifyMe, startNavigatingToNotifyMe] = useTransition();
 
   const normalizedGiftSections = useMemo(
     () =>
@@ -123,6 +130,7 @@ export const AddGiftWrappingForm = ({
     }
     return null;
   }, [selectedGiftId, normalizedGiftSections]);
+  const isSelectedGiftOutOfStock = !!selectedGift && !selectedGift.inStock;
 
   const addToCartMutation = useAddProductsToCartWithGiftMessage({
     giftMessage: undefined,
@@ -174,6 +182,10 @@ export const AddGiftWrappingForm = ({
       return;
     }
 
+    if (!selectedGift.inStock) {
+      return;
+    }
+
     // If in edit mode, first remove the existing wrap item, then add the new one
     if (isEditMode && existingWrapItem?.uidInCart) {
       removeMutation.mutate(
@@ -216,6 +228,32 @@ export const AddGiftWrappingForm = ({
       );
     }
   };
+
+  const handleNavigateToNotifyMe = () => {
+    if (!selectedGift?.externalId || !selectedGift.name) {
+      return;
+    }
+
+    setNotifyMeData({
+      product: null,
+      productCard: null,
+      selectedProduct: null,
+    });
+
+    startNavigatingToNotifyMe(() => {
+      router.push(
+        ROUTES.NOTIFY_ME(selectedGift.externalId, selectedGift.name),
+        {
+          scroll: false,
+        }
+      );
+    });
+  };
+
+  const isSubmitting =
+    addToCartMutation.isPending ||
+    removeMutation.isPending ||
+    isNavigatingToNotifyMe;
 
   return (
     <form
@@ -316,12 +354,36 @@ export const AddGiftWrappingForm = ({
           </div>
         </div>
 
-        <FormSubmitButton
-          className="bg-bg-primary text-text-inverse h-[50px] w-full rounded-[10px] text-[20px] font-medium"
-          isSubmitting={addToCartMutation.isPending || removeMutation.isPending}
-        >
-          {isStandardBoxSelected ? t("skip") : t("add")}
-        </FormSubmitButton>
+        {isStandardBoxSelected || !isSelectedGiftOutOfStock ? (
+          <FormSubmitButton
+            className="bg-bg-primary text-text-inverse h-[50px] w-full rounded-[10px] text-[20px] font-medium"
+            isSubmitting={isSubmitting}
+          >
+            {isStandardBoxSelected ? t("skip") : t("add")}
+          </FormSubmitButton>
+        ) : (
+          <button
+            className={cn(
+              "transition-default bg-btn-bg-primary text-text-ghost h-12.5 rounded-xl text-xl font-medium",
+              "hover:bg-btn-bg-slate",
+              !isSubmitting && "disabled:bg-btn-bg-muted",
+              { "bg-btn-bg-slate": isSubmitting },
+              "focus:bg-btn-bg-primary focus:outline-none",
+              "h-[50px] w-full rounded-[10px]"
+            )}
+            disabled={isSubmitting}
+            onClick={handleNavigateToNotifyMe}
+            type="button"
+          >
+            {isSubmitting ? (
+              <div className="flex h-full w-full items-center justify-center">
+                <Spinner label="Loading" />
+              </div>
+            ) : (
+              notifyMeT("notify_me")
+            )}
+          </button>
+        )}
       </div>
     </form>
   );

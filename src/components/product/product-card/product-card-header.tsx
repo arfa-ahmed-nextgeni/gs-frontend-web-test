@@ -8,16 +8,16 @@ import { ProductCardVariant } from "@/lib/constants/product/product-card";
 import { cn } from "@/lib/utils";
 
 export const ProductCardHeader = ({
-  description,
+  brand,
+  name,
   rating,
   savedPrice,
-  title,
   variant,
 }: {
-  description: string;
+  brand: string;
+  name: string;
   rating?: number;
   savedPrice?: string;
-  title: string;
   variant: ProductCardVariant;
 }) => {
   const t = useTranslations("productCard");
@@ -38,8 +38,8 @@ export const ProductCardHeader = ({
               ? t.rich("bundleProductTitle", {
                   price: () => <LocalizedPrice price={savedPrice} />,
                 })
-              : title
-            : title}
+              : brand
+            : brand}
         </div>
         {rating && rating >= 4 && (
           <div
@@ -61,7 +61,7 @@ export const ProductCardHeader = ({
         )}
       </div>
       <div className="text-text-primary line-clamp-2 min-h-8 text-xs font-normal">
-        {description}
+        {name}
       </div>
     </div>
   );

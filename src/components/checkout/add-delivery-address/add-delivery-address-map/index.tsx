@@ -165,6 +165,7 @@ export const AddDeliveryAddressMap = () => {
           apiKey={GOOGLE_MAPS_API_KEY}
           language={googleMapsLanguage}
           libraries={["places"]}
+          region="SA"
         >
           <Map
             defaultCenter={RIYADH_CENTER}
@@ -220,6 +221,7 @@ export const AddDeliveryAddressMap = () => {
         apiKey={GOOGLE_MAPS_API_KEY}
         language={googleMapsLanguage}
         libraries={["places"]}
+        region="SA"
       >
         <Map
           defaultCenter={defaultCenter}

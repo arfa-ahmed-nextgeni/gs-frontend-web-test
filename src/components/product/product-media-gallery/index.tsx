@@ -40,7 +40,16 @@ export const ProductMediaGallery = () => {
     setShouldRenderDesktopThumbnails(!isMobile);
   }, [isMobile]);
 
-  const galleryItems = selectedProduct.mediaGallery;
+  const galleryItems =
+    selectedProduct.mediaGallery.length > 0
+      ? selectedProduct.mediaGallery
+      : product.mediaGallery;
+
+  useEffect(() => {
+    if (currentIndex >= galleryItems.length) {
+      setCurrentIndex(0);
+    }
+  }, [currentIndex, galleryItems.length]);
 
   return (
     <div className="col-span-6 grid aspect-square grid-cols-6 gap-2.5 lg:col-span-7 lg:aspect-auto lg:grid-cols-7">

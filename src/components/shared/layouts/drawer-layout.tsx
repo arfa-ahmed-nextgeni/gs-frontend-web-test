@@ -53,6 +53,24 @@ export function DrawerLayout({
 }: DrawerLayoutProps) {
   const isMobile = useIsMobile();
   const direction = useDirection();
+  const mobileHeaderAction =
+    mobileHeaderEndContent ??
+    (secondaryAction?.show && secondaryAction.icon && (
+      <button
+        aria-label={secondaryAction.label ?? "Secondary action"}
+        onClick={secondaryAction.onClick}
+      >
+        <Image
+          alt={secondaryAction.label ?? "Secondary action"}
+          className="object-contain"
+          height={20}
+          priority
+          src={secondaryAction.icon}
+          unoptimized
+          width={20}
+        />
+      </button>
+    ));
 
   if (isMobile) {
     return (
@@ -73,8 +91,8 @@ export function DrawerLayout({
           <h2 className="text-text-primary flex-1 text-left text-[20px] font-medium rtl:text-right">
             {title}
           </h2>
-          {mobileHeaderEndContent ? (
-            <div>{mobileHeaderEndContent}</div>
+          {mobileHeaderAction ? (
+            <div>{mobileHeaderAction}</div>
           ) : (
             <Image
               alt="Secure"

@@ -1,7 +1,7 @@
-import Image from "next/image";
-
-import { productPlaceholder } from "@/assets/placeholders";
+import { ProductCardStatusBadges } from "@/components/product/product-card/product-card-status-badges";
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import { LocalizedPrice } from "@/components/shared/localized-price";
+import { StockStatus } from "@/lib/constants/product/product-card";
 import { cn } from "@/lib/utils";
 
 import type { GiftWrappingProduct } from "@/components/checkout/delivery/gift-wrapping/types";
@@ -28,13 +28,22 @@ export const GiftWrappingCard = ({
       type="button"
     >
       <div className="relative h-[140px] w-[135px] shrink-0 overflow-hidden rounded-t-[10px]">
-        <Image
+        <ProductImageWithFallback
           alt={gift.name}
           className="object-cover"
           fill
           priority={isSelected}
           sizes="140px"
-          src={gift.imageUrl || productPlaceholder}
+          src={gift.imageUrl}
+        />
+        <ProductCardStatusBadges
+          containerProps={{
+            className: "z-10",
+          }}
+          isBulletDeliveryEnabled={false}
+          stockStatus={
+            gift.inStock ? StockStatus.InStock : StockStatus.OutOfStock
+          }
         />
       </div>
       <div className="relative h-[43px] w-[110px] min-w-0">

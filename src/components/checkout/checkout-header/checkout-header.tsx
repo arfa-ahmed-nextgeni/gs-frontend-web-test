@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
 
 import Image from "next/image";
 
@@ -17,9 +18,10 @@ import { ROUTES } from "@/lib/constants/routes";
 
 interface CheckoutHeaderProps {
   email?: null | string;
+  logoSlot?: ReactNode;
 }
 
-export function CheckoutHeader({ email }: CheckoutHeaderProps) {
+export function CheckoutHeader({ email, logoSlot }: CheckoutHeaderProps) {
   const t = useTranslations("CheckoutPage");
   const { isOrderConfirmation } = useRouteMatch();
   const { data: currentCustomer, isLoading: isCustomerLoading } =
@@ -63,7 +65,7 @@ export function CheckoutHeader({ email }: CheckoutHeaderProps) {
       <div className="bg-bg-default px-30 mb-0 hidden h-[70px] grid-cols-[1fr_auto_1fr] items-center py-4 lg:grid">
         <div className="flex items-center">
           <Link href={ROUTES.ROOT} title="Go to homepage">
-            <GoldenScentLogo className="h-10 w-auto" />
+            {logoSlot ?? <GoldenScentLogo className="h-10 w-auto" />}
           </Link>
         </div>
         <div className="text-text-primary text-center text-lg font-medium">

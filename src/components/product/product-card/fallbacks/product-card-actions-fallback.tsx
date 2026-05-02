@@ -2,12 +2,12 @@ import { ProductCardButtonSkeleton } from "@/components/product/product-card/fal
 import { ProductCardWishlistButtonSkeleton } from "@/components/product/product-card/fallbacks/product-card-wishlist-button-skeleton";
 
 export const ProductCardActionsFallback = ({
-  isConfigurable = false,
+  showWishlistButton = true,
 }: {
-  isConfigurable?: boolean;
+  showWishlistButton?: boolean;
 }) => (
   <>
     <ProductCardButtonSkeleton />
-    {isConfigurable ? null : <ProductCardWishlistButtonSkeleton />}
+    {showWishlistButton ? <ProductCardWishlistButtonSkeleton /> : null}
   </>
 );

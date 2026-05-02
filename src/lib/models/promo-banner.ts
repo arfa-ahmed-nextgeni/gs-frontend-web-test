@@ -1,4 +1,4 @@
-import { Document } from "@contentful/rich-text-types";
+import type { Document } from "@contentful/rich-text-types";
 
 import { PromoBannerData } from "@/lib/types/contentful/nav-header";
 

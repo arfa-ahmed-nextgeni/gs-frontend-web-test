@@ -1,6 +1,13 @@
+import "server-only";
+
 import { headers } from "next/headers";
 
 import { TypedDocumentString } from "@/graphql/graphql";
+import {
+  ApiActivityFeatures,
+  ApiActivityServices,
+} from "@/lib/api-activity/api-activity-meta";
+import { loggedFetch } from "@/lib/api-activity/fetch/logged-fetch";
 import { GRAPHQL_BASE_URL } from "@/lib/config/server-env";
 import { API_CONSTANTS, HEADERS } from "@/lib/constants/api";
 import { StoreCode } from "@/lib/constants/i18n";
@@ -48,6 +55,22 @@ export class GraphQLRequestError extends Error {
   }
 }
 
+const AUTH_ERROR_CODES = new Set([
+  "graphql-authentication",
+  "graphql-authorization",
+  "unauthenticated",
+  "unauthorized",
+]);
+
+const AUTH_ERROR_MESSAGE_FRAGMENTS = [
+  "current customer isn't authorized",
+  "current customer is not authorized",
+  "the request is allowed for logged in customer",
+  "the current customer isn't authorized",
+  "customer access tokens",
+  "customer is not logged in",
+];
+
 export async function graphqlRequest<
   TResult,
   TVariables = Record<string, never>,
@@ -90,16 +113,24 @@ export async function graphqlRequest<
   }
 
   try {
-    const response = await fetch(GRAPHQL_BASE_URL, {
-      body: JSON.stringify({
-        query: serializedQuery,
-        ...(variables ? { variables } : {}),
-      }),
-      headers: requestHeaders,
-      method: "POST",
-      signal: AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT),
-      ...requestInit,
-    });
+    const response = await loggedFetch(
+      GRAPHQL_BASE_URL,
+      {
+        body: JSON.stringify({
+          query: serializedQuery,
+          ...(variables ? { variables } : {}),
+        }),
+        headers: requestHeaders,
+        method: "POST",
+        signal: AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT),
+        ...requestInit,
+      },
+      {
+        feature: ApiActivityFeatures.Storefront,
+        initiator: "src/lib/clients/graphql.ts#graphqlRequest",
+        service: ApiActivityServices.Graphql,
+      }
+    );
 
     // Log the request for debugging
     if (serializedQuery.includes("getKsaAddress")) {
@@ -116,7 +147,16 @@ export async function graphqlRequest<
     }
 
     if (!response.ok) {
-      // Handle specific error cases
+      if (response.status === 401 || response.status === 403) {
+        return {
+          errors: [
+            {
+              extensions: { code: "graphql-authorization" },
+              message: `HTTP Error: ${response.status} ${response.statusText}`,
+            },
+          ],
+        };
+      }
       if (response.status === 503) {
         throw new Error(`GraphQL Service Unavailable: ${response.statusText}`);
       }
@@ -168,4 +208,35 @@ export async function graphqlRequest<
     }
     throw new Error("Unknown GraphQL Request Error");
   }
+}
+
+/**
+ * Detects whether a GraphQL response indicates the provided auth token is
+ * invalid/revoked. Use this from server actions that forward an auth token
+ * so they can surface `unauthenticated()` and let the client-side handler
+ * clear the session and prompt for re-login.
+ */
+export function isGraphqlAuthError(
+  response: Pick<GraphQLResponse<any>, "errors">
+): boolean {
+  if (!response.errors?.length) {
+    return false;
+  }
+
+  return response.errors.some((error) => {
+    const code = String(error.extensions?.code || "").toLowerCase();
+    if (AUTH_ERROR_CODES.has(code)) {
+      return true;
+    }
+
+    const category = String(error.extensions?.category || "").toLowerCase();
+    if (AUTH_ERROR_CODES.has(category)) {
+      return true;
+    }
+
+    const message = String(error.message || "").toLowerCase();
+    return AUTH_ERROR_MESSAGE_FRAGMENTS.some((fragment) =>
+      message.includes(fragment)
+    );
+  });
 }

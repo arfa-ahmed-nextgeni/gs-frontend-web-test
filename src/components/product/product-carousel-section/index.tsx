@@ -3,8 +3,10 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { SectionHeader } from "@/components/common/section-header";
 import { ProductCard } from "@/components/product/product-card";
 import Container from "@/components/shared/container";
-import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
-import { CarouselItem } from "@/components/ui/carousel/carousel-item";
+import {
+  CardRailScrollSnapCarousel,
+  CardRailScrollSnapCarouselItem,
+} from "@/components/ui/card-rail-scroll-snap-carousel";
 import { getBulletDeliveryEnabled } from "@/lib/actions/config/get-bullet-delivery-enabled";
 import { getLinkProducts } from "@/lib/actions/products/get-link-products";
 import { type Locale } from "@/lib/constants/i18n";
@@ -21,6 +23,7 @@ type ProductCarouselSectionProps = {
     gender: string;
     productType: string;
     sku: string;
+    urlKey?: string;
   };
   productType: ProductType;
   titleKey: "similarProductsSection" | "youMightAlsoLikeSection";
@@ -64,7 +67,7 @@ export async function ProductCarouselSection({
           }
         />
 
-        <CarouselContainer
+        <CardRailScrollSnapCarousel
           contentProps={{
             className: "px-2.5 lg:!px-0",
           }}
@@ -82,14 +85,14 @@ export async function ProductCarouselSection({
           }}
         >
           {products.map((product) => (
-            <CarouselItem key={product.id}>
+            <CardRailScrollSnapCarouselItem key={product.id}>
               <ProductCard
                 isBulletDeliveryEnabled={isBulletDeliveryEnabled}
                 product={product}
               />
-            </CarouselItem>
+            </CardRailScrollSnapCarouselItem>
           ))}
-        </CarouselContainer>
+        </CardRailScrollSnapCarousel>
       </div>
     </Container>
   );

@@ -1,15 +1,11 @@
-import {
-  CountryCode,
-  getCountryCallingCode,
-  parsePhoneNumberWithError,
-} from "libphonenumber-js";
-
 import UaeFlag from "@/assets/flags/ae-flag.svg";
 import KuwaitFlag from "@/assets/flags/kw-flag.svg";
 import OmanFlag from "@/assets/flags/om-flag.svg";
 import SaudiFlag from "@/assets/flags/sa-flag.svg";
-import { Locale, LOCALE_TO_STORE, StoreCode } from "@/lib/constants/i18n";
-import { Store } from "@/lib/models/stores";
+import { LOCALE_TO_STORE, StoreCode } from "@/lib/constants/i18n";
+
+import type { Locale } from "@/lib/constants/i18n";
+import type { Store } from "@/lib/models/stores";
 
 // Country code mapping for different stores
 export const STORE_TO_COUNTRY_CODE: Record<StoreCode, string> = {
@@ -122,15 +118,6 @@ export function isValidPhoneNumber(
   return phoneNumber.length === requiredLength;
 }
 
-export const getCountryCallingCodeSafe = (countryCode: string) => {
-  try {
-    return getCountryCallingCode(countryCode as CountryCode);
-  } catch (error) {
-    console.error(error);
-    return "1";
-  }
-};
-
 // Available country codes for selection
 export const AVAILABLE_COUNTRY_CODES = [
   { code: "+966", flag: "🇸🇦", name: "Saudi Arabia" },
@@ -140,29 +127,6 @@ export const AVAILABLE_COUNTRY_CODES = [
   { code: "+964", flag: "🇮🇶", name: "Iraq" },
   { code: "+1", flag: "🌍", name: "Global" },
 ];
-
-export const getPhoneDetails = (phoneNumber: string) => {
-  try {
-    let cleanedPhoneNumber = phoneNumber.trim().replace(/\s+/g, "");
-
-    if (!cleanedPhoneNumber.startsWith("+")) {
-      cleanedPhoneNumber = `+${cleanedPhoneNumber}`;
-    }
-
-    const parsedPhoneNumber = parsePhoneNumberWithError(cleanedPhoneNumber);
-
-    return {
-      countryCode: `+${parsedPhoneNumber.countryCallingCode}`,
-      number: parsedPhoneNumber.nationalNumber,
-    };
-  } catch (error) {
-    console.error("Error parsing phone number:", error);
-    return {
-      countryCode: "",
-      number: "",
-    };
-  }
-};
 
 /**
  * Get catalog codes from Store object

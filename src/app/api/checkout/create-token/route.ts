@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import {
+  ApiActivityFeatures,
+  ApiActivityServices,
+} from "@/lib/api-activity/api-activity-meta";
+import { loggedFetch } from "@/lib/api-activity/fetch/logged-fetch";
 import { CHECKOUT_PUBLIC_API_KEY } from "@/lib/config/server-env";
 
 /**
@@ -37,20 +42,29 @@ export async function POST(request: NextRequest) {
     // Forward request to Checkout.com
     let checkoutResponse: Response;
     try {
-      checkoutResponse = await fetch(checkoutApiUrl, {
-        body: JSON.stringify({
-          cvv: body.cvv,
-          expiry_month: body.expiry_month,
-          expiry_year: body.expiry_year,
-          number: body.number,
-          type: "card",
-        }),
-        headers: {
-          Authorization: `Bearer ${CHECKOUT_PUBLIC_API_KEY}`,
-          "Content-Type": "application/json",
+      checkoutResponse = await loggedFetch(
+        checkoutApiUrl,
+        {
+          body: JSON.stringify({
+            cvv: body.cvv,
+            expiry_month: body.expiry_month,
+            expiry_year: body.expiry_year,
+            number: body.number,
+            type: "card",
+          }),
+          headers: {
+            Authorization: `Bearer ${CHECKOUT_PUBLIC_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          method: "POST",
         },
-        method: "POST",
-      });
+        {
+          action: "create token",
+          feature: ApiActivityFeatures.Checkout,
+          initiator: "src/app/api/checkout/create-token/route.ts#POST",
+          service: ApiActivityServices.Checkout,
+        }
+      );
     } catch (fetchError) {
       console.error("[create-token] Fetch error:", fetchError);
       return NextResponse.json(

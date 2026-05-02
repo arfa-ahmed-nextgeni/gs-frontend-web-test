@@ -26,15 +26,11 @@ import { cn } from "@/lib/utils";
 import { initializePageLocale } from "@/lib/utils/locale";
 import { generateWebsiteSchema } from "@/lib/utils/schema";
 
-const BANNER_LCP_CANDIDATE_INDEX = 0;
-
 export default async function Page({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
   initializePageLocale(locale);
 
-  const pageLandingData = await getPageLandingData({
-    locale,
-  });
+  const pageLandingData = await getPageLandingData({ locale });
 
   if (!pageLandingData?.contents) {
     return null;
@@ -79,7 +75,7 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
                       },
                     },
                   }}
-                  isLcpCandidate={index === BANNER_LCP_CANDIDATE_INDEX}
+                  isLcpCandidate={bannerSlider.isLcpCandidate}
                 />
               </Container>
             );
@@ -170,7 +166,7 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
                   bannerLpId="home"
                   bannerOrigin="lp"
                   bannerRow={index + 1}
-                  isLcpCandidate={index === BANNER_LCP_CANDIDATE_INDEX}
+                  isLcpCandidate={(content as WebsiteBanner).isLcpCandidate}
                 />
               </Container>
             );

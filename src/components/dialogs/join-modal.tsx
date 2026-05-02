@@ -16,7 +16,8 @@ import { useCustomerQuery } from "@/hooks/queries/use-customer-query";
 import { updateProfileFromAddress } from "@/lib/actions/customer/update-profile";
 import { StoreCode } from "@/lib/constants/i18n";
 import { cn } from "@/lib/utils";
-import { getDefaultCountryCode, getPhoneDetails } from "@/lib/utils/country";
+import { getDefaultCountryCode } from "@/lib/utils/country";
+import { getPhoneDetails } from "@/lib/utils/phone-utils";
 import { isOk } from "@/lib/utils/service-result";
 
 const createJoinSchema = (hasPhoneNumber: boolean) =>
@@ -106,7 +107,7 @@ export function JoinModal({
 
   const {
     control,
-    formState: { errors, isValid },
+    formState: { errors, isSubmitted, isValid, touchedFields },
     handleSubmit,
     register,
     setValue,
@@ -121,6 +122,10 @@ export function JoinModal({
   });
 
   const email = watch("email");
+  const showEmailError = Boolean(
+    errors.email && (isSubmitted || touchedFields.email)
+  );
+  const emailErrorMessage = errors.email?.message;
 
   useEffect(() => {
     setValue("phoneNumber", parsedPhoneNumber, {
@@ -195,18 +200,18 @@ export function JoinModal({
                 email
                   ? "border border-[#374957] bg-white"
                   : "border-0 bg-[#F3F3F3]",
-                errors.email && "border-[#FE5000]"
+                showEmailError && "border-[#FE5000]"
               )}
               id="email"
               placeholder={t("email.placeholder")}
               type="email"
               {...register("email")}
             />
-            {errors.email && (
+            {showEmailError && emailErrorMessage && (
               <p className="mt-1 text-xs text-red-500">
-                {tFormErrors.has(errors.email.message as any)
-                  ? tFormErrors(errors.email.message as any)
-                  : errors.email.message}
+                {tFormErrors.has(emailErrorMessage as any)
+                  ? tFormErrors(emailErrorMessage as any)
+                  : emailErrorMessage}
               </p>
             )}
           </div>

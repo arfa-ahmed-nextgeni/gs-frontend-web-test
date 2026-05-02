@@ -26,7 +26,7 @@
       },
       "search": {
         "placeholder": "Search scents, brands, or notes",
-        "mobilePlaceholder": "Search scents, brands, or notes",
+        "mobilePlaceholder": "Search all brands...",
         "trendingNow": "Trending Now",
         "ourPicks": "Our Picks for You",
         "recentSearches": "Recent Searches",
@@ -51,7 +51,8 @@
         "profile": "Profile",
         "customerService": "Customer Service",
         "logout": "Log out",
-        "logoutToast": "You're logged out"
+        "logoutToast": "You're logged out",
+        "wishlist": "Wishlist"
       },
       "otpLogin": {
         "title": "Marhaba 👋",
@@ -260,6 +261,10 @@
       "message": "Items added to wishlist!",
       "description": "Item have been added to your wishlist."
     },
+    "sessionExpired": {
+      "message": "You are logged out",
+      "description": "Your session has expired. Please log in again to continue."
+    },
     "updateSuccessToast": "Customer data updated successfully",
     "updateErrorToast": "Failed to update customer",
     "A customer with the same email address already exists in an associated website": "A customer with the same email address already exists in an associated website."
@@ -365,8 +370,10 @@
     "items": "items",
     "paymentSummary": "Payment Summary",
     "subtotal": "Subtotal",
+    "loyalityPoints": "Loyality points",
     "discount": "Discount",
     "shippingFee": "Shipping Fee",
+    "codFee": "COD Fee",
     "free": "FREE",
     "grandTotal": "GRAND TOTAL",
     "paymentMethods": "Mode of Payment",
@@ -671,7 +678,6 @@
         "offers": "Offers",
         "priceLowToHigh": "Price low to high",
         "priceHighToLow": "Price high to low",
-
         "shopByNotes": "Shop By Notes",
         "perfumeNotes": "Perfume Notes",
         "oriental": "Oriental",
@@ -1272,8 +1278,12 @@
     "reviewProduct": {
       "label": "Review the product"
     },
-    "firstName": { "label": "First Name" },
-    "lastName": { "label": "Last Name" },
+    "firstName": {
+      "label": "First Name"
+    },
+    "lastName": {
+      "label": "Last Name"
+    },
     "reviewTitle": {
       "label": "Review title"
     },
@@ -1432,7 +1442,7 @@
       "days": "{days} Days",
       "free": "FREE",
       "giftWrapping": "Gift Wrapping",
-      "freeGiftLabel": "Free Gift",
+      "freeGiftLabel": "Free",
       "waitingForMoreInfo": "Waiting for more information"
     },
     "bulletDelivery": {
@@ -1622,10 +1632,18 @@
     "operatingHours": "Operating hours",
     "selectLockerButton": "Select",
     "selectedLocker": "Selected locker",
-    "firstName": { "label": "First Name" },
-    "lastName": { "label": "Last Name" },
-    "mobileNumber": { "label": "Mobile Number" },
-    "email": { "label": "Email" },
+    "firstName": {
+      "label": "First Name"
+    },
+    "lastName": {
+      "label": "Last Name"
+    },
+    "mobileNumber": {
+      "label": "Mobile Number"
+    },
+    "email": {
+      "label": "Email"
+    },
     "submitButton": "Add Locker",
     "loadingLockerLocations": "Loading locker locations...",
     "noLockerLocationsFound": "No locker locations found nearby.",
@@ -1668,7 +1686,10 @@
       "yourCurrentLocation": "Your current location",
       "moveMapInstructions": "Move map or drag marker to select location",
       "locateMe": "Locate me",
-      "enableLocationServices": "Enable location services to find your address"
+      "enableLocationServices": "Enable location services to find your address",
+      "noAddressesFound": "No addresses found. Try a different search term.",
+      "loadingSearch": "Loading search...",
+      "initializingSearchService": "Initializing search service..."
     },
     "steps": {
       "homeDeliveryTitle": "Home Delivery",
@@ -1698,7 +1719,9 @@
       "loadingCities": "Loading cities",
       "noMatchingCity": "No matching city",
       "noDistrictsFound": "No districts found",
-      "validatingAddressLocation": "Validating address location..."
+      "validatingAddressLocation": "Validating address location...",
+      "selectCityFirst": "Please select a city first",
+      "senderInformation": "Sender Information"
     },
     "validationErrors": {
       "invalidPhoneNumber": "Please enter a valid phone number"

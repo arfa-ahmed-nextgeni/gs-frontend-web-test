@@ -1,12 +1,11 @@
 "use client";
 
-import Image from "next/image";
-
 import { useTranslations } from "next-intl";
 
 import ArrowDownIcon from "@/assets/icons/arrow-down.svg";
 import { GiftItem } from "@/components/cart/order/gift-item";
 import { Icon } from "@/components/cart/order/order-summary/order-summary-helpers";
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import {
   Accordion,
   AccordionContent,
@@ -74,7 +73,7 @@ export function GiftItemsSection({
                         zIndex: 3 - giftItems.indexOf(it),
                       }}
                     >
-                      <Image
+                      <ProductImageWithFallback
                         alt={it.name}
                         className="h-full w-full object-cover"
                         height={28}

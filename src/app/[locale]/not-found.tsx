@@ -1,17 +1,19 @@
-"use client";
-
-import { useTranslations } from "next-intl";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { NotFoundPage } from "@/components/shared/not-found-page";
 import { buttonVariants } from "@/components/ui/button";
-import { useWebsiteFooter } from "@/contexts/website-footer-context";
 import { Link } from "@/i18n/navigation";
 import { Footer } from "@/layouts/footer";
+import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
 import { cn } from "@/lib/utils";
 
-export default function NotFound() {
-  const t = useTranslations("NotFoundPage");
-  const { websiteFooter } = useWebsiteFooter();
+export default async function NotFound() {
+  const [locale, t] = await Promise.all([
+    getLocale(),
+    getTranslations("NotFoundPage"),
+  ]);
+  const pageLandingData = await getPageLandingData({ locale });
+  const websiteFooter = pageLandingData?.websiteFooter;
 
   return (
     <>

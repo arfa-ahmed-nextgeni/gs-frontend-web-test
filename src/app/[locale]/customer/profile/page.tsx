@@ -17,6 +17,8 @@ export default async function CustomerProfilePage() {
   }
 
   const customerData = currentCustomer.data;
+  const profileFormKey =
+    customerData?.id ?? customerData?.phoneNumber ?? customerData?.email;
 
   return (
     <div className="lg:mt-12.5 px-2.5 lg:px-0">
@@ -27,6 +29,7 @@ export default async function CustomerProfilePage() {
         firstName={customerData?.firstName}
         gender={customerData?.gender}
         isProfileComplete={customerData?.isProfileComplete}
+        key={profileFormKey}
         lastName={customerData?.lastName}
         phoneNumber={customerData?.phoneNumber}
       />

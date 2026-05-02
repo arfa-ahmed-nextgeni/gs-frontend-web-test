@@ -7,7 +7,9 @@ import { QueryParamsKey } from "@/lib/constants/query-params";
 import { getStoreCode } from "@/lib/utils/country";
 
 interface InvoiceResponse {
+  message?: string;
   pdf_url: string;
+  status?: string;
 }
 
 export async function GET(req: NextRequest) {
@@ -50,9 +52,19 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    if (!response.data.pdf_url) {
+    if (!response.data) {
       return NextResponse.json(
-        { error: "PDF URL not found in response", success: false },
+        { error: "No Data available in response", success: false },
+        { status: 404 }
+      );
+    }
+
+    if (response.data && !response.data?.pdf_url) {
+      return NextResponse.json(
+        {
+          error: response.data?.message || "PDF URL not found in response",
+          success: false,
+        },
         { status: 404 }
       );
     }
@@ -63,9 +75,6 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error("API Error:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error", success: false },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false }, { status: 500 });
   }
 }

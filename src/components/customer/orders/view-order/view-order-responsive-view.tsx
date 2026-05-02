@@ -14,7 +14,7 @@ export const ViewOrderResponsiveView = ({
   orderId: Promise<{ id: string }>;
 }) => {
   const resolvedParams = use(orderId);
-  const resolvedOrderId = resolvedParams.id;
+  const resolvedOrderId = decodeURIComponent(resolvedParams.id);
   const isMobile = useIsMobile();
   const { isLoading, loadOrderData, orderData } = useViewOrderContext();
 

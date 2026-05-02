@@ -1,7 +1,11 @@
 "use strict";
 
+const enabled =
+  process.env.NEW_RELIC_ENABLED !== "false" &&
+  !!process.env.NEW_RELIC_LICENSE_KEY;
+
 exports.config = {
-  allow_all_headers: true,
+  enabled: enabled,
   app_name: [process.env.NEW_RELIC_APP_NAME || "goldenscent-web"],
   application_logging: {
     forwarding: {
@@ -27,7 +31,7 @@ exports.config = {
   },
   error_collector: {
     enabled: true,
-    ignore_status_codes: [404],
+    ignore_status_codes: [404, 400, 401, 403],
   },
   license_key: process.env.NEW_RELIC_LICENSE_KEY || "",
   logging: {
@@ -37,5 +41,9 @@ exports.config = {
   transaction_tracer: {
     enabled: true,
     record_sql: "obfuscated",
+  },
+
+  utilization: {
+    detect_aws: true,
   },
 };

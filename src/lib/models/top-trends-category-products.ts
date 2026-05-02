@@ -1,9 +1,10 @@
-import { Document } from "@contentful/rich-text-types";
+import type { Document } from "@contentful/rich-text-types";
 
 import { CategoryProducts } from "@/lib/models/category-products";
-import { TabContentType } from "@/lib/models/page-landing";
 import { ResponsiveImage } from "@/lib/models/responsive-image";
-import { TopTrendsData } from "@/lib/types/contentful/page-landing";
+
+import type { TabContentType } from "@/lib/models/page-landing";
+import type { TopTrendsData } from "@/lib/types/contentful/page-landing";
 
 export class TopTrendsCategoryProducts extends CategoryProducts {
   public autoSliding: {

@@ -92,7 +92,8 @@ export function CheckoutShippingOptionDrawer({
   onClose,
   onConfirm,
 }: CheckoutShippingOptionDrawerProps) {
-  const { setCameFromShippingOptionDrawer } = useCheckoutContext();
+  const { setCameFromShippingOptionDrawer, setDeliveryAddressFlowState } =
+    useCheckoutContext();
   const { storeConfig } = useStoreConfig();
   const allowGiftOrder = storeConfig?.allowGiftOrder ?? false;
   const router = useRouter();
@@ -641,6 +642,7 @@ export function CheckoutShippingOptionDrawer({
               ) {
                 // Set flag to indicate we came from shipping option drawer
                 setCameFromShippingOptionDrawer(true);
+                setDeliveryAddressFlowState(null);
                 const targetRoute = `${ROUTES.CHECKOUT.ADD_DELIVERY_ADDRESS}?type=${selectedOption}`;
                 // Store the target route to detect when navigation completes
                 setPendingLockerRoute(targetRoute);

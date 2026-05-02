@@ -3,6 +3,7 @@ import { PaymentStatusType } from "@/lib/constants/payment-status";
 import { QueryParamsKey } from "@/lib/constants/query-params";
 
 export const ROUTES = {
+  ABOUT_US: "/about-us",
   ACCOUNT_BILLING: "/account-billing",
   BLOG: `/blog`,
   CART: {
@@ -76,6 +77,9 @@ export const ROUTES = {
   SAVELISTS: "/account-savelists",
   SEARCH: `/search`,
   TERMS: "/terms-conditions",
+  TOOLS: {
+    API_ACTIVITY: "/tools/api-activity",
+  },
 } as const;
 
 export const ROUTE_PLACEHOLDER = "__placeholder__" as const;

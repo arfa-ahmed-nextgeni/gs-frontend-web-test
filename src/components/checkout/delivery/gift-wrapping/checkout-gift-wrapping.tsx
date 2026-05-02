@@ -10,6 +10,7 @@ import EditIcon from "@/assets/icons/edit-icon.svg";
 import GiftIcon from "@/assets/icons/gift-icon.svg";
 import PlusIcon from "@/assets/icons/plus-icon.svg";
 import TrashIcon from "@/assets/icons/trash-icon.svg";
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import { LocalizedPrice } from "@/components/shared/localized-price";
 import { Spinner } from "@/components/ui/spinner";
 import { useCart } from "@/contexts/use-cart";
@@ -119,7 +120,7 @@ export function CheckoutGiftWrapping({
         <div className="flex h-[80px] items-center gap-5 px-4 py-5 lg:px-10">
           {wrapItem.imageUrl && (
             <div className="border-border-base relative h-[50px] w-[50px] shrink-0 overflow-hidden rounded-[10px] border">
-              <Image
+              <ProductImageWithFallback
                 alt={wrapItem.name}
                 className="object-cover"
                 fill

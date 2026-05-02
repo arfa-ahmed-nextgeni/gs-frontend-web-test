@@ -1,8 +1,8 @@
 import { ProductCardSkeleton } from "@/components/product/product-card/fallbacks/product-card-skeleton";
 import {
-  ProductCardsScrollSnapCarousel,
-  ProductCardsScrollSnapCarouselItem,
-} from "@/components/product/product-cards-scroll-snap-carousel";
+  CardRailScrollSnapCarousel,
+  CardRailScrollSnapCarouselItem,
+} from "@/components/ui/card-rail-scroll-snap-carousel";
 import { ProductCardVariant } from "@/lib/constants/product/product-card";
 
 export const CategoryProductsCarouselItemsSkeleton = ({
@@ -13,7 +13,7 @@ export const CategoryProductsCarouselItemsSkeleton = ({
   variant: ProductCardVariant;
 }) => {
   return (
-    <ProductCardsScrollSnapCarousel
+    <CardRailScrollSnapCarousel
       nextButtonProps={{
         className: "xl:translate-x-15 xl:rtl:-translate-x-15",
       }}
@@ -28,10 +28,10 @@ export const CategoryProductsCarouselItemsSkeleton = ({
       }}
     >
       {[...Array(maximumProducts)].map((_, index) => (
-        <ProductCardsScrollSnapCarouselItem key={index}>
+        <CardRailScrollSnapCarouselItem key={index}>
           <ProductCardSkeleton variant={variant} />
-        </ProductCardsScrollSnapCarouselItem>
+        </CardRailScrollSnapCarouselItem>
       ))}
-    </ProductCardsScrollSnapCarousel>
+    </CardRailScrollSnapCarousel>
   );
 };

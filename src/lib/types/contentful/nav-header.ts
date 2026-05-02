@@ -1,4 +1,4 @@
-import { Document } from "@contentful/rich-text-types";
+import type { Document } from "@contentful/rich-text-types";
 
 export type NavHeaderData = {
   subMenu?: {

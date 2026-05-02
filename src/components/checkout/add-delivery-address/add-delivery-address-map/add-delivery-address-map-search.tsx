@@ -5,15 +5,18 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import { useMapsLibrary } from "@vis.gl/react-google-maps";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import SearchIcon from "@/assets/icons/search-icon.svg";
 import { useAddDeliveryAddressContext } from "@/contexts/add-delivery-address-context";
 import { extractGoogleAddressData } from "@/lib/utils/google-address";
+import { getLocaleInfo } from "@/lib/utils/locale";
 
 export const AddDeliveryAddressMapSearch = () => {
+  const locale = useLocale();
   const SEARCH_DEBOUNCE_MS = 300;
   const t = useTranslations("AddDeliveryAddressPage.map");
+  const { language: googleMapsLanguage } = getLocaleInfo(locale);
 
   const {
     setGoogleAddressData,
@@ -128,6 +131,8 @@ export const AddDeliveryAddressMapSearch = () => {
         // Add region biasing for better results (adjust based on your target region)
         componentRestrictions: { country: ["ae", "sa", "kw", "om"] }, // GCC countries
         input: query,
+        language: googleMapsLanguage,
+        region: "SA",
       };
 
       console.info("[AddressSearch] Making Places API request:", request);
@@ -172,7 +177,7 @@ export const AddDeliveryAddressMapSearch = () => {
         }
       );
     },
-    [isServiceReady]
+    [googleMapsLanguage, isServiceReady]
   );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -195,7 +200,9 @@ export const AddDeliveryAddressMapSearch = () => {
 
       const request = {
         fields: ["address_components", "name", "geometry", "formatted_address"],
+        language: googleMapsLanguage,
         placeId: prediction.place_id,
+        region: "SA",
       };
 
       console.info(
@@ -225,7 +232,15 @@ export const AddDeliveryAddressMapSearch = () => {
             lat: place.geometry.location.lat(),
             lng: place.geometry.location.lng(),
           };
-          const address = place.formatted_address || prediction.description;
+          const googleAddressData = extractGoogleAddressData({
+            addressComponents: place.address_components,
+            formattedAddress: place.formatted_address || prediction.description,
+            preferEnglish: googleMapsLanguage === "en",
+          });
+          const address =
+            googleAddressData.formattedAddress ||
+            place.formatted_address ||
+            prediction.description;
 
           console.info("[AddressSearch] Setting address and location:", {
             address,
@@ -242,12 +257,7 @@ export const AddDeliveryAddressMapSearch = () => {
           );
 
           // Update context with selected address and location
-          setGoogleAddressData(
-            extractGoogleAddressData({
-              addressComponents: place.address_components,
-              formattedAddress: address,
-            })
-          );
+          setGoogleAddressData(googleAddressData);
           setIsSelectedLocationInSaudiArabia(
             countryComponent?.short_name === "SA"
           );
@@ -259,6 +269,7 @@ export const AddDeliveryAddressMapSearch = () => {
       });
     },
     [
+      googleMapsLanguage,
       setGoogleAddressData,
       setIsSelectedLocationInSaudiArabia,
       setSelectedAddress,
@@ -374,10 +385,10 @@ export const AddDeliveryAddressMapSearch = () => {
               <div className="px-4 py-3">
                 <div className="text-sm text-gray-500 rtl:text-right">
                   {!placesLib
-                    ? "Loading search... (Places API initializing)"
+                    ? t("loadingSearch")
                     : !isServiceReady
-                      ? "Initializing search service..."
-                      : "No addresses found. Try a different search term."}
+                      ? t("initializingSearchService")
+                      : t("noAddressesFound")}
                 </div>
               </div>
             </div>

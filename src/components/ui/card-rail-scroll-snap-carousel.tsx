@@ -14,18 +14,21 @@ import {
   scrollToOffsetFromStart,
 } from "@/lib/utils/rtl-scroll";
 
-type ProductCardsDeferredActivation = {
+import type { CarouselHandle } from "@/lib/types/ui-types";
+
+type CardRailDeferredActivation = {
   rootMargin?: string;
 };
 
-type ProductCardsScrollSnapCarouselProps = React.PropsWithChildren<{
+type CardRailScrollSnapCarouselProps = React.PropsWithChildren<{
+  apiRef?: React.Ref<CarouselHandle>;
   carouselProps?: {
     autoPlay?: {
       delay?: number;
       enabled?: boolean;
     };
     className?: React.ComponentProps<"div">["className"];
-    deferUntilInView?: boolean | ProductCardsDeferredActivation;
+    deferUntilInView?: boolean | CardRailDeferredActivation;
     onIndexChange?: (index: number) => void;
   };
   contentProps?: React.ComponentProps<"div">;
@@ -36,7 +39,8 @@ type ProductCardsScrollSnapCarouselProps = React.PropsWithChildren<{
   previousIconProps?: React.SVGAttributes<object>;
 }>;
 
-export function ProductCardsScrollSnapCarousel({
+export function CardRailScrollSnapCarousel({
+  apiRef,
   carouselProps,
   children,
   contentProps,
@@ -45,7 +49,7 @@ export function ProductCardsScrollSnapCarousel({
   nextIconProps,
   previousButtonProps,
   previousIconProps,
-}: ProductCardsScrollSnapCarouselProps) {
+}: CardRailScrollSnapCarouselProps) {
   const reactId = React.useId();
   const viewportRef = React.useRef<HTMLDivElement | null>(null);
   const scrollFrameRef = React.useRef<null | number>(null);
@@ -58,7 +62,7 @@ export function ProductCardsScrollSnapCarousel({
       return slide.props.id;
     }
 
-    return `${reactId.replaceAll(":", "")}-product-card-item-${index}`;
+    return `${reactId.replaceAll(":", "")}-card-rail-item-${index}`;
   });
   const shouldDeferUntilInView = Boolean(carouselProps?.deferUntilInView);
   const deferRootMargin =
@@ -83,7 +87,7 @@ export function ProductCardsScrollSnapCarousel({
       return;
     }
 
-    const { snapIds, snapPositions } = getProductCardSnapPoints(viewport);
+    const { snapIds, snapPositions } = getCardRailSnapPoints(viewport);
 
     snapIdsRef.current = snapIds;
     snapPositionsRef.current = snapPositions;
@@ -110,7 +114,7 @@ export function ProductCardsScrollSnapCarousel({
       const snapPositions =
         snapPositionsRef.current.length > 0
           ? snapPositionsRef.current
-          : getProductCardSnapPoints(viewport).snapPositions;
+          : getCardRailSnapPoints(viewport).snapPositions;
 
       if (!snapPositions.length) {
         return;
@@ -163,6 +167,17 @@ export function ProductCardsScrollSnapCarousel({
   React.useEffect(() => {
     carouselProps?.onIndexChange?.(selectedIndex);
   }, [carouselProps, selectedIndex]);
+
+  React.useImperativeHandle(
+    apiRef,
+    () => ({
+      scrollNext,
+      scrollPrev,
+      scrollTo: scrollToIndex,
+      selectedIndex,
+    }),
+    [scrollNext, scrollPrev, scrollToIndex, selectedIndex]
+  );
 
   React.useEffect(() => {
     if (!shouldDeferUntilInView || isSnapLogicActive) {
@@ -369,7 +384,7 @@ export function ProductCardsScrollSnapCarousel({
   );
 }
 
-export { ScrollSnapCarouselItem as ProductCardsScrollSnapCarouselItem };
+export { ScrollSnapCarouselItem as CardRailScrollSnapCarouselItem };
 
 function clampLogicalScrollLeft(
   logicalScrollLeft: number,
@@ -415,30 +430,7 @@ function dedupeSnapPoints(
   );
 }
 
-function getNearestSnapIndex(
-  logicalScrollLeft: number,
-  snapPositions: readonly number[]
-) {
-  if (!snapPositions.length) {
-    return 0;
-  }
-
-  let nearestIndex = 0;
-  let nearestDistance = Number.POSITIVE_INFINITY;
-
-  for (const [index, snapPosition] of snapPositions.entries()) {
-    const distance = Math.abs(snapPosition - logicalScrollLeft);
-
-    if (distance < nearestDistance) {
-      nearestDistance = distance;
-      nearestIndex = index;
-    }
-  }
-
-  return nearestIndex;
-}
-
-function getProductCardSnapPoints(viewport: HTMLDivElement) {
+function getCardRailSnapPoints(viewport: HTMLDivElement) {
   const slideElements = Array.from(
     viewport.querySelectorAll<HTMLDivElement>(
       "[data-slot='scroll-snap-carousel-item']"
@@ -477,6 +469,29 @@ function getProductCardSnapPoints(viewport: HTMLDivElement) {
     .sort((left, right) => left.position - right.position);
 
   return dedupeSnapPoints(snapPoints);
+}
+
+function getNearestSnapIndex(
+  logicalScrollLeft: number,
+  snapPositions: readonly number[]
+) {
+  if (!snapPositions.length) {
+    return 0;
+  }
+
+  let nearestIndex = 0;
+  let nearestDistance = Number.POSITIVE_INFINITY;
+
+  for (const [index, snapPosition] of snapPositions.entries()) {
+    const distance = Math.abs(snapPosition - logicalScrollLeft);
+
+    if (distance < nearestDistance) {
+      nearestDistance = distance;
+      nearestIndex = index;
+    }
+  }
+
+  return nearestIndex;
 }
 
 function getViewportDirection(viewport: HTMLDivElement) {

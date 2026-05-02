@@ -29,6 +29,7 @@ graphql(`
           uid
           id
           name
+          brand_new_label
           sku
           url_key
           rating_summary
@@ -210,6 +211,7 @@ export const CUSTOMER_GRAPHQL_QUERIES = {
               id
               product_name
               product_sku
+              product_url_key
               quantity_ordered
               product_sale_price {
                 currency
@@ -218,10 +220,65 @@ export const CUSTOMER_GRAPHQL_QUERIES = {
               product {
                 id
                 sku
+                name
+                brand_new_label
+                url_key
                 image {
                   url
                 }
                 type_id
+                url_key
+                stock_status
+                product_type_new2
+                price_range {
+                  minimum_price {
+                    regular_price {
+                      value
+                      currency
+                    }
+                    final_price {
+                      value
+                      currency
+                    }
+                  }
+                  maximum_price {
+                    regular_price {
+                      value
+                      currency
+                    }
+                    final_price {
+                      value
+                      currency
+                    }
+                  }
+                }
+
+                custom_attributesV2(filters: { is_filterable: true }) {
+                  items {
+                    code
+                    ... on AttributeValue {
+                      value
+                    }
+                    ... on AttributeSelectedOptions {
+                      selected_options {
+                        label
+                        value
+                      }
+                    }
+                  }
+                }
+                ... on ConfigurableProduct {
+                  variants {
+                    attributes {
+                      code
+                      label
+                    }
+                    product {
+                      id
+                      sku
+                    }
+                  }
+                }
               }
             }
             payment_methods {
@@ -313,6 +370,7 @@ export const CUSTOMER_GRAPHQL_QUERIES = {
               }
             }
             tracking_status
+            points_to_spend
             shipments {
               tracking {
                 carrier

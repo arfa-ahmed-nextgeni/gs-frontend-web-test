@@ -146,7 +146,9 @@ graphql(`
           uid
           id
           name
+          brand_new_label
           sku
+          url_key
           rating_summary
           short_description {
             html
@@ -156,6 +158,7 @@ graphql(`
             label
           }
           stock_status
+          product_type_new2
           price_range {
             minimum_price {
               discount {
@@ -183,6 +186,8 @@ graphql(`
             configurable_product_option_value_uid
           }
           configured_variant {
+            id
+            sku
             express_delivery_available
             countdown_timer_enabled
             countdown_timer_end_date

@@ -17,6 +17,7 @@ import { GuestPanel } from "@/components/customer/account-panel/guest-panel";
 import { UserGreetingCard } from "@/components/customer/user-greeting-card";
 import { getAuthToken } from "@/lib/actions/auth/get-auth-token";
 import { getStoreConfig } from "@/lib/actions/config/get-store-config";
+import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
 import { getCurrentCustomer } from "@/lib/actions/customer/get-current-customer";
 import { Locale } from "@/lib/constants/i18n";
 import { cn } from "@/lib/utils";
@@ -38,8 +39,15 @@ export const AccountPanel = async ({
   const hasCustomerError = isError(currentCustomer);
 
   const locale = (await getLocale()) as Locale;
-  const storeConfigResult = await getStoreConfig({ locale });
+  const [storeConfigResult, pageLandingData] = await Promise.all([
+    getStoreConfig({ locale }),
+    getPageLandingData({ locale }),
+  ]);
   const checkoutPayEnabled = storeConfigResult.data?.store?.checkoutPayEnabled;
+  const hasCustomerServiceData = Boolean(
+    pageLandingData?.websiteFooter?.contactAndSocialLinks?.contactSection
+      ?.contacts?.length
+  );
 
   const customerData = {
     firstName: hasCustomerError ? "" : currentCustomer.data?.firstName || "",
@@ -54,9 +62,20 @@ export const AccountPanel = async ({
 
   const isAuthenticated = !!authToken;
 
-  const filteredPrimaryMenu = checkoutPayEnabled
-    ? ACCOUNT_MENU_PRIMARY
-    : ACCOUNT_MENU_PRIMARY.filter((entry) => entry.id !== AccountNavId.Cards);
+  const filteredPrimaryMenu = ACCOUNT_MENU_PRIMARY.filter(
+    (entry) =>
+      (checkoutPayEnabled || entry.id !== AccountNavId.Cards) &&
+      (hasCustomerServiceData || entry.id !== AccountNavId.CustomerService)
+  );
+  const filteredSecondaryMenu = hasCustomerServiceData
+    ? ACCOUNT_MENU_SECONDARY
+    : ACCOUNT_MENU_SECONDARY.filter(
+        (entry) => entry.id !== AccountNavId.CustomerService
+      ).map((entry) =>
+        entry.id === AccountNavId.About
+          ? { ...entry, className: cn(entry.className, "mt-2.5") }
+          : entry
+      );
 
   return (
     <>
@@ -86,10 +105,7 @@ export const AccountPanel = async ({
           </>
         )}
 
-        <AccountNavList
-          className="lg:hidden"
-          entries={ACCOUNT_MENU_SECONDARY}
-        />
+        <AccountNavList className="lg:hidden" entries={filteredSecondaryMenu} />
 
         {isAuthenticated && <AccountPanelLogOutButton />}
 

@@ -8,10 +8,14 @@ import { trackMyWishlist } from "@/lib/analytics/events";
  * Client component to track wishlist page view event
  * Placed in wishlist page to track when user open wishlist side bar
  */
-export function WishlistTracker() {
+export function WishlistTracker({
+  wishlistProducts,
+}: {
+  wishlistProducts: any[];
+}) {
   useEffect(() => {
-    trackMyWishlist();
-  }, []);
+    trackMyWishlist(wishlistProducts);
+  }, [wishlistProducts]);
 
   return null;
 }

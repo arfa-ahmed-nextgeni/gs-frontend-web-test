@@ -8,6 +8,7 @@ import {
   useState,
   useTransition,
 } from "react";
+import type { ReactNode } from "react";
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
@@ -47,7 +48,9 @@ import { setShippingAddressOnCartAction } from "@/lib/actions/checkout/set-shipp
 import { setShippingMethodsOnCartAction } from "@/lib/actions/checkout/set-shipping-methods-on-cart";
 import { updateProfileFromAddress } from "@/lib/actions/customer/update-profile";
 import {
+  trackAddPaymentInfo,
   trackAddressbookDeleteAddress,
+  trackAddShippingInfo,
   trackBackToShippingType,
   trackCheckoutAddressNew,
   trackCheckoutDeliveryShippingTypeSelection,
@@ -132,12 +135,41 @@ interface CheckoutPageProps {
   customerInfo?: CheckoutCustomerInfo;
   initialAddresses: CheckoutAddress[];
   initialPaymentCards?: PaymentCardData[];
+  logoSlot?: ReactNode;
+}
+
+function buildGiftBillingAddress({
+  address,
+  currentCustomer,
+}: {
+  address: CheckoutAddress;
+  currentCustomer: NonNullable<CheckoutCustomerInfo>;
+}): CartAddressInput {
+  const customerAddr = address.customerAddress as CustomerAddressModel;
+
+  // Use sender's customer phone; if empty, fall back to the address's stored phone number.
+  const telephone = currentCustomer.phoneNumber || address.phoneNumber || "";
+
+  return {
+    address_label: "home",
+    city: customerAddr?.city || "",
+    country_code: customerAddr?.countryCode || "",
+    firstname: currentCustomer.firstName || customerAddr?.firstName || "",
+    ksa_short_address: customerAddr?.ksaShortAddress || undefined,
+    lastname: currentCustomer.lastName || customerAddr?.lastName || "",
+    postcode: customerAddr?.postcode || "",
+    region: customerAddr?.regionName || undefined,
+    region_id: customerAddr?.regionId || undefined,
+    street: customerAddr?.street || [],
+    telephone: telephone,
+  };
 }
 
 function CheckoutPage({
   customerInfo = null,
   initialAddresses,
   initialPaymentCards = [],
+  logoSlot,
 }: CheckoutPageProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -280,8 +312,11 @@ function CheckoutPage({
   >([]);
   const hasPrefetchedCardsRef = useRef(false);
   const [isPlacingOrderPending, startPlaceOrderTransition] = useTransition();
-  const { isShippingOptionDrawerOpen, setIsShippingOptionDrawerOpen } =
-    useCheckoutContext();
+  const {
+    isShippingOptionDrawerOpen,
+    setDeliveryAddressFlowState,
+    setIsShippingOptionDrawerOpen,
+  } = useCheckoutContext();
   const [isLoadingShippingMethods, setIsLoadingShippingMethods] = useState(
     () => initialAddresses.length > 0
   );
@@ -292,8 +327,10 @@ function CheckoutPage({
   const isSettingShippingAddressRef = useRef(false);
   const isSettingBillingAddressRef = useRef(false);
   const previousSelectedAddressIdRef = useRef<null | string>(null);
+  const previousShippingOptionRef = useRef<null | string>(null);
   const previousCartItemsRef = useRef<number>(0);
   const lastSetShippingMethodRef = useRef<null | string>(null);
+  const lastTrackedShippingMethodRef = useRef<null | string>(null);
   const [isSettingShippingAddress, setIsSettingShippingAddress] =
     useState(false);
   const [isSettingBillingAddress, setIsSettingBillingAddress] = useState(false);
@@ -1289,6 +1326,8 @@ function CheckoutPage({
       // IMPORTANT: Check cartItemsChanged BEFORE updating the ref, otherwise the change won't be detected
       const cartItemsCount = cart?.items?.length || 0;
       const cartItemsChanged = previousCartItemsRef.current !== cartItemsCount;
+      const shippingOptionChanged =
+        previousShippingOptionRef.current !== selectedShippingOption;
       // Only update the ref AFTER we've checked for changes, but BEFORE we use it in early returns
       // This ensures cart item changes are properly detected
 
@@ -1300,7 +1339,8 @@ function CheckoutPage({
         wasAlreadySetting &&
         !addressActuallyChanged &&
         !isInitialLoad &&
-        !cartItemsChanged
+        !cartItemsChanged &&
+        !shippingOptionChanged
       ) {
         return;
       }
@@ -1316,6 +1356,8 @@ function CheckoutPage({
         addressChanged && previousSelectedAddressIdRef.current !== null;
       const cartItemsCount = cart?.items?.length || 0;
       const cartItemsChanged = previousCartItemsRef.current !== cartItemsCount;
+      const shippingOptionChanged =
+        previousShippingOptionRef.current !== selectedShippingOption;
 
       if (addressActuallyChanged) {
         isSettingShippingAddressRef.current = false;
@@ -1324,12 +1366,14 @@ function CheckoutPage({
       isSettingShippingAddressRef.current = true;
 
       // Skip if address hasn't changed AND we already have shipping methods AND cart items haven't changed
+      // AND shipping option hasn't changed (shipping option change requires billing address update)
       // On initial load (previousSelectedAddressIdRef.current is null), we need to call the API
       // IMPORTANT: Only skip if address hasn't changed AND we have a previous address ID (not initial load)
       // AND cart items haven't changed (cart item changes require shipping method refresh)
       if (
         !addressChanged &&
         !cartItemsChanged &&
+        !shippingOptionChanged &&
         selectedAddressId &&
         previousSelectedAddressIdRef.current &&
         hasReceivedShippingMethods &&
@@ -1341,6 +1385,8 @@ function CheckoutPage({
         previousCartItemsRef.current = cartItemsCount;
         return;
       }
+      // Track shipping option change
+      previousShippingOptionRef.current = selectedShippingOption;
 
       // Update the ref AFTER we've checked for changes and decided to proceed
       previousCartItemsRef.current = cartItemsCount;
@@ -1570,12 +1616,23 @@ function CheckoutPage({
         const paymentMethodsFromBackend =
           shippingResult.data?.availablePaymentMethods ?? [];
 
-        // For gift delivery, use default address as billing, otherwise use selected address
-        const isGiftDelivery = selectedShippingOption === "gift_delivery";
+        // For gift delivery, use default address as billing, otherwise use selected address.
+        // Also derive gift delivery from the selected address label when selectedShippingOption
+        // is not yet set (e.g. on initial load before the user has explicitly chosen a type).
+        const selectedAddressLabel = (
+          (selectedAddress?.customerAddress as any)?.raw?.address_label ?? ""
+        ).toLowerCase();
+        const isGiftDelivery =
+          selectedShippingOption === "gift_delivery" ||
+          (selectedShippingOption === null && selectedAddressLabel === "gift");
         const defaultAddress = addresses.find((addr) => addr.isDefault);
-        const billingAddressId = isGiftDelivery
-          ? defaultAddress?.id || selectedAddressId
-          : selectedAddressId;
+        // const defaultAddress = addresses.find((addr) => {
+        //   const label = (
+        //     (addr.customerAddress as any)?.raw?.address_label ?? ""
+        //   ).toLowerCase();
+        //   return addr.isDefault && label !== "gift";
+        // });
+        const billingAddressId = defaultAddress?.id || selectedAddressId;
 
         // Only set billing address if we're not already setting it
         // This prevents duplicate calls when the shipping address effect runs multiple times
@@ -1585,29 +1642,54 @@ function CheckoutPage({
 
           let billingResult;
 
-          // For gift delivery, build billing address with current user's info instead of using customerAddressId
-          if (isGiftDelivery && selectedAddress && currentCustomer) {
-            const customerAddr =
-              selectedAddress.customerAddress as CustomerAddressModel;
-
-            const billingAddress: CartAddressInput = {
-              address_label: "home",
-              city: customerAddr?.city || "",
-              country_code: customerAddr?.countryCode || "",
-              firstname: currentCustomer.firstName || "",
-              lastname: currentCustomer.lastName || "",
-              postcode: customerAddr?.postcode || "",
-              region: customerAddr?.regionName || undefined,
-              region_id: customerAddr?.regionId || undefined,
-              street: customerAddr?.street || [],
-              telephone: currentCustomer.phoneNumber || "",
-            };
+          // For gift delivery with a default address: use sender's default address as billing
+          if (
+            isGiftDelivery &&
+            defaultAddress &&
+            selectedAddress &&
+            currentCustomer
+          ) {
+            const billingAddress = buildGiftBillingAddress({
+              address: defaultAddress,
+              currentCustomer,
+            });
 
             billingResult = await setBillingAddressOnCartAction({
               address: billingAddress,
             });
-          } else {
-            // Regular delivery: use customerAddressId
+          }
+          // For gift delivery without a default address: fallback to hybrid approach
+          // (sender's name/phone + receiver's address location)
+          else if (
+            isGiftDelivery &&
+            !defaultAddress &&
+            selectedAddress &&
+            currentCustomer
+          ) {
+            // Prefer any non-gift address owned by the sender for billing location.
+            // This avoids using the recipient's address (city/street/phone) as billing.
+            const senderAddress =
+              addresses.find(
+                (addr) =>
+                  addr.id !== selectedAddress.id &&
+                  (
+                    addr.customerAddress as
+                      | { addressLabel?: string }
+                      | undefined
+                  )?.addressLabel !== "gift"
+              ) ?? selectedAddress;
+
+            const billingAddress = buildGiftBillingAddress({
+              address: senderAddress,
+              currentCustomer,
+            });
+
+            billingResult = await setBillingAddressOnCartAction({
+              address: billingAddress,
+            });
+          }
+          // Regular delivery: use selected address as billing
+          else {
             billingResult = await setBillingAddressOnCartAction({
               customerAddressId: billingAddressId,
             });
@@ -1897,6 +1979,11 @@ function CheckoutPage({
     // Skip if the cart already has the correct shipping method set
     if (cartMethodId === targetMethodId) {
       lastSetShippingMethodRef.current = targetMethodId;
+      // Still fire add_shipping_info once per method selection even when no API call is needed
+      if (cart && lastTrackedShippingMethodRef.current !== targetMethodId) {
+        lastTrackedShippingMethodRef.current = targetMethodId;
+        trackAddShippingInfo(cart);
+      }
       return;
     }
 
@@ -1951,6 +2038,12 @@ function CheckoutPage({
         queryKey: QUERY_KEYS.CART.ROOT(locale),
       });
 
+      // Track add_shipping_info GA4 ecommerce event when shipping method is confirmed
+      if (cart && lastTrackedShippingMethodRef.current !== targetMethodId) {
+        lastTrackedShippingMethodRef.current = targetMethodId;
+        trackAddShippingInfo(cart);
+      }
+
       setIsSettingShippingMethod(false);
       // Keep the ref set until timeout to prevent re-runs during cart update
     })().catch((error) => {
@@ -1977,6 +2070,7 @@ function CheckoutPage({
       isSettingShippingMethodRef.current = false;
     };
   }, [
+    cart,
     cart?.items,
     cart?.shippingAddress?.selected_shipping_method,
     locale,
@@ -2030,39 +2124,49 @@ function CheckoutPage({
       const isCurrentGiftDelivery =
         currentShippingMethod?.method_code === "gift_delivery" ||
         selectedShippingOption === "gift_delivery";
+      const defaultAddress = addresses.find((addr) => addr.isDefault);
 
       let billingResult;
 
-      // For gift delivery with current user info, use custom billing address
-      if (
+      if (isCurrentGiftDelivery && defaultAddress && currentCustomer) {
+        const billingAddress = buildGiftBillingAddress({
+          address: defaultAddress,
+          currentCustomer,
+        });
+
+        billingResult = await setBillingAddressOnCartAction({
+          address: billingAddress,
+        });
+      }
+      // For gift delivery without a default address, use custom billing address
+      else if (
         isCurrentGiftDelivery &&
+        !defaultAddress &&
         selectedAddress &&
         currentCustomer &&
         selectedAddressId
       ) {
-        const customerAddr =
-          selectedAddress.customerAddress as CustomerAddressModel;
+        // Prefer any non-gift address owned by the sender for billing location.
+        const senderAddress =
+          addresses.find(
+            (addr) =>
+              addr.id !== selectedAddress.id &&
+              (addr.customerAddress as { addressLabel?: string } | undefined)
+                ?.addressLabel !== "gift"
+          ) ?? selectedAddress;
 
-        const billingAddress: CartAddressInput = {
-          address_label: "home",
-          city: customerAddr?.city || "",
-          country_code: customerAddr?.countryCode || "",
-          firstname: currentCustomer.firstName || "",
-          lastname: currentCustomer.lastName || "",
-          postcode: customerAddr?.postcode || "",
-          region: customerAddr?.regionName || undefined,
-          region_id: customerAddr?.regionId || undefined,
-          street: customerAddr?.street || [],
-          telephone: currentCustomer.phoneNumber || "",
-        };
+        const billingAddress = buildGiftBillingAddress({
+          address: senderAddress,
+          currentCustomer,
+        });
 
         billingResult = await setBillingAddressOnCartAction({
           address: billingAddress,
         });
       } else {
-        // Regular delivery or no current user: use customerAddressId
+        // Regular delivery or no current user: prefer default address as billing, fallback to selected
         billingResult = await setBillingAddressOnCartAction({
-          customerAddressId: selectedAddressId,
+          customerAddressId: defaultAddress?.id || selectedAddressId,
         });
       }
 
@@ -2148,6 +2252,7 @@ function CheckoutPage({
   }, [
     appliedCouponsString,
     mokafaaDiscount,
+    addresses,
     cart?.shippingAddress?.selected_shipping_method,
     currentCustomer,
     selectedAddress,
@@ -2403,10 +2508,11 @@ function CheckoutPage({
           return;
         }
 
-        // Track checkout_payment_method_saved when payment method is saved successfully in cart
+        // Track checkout_payment_method_saved and add_payment_info when payment method is saved successfully in cart
         if (cart) {
           const cartProperties = buildCartProperties(cart, { storeConfig });
           trackCheckoutPaymentMethodSaved(cartProperties, backendCode);
+          trackAddPaymentInfo(cart, backendCode);
         }
 
         // Invalidate cart cache to update prices (COD fee, totals, etc.)
@@ -2668,6 +2774,11 @@ function CheckoutPage({
           return;
         }
 
+        // Track add_payment_info for card payment methods
+        if (cart) {
+          trackAddPaymentInfo(cart, cardPaymentMethod.code);
+        }
+
         // Validate BIN after payment method is successfully set
         const binNumber = extractBinNumber(cardNumber, card?.bin);
 
@@ -2709,6 +2820,7 @@ function CheckoutPage({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       availablePaymentMethods,
+      cart,
       isPlacingOrder,
       locale,
       pathname,
@@ -2859,17 +2971,33 @@ function CheckoutPage({
       }
 
       const params = new URLSearchParams({
-        firstName: address.customerAddress?.firstName || "",
-        lastName: address.customerAddress?.lastName || "",
-        latitude: `${coordinates.latitude}`,
-        longitude: `${coordinates.longitude}`,
-        phoneNumber:
-          ((address.customerAddress as any)?.raw?.telephone as string) ||
-          address.phoneNumber ||
-          "",
         type: getAddressTypeForRoute(address),
       });
 
+      setDeliveryAddressFlowState({
+        editingAddressId: address.id,
+        initialAddressSnapshot: {
+          city: address.customerAddress?.city || "",
+          district: address.customerAddress?.regionName || "",
+          formattedAddress: address.formattedAddress || "",
+          isDefault: !!address.customerAddress?.isDefault,
+          postalCode: address.customerAddress?.postcode || "",
+          shortCode: address.customerAddress?.ksaShortAddress || "",
+          street: address.customerAddress?.street?.[0] || "",
+        },
+        initialContactData: {
+          firstName: address.customerAddress?.firstName || "",
+          lastName: address.customerAddress?.lastName || "",
+          phoneNumber:
+            ((address.customerAddress as any)?.raw?.telephone as string) ||
+            address.phoneNumber ||
+            "",
+        },
+        initialSelectedLocation: {
+          lat: coordinates.latitude,
+          lng: coordinates.longitude,
+        },
+      });
       setEditingAddress(null);
       setIsAddressDrawerOpen(false);
       router.push(
@@ -2881,6 +3009,7 @@ function CheckoutPage({
       getAddressTypeForRoute,
       openAddressForm,
       router,
+      setDeliveryAddressFlowState,
       setEditingAddress,
     ]
   );
@@ -2960,11 +3089,12 @@ function CheckoutPage({
   ]);
 
   const startAddAddressFlow = useCallback(() => {
+    setDeliveryAddressFlowState(null);
     setIsAddressDrawerOpen(false);
     setAddressDrawerView("list");
     setEditingAddress(null);
     setIsShippingOptionDrawerOpen(true);
-  }, [setIsShippingOptionDrawerOpen]);
+  }, [setDeliveryAddressFlowState, setIsShippingOptionDrawerOpen]);
 
   const handleShippingOptionConfirm = useCallback(
     (option: string) => {
@@ -3049,7 +3179,8 @@ function CheckoutPage({
   const refreshAddresses = useCallback(
     async (
       isNewAddressAdded = false,
-      editedAddressId?: null | string
+      editedAddressId?: null | string,
+      createdAddressId?: null | string
     ): Promise<CheckoutAddress | null> => {
       try {
         const response = await fetch("/api/customer/addresses", {
@@ -3102,14 +3233,23 @@ function CheckoutPage({
 
         // Find the newly added address - prioritize by checking if isNewAddressAdded is true
         // or by finding the address that wasn't in the previous set
-        const newAddressId = wasAddingNewAddress
-          ? (nextAddresses.find(
+        let newAddressId: null | string = null;
+
+        if (wasAddingNewAddress) {
+          const detectedNewAddressId =
+            nextAddresses.find(
               (addr) => !previousAddressIdsRef.current.has(addr.id)
             )?.id ??
             (isNewAddressAdded
               ? nextAddresses[nextAddresses.length - 1]?.id
-              : null))
-          : null;
+              : null);
+
+          newAddressId =
+            createdAddressId &&
+            nextAddresses.some((addr) => addr.id === createdAddressId)
+              ? createdAddressId
+              : detectedNewAddressId;
+        }
 
         previousAddressIdsRef.current = nextAddressIds;
 
@@ -3235,22 +3375,94 @@ function CheckoutPage({
 
   useEffect(() => {
     const consumeSavedAddressRefresh = () => {
-      const shouldRefresh =
-        window.sessionStorage.getItem(CHECKOUT_ADDRESS_SAVED_FLAG) === "true";
+      const savedAddressValue = window.sessionStorage.getItem(
+        CHECKOUT_ADDRESS_SAVED_FLAG
+      );
 
-      if (!shouldRefresh) {
+      if (!savedAddressValue) {
         return;
       }
 
+      let isNewAddressAdded = true;
+      let createdAddressId: null | string = null;
+      let editedAddressId: null | string = null;
+      let savedType: null | string = null;
+
+      try {
+        const parsedValue = JSON.parse(savedAddressValue) as {
+          addressId?: null | string;
+          mode?: string;
+          type?: string;
+        };
+
+        if (parsedValue.mode === "update") {
+          isNewAddressAdded = false;
+          editedAddressId =
+            parsedValue.addressId != null
+              ? String(parsedValue.addressId)
+              : null;
+        } else if (parsedValue.mode === "create") {
+          isNewAddressAdded = true;
+          createdAddressId =
+            parsedValue.addressId != null
+              ? String(parsedValue.addressId)
+              : null;
+        }
+
+        if (parsedValue.type) {
+          savedType = parsedValue.type;
+        }
+      } catch {
+        // Backward compatibility with the previous boolean flag format.
+        isNewAddressAdded = savedAddressValue === "true";
+      }
+
       window.sessionStorage.removeItem(CHECKOUT_ADDRESS_SAVED_FLAG);
+      if (savedType) {
+        setSelectedShippingOption(savedType);
+      }
       setIsRefreshingAddresses(true);
 
-      void refreshAddresses(true).finally(() => {
+      void refreshAddresses(
+        isNewAddressAdded,
+        editedAddressId,
+        createdAddressId
+      ).finally(() => {
         setIsRefreshingAddresses(false);
       });
     };
 
-    const handleAddressSaved = () => {
+    const handleAddressSaved = (
+      event: {
+        detail?: {
+          addressId?: null | string;
+          mode?: string;
+          type?: string;
+        };
+      } & Event
+    ) => {
+      if (event.detail?.mode === "update") {
+        window.sessionStorage.setItem(
+          CHECKOUT_ADDRESS_SAVED_FLAG,
+          JSON.stringify({
+            addressId: event.detail.addressId,
+            mode: "update",
+            type: event.detail.type,
+          })
+        );
+      }
+
+      if (event.detail?.mode === "create") {
+        window.sessionStorage.setItem(
+          CHECKOUT_ADDRESS_SAVED_FLAG,
+          JSON.stringify({
+            addressId: event.detail.addressId,
+            mode: "create",
+            type: event.detail.type,
+          })
+        );
+      }
+
       consumeSavedAddressRefresh();
     };
 
@@ -3612,107 +3824,127 @@ function CheckoutPage({
           (selectedAddress?.customerAddress as any)?.address_label ||
           "";
         const isGiftAddress = addressLabel?.toLowerCase() === "gift";
-        const hasDefaultBilling = addresses.some((addr) => addr.isDefault);
         const isFirstAddress = addresses.length === 1;
 
-        if (
-          isGiftAddress &&
-          !hasDefaultBilling &&
-          isFirstAddress &&
-          selectedAddress &&
-          selectedShippingOption === "gift_delivery"
-        ) {
-          const rawData = (selectedAddress.customerAddress as any)?.raw || {};
-          const customAttributes =
-            rawData.custom_attributesV2 || rawData.custom_attributes || [];
+        if (isGiftAddress && selectedShippingOption === "gift_delivery") {
+          const defaultAddress = addresses.find((addr) => addr.isDefault);
 
-          const senderFirstNameAttr = customAttributes.find(
-            (attr: any) =>
-              attr?.attribute_code === "sender_first_name" ||
-              attr?.code === "sender_first_name"
-          );
-          const senderLastNameAttr = customAttributes.find(
-            (attr: any) =>
-              attr?.attribute_code === "sender_last_name" ||
-              attr?.code === "sender_last_name"
-          );
-          const senderPhoneAttr = customAttributes.find(
-            (attr: any) =>
-              attr?.attribute_code === "sender_phone" ||
-              attr?.code === "sender_phone"
-          );
+          if (defaultAddress && currentCustomer) {
+            const billingAddress = buildGiftBillingAddress({
+              address: defaultAddress,
+              currentCustomer,
+            });
 
-          const customerAddr =
-            selectedAddress.customerAddress as CustomerAddressModel;
-          const senderFirstName =
-            senderFirstNameAttr?.value ||
-            rawData.sender_first_name ||
-            customerAddr?.firstName ||
-            "";
-          const senderLastName =
-            senderLastNameAttr?.value ||
-            rawData.sender_last_name ||
-            customerAddr?.lastName ||
-            "";
-          const senderPhone =
-            senderPhoneAttr?.value ||
-            rawData.sender_phone ||
-            customerAddr?.mobileNumber ||
-            "";
+            setIsSettingBillingAddress(true);
+            const billingResult = await setBillingAddressOnCartAction({
+              address: billingAddress,
+            });
 
-          // For gift address, use current user's phone, first name, and last name
-          // Otherwise, use the sender info from the address
-          const billingFirstName =
-            currentCustomer?.firstName ||
-            senderFirstName ||
-            customerAddr?.firstName ||
-            "";
-          const billingLastName =
-            currentCustomer?.lastName ||
-            senderLastName ||
-            customerAddr?.lastName ||
-            "";
-          const billingPhone =
-            currentCustomer?.phoneNumber ||
-            senderPhone ||
-            customerAddr?.mobileNumber ||
-            "";
+            if (!isOk(billingResult)) {
+              console.error(
+                "[CheckoutPage] Failed to set default billing address for gift order:",
+                billingResult.error
+              );
+              showError(
+                billingResult.error ?? "Failed to set billing address",
+                " "
+              );
+              setIsSettingBillingAddress(false);
+              trackSubmitError();
+              return;
+            }
 
-          // Create billing address by copying shipping address and replacing receiver info with sender info
-          const billingAddress: CartAddressInput = {
-            address_label: "home", // Billing address should be labeled as "home"
-            city: customerAddr?.city || "",
-            country_code: customerAddr?.countryCode || "",
-            firstname: billingFirstName,
-            lastname: billingLastName,
-            postcode: customerAddr?.postcode || "",
-            region: customerAddr?.regionName || undefined,
-            region_id: customerAddr?.regionId || undefined,
-            street: customerAddr?.street || [],
-            telephone: billingPhone,
-          };
-
-          // Set temporary billing address (not saved to address book)
-          setIsSettingBillingAddress(true);
-          const billingResult = await setBillingAddressOnCartAction({
-            address: billingAddress,
-          });
-
-          if (!isOk(billingResult)) {
-            console.error(
-              "[CheckoutPage] Failed to set billing address for gift order:",
-              billingResult.error
-            );
-            showError(
-              billingResult.error ?? "Failed to set billing address",
-              " "
-            );
             setIsSettingBillingAddress(false);
-            trackSubmitError();
-            return;
-          }
+          } else if (isFirstAddress && selectedAddress) {
+            const rawData = (selectedAddress.customerAddress as any)?.raw || {};
+            const customAttributes =
+              rawData.custom_attributesV2 || rawData.custom_attributes || [];
 
-          setIsSettingBillingAddress(false);
+            const senderFirstNameAttr = customAttributes.find(
+              (attr: any) =>
+                attr?.attribute_code === "sender_first_name" ||
+                attr?.code === "sender_first_name"
+            );
+            const senderLastNameAttr = customAttributes.find(
+              (attr: any) =>
+                attr?.attribute_code === "sender_last_name" ||
+                attr?.code === "sender_last_name"
+            );
+            const senderPhoneAttr = customAttributes.find(
+              (attr: any) =>
+                attr?.attribute_code === "sender_phone" ||
+                attr?.code === "sender_phone"
+            );
+
+            const customerAddr =
+              selectedAddress.customerAddress as CustomerAddressModel;
+            const senderFirstName =
+              senderFirstNameAttr?.value ||
+              rawData.sender_first_name ||
+              customerAddr?.firstName ||
+              "";
+            const senderLastName =
+              senderLastNameAttr?.value ||
+              rawData.sender_last_name ||
+              customerAddr?.lastName ||
+              "";
+            const senderPhone =
+              senderPhoneAttr?.value ||
+              rawData.sender_phone ||
+              customerAddr?.mobileNumber ||
+              "";
+
+            const billingFirstName =
+              currentCustomer?.firstName ||
+              senderFirstName ||
+              customerAddr?.firstName ||
+              "";
+            const billingLastName =
+              currentCustomer?.lastName ||
+              senderLastName ||
+              customerAddr?.lastName ||
+              "";
+            const billingPhone =
+              currentCustomer?.phoneNumber ||
+              senderPhone ||
+              customerAddr?.mobileNumber ||
+              "";
+
+            const billingAddress: CartAddressInput = {
+              address_label: "home",
+              city: customerAddr?.city || "",
+              country_code: customerAddr?.countryCode || "",
+              firstname: billingFirstName,
+              ksa_short_address: customerAddr?.ksaShortAddress || undefined,
+              lastname: billingLastName,
+              postcode: customerAddr?.postcode || "",
+              region: customerAddr?.regionName || undefined,
+              region_id: customerAddr?.regionId || undefined,
+              street: customerAddr?.street || [],
+              telephone: billingPhone,
+            };
+
+            setIsSettingBillingAddress(true);
+            const billingResult = await setBillingAddressOnCartAction({
+              address: billingAddress,
+            });
+
+            if (!isOk(billingResult)) {
+              console.error(
+                "[CheckoutPage] Failed to set billing address for gift order:",
+                billingResult.error
+              );
+              showError(
+                billingResult.error ?? "Failed to set billing address",
+                " "
+              );
+              setIsSettingBillingAddress(false);
+              trackSubmitError();
+              return;
+            }
+
+            setIsSettingBillingAddress(false);
+          }
         }
 
         // Get customer email for PayFort
@@ -3919,10 +4151,7 @@ function CheckoutPage({
     addresses,
     selectedShippingOption,
     customerInfo?.email,
-    currentCustomer?.email,
-    currentCustomer?.firstName,
-    currentCustomer?.lastName,
-    currentCustomer?.phoneNumber,
+    currentCustomer,
     trackPurchaseAttemptEvent,
     isApplePayPayment,
     setSelectedPayment,
@@ -4077,6 +4306,7 @@ function CheckoutPage({
       )}
       <CheckoutHeader
         email={customerInfo?.email ?? currentCustomer?.email ?? undefined}
+        logoSlot={logoSlot}
       />
       <CheckoutOrderReviewTracker
         canPlaceOrder={canPlaceOrder}
@@ -4222,6 +4452,9 @@ function CheckoutPage({
               if (addressLabel === "gift") {
                 shippingOption = "gift_delivery";
                 setSelectedShippingOption(shippingOption);
+                // Reset shipping state
+                setHasReceivedShippingMethods(false);
+                setShippingMethods([]);
               } else {
                 shippingOption = "home_delivery";
                 setSelectedShippingOption(shippingOption);
@@ -4259,7 +4492,7 @@ function CheckoutPage({
           isFirstAddressInCheckout={!editingAddress && addresses.length === 0}
           onClose={handleAddressFormClose}
           onRootBack={handleAddressDrawerRootBack}
-          onSuccess={() => {
+          onSuccess={(savedAddressId) => {
             const wasAddingNew = editingAddress === null;
             const editedAddressId = editingAddress?.id;
             if (!wasAddingNew && editingAddress?.id === selectedAddressId) {
@@ -4282,28 +4515,30 @@ function CheckoutPage({
             // Set loading state
             setIsRefreshingAddresses(true);
 
-            void refreshAddresses(wasAddingNew, editedAddressId).then(
-              (newAddress) => {
-                setIsRefreshingAddresses(false);
+            void refreshAddresses(
+              wasAddingNew,
+              editedAddressId,
+              savedAddressId
+            ).then((newAddress) => {
+              setIsRefreshingAddresses(false);
 
-                // Track checkout_address_new when new address is added
-                if (wasAddingNew && newAddress) {
-                  const cityCode =
-                    (newAddress.customerAddress as any)?.raw?.region
-                      ?.region_code || null;
-                  const countryCode = newAddress.customerAddress?.countryCode;
-                  trackCheckoutAddressNew(cityCode || undefined, countryCode);
-                }
-
-                // When adding a new address, close the drawer without setting view to "list" to prevent flash
-                // New address is auto-selected in refreshAddresses
-                if (wasAddingNew) {
-                  closeAddressDrawerWithoutViewChange();
-                } else {
-                  closeAddressDrawer();
-                }
+              // Track checkout_address_new when new address is added
+              if (wasAddingNew && newAddress) {
+                const cityCode =
+                  (newAddress.customerAddress as any)?.raw?.region
+                    ?.region_code || null;
+                const countryCode = newAddress.customerAddress?.countryCode;
+                trackCheckoutAddressNew(cityCode || undefined, countryCode);
               }
-            );
+
+              // When adding a new address, close the drawer without setting view to "list" to prevent flash
+              // New address is auto-selected in refreshAddresses
+              if (wasAddingNew) {
+                closeAddressDrawerWithoutViewChange();
+              } else {
+                closeAddressDrawer();
+              }
+            });
           }}
         >
           <ManageAddressView />

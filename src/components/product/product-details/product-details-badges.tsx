@@ -10,7 +10,13 @@ import { ProductDetailsCountdownBadge } from "@/components/product/product-detai
 import { LocalizedPrice } from "@/components/shared/localized-price";
 import { useProductDetails } from "@/contexts/product-details-context";
 
-export const ProductDetailsBadges = () => {
+import type { CashbackDialogContent } from "@/lib/types/contentful/pdp-dialog-config";
+
+export const ProductDetailsBadges = ({
+  cashbackDialogContent,
+}: {
+  cashbackDialogContent?: CashbackDialogContent;
+}) => {
   const { product, selectedVariantIndex } = useProductDetails();
 
   const t = useTranslations("ProductPage.badges");
@@ -37,7 +43,7 @@ export const ProductDetailsBadges = () => {
             </span>
           </ProductDetailBadge>
         )}
-        <ProductDetailsCashbackBadge />
+        <ProductDetailsCashbackBadge content={cashbackDialogContent} />
       </div>
 
       <div className="gap-1.25 flex flex-row flex-wrap">

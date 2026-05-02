@@ -41,7 +41,6 @@ export const MobileNavigationLink = ({
         "pointer-events-none font-bold": isActivePath,
       })}
       href={href}
-      prefetch={false}
       style={style}
       title={label}
     >

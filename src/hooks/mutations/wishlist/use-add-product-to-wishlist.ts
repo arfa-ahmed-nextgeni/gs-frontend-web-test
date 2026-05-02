@@ -2,13 +2,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocale } from "next-intl";
 
 import { toast } from "@/components/ui/sonner";
+import { useHandleAuthRevoked } from "@/hooks/auth/use-handle-auth-revoked";
 import { useOfflineToast } from "@/hooks/ui/use-offline-toast";
 import { addProductToWishlist } from "@/lib/actions/customer/wishlist/add-product-to-wishlist";
 import { Locale } from "@/lib/constants/i18n";
 import { MUTATION_KEYS } from "@/lib/constants/mutation-keys";
 import { QUERY_KEYS } from "@/lib/constants/query-keys";
 import { Wishlist } from "@/lib/models/wishlist";
-import { isError } from "@/lib/utils/service-result";
+import { isError, isUnauthenticated } from "@/lib/utils/service-result";
 
 export const useAddProductToWishlist = ({
   selectedOptionId,
@@ -23,6 +24,8 @@ export const useAddProductToWishlist = ({
   const locale = useLocale() as Locale;
 
   const { showOfflineMessage } = useOfflineToast();
+
+  const handleAuthRevoked = useHandleAuthRevoked();
 
   return useMutation({
     mutationFn: addProductToWishlist,
@@ -39,6 +42,11 @@ export const useAddProductToWishlist = ({
     },
 
     onSettled: async (data) => {
+      if (isUnauthenticated(data!)) {
+        await handleAuthRevoked();
+        return;
+      }
+
       if (isError(data!)) {
         toast({
           title: data.error,

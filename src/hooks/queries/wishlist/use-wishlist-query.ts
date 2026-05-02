@@ -9,14 +9,8 @@ import { MAX_PAGE_SIZE } from "@/lib/constants/pagination";
 import { QUERY_KEYS } from "@/lib/constants/query-keys";
 import { Wishlist } from "@/lib/models/wishlist";
 
-export const useWishlistQuery = () => {
-  const locale = useLocale() as Locale;
-
-  const { isAuthorized } = useUI();
-
-  return useQuery({
-    enabled: !!isAuthorized,
-    gcTime: Infinity,
+export function getWishlistQueryConfig(locale: Locale) {
+  return {
     queryFn: async () => {
       const response = await appApiRequest<Wishlist>({
         endpoint: APP_API_ENDPOINTS.CUSTOMER.WISHLIST(locale, 1, MAX_PAGE_SIZE),
@@ -25,8 +19,20 @@ export const useWishlistQuery = () => {
       return response.data;
     },
     queryKey: QUERY_KEYS.WISHLIST.FULL(locale),
+  };
+}
+
+export const useWishlistQuery = () => {
+  const locale = useLocale() as Locale;
+
+  const { isAuthorized } = useUI();
+
+  return useQuery({
+    enabled: !!isAuthorized,
+    gcTime: Infinity,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     staleTime: Infinity,
+    ...getWishlistQueryConfig(locale),
   });
 };

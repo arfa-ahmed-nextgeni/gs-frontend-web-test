@@ -2,22 +2,17 @@ import { unauthorized } from "next/navigation";
 
 import { getLocale } from "next-intl/server";
 
-import { AddDeliveryAddressContainer } from "@/components/checkout/add-delivery-address/add-delivery-address-container";
+import { AddDeliveryAddressContextBridge } from "@/components/checkout/add-delivery-address/add-delivery-address-context-bridge";
 import { RedirectToCheckout } from "@/components/navigation/redirect-to-checkout";
-import { AddDeliveryAddressContextProvider } from "@/contexts/add-delivery-address-context";
 import { estimateShippingMethodsAction } from "@/lib/actions/checkout/estimate-shipping-methods";
 import { getCurrentCustomer } from "@/lib/actions/customer/get-current-customer";
+import { getCustomerAddresses } from "@/lib/actions/customer/get-customer-addresses";
 import { Locale } from "@/lib/constants/i18n";
 import { getLocaleInfo } from "@/lib/utils/locale";
 import { isError, isOk, isUnauthenticated } from "@/lib/utils/service-result";
 
 interface AddDeliveryAddressPageContentProps {
   searchParams: Promise<{
-    firstName?: string;
-    lastName?: string;
-    latitude?: string;
-    longitude?: string;
-    phoneNumber?: string;
     type?: string;
   }>;
 }
@@ -25,29 +20,26 @@ interface AddDeliveryAddressPageContentProps {
 export async function AddDeliveryAddressPageContent({
   searchParams,
 }: AddDeliveryAddressPageContentProps) {
-  const resolvedSearchParams = await searchParams;
-  const locale = (await getLocale()) as Locale;
+  const [resolvedSearchParams, locale] = await Promise.all([
+    searchParams,
+    getLocale(),
+  ]);
 
   // Determine delivery type from search params (home_delivery or gift_delivery)
   const deliveryType = resolvedSearchParams.type || "home_delivery";
-  const latitude = Number(resolvedSearchParams.latitude);
-  const longitude = Number(resolvedSearchParams.longitude);
-  const initialSelectedLocation =
-    Number.isFinite(latitude) && Number.isFinite(longitude)
-      ? { lat: latitude, lng: longitude }
-      : null;
-  const initialContactData =
-    resolvedSearchParams.firstName ||
-    resolvedSearchParams.lastName ||
-    resolvedSearchParams.phoneNumber
-      ? {
-          firstName: resolvedSearchParams.firstName || "",
-          lastName: resolvedSearchParams.lastName || "",
-          phoneNumber: resolvedSearchParams.phoneNumber || "",
-        }
-      : null;
 
-  const currentCustomer = await getCurrentCustomer();
+  // Get country code from locale upfront so all fetches can run in parallel
+  const localeInfo = getLocaleInfo(locale as Locale);
+  // For GLOBAL locales, use 'US' as the country code
+  const countryCode = localeInfo.region === "GLOBAL" ? "US" : localeInfo.region;
+
+  // Run all three data fetches in parallel to reduce page load time
+  const [currentCustomer, shippingMethodsResult, customerAddressesResult] =
+    await Promise.all([
+      getCurrentCustomer(),
+      estimateShippingMethodsAction({ countryCode }),
+      getCustomerAddresses(),
+    ]);
 
   if (isUnauthenticated(currentCustomer)) {
     unauthorized();
@@ -58,16 +50,6 @@ export async function AddDeliveryAddressPageContent({
       currentCustomer.error || "Failed to fetch customer profile"
     );
   }
-
-  // Get country code from locale
-  const localeInfo = getLocaleInfo(locale);
-  // For GLOBAL locales, use 'US' as the country code
-  const countryCode = localeInfo.region === "GLOBAL" ? "US" : localeInfo.region;
-
-  // Check if delivery methods are available
-  const shippingMethodsResult = await estimateShippingMethodsAction({
-    countryCode,
-  });
 
   if (isOk(shippingMethodsResult)) {
     const methods = shippingMethodsResult.data.methods;
@@ -117,14 +99,23 @@ export async function AddDeliveryAddressPageContent({
     phoneNumber: currentCustomer.data?.phoneNumber,
   };
 
+  // A gift address is not considered as first address, since it doesn't have a default billing address associated with it. This is important to determine if we should show the "Set as default" option in the form.
+  const isFirstAddressInCheckout = isOk(customerAddressesResult)
+    ? deliveryType === "home_delivery" &&
+      !customerAddressesResult.data.addresses.some((address) => {
+        const addressLabel =
+          (address.raw?.address_label as string | undefined)?.toLowerCase() ||
+          "";
+
+        return addressLabel !== "gift";
+      })
+    : false;
+
   return (
-    <AddDeliveryAddressContextProvider
+    <AddDeliveryAddressContextBridge
       customerData={customerData}
       deliveryType={deliveryType}
-      initialContactData={initialContactData}
-      initialSelectedLocation={initialSelectedLocation}
-    >
-      <AddDeliveryAddressContainer />
-    </AddDeliveryAddressContextProvider>
+      isFirstAddressInCheckout={isFirstAddressInCheckout}
+    />
   );
 }

@@ -1,10 +1,10 @@
 "use client";
 
+import type { CountryCallingCode, NationalNumber } from "libphonenumber-js";
+
 import { ComponentProps, useEffect, useState } from "react";
 
 import Image from "next/image";
-
-import { CountryCallingCode, NationalNumber } from "libphonenumber-js";
 
 import { FloatingLabelInput } from "@/components/ui/floating-label-input";
 import { useStoreCode } from "@/hooks/i18n/use-store-code";
@@ -67,7 +67,7 @@ export const PhoneNumberInput = ({
   return (
     <div className="flex flex-row gap-2.5" dir="ltr">
       {/* Country Code Field */}
-      <div className="bg-bg-surface w-29.25 flex h-[50px] flex-row items-center gap-1 rounded-xl px-5">
+      <div className="bg-bg-surface w-29.25 py-2.75 flex flex-row items-center gap-1 rounded-xl px-5">
         <span className="flex h-[20px] w-[30px] items-center">
           {typeof getCountryFlag(countryCode) === "string" ? (
             <span className="text-lg">{getCountryFlag(countryCode)}</span>

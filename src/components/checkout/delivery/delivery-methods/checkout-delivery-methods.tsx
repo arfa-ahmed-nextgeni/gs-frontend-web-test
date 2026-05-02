@@ -145,7 +145,7 @@ export function CheckoutDeliveryMethods({
       )}
 
       {!isLoading &&
-        (methodsToRender ?? []).map((method) => {
+        (methodsToRender ?? []).map((method, index) => {
           // Check if this is bullet/express delivery
           const isBulletDelivery =
             method.id?.toLowerCase().includes("express") ||
@@ -158,7 +158,7 @@ export function CheckoutDeliveryMethods({
                 estimatedTime={method.estimatedTime}
                 icon={renderIcon(method)}
                 iconAlt={renderIconAlt(method)}
-                key={method.id}
+                key={`${method.id}-${index}`}
                 method={method}
                 onMethodChange={onMethodChange}
                 price={renderPrice(method.price, method.currency)}
@@ -175,7 +175,7 @@ export function CheckoutDeliveryMethods({
               icon={renderIcon(method)}
               iconAlt={renderIconAlt(method)}
               isSelected={selectedMethod === method.id}
-              key={method.id}
+              key={`${method.id}-${index}`}
               name={method.name}
               onChange={() => onMethodChange(method.id)}
               price={renderPrice(method.price, method.currency)}

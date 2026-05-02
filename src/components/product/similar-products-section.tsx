@@ -33,6 +33,7 @@ export const SimilarProductsSection = ({
         gender: product.productInfo.gender || "",
         productType: product.productInfo.type || "",
         sku: product.sku,
+        urlKey: product.urlKey,
       }}
       productType={product.type}
       titleKey="similarProductsSection"

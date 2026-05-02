@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, useEffect, useRef } from "react";
 
 import { useDirection } from "@radix-ui/react-direction";
 
@@ -8,9 +8,12 @@ import { Drawer } from "@/components/ui/drawer";
 import { useCartDrawer } from "@/contexts/cart-drawer-context";
 import { useCart } from "@/contexts/use-cart";
 import { useIsMobile } from "@/hooks/use-is-mobile";
+import { usePathname } from "@/i18n/navigation";
 
 export const CartDrawerContainer = ({ children }: PropsWithChildren) => {
   const direction = useDirection();
+  const pathname = usePathname();
+  const previousPathnameRef = useRef(pathname);
 
   const { cart } = useCart();
 
@@ -23,6 +26,14 @@ export const CartDrawerContainer = ({ children }: PropsWithChildren) => {
       closeCartDrawer();
     }
   }, [cart?.items.length, closeCartDrawer]);
+
+  useEffect(() => {
+    if (previousPathnameRef.current !== pathname && isCartDrawerOpen) {
+      closeCartDrawer();
+    }
+
+    previousPathnameRef.current = pathname;
+  }, [pathname, isCartDrawerOpen, closeCartDrawer]);
 
   return (
     <Drawer

@@ -6,9 +6,9 @@ import { CategoryProductGrid } from "@/components/category/products/category-pro
 import { SectionHeader } from "@/components/common/section-header";
 import { ProductCard } from "@/components/product/product-card";
 import {
-  ProductCardsScrollSnapCarousel,
-  ProductCardsScrollSnapCarouselItem,
-} from "@/components/product/product-cards-scroll-snap-carousel";
+  CardRailScrollSnapCarousel,
+  CardRailScrollSnapCarouselItem,
+} from "@/components/ui/card-rail-scroll-snap-carousel";
 import { getBulletDeliveryEnabled } from "@/lib/actions/config/get-bullet-delivery-enabled";
 import { getProductsByCategory } from "@/lib/actions/products/get-products-by-category";
 import { Locale } from "@/lib/constants/i18n";
@@ -30,9 +30,7 @@ export const CategoryProductsCarouselContent = async ({
   showViewAll,
   variant,
 }: {
-  carouselContainerProps?: ComponentProps<
-    typeof ProductCardsScrollSnapCarousel
-  >;
+  carouselContainerProps?: ComponentProps<typeof CardRailScrollSnapCarousel>;
   lpRow?: number;
   sectionHeaderProps?: ComponentProps<typeof SectionHeader>;
 } & CategoryProducts) => {
@@ -88,7 +86,7 @@ export const CategoryProductsCarouselContent = async ({
           products={products}
         />
       ) : (
-        <ProductCardsScrollSnapCarousel
+        <CardRailScrollSnapCarousel
           {...carouselContainerProps}
           carouselProps={{
             ...carouselContainerProps?.carouselProps,
@@ -108,7 +106,7 @@ export const CategoryProductsCarouselContent = async ({
           }}
         >
           {products.map((product, index) => (
-            <ProductCardsScrollSnapCarouselItem key={`${product.id}-${index}`}>
+            <CardRailScrollSnapCarouselItem key={`${product.id}-${index}`}>
               <ProductCard
                 isBulletDeliveryEnabled={isBulletDeliveryEnabled}
                 lpColumn={1}
@@ -121,9 +119,9 @@ export const CategoryProductsCarouselContent = async ({
                 lpRow={lpRow}
                 product={product}
               />
-            </ProductCardsScrollSnapCarouselItem>
+            </CardRailScrollSnapCarouselItem>
           ))}
-        </ProductCardsScrollSnapCarousel>
+        </CardRailScrollSnapCarousel>
       )}
     </div>
   );

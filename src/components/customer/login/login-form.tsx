@@ -21,7 +21,6 @@ import { toast } from "@/components/ui/sonner";
 import { Spinner } from "@/components/ui/spinner";
 import { useUI } from "@/contexts/use-ui";
 import { useStoreCode } from "@/hooks/i18n/use-store-code";
-import { getCustomerQueryConfig } from "@/hooks/queries/use-customer-query";
 import { useRouteMatch } from "@/hooks/use-route-match";
 import { useWindowSize } from "@/hooks/use-window-size";
 import { Link, useRouter } from "@/i18n/navigation";
@@ -40,7 +39,6 @@ import {
   formatPhoneForAnalytics,
 } from "@/lib/analytics/utils/build-properties";
 import { Locale } from "@/lib/constants/i18n";
-import { QUERY_KEYS } from "@/lib/constants/query-keys";
 import { ROUTES } from "@/lib/constants/routes";
 import { cn } from "@/lib/utils";
 import {
@@ -55,6 +53,7 @@ import {
   isGlobalStore,
   isValidPhoneNumber,
 } from "@/lib/utils/country";
+import { syncPostAuthQueries } from "@/lib/utils/sync-post-auth-queries";
 
 const source = "account";
 export function LoginForm() {
@@ -307,15 +306,12 @@ export function LoginForm() {
             console.warn("Error in authorize():", error);
           }
 
-          queryClient.invalidateQueries({
-            queryKey: QUERY_KEYS.CART.ROOT(locale),
+          const { customer } = await syncPostAuthQueries({
+            locale,
+            queryClient,
           });
 
           clearSuppressRegistration();
-
-          const customer = await queryClient.fetchQuery(
-            getCustomerQueryConfig(locale)
-          );
 
           // Track login event with user data
           trackLogin(buildUserPropertiesFromCustomer(customer));
@@ -471,13 +467,10 @@ export function LoginForm() {
           Cookies.set("auth_token", result.data.token, cookieOptions);
         }
 
-        queryClient.invalidateQueries({
-          queryKey: QUERY_KEYS.CART.ROOT(locale),
+        const { customer } = await syncPostAuthQueries({
+          locale,
+          queryClient,
         });
-
-        const customer = await queryClient.fetchQuery(
-          getCustomerQueryConfig(locale)
-        );
 
         // Track login event with user data
         // Track login event with user data

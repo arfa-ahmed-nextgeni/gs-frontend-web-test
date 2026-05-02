@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
 import dynamic from "next/dynamic";
@@ -21,8 +22,10 @@ const CookieConsentSheet = dynamic(
 
 export function CookieConsentSheetContainer({
   cookieConsentPrompt,
+  descriptionContent,
 }: {
   cookieConsentPrompt?: CookieConsentPromptModel;
+  descriptionContent?: ReactNode;
 }) {
   const [shouldRender, setShouldRender] = useState(false);
   const pathname = usePathname();
@@ -46,7 +49,10 @@ export function CookieConsentSheetContainer({
 
   return (
     <AsyncBoundary fallback={null}>
-      <CookieConsentSheet cookieConsentPrompt={cookieConsentPrompt} />
+      <CookieConsentSheet
+        cookieConsentPrompt={cookieConsentPrompt}
+        descriptionContent={descriptionContent}
+      />
     </AsyncBoundary>
   );
 }

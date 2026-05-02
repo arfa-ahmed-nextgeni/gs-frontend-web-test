@@ -21,7 +21,10 @@ import { useAddProductToWishlist } from "@/hooks/mutations/wishlist/use-add-prod
 import { useRemoveProductFromWishlist } from "@/hooks/mutations/wishlist/use-remove-product-from-wishlist";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useRouter } from "@/i18n/navigation";
-import { trackAddToWishlist } from "@/lib/analytics/events";
+import {
+  trackAddToWishlist,
+  trackRemoveFromWishlist,
+} from "@/lib/analytics/events";
 import { buildProductPropertiesFromDetails } from "@/lib/analytics/utils/build-properties";
 import { MUTATION_KEYS } from "@/lib/constants/mutation-keys";
 import {
@@ -29,6 +32,7 @@ import {
   saveScrollPosition,
   setSuppressRegistration,
 } from "@/lib/utils/auth-redirect";
+import { findMatchingWishlistItem } from "@/lib/utils/wishlist";
 
 import type { Locale } from "@/lib/constants/i18n";
 
@@ -41,8 +45,8 @@ export const ProductWishlistButton = () => {
   const locale = useLocale() as Locale;
   const { isWishlisted, product, selectedProduct } = useProductDetails();
   const selectedOptionId =
-    product.isConfigurable && selectedProduct.id.trim() !== ""
-      ? selectedProduct.id
+    product.isConfigurable && selectedProduct.id != null
+      ? String(selectedProduct.id)
       : undefined;
 
   const { isLoading: isWishlistLoading, wishlist } = useWishlist();
@@ -91,8 +95,8 @@ export const ProductWishlistButton = () => {
     if (!isAuthorized) {
       const payload = {
         sku: product.sku || "",
-        ...(product.isConfigurable && {
-          selectedOptionId: selectedProduct.id,
+        ...(selectedOptionId && {
+          selectedOptionId,
         }),
       };
       addPendingAction(payload);
@@ -112,13 +116,16 @@ export const ProductWishlistButton = () => {
       return;
     }
 
-    const itemInWishlist = wishlist?.items.find((item) =>
-      product.isConfigurable
-        ? product.sku === item.sku && selectedProduct.sku === item.childSku
-        : product.sku === item.sku
-    );
+    const itemInWishlist = findMatchingWishlistItem({
+      product,
+      selectedProduct,
+      wishlist,
+    });
 
     if (isWishlisted) {
+      const skuToTrack = itemInWishlist?.childSku || product.sku || "";
+      trackRemoveFromWishlist(skuToTrack);
+
       removeFromWishlist({
         itemId: itemInWishlist?.idInWishlist || "",
         wishlistId: wishlist?.id || "",
@@ -140,8 +147,8 @@ export const ProductWishlistButton = () => {
         wishlistId: wishlist?.id || "",
       };
 
-      if (product.isConfigurable) {
-        payload["selectedOptionId"] = selectedProduct.id;
+      if (selectedOptionId) {
+        payload["selectedOptionId"] = selectedOptionId;
       }
 
       addToWishlist(payload);

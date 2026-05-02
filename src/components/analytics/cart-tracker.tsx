@@ -29,7 +29,7 @@ export function CartTracker() {
     }
 
     const cartProperties = buildCartProperties(cart);
-    trackViewCart(cartProperties);
+    trackViewCart(cartProperties, cart.items);
     hasTracked.current = true;
   }, [cart, isLoading]);
 

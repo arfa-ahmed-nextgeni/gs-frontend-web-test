@@ -1,5 +1,7 @@
 import { useTranslations } from "next-intl";
 
+import { ProductAdditionalInfoRow } from "@/components/product/product-additional-info/product-additional-info-row";
+import { ProductAdditionalInfoSelectedVariantRow } from "@/components/product/product-additional-info/product-additional-info-selected-variant-row";
 import { ProductInfoSection } from "@/components/product/product-additional-info/product-info-section";
 import Container from "@/components/shared/container";
 import { Accordion } from "@/components/ui/accordion";
@@ -33,16 +35,39 @@ export const ProductAdditionalInfo = ({
           value="information"
         >
           <div className="flex flex-col">
-            {product.productInfoList.map(({ label, value }, index) => (
-              <div className="flex flex-row" key={`product-info-${index}`}>
-                <p className="text-text-primary w-[40%] text-sm font-bold lg:w-[15%]">
-                  {label}
-                </p>
-                <p className="text-text-primary flex-1 text-sm font-normal">
-                  {value}
-                </p>
-              </div>
-            ))}
+            {product.selectedVariantInfo
+              ? product.productInfoList
+                  .slice(0, product.selectedVariantInfo.index)
+                  .map(({ label, value }, index) => (
+                    <ProductAdditionalInfoRow
+                      key={`product-info-${index}`}
+                      label={label}
+                      value={value}
+                    />
+                  ))
+              : product.productInfoList.map(({ label, value }, index) => (
+                  <ProductAdditionalInfoRow
+                    key={`product-info-${index}`}
+                    label={label}
+                    value={value}
+                  />
+                ))}
+            {product.selectedVariantInfo ? (
+              <ProductAdditionalInfoSelectedVariantRow
+                label={product.selectedVariantInfo.label}
+              />
+            ) : null}
+            {product.selectedVariantInfo
+              ? product.productInfoList
+                  .slice(product.selectedVariantInfo.index)
+                  .map(({ label, value }, index) => (
+                    <ProductAdditionalInfoRow
+                      key={`product-info-after-variant-${index}`}
+                      label={label}
+                      value={value}
+                    />
+                  ))
+              : null}
           </div>
         </ProductInfoSection>
 

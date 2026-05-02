@@ -1,5 +1,12 @@
+import "server-only";
+
 import { createClient } from "contentful";
 
+import {
+  ApiActivityFeatures,
+  ApiActivityServices,
+} from "@/lib/api-activity/api-activity-meta";
+import { loggedFetch } from "@/lib/api-activity/fetch/logged-fetch";
 import {
   CONTENTFUL_ACCESS_TOKEN,
   CONTENTFUL_ENVIRONMENT,
@@ -27,12 +34,20 @@ function fetchAdapter(config: AdapterConfig): Promise<unknown> {
     fullUrl = `${fullUrl}?${searchParams.toString()}`;
   }
 
-  return fetch(fullUrl, {
-    body: data ? JSON.stringify(data) : undefined,
-    headers: headers as Record<string, string>,
-    method,
-    signal: AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT),
-  }).then(async (response) => {
+  return loggedFetch(
+    fullUrl,
+    {
+      body: data ? JSON.stringify(data) : undefined,
+      headers: headers as Record<string, string>,
+      method,
+      signal: AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT),
+    },
+    {
+      feature: ApiActivityFeatures.Content,
+      initiator: "src/lib/clients/contentful.ts#fetchAdapter",
+      service: ApiActivityServices.Contentful,
+    }
+  ).then(async (response) => {
     const responseData = await response.json();
     // Return axios-like response structure expected by contentful SDK
     return {

@@ -1,5 +1,7 @@
 import { Suspense } from "react";
 
+import { connection } from "next/server";
+
 import { ProductReviewsDrawerLayout } from "@/components/product/product-reviews/product-reviews-view/product-reviews-drawer-layout";
 import { ProductReviewsView } from "@/components/product/product-reviews/product-reviews-view/product-reviews-view";
 import { ProductReviewsViewSkeleton } from "@/components/product/product-reviews/product-reviews-view/product-reviews-view-skeleton";
@@ -16,6 +18,8 @@ export default async function ProductReviewsPage({
   params,
   searchParams,
 }: PageProps<"/[locale]/p/[urlKey]/reviews/[productId]">) {
+  await connection();
+
   const { locale, productId, urlKey } = await params;
 
   initializePageLocale(locale);

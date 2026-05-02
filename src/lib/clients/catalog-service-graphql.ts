@@ -1,4 +1,11 @@
+import "server-only";
+
 import { TypedDocumentString } from "@/catalog-service-graphql/graphql";
+import {
+  ApiActivityFeatures,
+  ApiActivityServices,
+} from "@/lib/api-activity/api-activity-meta";
+import { loggedFetch } from "@/lib/api-activity/fetch/logged-fetch";
 import {
   CATALOG_SERVICE_BASE_URL,
   CATALOG_SERVICE_ENVIRONMENT_ID,
@@ -83,13 +90,22 @@ export async function catalogServiceGraphqlRequest<
     ...(variables ? { variables } : {}),
   };
 
-  const response = await fetch(CATALOG_SERVICE_BASE_URL, {
-    body: JSON.stringify(requestBody),
-    headers,
-    method: "POST",
-    signal: AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT),
-    ...requestInit,
-  });
+  const response = await loggedFetch(
+    CATALOG_SERVICE_BASE_URL,
+    {
+      body: JSON.stringify(requestBody),
+      headers,
+      method: "POST",
+      signal: AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT),
+      ...requestInit,
+    },
+    {
+      feature: ApiActivityFeatures.Catalog,
+      initiator:
+        "src/lib/clients/catalog-service-graphql.ts#catalogServiceGraphqlRequest",
+      service: ApiActivityServices.Catalog,
+    }
+  );
 
   if (!response.ok) {
     const errorText = await response.text();

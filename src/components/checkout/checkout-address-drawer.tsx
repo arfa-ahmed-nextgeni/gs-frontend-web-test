@@ -222,40 +222,49 @@ export function CheckoutAddressDrawer({
                             address.customerAddress?.countryLabel ??
                             address.customerAddress?.countryCode ??
                             "";
-                          return countryName
-                            ? `${countryName}, ${address.formattedAddress}`
-                            : address.formattedAddress;
+                          const ksaShortAddress = (
+                            address.customerAddress as any
+                          )?.ksaShortAddress;
+                          const rawAddress = (
+                            countryName
+                              ? `${countryName}, ${address.formattedAddress}`
+                              : address.formattedAddress
+                          ).replace(/,\s*0+$/, ""); //temp fix to remove trailing zeros, BE should ideally not return formatted addresses with trailing zeros
+                          return ksaShortAddress
+                            ? `${ksaShortAddress}, ${rawAddress}`
+                            : rawAddress;
                         })()}
                       </span>
 
                       <span className="font-medium">{t("mobile")}</span>
-                      <span
-                        className={`flex items-center justify-between gap-3 ${
-                          isArabic ? "flex-row-reverse" : ""
-                        }`}
-                      >
-                        <span className="inline-block" dir="ltr">
-                          {address.phoneNumber}
-                        </span>
-                        {hasVerificationStatus &&
-                          (isKsaVerified ? (
-                            <span className="inline-flex items-center gap-1 text-[8px] font-medium text-[#2563EB]">
-                              <Image
-                                alt={t("verified")}
-                                className="shrink-0"
-                                height={14}
-                                src={VerifiedIcon}
-                                width={14}
-                              />
-                              {t("verified")}
-                            </span>
-                          ) : (
-                            <span className="text-[8px] font-medium text-[#F59E0B]">
-                              {t("notVerified")}
-                            </span>
-                          ))}
+                      <span className="inline-block" dir="ltr">
+                        {isGiftAddress
+                          ? ((address.customerAddress as any)?.raw
+                              ?.telephone as string | undefined) ||
+                            address.phoneNumber
+                          : address.phoneNumber}
                       </span>
                     </div>
+                    {hasVerificationStatus && (
+                      <div className="mb-3 mt-0 flex justify-end px-5">
+                        {isKsaVerified ? (
+                          <span className="inline-flex items-center gap-1 text-[8px] font-medium text-[#2563EB]">
+                            <Image
+                              alt={t("verified")}
+                              className="shrink-0"
+                              height={14}
+                              src={VerifiedIcon}
+                              width={14}
+                            />
+                            {t("verified")}
+                          </span>
+                        ) : (
+                          <span className="text-[8px] font-medium text-[#F59E0B]">
+                            {t("notVerified")}
+                          </span>
+                        )}
+                      </div>
+                    )}
 
                     <div
                       className={`flex items-center justify-between border-t border-[#E4E7EC] px-5 py-2.5`}

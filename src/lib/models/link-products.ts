@@ -26,13 +26,20 @@ export class LinkProducts extends Helper {
 
   constructor(
     data: GetSimilarProductsQuery | GetYouMightAlsoLikeProductsQuery,
-    excludeSku: string
+    excludeSku: string,
+    excludeUrlKey?: string
   ) {
     super();
 
     this.products =
       data?.productSearch.items
-        ?.filter((item) => item?.productView?.sku !== excludeSku)
+        ?.filter((item) => {
+          const product = item?.productView;
+
+          return (
+            product?.sku !== excludeSku && product?.urlKey !== excludeUrlKey
+          );
+        })
         ?.map((item) => {
           const product = item?.productView;
 

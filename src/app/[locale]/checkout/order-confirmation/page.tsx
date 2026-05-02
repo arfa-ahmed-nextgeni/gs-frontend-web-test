@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getLocale } from "next-intl/server";
 
 import { PurchaseTracker } from "@/components/analytics/purchase-tracker";
+import { SiteLogo } from "@/components/shared/site-logo";
 import { getCustomerOrderByNumber } from "@/lib/actions/customer/orders";
 import { getProductsTypeBySkus } from "@/lib/actions/products/get-products-type-by-skus";
 import { Locale } from "@/lib/constants/i18n";
@@ -62,6 +63,7 @@ export default async function Order({
             productsType={productTypesResult?.data || "mix"}
           />
           <OrderConfirmationContent
+            logoSlot={<SiteLogo className="h-10 w-auto" />}
             order={orderResult.data}
             orderId={orderId}
           />

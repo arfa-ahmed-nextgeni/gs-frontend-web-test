@@ -1,17 +1,19 @@
 import {
+  ProductCardVariant,
+  ProductOptionType,
+} from "@/lib/constants/product/product-card";
+import { Helper } from "@/lib/models/helper";
+import {
+  ProductCardModel,
+  type ProductOption,
+} from "@/lib/models/product-card-model";
+
+import type {
   ConfigurableProduct,
   ConfigurableWishlistItem,
   CurrencyEnum,
   GetCustomerWishlistQuery,
 } from "@/graphql/graphql";
-import {
-  ProductCardVariant,
-  ProductOptionType,
-} from "@/lib/constants/product/product-card";
-import {
-  ProductCardModel,
-  ProductOption,
-} from "@/lib/models/product-card-model";
 
 export class Wishlist {
   id: string;
@@ -34,8 +36,10 @@ export class Wishlist {
 
 export class WishlistItem extends ProductCardModel {
   childSku?: string;
+  color?: string;
   idInWishlist: string;
   isConfigurable = false;
+  size?: string;
 
   constructor({ __typename, id, product, ...item }: ConfigurableWishlistItem) {
     const minPrice = product?.price_range?.minimum_price;
@@ -49,9 +53,21 @@ export class WishlistItem extends ProductCardModel {
     let sku = product?.sku || "";
     let parentId: string | undefined = undefined;
     let skuParent: string | undefined = undefined;
+    let color: string | undefined = undefined;
+    let size: string | undefined = undefined;
 
     if (__typename === "ConfigurableWishlistItem") {
       const configurableProduct = product as ConfigurableProduct;
+
+      const sizeOpt = item.configurable_options?.find((opt) =>
+        opt?.option_label?.toLowerCase().includes("size")
+      );
+      size = sizeOpt?.value_label || undefined;
+
+      const colorOpt = item.configurable_options?.find((opt) =>
+        opt?.option_label?.toLowerCase().includes("color")
+      );
+      color = colorOpt?.value_label || undefined;
 
       options = {
         choices:
@@ -64,8 +80,9 @@ export class WishlistItem extends ProductCardModel {
       };
 
       stockStatus = item.configured_variant?.stock_status || "";
-      bulletDelivery =
-        item.configured_variant?.express_delivery_available === 1;
+      bulletDelivery = Helper.isFlagEnabled(
+        item.configured_variant?.express_delivery_available
+      );
 
       if (
         configurableProduct?.__typename === "ConfigurableProduct" &&
@@ -78,9 +95,12 @@ export class WishlistItem extends ProductCardModel {
       }
     }
 
+    const productType = product?.product_type_new2 || undefined;
+
     super({
+      brand: product?.brand_new_label || "",
       bulletDelivery,
-      currency: minPrice?.final_price.currency || CurrencyEnum.Sar,
+      currency: minPrice?.final_price.currency || ("SAR" as CurrencyEnum),
       description: product?.short_description?.html || "",
       discountPercent: minPrice?.discount?.percent_off || undefined,
       externalId,
@@ -91,6 +111,7 @@ export class WishlistItem extends ProductCardModel {
       options,
       parentId,
       price: finalPrice,
+      productType,
       ratingSummary: product?.rating_summary,
       savedAmount: 0,
       sku,
@@ -101,6 +122,8 @@ export class WishlistItem extends ProductCardModel {
     });
 
     this.idInWishlist = id;
+    this.color = color;
+    this.size = size;
 
     if (__typename === "ConfigurableWishlistItem") {
       this.isConfigurable = true;

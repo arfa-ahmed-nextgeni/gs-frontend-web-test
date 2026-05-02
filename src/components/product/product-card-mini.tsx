@@ -1,15 +1,17 @@
 "use client";
 
+import { useTransition } from "react";
+
 import Image from "next/image";
 
 import AddToBagDarkIcon from "@/assets/icons/add-to-bag-dark-icon.svg";
-import { productPlaceholder } from "@/assets/placeholders";
 import { ProductCardPrice } from "@/components/product/product-card/product-card-price";
 import { ProductCardStatusBadges } from "@/components/product/product-card/product-card-status-badges";
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import { Spinner } from "@/components/ui/spinner";
 import { useAddProductToCart } from "@/hooks/mutations/cart/use-add-product-to-cart";
 import { useBulletDeliveryEnabled } from "@/hooks/use-bullet-delivery-enabled";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { buildProductPropertiesFromCard } from "@/lib/analytics/utils/build-properties";
 import { StockStatus } from "@/lib/constants/product/product-card";
 import { ROUTES } from "@/lib/constants/routes";
@@ -27,12 +29,40 @@ export const ProductCardMini = ({
   iconContainerClassName: iconButtonClassName,
   product,
 }: ProductCardMiniProps) => {
+  const router = useRouter();
   const isBulletDeliveryEnabled = useBulletDeliveryEnabled();
   const { isPending: isMovingToCart, mutate: addProductToCart } =
     useAddProductToCart({
       product: buildProductPropertiesFromCard(product),
       sku: product.sku || "",
     });
+  const [isNavigatingToProduct, startNavigatingToProduct] = useTransition();
+  const isConfigurable = !!product.options?.choices?.length;
+  const isLoading = isMovingToCart || isNavigatingToProduct;
+
+  const handleActionClick = () => {
+    if (isLoading) {
+      return;
+    }
+
+    if (isConfigurable) {
+      if (!product.urlKey) {
+        return;
+      }
+
+      startNavigatingToProduct(() => {
+        router.push(ROUTES.PRODUCT.BY_URL_KEY(product.urlKey));
+      });
+
+      return;
+    }
+
+    if (!product.sku) {
+      return;
+    }
+
+    addProductToCart({ sku: product.sku });
+  };
 
   return (
     <div className="h-25 w-65.75 min-w-65.75 bg-bg-default relative flex flex-row items-stretch overflow-hidden rounded-xl shadow-sm">
@@ -53,11 +83,11 @@ export const ProductCardMini = ({
         href={product.urlKey ? ROUTES.PRODUCT.BY_URL_KEY(product.urlKey) : "#"}
         title={product.name}
       >
-        <Image
+        <ProductImageWithFallback
           alt={product.name}
           className="size-20 object-cover"
           height={80}
-          src={product.imageUrl || productPlaceholder}
+          src={product.imageUrl}
           width={80}
         />
       </Link>
@@ -91,10 +121,10 @@ export const ProductCardMini = ({
               product.stockStatus === StockStatus.OutOfStock && "invisible",
               iconButtonClassName
             )}
-            disabled={isMovingToCart}
-            onClick={() => addProductToCart({ sku: product.sku || "" })}
+            disabled={isLoading}
+            onClick={handleActionClick}
           >
-            {isMovingToCart ? (
+            {isLoading ? (
               <Spinner className="size-3.75" size={15} variant="dark" />
             ) : (
               <Image

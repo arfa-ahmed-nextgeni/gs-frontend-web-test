@@ -143,6 +143,28 @@ class GoogleTagManagerProvider implements AnalyticsProvider {
     }
   }
 
+  /**
+   * Push a GA4 ecommerce event to the dataLayer.
+   * Clears the previous ecommerce object first (standard GA4 practice) then
+   * pushes the event with the full nested ecommerce payload intact — bypassing
+   * the property-flattening used by the regular track() method.
+   */
+  trackEcommerce(
+    eventName: string,
+    ecommerce: Record<string, unknown>,
+    additionalFields?: Record<string, unknown>
+  ): void {
+    if (!this.isAvailable()) return;
+
+    try {
+      // Clear any previous ecommerce data
+      sendGTMEvent({ ecommerce: null, event: `${eventName}_clear` });
+      sendGTMEvent({ ecommerce, event: eventName, ...additionalFields });
+    } catch (error) {
+      console.error("Google Tag Manager trackEcommerce error:", error);
+    }
+  }
+
   private async sendTrackWithSnapParams(
     eventName: string,
     flattenedProperties: Record<string, boolean | number | string>,

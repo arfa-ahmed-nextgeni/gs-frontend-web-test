@@ -1,5 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server";
 
+import {
+  ApiActivityFeatures,
+  ApiActivityServices,
+} from "@/lib/api-activity/api-activity-meta";
+import { loggedFetch } from "@/lib/api-activity/fetch/logged-fetch";
 import { getHostKeyFromRequest } from "@/lib/utils/sitemap/get-host-key-from-request";
 
 const SITEMAP_S3_BASE_URL =
@@ -33,19 +38,39 @@ export async function getSitemapResponse({
   const sitemapUrl = `${SITEMAP_S3_BASE_URL}/${hostKey}.xml`;
 
   try {
-    const response = await fetch(sitemapUrl, {
-      method: "GET",
-      signal: AbortSignal.timeout(10_000),
-    });
+    const response = await loggedFetch(
+      sitemapUrl,
+      {
+        method: "GET",
+        signal: AbortSignal.timeout(10_000),
+      },
+      {
+        action: "fetch sitemap",
+        feature: ApiActivityFeatures.Seo,
+        initiator:
+          "src/lib/utils/sitemap/get-sitemap-response.ts#getSitemapResponse",
+        service: ApiActivityServices.Sitemap,
+      }
+    );
 
     if (response.status === 404) {
       if (!fallbackHostKey) return new NextResponse(null, { status: 404 });
 
       const fallbackUrl = `${SITEMAP_S3_BASE_URL}/${fallbackHostKey}.xml`;
-      const fallbackResponse = await fetch(fallbackUrl, {
-        method: "GET",
-        signal: AbortSignal.timeout(10_000),
-      });
+      const fallbackResponse = await loggedFetch(
+        fallbackUrl,
+        {
+          method: "GET",
+          signal: AbortSignal.timeout(10_000),
+        },
+        {
+          action: "fetch sitemap",
+          feature: ApiActivityFeatures.Seo,
+          initiator:
+            "src/lib/utils/sitemap/get-sitemap-response.ts#getSitemapResponse:fallback",
+          service: ApiActivityServices.Sitemap,
+        }
+      );
 
       if (fallbackResponse.status === 404) {
         return new NextResponse(null, { status: 404 });

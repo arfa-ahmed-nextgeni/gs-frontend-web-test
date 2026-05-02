@@ -56,17 +56,24 @@ export const updateCustomerAddress = async ({
 
     const payload = addressFormSchema(storeCode).parse(data);
 
+    const isGiftAddress =
+      payload[AddressFormField.AddressLabel]?.toLowerCase() === "gift";
+
     const input: CustomerAddressInput = {
       address_label: payload[AddressFormField.AddressLabel] || undefined,
       city:
         typeof payload[AddressFormField.City] === "string"
           ? payload[AddressFormField.City]
-          : payload[AddressFormField.City].value,
+          : payload[AddressFormField.City].label,
       country_code: globalStore
         ? (payload[AddressFormField.Country].value as CountryCodeEnum)
         : (region as CountryCodeEnum),
-      default_billing: payload[AddressFormField.SaveAsDefault],
-      default_shipping: payload[AddressFormField.SaveAsDefault],
+      default_billing: isGiftAddress
+        ? false
+        : payload[AddressFormField.SaveAsDefault],
+      default_shipping: isGiftAddress
+        ? false
+        : payload[AddressFormField.SaveAsDefault],
       firstname: payload[AddressFormField.FirstName],
       lastname: payload[AddressFormField.LastName],
       postcode: payload[AddressFormField.PostalCode],
@@ -112,6 +119,7 @@ export const updateCustomerAddress = async ({
         input.middlename = payload[AddressFormField.MiddleName];
       }
     }
+    // console.info("[updateCustomerAddress] input:", JSON.stringify(input, null, 2));
 
     const response = await graphqlRequest<
       UpdateCustomerAddressMutation,

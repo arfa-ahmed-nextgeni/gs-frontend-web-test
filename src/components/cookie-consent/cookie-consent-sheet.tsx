@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
 import { useTranslations } from "next-intl";
@@ -19,9 +20,11 @@ import { cn } from "@/lib/utils";
 import type { CookieConsentPromptModel } from "@/lib/models/cookie-consent-prompt-model";
 
 export function CookieConsentSheet({
-  cookieConsentPrompt: { allowButtonLabel, declineButtonLabel, description },
+  cookieConsentPrompt: { allowButtonLabel, declineButtonLabel },
+  descriptionContent,
 }: {
   cookieConsentPrompt: CookieConsentPromptModel;
+  descriptionContent?: ReactNode;
 }) {
   const t = useTranslations("CookieConsent");
   const [isOpen, setIsOpen] = useState(false);
@@ -78,7 +81,7 @@ export function CookieConsentSheet({
         <CookieConsentBanner
           allowButtonLabel={allowButtonLabel}
           declineButtonLabel={declineButtonLabel}
-          description={description}
+          description={descriptionContent}
           onAllowAction={handleAllow}
           onDeclineAction={handleDecline}
         />

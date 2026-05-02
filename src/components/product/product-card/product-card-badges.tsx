@@ -59,8 +59,16 @@ export const ProductCardBadges = ({
 }) => {
   const renderBadgesContent = () => {
     if (badges?.length) {
-      return badges.map((badge) => (
-        <ProductCardBadge badge={badge} key={badge.type} />
+      return badges.map((badge, index) => (
+        <ProductCardBadge
+          badge={badge}
+          className={
+            index === badges.length - 1
+              ? "min-w-0 shrink overflow-hidden"
+              : undefined
+          }
+          key={badge.type}
+        />
       ));
     } else if (options?.type === ProductOptionType.Size) {
       const maxVisibleChoices = PRODUCT_CARD_SIZE_OPTION_MAX_VISIBLE[variant];

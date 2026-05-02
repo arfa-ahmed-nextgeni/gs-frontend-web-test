@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 
 import { useTranslations } from "next-intl";
 
@@ -8,14 +8,17 @@ import { CashbackDisplay } from "@/components/checkout/order-summary/cashback-di
 import { CheckoutProductCard } from "@/components/checkout/order-summary/checkout-product-card";
 import { LocalizedPrice } from "@/components/shared/localized-price";
 import { Tooltip } from "@/components/shared/tooltip";
-import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
-import { CarouselItem } from "@/components/ui/carousel/carousel-item";
-import { useCarousel } from "@/components/ui/carousel/index";
+import {
+  CardRailScrollSnapCarousel,
+  CardRailScrollSnapCarouselItem,
+} from "@/components/ui/card-rail-scroll-snap-carousel";
 import { useCart } from "@/contexts/use-cart";
 import { useStoreCode } from "@/hooks/i18n/use-store-code";
 import { useIsMounted } from "@/hooks/use-is-mounted";
 import { cn } from "@/lib/utils";
 import { formatPrice } from "@/lib/utils/price";
+
+import type { CarouselHandle } from "@/lib/types/ui-types";
 
 interface CheckoutOrderSummaryProps {
   currencyCode: string;
@@ -34,6 +37,7 @@ interface OrderSummaryDeductions {
 interface OrderSummaryTotals {
   baseShippingFee: number;
   grandTotal: number;
+  hasSelectedShippingMethod: boolean;
   serviceFee: number;
   shippingFee: number;
   subtotal: number;
@@ -50,6 +54,7 @@ export function CheckoutOrderSummary({
   const { cart } = useCart();
   const { isGlobal } = useStoreCode();
   const isMounted = useIsMounted();
+  const checkoutItemsCarouselApiRef = useRef<CarouselHandle>(null);
 
   // Calculate order summary data from cart
   const data = useMemo(() => {
@@ -100,72 +105,6 @@ export function CheckoutOrderSummary({
     ? cartItems.length > 0
     : (data?.itemCount || 0) > 0;
 
-  function CarouselWheelHandler() {
-    const { api, canScrollNext, canScrollPrev, scrollNext, scrollPrev } =
-      useCarousel();
-    const containerRef = useRef<HTMLElement | null>(null);
-
-    useEffect(() => {
-      if (!api) return;
-
-      // Find the carousel container element - use closest parent with data-slot
-      const findCarouselContent = () => {
-        // Try to find the carousel content element in the nearest parent
-        let current = containerRef.current;
-        while (current) {
-          const carouselContent = current.querySelector(
-            '[data-slot="carousel-content"]'
-          ) as HTMLElement | null;
-          if (carouselContent) return carouselContent;
-          current = current.parentElement;
-        }
-        // Fallback to document query (less ideal but works)
-        return document.querySelector(
-          '[data-slot="carousel-content"]'
-        ) as HTMLElement | null;
-      };
-
-      const carouselContent = findCarouselContent();
-      if (!carouselContent) return;
-
-      const handleWheel = (e: WheelEvent) => {
-        // If horizontal scroll is detected, let it pass through
-        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-          return;
-        }
-
-        // Vertical scroll (trackpad) - convert to horizontal carousel scroll
-        if (Math.abs(e.deltaY) > 5) {
-          e.preventDefault();
-          if (e.deltaY > 0 && canScrollNext) {
-            scrollNext();
-          } else if (e.deltaY < 0 && canScrollPrev) {
-            scrollPrev();
-          }
-        }
-      };
-
-      carouselContent.addEventListener("wheel", handleWheel as EventListener, {
-        passive: false,
-      });
-
-      return () => {
-        carouselContent.removeEventListener(
-          "wheel",
-          handleWheel as EventListener
-        );
-      };
-    }, [api, canScrollNext, canScrollPrev, scrollNext, scrollPrev]);
-
-    // Create a hidden div to help find the carousel container
-    return (
-      <div
-        className="hidden"
-        ref={containerRef as React.RefObject<HTMLDivElement>}
-      />
-    );
-  }
-
   return (
     <section className="shadow-xs rounded-2xl bg-white p-5">
       <h2 className="text-text-primary mb-4 hidden text-xl font-medium lg:mb-4 lg:block lg:text-[25px] lg:font-semibold">
@@ -193,23 +132,31 @@ export function CheckoutOrderSummary({
                 <CheckoutProductCard item={cartItems[0]} />
               ) : (
                 // Multiple products - slider with peek effect
-                <div className="relative">
-                  <CarouselContainer
-                    carouselProps={{
-                      opts: {
-                        align: "start",
-                        containScroll: "trimSnaps",
-                        dragFree: true,
-                        slidesToScroll: 1,
-                        watchDrag: true,
-                      },
-                    }}
+                <div
+                  className="relative"
+                  onWheelCapture={(event) => {
+                    if (
+                      Math.abs(event.deltaX) > Math.abs(event.deltaY) ||
+                      Math.abs(event.deltaY) <= 5
+                    ) {
+                      return;
+                    }
+
+                    event.preventDefault();
+
+                    if (event.deltaY > 0) {
+                      checkoutItemsCarouselApiRef.current?.scrollNext();
+                      return;
+                    }
+
+                    checkoutItemsCarouselApiRef.current?.scrollPrev();
+                  }}
+                >
+                  <CardRailScrollSnapCarousel
+                    apiRef={checkoutItemsCarouselApiRef}
                     contentProps={{
                       className:
                         " cursor-grab active:cursor-grabbing select-none touch-pan-x",
-                      containerProps: {
-                        className: "touch-pan-x",
-                      },
                     }}
                     nextButtonProps={{
                       className: "hidden",
@@ -218,16 +165,15 @@ export function CheckoutOrderSummary({
                       className: "hidden",
                     }}
                   >
-                    <CarouselWheelHandler />
                     {cartItems.map((item) => (
-                      <CarouselItem
+                      <CardRailScrollSnapCarouselItem
                         className="min-w-0 flex-shrink-0 basis-[calc(100%-30%)] sm:basis-[70%]"
                         key={item.uidInCart || item.id}
                       >
                         <CheckoutProductCard item={item} />
-                      </CarouselItem>
+                      </CardRailScrollSnapCarouselItem>
                     ))}
-                  </CarouselContainer>
+                  </CardRailScrollSnapCarousel>
                 </div>
               )}
             </div>
@@ -309,37 +255,39 @@ export function CheckoutOrderSummary({
           </div>
         )}
 
-        <div className="flex items-center justify-between">
-          <span className="text-text-tertiary text-sm font-medium">
-            {t("shippingFee")}
-          </span>
-          <span className="inline-flex items-center gap-2">
-            {totals.shippingFee > 0 ? (
-              <LocalizedPrice
-                containerProps={{ className: "inline-flex items-center" }}
-                price={formatPrice({
-                  amount: totals.shippingFee,
-                  currencyCode,
-                })}
-                valueProps={{ className: "text-[#5D5D5D]" }}
-              />
-            ) : (
-              <>
+        {totals.hasSelectedShippingMethod ? (
+          <div className="flex items-center justify-between">
+            <span className="text-text-tertiary text-sm font-medium">
+              {t("shippingFee")}
+            </span>
+            <span className="inline-flex items-center gap-2">
+              {totals.shippingFee > 0 ? (
                 <LocalizedPrice
                   containerProps={{ className: "inline-flex items-center" }}
                   price={formatPrice({
-                    amount: totals.baseShippingFee || totals.shippingFee,
+                    amount: totals.shippingFee,
                     currencyCode,
                   })}
-                  valueProps={{ className: "text-[#BDC2C5] line-through" }}
+                  valueProps={{ className: "text-[#5D5D5D]" }}
                 />
-                <span className="text-text-teal text-[15px] font-medium">
-                  {tDelivery("free")}
-                </span>
-              </>
-            )}
-          </span>
-        </div>
+              ) : (
+                <>
+                  <LocalizedPrice
+                    containerProps={{ className: "inline-flex items-center" }}
+                    price={formatPrice({
+                      amount: totals.baseShippingFee || totals.shippingFee,
+                      currencyCode,
+                    })}
+                    valueProps={{ className: "text-[#BDC2C5] line-through" }}
+                  />
+                  <span className="text-text-teal text-[15px] font-medium">
+                    {tDelivery("free")}
+                  </span>
+                </>
+              )}
+            </span>
+          </div>
+        ) : null}
 
         <div className="mt-2 flex items-center justify-between border-t border-[#F3F3F3] pt-2 font-semibold">
           <div className="flex flex-row items-center gap-3">

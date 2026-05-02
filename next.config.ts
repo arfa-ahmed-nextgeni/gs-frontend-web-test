@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
     globalNotFound: true,
     inlineCss: true,
     mcpServer: true,
+    prefetchInlining: true,
     rootParams: true,
   },
   async headers() {

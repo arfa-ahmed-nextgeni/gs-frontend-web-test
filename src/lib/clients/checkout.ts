@@ -1,3 +1,10 @@
+import "server-only";
+
+import {
+  ApiActivityFeatures,
+  ApiActivityServices,
+} from "@/lib/api-activity/api-activity-meta";
+import { loggedFetch } from "@/lib/api-activity/fetch/logged-fetch";
 import {
   CHECKOUT_BASE_URL,
   CHECKOUT_PUBLIC_API_KEY,
@@ -18,11 +25,19 @@ export async function checkoutRequest<T>({
   headers.set(HEADERS.CONTENT_TYPE, "application/json");
   headers.set(HEADERS.AUTHORIZATION, `Bearer ${CHECKOUT_PUBLIC_API_KEY}`);
 
-  const response = await fetch(url, {
-    ...options,
-    headers,
-    signal: AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT),
-  });
+  const response = await loggedFetch(
+    url,
+    {
+      ...options,
+      headers,
+      signal: AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT),
+    },
+    {
+      feature: ApiActivityFeatures.Checkout,
+      initiator: "src/lib/clients/checkout.ts#checkoutRequest",
+      service: ApiActivityServices.Checkout,
+    }
+  );
 
   const data = await response.json();
 

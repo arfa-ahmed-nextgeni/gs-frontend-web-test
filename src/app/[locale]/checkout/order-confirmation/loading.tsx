@@ -7,7 +7,7 @@ export default function OrderConfirmationLoading() {
     <div className="bg-[#F7F8FA]">
       <CheckoutHeader />
 
-      <Container>
+      <Container className="pb-[140px] md:pb-24">
         <div className="pb-10 pt-2 lg:px-5 lg:pb-16">
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-[797px_394px] lg:gap-[10px]">
             {/* Left Column - Main Content */}

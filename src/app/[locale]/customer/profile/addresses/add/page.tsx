@@ -7,9 +7,10 @@ import { ManageAddressView } from "@/components/customer/addresses/manage-addres
 import { AddDeliveryAddressContextProvider } from "@/contexts/add-delivery-address-context";
 import { AddressFormContextProvider } from "@/contexts/address-form-context";
 import { getCurrentCustomer } from "@/lib/actions/customer/get-current-customer";
+import { getCustomerAddresses } from "@/lib/actions/customer/get-customer-addresses";
 import { Locale, StoreCode } from "@/lib/constants/i18n";
 import { getStoreCode } from "@/lib/utils/country";
-import { isError, isUnauthenticated } from "@/lib/utils/service-result";
+import { isError, isOk, isUnauthenticated } from "@/lib/utils/service-result";
 
 export default async function AddAddressPage() {
   const currentCustomer = await getCurrentCustomer();
@@ -35,11 +36,17 @@ export default async function AddAddressPage() {
   const isSaudiStore =
     storeCode === StoreCode.ar_sa || storeCode === StoreCode.en_sa;
 
+  const customerAddressesResult = await getCustomerAddresses();
+  const isFirstAddressInCheckout = isOk(customerAddressesResult)
+    ? customerAddressesResult.data.addresses.length === 0
+    : false;
+
   if (isSaudiStore) {
     return (
       <AddDeliveryAddressContextProvider
         customerData={customerData}
         deliveryType="home_delivery"
+        isFirstAddressInCheckout={isFirstAddressInCheckout}
       >
         <AddDeliveryAddressStandaloneContainer />
       </AddDeliveryAddressContextProvider>
@@ -47,7 +54,10 @@ export default async function AddAddressPage() {
   }
 
   return (
-    <AddressFormContextProvider customerData={customerData}>
+    <AddressFormContextProvider
+      customerData={customerData}
+      isFirstAddressInCheckout={isFirstAddressInCheckout}
+    >
       <ManageAddressView />
     </AddressFormContextProvider>
   );

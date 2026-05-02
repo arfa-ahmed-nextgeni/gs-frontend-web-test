@@ -17,6 +17,7 @@ export const ProductCard = ({
   categoryId,
   containerProps,
   isBulletDeliveryEnabled,
+  isWishlistItem,
   lpColumn,
   lpExtra,
   lpInnerPosition,
@@ -27,6 +28,7 @@ export const ProductCard = ({
 }: {
   containerProps?: ComponentProps<"div">;
   isBulletDeliveryEnabled: boolean;
+  isWishlistItem?: boolean;
   product: ProductCardModel;
 } & ProductCardClickOriginProps) => {
   const priceAndBadgesContent = (
@@ -85,10 +87,10 @@ export const ProductCard = ({
       />
 
       <ProductCardHeader
-        description={product.description}
+        brand={product.brand}
+        name={product.name}
         rating={product.rating}
         savedPrice={product.savedPrice}
-        title={product.name}
         variant={product.variant}
       />
 
@@ -102,6 +104,7 @@ export const ProductCard = ({
 
       <ProductCardActions
         categoryId={categoryId}
+        isWishlistItem={isWishlistItem}
         lpColumn={lpColumn}
         lpExtra={lpExtra}
         lpInnerPosition={lpInnerPosition}

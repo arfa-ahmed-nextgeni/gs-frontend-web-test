@@ -1,7 +1,5 @@
-import Image from "next/image";
-
-import { searchProductPlaceholder } from "@/assets/placeholders";
 import { ProductCardPrice } from "@/components/product/product-card/product-card-price";
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import { Link } from "@/i18n/navigation";
 import { clickOriginTrackingManager } from "@/lib/analytics/click-origin-tracking-manager";
 import { ROUTES } from "@/lib/constants/routes";
@@ -44,11 +42,11 @@ const SearchResultItem = ({
     >
       <div className="flex items-center gap-1.5 px-2 py-1">
         <div className="h-9 w-9 flex-shrink-0">
-          <Image
+          <ProductImageWithFallback
             alt={productName || "Product Image"}
             className="h-full w-full rounded-lg object-cover"
             height={64}
-            src={product.imageUrl || searchProductPlaceholder}
+            src={product.imageUrl}
             width={64}
           />
         </div>

@@ -1,5 +1,4 @@
-import Image from "next/image";
-
+import { RemoteImage } from "@/components/shared/remote-image";
 import { Link } from "@/i18n/navigation";
 import { Brand } from "@/lib/types/brands";
 
@@ -13,13 +12,12 @@ export const BrandCard = ({
   <Link
     className="max-w-30.5 lg:max-w-35.25 lg:w-35.25 group flex w-[27vw] flex-col gap-2.5"
     href={brand.urlPath || `/${brand.urlKey}`}
-    prefetch={false}
   >
     <div className="bg-bg-default h-26 lg:h-30 relative w-full overflow-hidden rounded-xl">
       {brand.image && (
-        <Image
+        <RemoteImage
           alt={brand.name || "brand logo"}
-          className="transition-default size-full object-contain p-3.5 lg:p-5 lg:group-hover:p-3.5"
+          className="transition-default scale-120 hover:scale-130 size-full object-contain p-1"
           decoding={isFirstLetterGroup ? "sync" : "async"}
           fetchPriority={isFirstLetterGroup ? "high" : undefined}
           fill

@@ -1,9 +1,5 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { AddDeliveryAddressDrawerSkeleton } from "@/components/checkout/add-delivery-address/add-delivery-address-drawer-skeleton";
 
 export default function AddDeliveryAddressLoading() {
-  return (
-    <div className="h-screen w-full">
-      <Skeleton className="h-full w-full rounded-none" />
-    </div>
-  );
+  return <AddDeliveryAddressDrawerSkeleton />;
 }

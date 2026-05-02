@@ -15,6 +15,7 @@ export const OrderSummaryCard = () => {
   const freeShippingThreshold = Number(storeConfig?.freeShippingThreshold);
   const subTotal = cart?.subTotalPrice ?? 0;
   const grandTotal = cart?.grandTotalPrice ?? 0;
+  const hasSelectedShippingMethod = cart?.hasSelectedShippingMethod ?? false;
   const serviceFee = cart?.serviceFee ?? 0;
   const shippingFee = cart?.shippingFee ?? 0;
   const baseShippingFee = cart?.baseShippingFee ?? 0;
@@ -36,6 +37,7 @@ export const OrderSummaryCard = () => {
         currencyCode={currencyCode}
         freeShippingThreshold={freeShippingThreshold}
         grandTotal={grandTotal}
+        hasSelectedShippingMethod={hasSelectedShippingMethod}
         mokafaaDiscount={mokafaaDiscount}
         rewardPointsValue={rewardPointsValue}
         serviceFee={serviceFee}

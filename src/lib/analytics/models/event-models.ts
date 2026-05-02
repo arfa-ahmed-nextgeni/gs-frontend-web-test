@@ -1,31 +1,33 @@
-// Cart model - insider cart view properties
-export interface CartInsiderProperties {
-  items: CartItemInsiderProperties[];
-  shipping_cost: number;
-  total: number;
+import { OrderItem } from "@/lib/types/ui-types";
+
+// GA4 ecommerce payload for add_payment_info (extends BeginCheckoutEcommerceProperties)
+export interface AddPaymentInfoEcommerceProperties extends BeginCheckoutEcommerceProperties {
+  coupon: null | string;
+  payment_type: string;
 }
 
-export interface CartItemInsiderProperties {
-  color: string;
-  custom?: {
-    brnd: string;
-    groupcode: string;
-    iis: boolean;
-    is_gwp: boolean;
-    parent_product_integer_id: string;
-    product_integer_id: string;
-    pt: string;
-  };
-  id: string;
-  name: string;
-  product_image_url: string;
-  quantity: number;
-  size: string;
-  stock: number;
-  taxonomy: string[];
-  unit_price: number;
-  unit_sale_price: number;
-  url: string;
+// GA4 ecommerce payload for begin_checkout and add_shipping_info
+export interface BeginCheckoutEcommerceProperties {
+  currency: string;
+  items: BeginCheckoutItemProperties[];
+  value: number;
+}
+
+// GA4 ecommerce item for begin_checkout / add_shipping_info / add_payment_info
+export interface BeginCheckoutItemProperties {
+  item_brand?: string;
+  item_category?: string;
+  item_id: string;
+  item_name: string;
+  price?: number;
+  quantity?: number;
+}
+
+// Cart model - insider cart view properties
+export interface CartInsiderProperties {
+  items: InsiderItemProperties[];
+  shipping_cost: number;
+  total: number;
 }
 
 // Cart model
@@ -85,6 +87,29 @@ export interface DesktopNavigationProperties extends LpProperties {
 
 // Desktop navigation event properties
 export type DesktopNavigationUrlType = "brands" | "category" | "lp";
+
+export interface InsiderItemProperties {
+  color?: string;
+  custom: {
+    brnd?: string;
+    groupcode: string;
+    iis: boolean;
+    is_gwp?: boolean;
+    parent_product_integer_id: string;
+    product_integer_id: string;
+    pt: string;
+  };
+  id: string;
+  name: string;
+  product_image_url: string;
+  quantity: number;
+  size?: string;
+  stock: number;
+  taxonomy: string[];
+  unit_price: number;
+  unit_sale_price: number;
+  url: string;
+}
 
 export interface LpClickOrigin {
   column: number;
@@ -151,7 +176,9 @@ export interface ProductProperties extends CategoryProperties {
   "product.color"?: string;
   "product.id": string;
   "product.image_url"?: string;
+  "product.is_gwp"?: boolean;
   "product.name": string;
+  "product.old_price"?: string;
   "product.parent_id"?: string;
   "product.price": number;
   "product.sale_price"?: number;
@@ -161,6 +188,30 @@ export interface ProductProperties extends CategoryProperties {
   "product.stock"?: number;
   "product.type": string;
   "product.url"?: string;
+}
+
+// Customer details included at the top level of GA4 purchase push (outside ecommerce)
+export interface PurchaseCustomerDetails {
+  email: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
+}
+
+// GA4 ecommerce payload for the purchase event
+export interface PurchaseEcommerceProperties extends BeginCheckoutEcommerceProperties {
+  coupon: null | string;
+  payment_type: string;
+  shipping: number;
+  tax: number;
+  transaction_id: string;
+}
+
+// Cart model - insider cart view properties
+export interface PurchaseInsiderProperties {
+  items: InsiderItemProperties[];
+  order_id: string;
+  total: number;
 }
 
 // Purchase event properties (specific to purchase event)
@@ -173,6 +224,7 @@ export interface PurchaseProperties {
   "order.id"?: string;
   "order.payment_method"?: string;
   "order.subtotal"?: number;
+  products: OrderItem[];
   shipping_type?: "Click Collect" | "Home Delivery";
 }
 

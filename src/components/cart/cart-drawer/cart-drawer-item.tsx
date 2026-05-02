@@ -5,11 +5,14 @@ import Image from "next/image";
 import AddToBagIcon from "@/assets/icons/add-to-bag-icon.svg";
 import TrashIcon from "@/assets/icons/trash-icon.svg";
 import { ProductCardPrice } from "@/components/product/product-card/product-card-price";
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
+import { ProductDetailsLink } from "@/components/shared/product-details-link";
 import { Spinner } from "@/components/ui/spinner";
 import { useRemoveProductFromCart } from "@/hooks/mutations/cart/use-remove-product-from-cart";
 import { ProductOption } from "@/lib/models/product-card-model";
 import { CountdownTimer } from "@/lib/types/product/countdown-timer";
 import { cn } from "@/lib/utils";
+import { getProductDetailsHref } from "@/lib/utils/get-product-details-href";
 
 type CartDrawerItemBaseProps = {
   countdownTimer?: CountdownTimer | null;
@@ -21,6 +24,7 @@ type CartDrawerItemBaseProps = {
   price: string;
   sku?: string;
   uid: string;
+  urlKey?: string;
 };
 type CartDrawerMiniProps =
   | ({
@@ -42,6 +46,7 @@ export const CartDrawerItem = (props: CartDrawerMiniProps) => {
     price,
     sku,
     uid,
+    urlKey,
     variant,
   } = props;
   // Hooks
@@ -52,6 +57,10 @@ export const CartDrawerItem = (props: CartDrawerMiniProps) => {
     removeFromCart({ itemUid: uid });
   };
   const selectedOptionLabel = options?.choices?.[0]?.label;
+  const productHref = getProductDetailsHref({
+    sku,
+    urlKey,
+  });
   const renderActionButton = () => {
     switch (variant) {
       case "cart":
@@ -87,22 +96,30 @@ export const CartDrawerItem = (props: CartDrawerMiniProps) => {
   return (
     <div className="h-25 w-65.75 min-w-65.75 bg-bg-default gap-1.25 flex flex-row overflow-hidden rounded-xl">
       {/* Image */}
-      <div className="my-auto overflow-hidden rounded-xl">
-        <Image
+      <ProductDetailsLink
+        className="my-auto overflow-hidden rounded-xl"
+        href={productHref || "#"}
+        title={name}
+      >
+        <ProductImageWithFallback
           alt={name}
           className="size-20 object-cover"
           height={80}
           src={image}
           width={80}
         />
-      </div>
+      </ProductDetailsLink>
       {/* Content */}
       <div
         className={cn("flex flex-1 flex-col justify-between py-3 pe-5", {
           "pb-2.5": variant === "suggested",
         })}
       >
-        <div className="flex flex-col">
+        <ProductDetailsLink
+          className="flex flex-col"
+          href={productHref || "#"}
+          title={name}
+        >
           <p className="text-text-primary line-clamp-1 text-xs font-semibold">
             {name}
           </p>
@@ -119,7 +136,7 @@ export const CartDrawerItem = (props: CartDrawerMiniProps) => {
               {selectedOptionLabel}
             </p>
           )}
-        </div>
+        </ProductDetailsLink>
         <div className="flex flex-row items-center justify-between">
           <span className="text-text-primary text-base font-semibold">
             <ProductCardPrice

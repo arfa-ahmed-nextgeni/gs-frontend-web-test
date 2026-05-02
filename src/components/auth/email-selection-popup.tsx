@@ -4,16 +4,18 @@ import React, { useState } from "react";
 
 import Image from "next/image";
 
+import { useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { X } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import AlertIcon from "@/assets/icons/Alert.svg";
 import InformativeIcon from "@/assets/icons/informative-icon.svg";
 import { useToastContext } from "@/components/providers/toast-provider";
 import { useUI } from "@/contexts/use-ui";
 import { selectAccount } from "@/lib/actions/auth/otp";
-import { StoreCode } from "@/lib/constants/i18n";
+import { Locale, StoreCode } from "@/lib/constants/i18n";
+import { syncPostAuthQueries } from "@/lib/utils/sync-post-auth-queries";
 
 interface EmailSelectionPopupProps {
   accounts: Array<{ email: string; user_id: string }>;
@@ -32,6 +34,8 @@ export const EmailSelectionPopup: React.FC<EmailSelectionPopupProps> = ({
   otp,
   storeCode,
 }) => {
+  const queryClient = useQueryClient();
+  const locale = useLocale() as Locale;
   const { authorize } = useUI();
   const { showSuccess } = useToastContext();
   const t = useTranslations("HomePage.header.mobileOtpLogin.emailSelection");
@@ -88,6 +92,11 @@ export const EmailSelectionPopup: React.FC<EmailSelectionPopupProps> = ({
         } catch (error) {
           console.warn("Error in authorize():", error);
         }
+
+        await syncPostAuthQueries({
+          locale,
+          queryClient,
+        });
 
         setTimeout(() => {
           onCloseAction();

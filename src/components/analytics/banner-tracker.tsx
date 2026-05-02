@@ -106,7 +106,6 @@ export function BannerTrackerLink({
             [BANNER_TRACKING_DATA_ATTRIBUTE]: serializedBannerTrackingData,
           }
         : {})}
-      prefetch={false}
     >
       {children}
     </Link>

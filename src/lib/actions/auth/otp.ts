@@ -10,6 +10,11 @@ import {
   setCustomerId,
   setCustomerUuid,
 } from "@/lib/actions/cookies/customer";
+import {
+  ApiActivityFeatures,
+  ApiActivityServices,
+} from "@/lib/api-activity/api-activity-meta";
+import { loggedFetch } from "@/lib/api-activity/fetch/logged-fetch";
 import { restRequest } from "@/lib/clients/rest";
 import { GRAPHQL_BASE_URL } from "@/lib/config/client-env";
 import { AUTH_ENDPOINTS } from "@/lib/constants/api/endpoints";
@@ -55,13 +60,21 @@ export async function logout({
       headers.Authorization = `Bearer ${token}`;
     }
 
-    const response = await fetch(graphqlUrl, {
-      body: JSON.stringify({
-        query: mutation,
-      }),
-      headers,
-      method: "POST",
-    });
+    const response = await loggedFetch(
+      graphqlUrl,
+      {
+        body: JSON.stringify({
+          query: mutation,
+        }),
+        headers,
+        method: "POST",
+      },
+      {
+        feature: ApiActivityFeatures.Auth,
+        initiator: "src/lib/actions/auth/otp.ts#logout",
+        service: ApiActivityServices.Graphql,
+      }
+    );
 
     // Check if response is ok before parsing JSON
     if (!response.ok) {

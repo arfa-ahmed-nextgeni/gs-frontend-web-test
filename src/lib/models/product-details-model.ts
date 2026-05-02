@@ -67,6 +67,10 @@ export class ProductDetailsModel extends Helper {
   productTags?: ProductTagLabel[];
   ratingCount?: number;
   savedPrice?: null | string;
+  selectedVariantInfo?: {
+    index: number;
+    label: string;
+  };
   sku: string;
   type: ProductType;
   urlKey: string;
@@ -126,7 +130,9 @@ export class ProductDetailsModel extends Helper {
           url: video?.url || "",
         })) || [];
 
-    this.mediaGallery = this.mediaGallery.concat(videos);
+    this.mediaGallery = this.removeDuplicateUrls(
+      this.mediaGallery.concat(videos)
+    );
 
     this.ingredients = this.getAttributeValue<string>(
       productData?.attributes || [],
@@ -204,11 +210,15 @@ export class ProductDetailsModel extends Helper {
       "finish",
       { label: "", value: "" }
     );
-    const shortName = this.getAttribute<ProductAttribute>(
+    const itemCategory = this.getAttribute<ProductAttribute>(
       productData?.attributes || [],
-      "short_name",
+      "item_category",
       { label: "", value: "" }
     );
+    const categories = this.parseAttribute<{
+      label: string;
+      value: string | string[];
+    }>(productData?.attributes || [], "categories", { label: "", value: [""] });
 
     this.productInfo = {
       area: areaOfApply.value,
@@ -228,15 +238,23 @@ export class ProductDetailsModel extends Helper {
     if (gender.label && gender.value) this.productInfoList.push(gender);
     if (productColor.label && productColor.value)
       this.productInfoList.push(productColor);
+    const variantInfoIndex = this.productInfoList.length;
     if (productType.label && productType.value)
       this.productInfoList.push(productType);
+    if (itemCategory.label && itemCategory.value)
+      this.productInfoList.push(itemCategory);
     if (areaOfApply.label && areaOfApply.value)
       this.productInfoList.push(areaOfApply);
     if (skinType.label && skinType.value) this.productInfoList.push(skinType);
     if (finish.label && finish.value) this.productInfoList.push(finish);
     if (coverage.label && coverage.value) this.productInfoList.push(coverage);
-    if (shortName.label && shortName.value)
-      this.productInfoList.push(shortName);
+    if (categories.label && categories.value)
+      this.productInfoList.push({
+        label: categories.label,
+        value: Array.isArray(categories.value)
+          ? categories.value.join(", ")
+          : categories.value,
+      });
     if (year.label && year.value) this.productInfoList.push(year);
 
     const reviewRating = this.parseAttributeValue<ReviewRating>(
@@ -366,6 +384,13 @@ export class ProductDetailsModel extends Helper {
         );
       }
 
+      if (productData.options[0].title) {
+        this.selectedVariantInfo = {
+          index: variantInfoIndex,
+          label: productData.options[0].title,
+        };
+      }
+
       const associatedProducts = this.parseAttributeValue<AssociatedProducts>(
         productData?.attributes || [],
         "associated_products",
@@ -399,10 +424,11 @@ export class ProductDetailsModel extends Helper {
               countdownTimerEnabled:
                 option.countdown_timer?.countdown_timer_enabled,
               countdownTimerEndDate:
-                option.countdown_timer.countdown_timer_end_date,
+                option.countdown_timer?.countdown_timer_end_date,
               countdownTimerStartDate:
-                option.countdown_timer.countdown_timer_start_date,
-              countdownTimerTitle: option.countdown_timer.countdown_timer_title,
+                option.countdown_timer?.countdown_timer_start_date,
+              countdownTimerTitle:
+                option.countdown_timer?.countdown_timer_title,
               currency:
                 product?.product?.price_range?.minimum_price?.final_price
                   ?.currency !== CurrencyEnum.None
@@ -415,6 +441,7 @@ export class ProductDetailsModel extends Helper {
               finalPrice: option.final_price || 0,
               gallery: option.gallery,
               id: option.id || "",
+              image: option.image,
               inStock: option.inStock || false,
               isNew: option.is_new,
               label: option.title || "",
@@ -465,6 +492,7 @@ export class ProductVariant extends Helper {
     finalPrice,
     gallery,
     id,
+    image,
     inStock,
     isNew,
     label,
@@ -488,6 +516,7 @@ export class ProductVariant extends Helper {
     finalPrice: number;
     gallery?: GalleryItem[];
     id: string;
+    image?: string;
     inStock: boolean;
     isNew?: string;
     label: string;
@@ -509,7 +538,7 @@ export class ProductVariant extends Helper {
     this.label = label;
     this.color = color;
 
-    this.mediaGallery =
+    const mediaGallery =
       gallery
         ?.map((item) => ({
           type:
@@ -522,6 +551,13 @@ export class ProductVariant extends Helper {
               : item.file) || "",
         }))
         ?.filter((mediaItem) => !!mediaItem.url) || [];
+    const imageUrl = this.getValidUrl(image);
+
+    this.mediaGallery = this.removeDuplicateUrls(
+      imageUrl
+        ? [{ type: "image", url: imageUrl }, ...mediaGallery]
+        : mediaGallery
+    );
 
     this.price = this.formatPrice({
       amount: finalPrice,

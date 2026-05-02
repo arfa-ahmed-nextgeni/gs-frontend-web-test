@@ -76,6 +76,7 @@ export const WishListSection = () => {
           }}
           contentType={"Wishlist" as TabContentType}
           grid={false}
+          isWishlistItem
           maximumProducts={10}
           products={wishlistProducts}
           productsCategoryId=""

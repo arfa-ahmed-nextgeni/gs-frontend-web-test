@@ -94,7 +94,7 @@ export const AddressFormContextProvider = ({
   isFirstAddressInCheckout?: boolean;
   onClose?: () => void;
   onRootBack?: () => void;
-  onSuccess?: () => void;
+  onSuccess?: (addressId?: string) => void;
 }>) => {
   const t = useTranslations("CustomerAddAddressPage");
   const router = useRouter();

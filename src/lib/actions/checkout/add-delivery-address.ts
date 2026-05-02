@@ -27,8 +27,8 @@ interface AddDeliveryAddressPayload {
   firstName: string;
   ksaShortAddress: string;
   lastName: string;
-  latitude: number;
-  longitude: number;
+  latitude?: number;
+  longitude?: number;
   phoneNumber: string;
   postalCode: string;
   setAsDefault: boolean;
@@ -80,8 +80,8 @@ export const addDeliveryAddress = async (
       firstname: payload.firstName,
       ksa_short_address: payload.ksaShortAddress,
       lastname: payload.lastName,
-      latitude: payload.latitude.toString(),
-      longitude: payload.longitude.toString(),
+      latitude: payload.latitude != null ? payload.latitude.toString() : "",
+      longitude: payload.longitude != null ? payload.longitude.toString() : "",
       region: {
         region: payload.district,
       },

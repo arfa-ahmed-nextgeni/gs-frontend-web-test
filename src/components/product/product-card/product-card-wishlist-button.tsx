@@ -27,6 +27,7 @@ import { removeProductFromCartAction } from "@/lib/actions/cart/remove-product-f
 import {
   trackAddToWishlist,
   trackCartToWishlist,
+  trackRemoveFromWishlist,
 } from "@/lib/analytics/events";
 import {
   buildCartProperties,
@@ -57,6 +58,7 @@ type ProductCardWishlistButtonContentProps = {
 
 type ProductCardWishlistButtonProps = {
   isConfigurable: ProductCardActionsState["isConfigurable"];
+  isWishlistItem?: boolean;
 } & ProductCardWishlistButtonContentProps;
 
 export const ProductCardWishlistButton = ({
@@ -65,6 +67,7 @@ export const ProductCardWishlistButton = ({
   isConfigurable,
   isInCart,
   isWishlisted,
+  isWishlistItem,
   lpColumn,
   lpExtra,
   lpInnerPosition,
@@ -76,7 +79,7 @@ export const ProductCardWishlistButton = ({
   size = 20,
   ...restProps
 }: ProductCardWishlistButtonProps) => {
-  if (isConfigurable) {
+  if (isConfigurable && !isWishlistItem) {
     return null;
   }
 
@@ -230,6 +233,8 @@ const ProductCardWishlistButtonContent = ({
     }
 
     if (isWishlisted) {
+      trackRemoveFromWishlist(product.sku || "");
+
       removeFromWishlist({
         itemId: itemInWishlist?.idInWishlist || "",
         wishlistId: wishlist?.id || "",

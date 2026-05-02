@@ -118,9 +118,10 @@ export const config = {
     // Skip Next.js internals, static files, sitemap routes, and well-known paths
     // - API routes: /api, /trpc
     // - Next.js internals: /_next, /_vercel
+    // - Standalone tools: /tools/api-activity
     // - Static files: files with extensions (.*\\..*)
     // - Sitemap: /sitemap, /sitemap.xml
     // - Well-known: /.well-known
-    "/((?!api|trpc|_next|_vercel|\\.well-known|sitemap|.*\\..*).*)",
+    "/((?!api|trpc|_next|_vercel|\\.well-known|sitemap|tools/api-activity|.*\\..*).*)",
   ],
 };

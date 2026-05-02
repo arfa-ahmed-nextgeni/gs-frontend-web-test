@@ -5,21 +5,24 @@ import { cache } from "react";
 import { getAuthToken } from "@/lib/actions/auth/get-auth-token";
 import { graphqlRequest } from "@/lib/clients/graphql";
 import { CUSTOMER_GRAPHQL_QUERIES } from "@/lib/constants/api/graphql/customer";
-import { Locale } from "@/lib/constants/i18n";
 import { Wishlist } from "@/lib/models/wishlist";
 import { getStoreCode } from "@/lib/utils/country";
 import { failure, ok, unauthenticated } from "@/lib/utils/service-result";
 
-export const getCustomerWishlist = cache(
-  async ({
-    locale,
-    page,
-    pageSize,
-  }: {
-    locale: Locale;
-    page: number;
-    pageSize: number;
-  }) => {
+import type { Locale } from "@/lib/constants/i18n";
+
+export const getCustomerWishlist = ({
+  locale,
+  page,
+  pageSize,
+}: {
+  locale: Locale;
+  page: number;
+  pageSize: number;
+}) => getCustomerWishlistCached(locale, page, pageSize);
+
+const getCustomerWishlistCached = cache(
+  async (locale: Locale, page: number, pageSize: number) => {
     try {
       const authToken = await getAuthToken();
 

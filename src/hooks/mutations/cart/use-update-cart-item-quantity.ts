@@ -2,12 +2,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocale } from "next-intl";
 
 import { useToastContext } from "@/components/providers/toast-provider";
+import { useHandleAuthRevoked } from "@/hooks/auth/use-handle-auth-revoked";
 import { useOfflineToast } from "@/hooks/ui/use-offline-toast";
 import { updateCartItemQuantity } from "@/lib/actions/cart/update-cart-item-quantity";
 import { Locale } from "@/lib/constants/i18n";
 import { QUERY_KEYS } from "@/lib/constants/query-keys";
 import { Cart } from "@/lib/models/cart";
-import { isError } from "@/lib/utils/service-result";
+import { isError, isUnauthenticated } from "@/lib/utils/service-result";
 
 export const useUpdateCartItemQuantity = () => {
   const queryClient = useQueryClient();
@@ -15,6 +16,8 @@ export const useUpdateCartItemQuantity = () => {
 
   const { showError } = useToastContext();
   const { showOfflineMessage } = useOfflineToast();
+
+  const handleAuthRevoked = useHandleAuthRevoked();
 
   return useMutation({
     mutationFn: updateCartItemQuantity,
@@ -25,7 +28,12 @@ export const useUpdateCartItemQuantity = () => {
       }
     },
 
-    onSettled: (data) => {
+    onSettled: async (data) => {
+      if (isUnauthenticated(data!)) {
+        await handleAuthRevoked();
+        return;
+      }
+
       if (isError(data!)) {
         showError(data.error, " ");
         return;

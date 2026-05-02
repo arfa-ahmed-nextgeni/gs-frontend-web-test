@@ -19,8 +19,11 @@ export const AddDeliveryAddressDrawerLayout = ({
 
   const { deliveryType, resetFlowState, setShowSaveForm, showSaveForm } =
     useAddDeliveryAddressContext();
-  const { cameFromShippingOptionDrawer, setIsShippingOptionDrawerOpen } =
-    useCheckoutContext();
+  const {
+    cameFromShippingOptionDrawer,
+    setDeliveryAddressFlowState,
+    setIsShippingOptionDrawerOpen,
+  } = useCheckoutContext();
 
   const handleBack = () => {
     // If save form is showing in map flow, go back to map instead of closing drawer
@@ -56,6 +59,7 @@ export const AddDeliveryAddressDrawerLayout = ({
 
   const closeDrawer = () => {
     // Reset the add-address flow so reopening the drawer starts fresh.
+    setDeliveryAddressFlowState(null);
     resetFlowState();
     // Navigate back to checkout
     window.history.back();

@@ -8,7 +8,10 @@ import { ShippingType } from "@/lib/utils/checkout/shipping-type";
 
 // Import utility functions for use in this file
 import {
+  buildAddPaymentInfoProperties,
+  buildBeginCheckoutProperties,
   buildCartProperties,
+  buildPurchaseEcommerceProperties,
   buildUserProperties,
 } from "../utils/build-properties";
 import { serializeClickOrigin } from "../utils/serialize-click-origin";
@@ -27,8 +30,9 @@ import type {
   UserProperties,
 } from "../models/event-models";
 import type { CustomerProperties } from "../utils/build-properties";
-import type { Cart } from "@/lib/models/cart";
+import type { Cart, CartItem } from "@/lib/models/cart";
 import type { Customer } from "@/lib/models/customer";
+import type { Order as UiOrder } from "@/lib/types/ui-types";
 
 // Reset user properties and user_id (for logout)
 export function resetUserProperties(): void {
@@ -68,9 +72,38 @@ export function trackAddGift(cartProperties: Partial<CartProperties>): void {
   analyticsManager.track("add_gift", cartProperties);
 }
 
+// Event: add_payment_info - GA4 ecommerce event, triggers when user selects/confirms a payment method
+// track() targets Amplitude only (flat properties); trackEcommerce() sends the nested GA4 payload to GTM
+export function trackAddPaymentInfo(cart: Cart, paymentType: string): void {
+  analyticsManager.track("add_payment_info", {
+    onlyTools: [ANALYTICS_TOOL.AMPLITUDE],
+    properties: buildCartProperties(cart),
+  });
+  analyticsManager.trackEcommerce(
+    "add_payment_info",
+    buildAddPaymentInfoProperties(cart, paymentType) as unknown as Record<
+      string,
+      unknown
+    >
+  );
+}
+
 // Event: addressbook_delete_address - triggers when address is removed
 export function trackAddressbookDeleteAddress(): void {
   analyticsManager.track("addressbook_delete_address");
+}
+
+// Event: add_shipping_info - GA4 ecommerce event, triggers when user confirms shipping method
+// track() targets Amplitude only (flat properties); trackEcommerce() sends the nested GA4 payload to GTM
+export function trackAddShippingInfo(cart: Cart): void {
+  analyticsManager.track("add_shipping_info", {
+    onlyTools: [ANALYTICS_TOOL.AMPLITUDE],
+    properties: buildCartProperties(cart),
+  });
+  analyticsManager.trackEcommerce(
+    "add_shipping_info",
+    buildBeginCheckoutProperties(cart) as unknown as Record<string, unknown>
+  );
 }
 
 // Event: add_to_cart - triggers when a product is added to cart
@@ -252,6 +285,19 @@ export function trackBackToShippingType(): void {
   analyticsManager.track("back_to_shipping_type");
 }
 
+// Event: begin_checkout - GA4 ecommerce event, triggers when user arrives at checkout
+// track() targets Amplitude only (flat properties); trackEcommerce() sends the nested GA4 payload to GTM
+export function trackBeginCheckout(cart: Cart): void {
+  analyticsManager.track("begin_checkout", {
+    onlyTools: [ANALYTICS_TOOL.AMPLITUDE],
+    properties: buildCartProperties(cart),
+  });
+  analyticsManager.trackEcommerce(
+    "begin_checkout",
+    buildBeginCheckoutProperties(cart) as unknown as Record<string, unknown>
+  );
+}
+
 // Event: billing_info_error - triggers when the "continue" button is clicked and info is entered incorrectly
 export function trackBillingInfoError(type?: ShippingType): void {
   analyticsManager.track("billing_info_error", type ? { type } : undefined);
@@ -274,6 +320,11 @@ export function trackCancelOrder(orderId: string): void {
   analyticsManager.track("cancel_order", { order_id: orderId });
 }
 
+// Event: cart_clear - triggers when cart is cleared (e.g. after a successful order)
+export function trackCartClear(): void {
+  analyticsManager.track("cart_clear");
+}
+
 // Event: cart_lessqty - triggers when Product Qty is decreased
 export function trackCartLessQty(
   cart: Partial<CartProperties>,
@@ -282,8 +333,8 @@ export function trackCartLessQty(
   analyticsManager.track("cart_lessqty", {
     action: "decrease",
     "product.id": product["product.id"],
-    // ...cart,
-    // ...product,
+    ...cart,
+    ...product,
   });
 }
 
@@ -295,8 +346,8 @@ export function trackCartMoreQty(
   analyticsManager.track("cart_moreqty", {
     action: "increase",
     "product.id": product["product.id"],
-    // ...cart,
-    // ...product,
+    ...cart,
+    ...product,
   });
 }
 
@@ -650,6 +701,33 @@ export function trackFodelPointSearch(): void {
   analyticsManager.track("fodel_point_search");
 }
 
+// Event: GA4 purchase - fires the standard GA4 ecommerce purchase event on the order-confirmation page.
+// Pushes the full nested ecommerce payload + customer_details to GTM/dataLayer.
+// Also fires a flat track() for Amplitude/Insider.
+// customer is optional — customer_details will be empty array when not provided.
+// Event: purchase (GA4) - GA4 ecommerce event, triggers on order confirmation
+// track() targets Amplitude only (flat signal); trackEcommerce() sends the full nested GA4 payload to GTM
+export function trackGA4Purchase(
+  order: UiOrder,
+  customer?: Customer | null
+): void {
+  const { customerDetails, ecommerce } = buildPurchaseEcommerceProperties(
+    order,
+    customer
+  );
+  analyticsManager.track("purchase", {
+    onlyTools: [ANALYTICS_TOOL.AMPLITUDE],
+    properties: { "order.grandTotal": order.total },
+  });
+  analyticsManager.trackEcommerce(
+    "purchase",
+    ecommerce as unknown as Record<string, unknown>,
+    customerDetails.length > 0
+      ? { customer_details: customerDetails }
+      : undefined
+  );
+}
+
 // Event: gift_edit - triggers when a gift is edited in cart
 export function trackGiftEdit(cartProperties: Partial<CartProperties>): void {
   analyticsManager.track("gift_edit", cartProperties);
@@ -819,8 +897,10 @@ export function trackMokafaaViewExpanded(
 }
 
 // Event: my_wishlist - triggers when user open wishlist side bar
-export function trackMyWishlist(): void {
-  analyticsManager.track("my_wishlist");
+export function trackMyWishlist(wishlistProducts?: any[]): void {
+  analyticsManager.track("my_wishlist", {
+    products: wishlistProducts,
+  });
 }
 
 // Event: otp_error - triggers when request OTP API failed
@@ -939,6 +1019,11 @@ export function trackQuickAction(action: string): void {
 // Event: redbox_point_search - triggers when the search bar is clicked for Redbox points
 export function trackRedboxPointSearch(): void {
   analyticsManager.track("redbox_point_search");
+}
+
+// Event: remove_from_wishlist - triggers when a product is removed from wishlist
+export function trackRemoveFromWishlist(sku: string): void {
+  analyticsManager.track("remove_from_wishlist", { sku });
 }
 
 // Event: request_otp - triggers when OTP is requested (phone number entry screen or resend OTP)
@@ -1193,8 +1278,14 @@ export function trackViewAccount(): void {
 }
 
 // Event: view_cart - triggers when cart screen is loaded
-export function trackViewCart(cart: Partial<CartProperties>): void {
-  analyticsManager.track("view_cart", cart);
+export function trackViewCart(
+  cart: Partial<CartProperties>,
+  items?: CartItem[]
+): void {
+  analyticsManager.track("view_cart", {
+    ...cart,
+    ...(items && { "cart.items": items }),
+  });
 }
 
 // Event: view_catalog - triggers when catalog page is loaded (web only)

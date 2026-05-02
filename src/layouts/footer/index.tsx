@@ -2,12 +2,8 @@ import { Copyright } from "@/layouts/footer/copyright";
 import { FooterContact } from "@/layouts/footer/footer-contact";
 import { FooterNav } from "@/layouts/footer/footer-nav";
 import { FooterPromotion } from "@/layouts/footer/footer-promotion";
-import { WebsiteFooter } from "@/lib/models/website-footer";
 
-export type FooterProps = {
-  hidePromotion?: boolean;
-  websiteFooter?: WebsiteFooter;
-};
+import type { WebsiteFooter } from "@/lib/models/website-footer";
 
 export const Footer = ({
   hidePromotion = false,

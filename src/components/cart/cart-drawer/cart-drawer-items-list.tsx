@@ -38,6 +38,7 @@ export const CartDrawerItemsList = () => {
             quantity,
             sku,
             uidInCart,
+            urlKey,
           }) => (
             <CartDrawerItem
               countdownTimer={countdownTimer}
@@ -51,6 +52,7 @@ export const CartDrawerItemsList = () => {
               quantity={quantity}
               sku={sku}
               uid={uidInCart}
+              urlKey={urlKey}
               variant="cart"
             />
           )

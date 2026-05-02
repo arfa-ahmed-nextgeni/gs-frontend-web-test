@@ -49,6 +49,7 @@ export function transformProductViewToCardModel(
   // Handle undefined or null productView gracefully
   if (!productView) {
     return new ProductCardModel({
+      brand: "",
       currency: "SAR",
       description: "",
       externalId: "",
@@ -214,7 +215,7 @@ export function transformProductViewToCardModel(
     bulletDelivery,
     countdownTimer,
     currency: currency,
-    description: productView.name || "",
+    description: productView.shortDescription || "",
     discountPercent: discountPercent,
     externalId,
     id:
@@ -225,7 +226,7 @@ export function transformProductViewToCardModel(
         "-"
       ),
     imageUrl: imageUrl,
-    name: brand,
+    name: productView.name || "",
     oldPrice: finalPrice < regularPrice ? regularPrice : undefined,
     options: options,
     price: finalPrice,

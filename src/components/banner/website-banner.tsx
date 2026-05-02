@@ -14,6 +14,12 @@ function cssSpacing(spacing?: number | Record<string, any> | string) {
     .join(" ");
 }
 
+const displayOnClasses: Record<WebsiteBanner["displayOn"], string> = {
+  all: "",
+  desktop: "hidden sm:block",
+  mobile: "block sm:hidden",
+};
+
 export const WebsiteBannerComponent = ({
   banner,
   bannerColumn,
@@ -37,6 +43,7 @@ export const WebsiteBannerComponent = ({
 
   return (
     <div
+      className={displayOnClasses[banner.displayOn]}
       style={{
         margin: cssSpacing(banner.margin),
         padding: cssSpacing(banner.padding),
