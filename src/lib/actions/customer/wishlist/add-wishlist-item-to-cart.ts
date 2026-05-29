@@ -1,6 +1,6 @@
 "use server";
 
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { getAuthToken } from "@/lib/actions/auth/get-auth-token";
 import { graphqlRequest, isGraphqlAuthError } from "@/lib/clients/graphql";
@@ -18,6 +18,8 @@ export async function addWishlistItemToCartAction({
   itemId: string;
   wishlistId: string;
 }) {
+  const tCommonErrors = await getTranslations("CommonErrors");
+  let errorMessage = tCommonErrors("unknownError");
   try {
     const authToken = await getAuthToken();
 
@@ -43,17 +45,25 @@ export async function addWishlistItemToCartAction({
     }
 
     if (!response.data?.addWishlistItemsToCart?.status) {
-      return failure("Failed to add item to cart");
+      if (
+        response.data?.addWishlistItemsToCart
+          ?.add_wishlist_items_to_cart_user_errors?.[0]?.message
+      ) {
+        errorMessage =
+          response.data?.addWishlistItemsToCart
+            ?.add_wishlist_items_to_cart_user_errors?.[0]?.message;
+      }
+      return failure(errorMessage);
     }
 
     const wishlist = response.data?.addWishlistItemsToCart?.wishlist;
 
     if (!wishlist) {
-      return failure("Failed to add item to cart");
+      return failure(errorMessage);
     }
 
     return ok({
-      message: "Product added to cart successfully",
+      message: "Wishlist item added to cart successfully",
       wishlist: structuredClone(
         new Wishlist({
           customer: {
@@ -63,7 +73,7 @@ export async function addWishlistItemToCartAction({
       ),
     });
   } catch (error) {
-    console.error("Failed to add product to cart:", error);
-    return failure("Failed to add product to cart");
+    console.error("Failed to add wishlist item to cart:", error);
+    return failure(errorMessage);
   }
 }

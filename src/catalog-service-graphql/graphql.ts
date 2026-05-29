@@ -86,7 +86,10 @@ export type Bucket = {
   title: Scalars["String"]["output"];
 };
 
-/** Defines features of a bundle product */
+/**
+ * DEPRECATED: Replaced by ProductView and its implementations.
+ * This type is slated for removal in a future release.
+ */
 export type BundleProduct = PhysicalProductInterface &
   ProductInterface & {
     __typename?: "BundleProduct";
@@ -167,6 +170,8 @@ export type CategoryView = Bucket &
     parentId: Scalars["String"]["output"];
     /** Category path. For example, `/electronics/laptops`, `/clothing/shirts` or `/books/fiction`. */
     path?: Maybe<Scalars["String"]["output"]>;
+    /** The position of the category in sort order. For example, `1`, `2`, `3` or `10`. */
+    position?: Maybe<Scalars["Int"]["output"]>;
     /** List of roles for the category. For example, `show_on_plp`, `show_in_pdp` or `show_in_search`. */
     roles: Array<Scalars["String"]["output"]>;
     title: Scalars["String"]["output"];
@@ -295,7 +300,10 @@ export type ComplexTextValue = {
   html: Scalars["String"]["output"];
 };
 
-/** Basic features of a configurable product and its simple product variants */
+/**
+ * DEPRECATED: Replaced by ProductView and its implementations.
+ * This type is slated for removal in a future release.
+ */
 export type ConfigurableProduct = PhysicalProductInterface &
   ProductInterface & {
     __typename?: "ConfigurableProduct";
@@ -528,6 +536,14 @@ export enum CurrencyEnum {
   Zwd = "ZWD",
 }
 
+/** Attributes of the product currently being viewed on PDP */
+export type CurrentProductInput = {
+  /** Resolved display price of the current product (specialPrice ?? regularPrice) */
+  price?: InputMaybe<Scalars["Float"]["input"]>;
+  /** SKU of the current product */
+  sku?: InputMaybe<Scalars["String"]["input"]>;
+};
+
 /** A product attribute defined by the merchant */
 export type CustomAttribute = {
   __typename?: "CustomAttribute";
@@ -537,7 +553,10 @@ export type CustomAttribute = {
   value: Scalars["String"]["output"];
 };
 
-/** A product that the shopper downloads */
+/**
+ * DEPRECATED: Replaced by ProductView and its implementations.
+ * This type is slated for removal in a future release.
+ */
 export type DownloadableProduct = ProductInterface & {
   __typename?: "DownloadableProduct";
   /**
@@ -616,7 +635,10 @@ export type FixedProductTax = {
   label?: Maybe<Scalars["String"]["output"]>;
 };
 
-/** Defines properties of a gift card, including the minimum and maximum values and an array that contains the current and past values on the specific gift card */
+/**
+ * DEPRECATED: Replaced by ProductView and its implementations.
+ * This type is slated for removal in a future release.
+ */
 export type GiftCardProduct = PhysicalProductInterface &
   ProductInterface & {
     __typename?: "GiftCardProduct";
@@ -676,7 +698,10 @@ export type GiftCardProduct = PhysicalProductInterface &
     weight?: Maybe<Scalars["Float"]["output"]>;
   };
 
-/** Consists of simple standalone products that are presented as a group */
+/**
+ * DEPRECATED: Replaced by ProductView and its implementations.
+ * This type is slated for removal in a future release.
+ */
 export type GroupedProduct = PhysicalProductInterface &
   ProductInterface & {
     __typename?: "GroupedProduct";
@@ -778,7 +803,10 @@ export enum PageType {
   Product = "Product",
 }
 
-/** Contains attributes specific to tangible products */
+/**
+ * DEPRECATED: Replaced by ProductView and its implementations.
+ * This interface is slated for removal in a future release.
+ */
 export type PhysicalProductInterface = {
   /** The weight of the item, in units defined by the store */
   weight?: Maybe<Scalars["Float"]["output"]>;
@@ -833,7 +861,10 @@ export type ProductImage = MediaGalleryInterface & {
   url?: Maybe<Scalars["String"]["output"]>;
 };
 
-/** Contains attributes that are common to all types of products */
+/**
+ * DEPRECATED: Replaced by ProductView and its implementations.
+ * This interface is slated for removal in a future release.
+ */
 export type ProductInterface = {
   /**
    * Boolean indicating whether a product can be added to cart. Field reserved for future use.
@@ -909,7 +940,10 @@ export type ProductSearchItem = {
   applied_query_rule?: Maybe<AppliedQueryRule>;
   /** An object that provides highlighted text for matched words */
   highlights?: Maybe<Array<Maybe<Highlight>>>;
-  /** Contains details about the product */
+  /**
+   * Contains details about the product
+   * @deprecated Use ProductSearchItem.productView instead.
+   */
   product: ProductInterface;
   /** Contains a product view */
   productView?: Maybe<ProductView>;
@@ -1478,6 +1512,7 @@ export type QueryProductsArgs = {
 export type QueryRecommendationsArgs = {
   cartSkus?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
   category?: InputMaybe<Scalars["String"]["input"]>;
+  currentProduct?: InputMaybe<CurrentProductInput>;
   currentSku?: InputMaybe<Scalars["String"]["input"]>;
   pageType?: InputMaybe<PageType>;
   userPurchaseHistory?: InputMaybe<Array<InputMaybe<PurchaseHistory>>>;
@@ -1486,6 +1521,7 @@ export type QueryRecommendationsArgs = {
 
 export type QueryRecommendationsByUnitIdsArgs = {
   cartSkus?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  currentProduct?: InputMaybe<CurrentProductInput>;
   currentSku?: InputMaybe<Scalars["String"]["input"]>;
   unitIds: Array<Scalars["String"]["input"]>;
   userPurchaseHistory?: InputMaybe<Array<InputMaybe<PurchaseHistory>>>;
@@ -1603,7 +1639,10 @@ export type SearchResultPageInfo = {
   total_pages?: Maybe<Scalars["Int"]["output"]>;
 };
 
-/** A simple product is tangible and is usually sold in single units or in fixed quantities */
+/**
+ * DEPRECATED: Replaced by ProductView and its implementations.
+ * This type is slated for removal in a future release.
+ */
 export type SimpleProduct = PhysicalProductInterface &
   ProductInterface & {
     __typename?: "SimpleProduct";
@@ -1800,7 +1839,10 @@ export type ViewHistoryInput = {
   sku: Scalars["String"]["input"];
 };
 
-/** A non-tangible product that does not require shipping and is not kept in inventory */
+/**
+ * DEPRECATED: Replaced by ProductView and its implementations.
+ * This type is slated for removal in a future release.
+ */
 export type VirtualProduct = ProductInterface & {
   __typename?: "VirtualProduct";
   /**
@@ -3313,7 +3355,9 @@ export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
 {
-  __apiType?: DocumentTypeDecoration<TResult, TVariables>["__apiType"];
+  __apiType?: NonNullable<
+    DocumentTypeDecoration<TResult, TVariables>["__apiType"]
+  >;
   private value: string;
   public __meta__?: Record<string, any> | undefined;
 
@@ -3323,7 +3367,7 @@ export class TypedDocumentString<TResult, TVariables>
     this.__meta__ = __meta__;
   }
 
-  toString(): string & DocumentTypeDecoration<TResult, TVariables> {
+  override toString(): string & DocumentTypeDecoration<TResult, TVariables> {
     return this.value;
   }
 }
@@ -3867,7 +3911,8 @@ export const GetSimilarProductsDocument = new TypedDocumentString(`
 export const GetYouMightAlsoLikeProductsDocument = new TypedDocumentString(`
     query GetYouMightAlsoLikeProducts($productType: String!, $gender: String!) {
   productSearch(
-    filter: [{attribute: "categoryPath", eq: "sale"}, {attribute: "product_type_new2", eq: $productType}, {attribute: "gender", eq: $gender}, {attribute: "inStock", eq: "true"}]
+    filter: [{attribute: "categoryPath", eq: "you-might-also-like"}, {attribute: "product_type_new2", eq: $productType}, {attribute: "gender", eq: $gender}, {attribute: "inStock", eq: "true"}]
+    sort: [{attribute: "position", direction: ASC}]
     phrase: ""
     page_size: 10
   ) {

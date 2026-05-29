@@ -20,7 +20,7 @@ export const BrandsLetterGroupStatic = ({
 
   return (
     <div className="gap-12.5 flex w-full flex-col">
-      {lettersToRender.map((letter, letterIndex) => {
+      {lettersToRender.map((letter) => {
         const brands = groupedBrands[letter] ?? [];
 
         if (!brands.length) {
@@ -44,11 +44,7 @@ export const BrandsLetterGroupStatic = ({
             </div>
             <div className="flex flex-wrap gap-[clamp(5px,calc(5px+(100vw-320px)*5/110),10px)] gap-y-[clamp(10px,calc(10px+(100vw-320px)*10/110),20px)]">
               {brands.map((brand) => (
-                <BrandCard
-                  brand={brand}
-                  isFirstLetterGroup={letterIndex === 0}
-                  key={brand.uid}
-                />
+                <BrandCard brand={brand} key={brand.uid} />
               ))}
             </div>
           </div>

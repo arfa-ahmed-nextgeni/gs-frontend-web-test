@@ -19,6 +19,7 @@ import type {
 
 export function ApiActivityViewer({
   allEntries,
+  autoRefreshEnabled,
   currentPage,
   failedOnly,
   pageSize,
@@ -31,6 +32,7 @@ export function ApiActivityViewer({
   visibleEntries,
 }: {
   allEntries: ApiActivityEntrySummary[];
+  autoRefreshEnabled: boolean;
   currentPage: number;
   failedOnly: boolean;
   pageSize: number;
@@ -46,7 +48,7 @@ export function ApiActivityViewer({
 
   return (
     <>
-      <ApiActivityAutoRefresh intervalMs={5_000} />
+      <ApiActivityAutoRefresh enabled={autoRefreshEnabled} intervalMs={5_000} />
 
       <div className="grid gap-4 lg:grid-cols-[minmax(340px,420px)_minmax(0,1fr)]">
         <Card className="border-border-divider bg-bg-default shadow-xs min-h-160 overflow-hidden">
@@ -55,12 +57,12 @@ export function ApiActivityViewer({
               <div className="space-y-2">
                 <CardTitle className="text-2xl">API Activity</CardTitle>
                 <CardDescription className="text-text-secondary text-sm leading-6">
-                  Recent server-side outbound requests. Page refreshes every 5
-                  seconds.
+                  Recent server-side outbound requests.
                 </CardDescription>
               </div>
 
               <ApiActivityToolbar
+                autoRefreshEnabled={autoRefreshEnabled}
                 failedOnly={failedOnly}
                 searchQuery={searchQuery}
                 selectedEntryId={selectedEntryId}
@@ -68,15 +70,16 @@ export function ApiActivityViewer({
             </div>
 
             <ApiActivityFilterForm
+              autoRefreshEnabled={autoRefreshEnabled}
               failedOnly={failedOnly}
               lastUpdatedAt={lastUpdatedAt}
               searchQuery={searchQuery}
-              selectedEntryId={selectedEntryId}
             />
           </CardHeader>
 
           <CardContent className="min-h-0 flex-1 px-0 py-0">
             <ApiActivityEntryList
+              autoRefreshEnabled={autoRefreshEnabled}
               currentPage={currentPage}
               failedOnly={failedOnly}
               searchQuery={searchQuery}
@@ -84,6 +87,7 @@ export function ApiActivityViewer({
               visibleEntries={visibleEntries}
             />
             <ApiActivityPagination
+              autoRefreshEnabled={autoRefreshEnabled}
               currentPage={currentPage}
               failedOnly={failedOnly}
               pageSize={pageSize}

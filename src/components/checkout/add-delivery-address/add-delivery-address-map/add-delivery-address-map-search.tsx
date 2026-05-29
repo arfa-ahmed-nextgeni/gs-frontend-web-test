@@ -19,6 +19,7 @@ export const AddDeliveryAddressMapSearch = () => {
   const { language: googleMapsLanguage } = getLocaleInfo(locale);
 
   const {
+    mapSearchResetKey,
     setGoogleAddressData,
     setIsSelectedLocationInSaudiArabia,
     setSelectedAddress,
@@ -33,11 +34,20 @@ export const AddDeliveryAddressMapSearch = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isServiceReady, setIsServiceReady] = useState(false);
 
+  // Clear search state whenever the flow is reset (e.g. drawer close)
+  useEffect(() => {
+    setSearchQuery("");
+    setSuggestions([]);
+    setShowSuggestions(false);
+    setIsSearchFocused(false);
+  }, [mapSearchResetKey]);
+
   const placesLib = useMapsLibrary("places");
   const autocompleteService =
     useRef<google.maps.places.AutocompleteService | null>(null);
   const placesService = useRef<google.maps.places.PlacesService | null>(null);
   const searchTimeoutRef = useRef<null | ReturnType<typeof setTimeout>>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     console.info("[AddressSearch] Places library status:", {
@@ -193,6 +203,13 @@ export const AddDeliveryAddressMapSearch = () => {
         prediction.description
       );
 
+      // Immediately close suggestions and defocus so the searchQuery change
+      // triggered by the async getDetails callback does not re-fire the fetch.
+      setShowSuggestions(false);
+      setSuggestions([]);
+      setIsSearchFocused(false);
+      inputRef.current?.blur();
+
       if (!placesService.current) {
         console.error("[AddressSearch] PlacesService not available");
         return;
@@ -242,15 +259,21 @@ export const AddDeliveryAddressMapSearch = () => {
             place.formatted_address ||
             prediction.description;
 
+          // Show "Place Name, address" in the search field when a name is
+          // available (e.g. "Riyadh Park, Northern Ring Branch Road, Riyadh").
+          const placeName =
+            place.name || prediction.structured_formatting?.main_text;
+          const displayName = placeName ? `${placeName}, ${address}` : address;
+
           console.info("[AddressSearch] Setting address and location:", {
             address,
+            displayName,
             location,
           });
 
-          setSearchQuery(address);
+          setSearchQuery(displayName);
           setSuggestions([]);
           setShowSuggestions(false);
-          setIsSearchFocused(false);
 
           const countryComponent = place.address_components?.find(({ types }) =>
             types.includes("country")
@@ -276,6 +299,16 @@ export const AddDeliveryAddressMapSearch = () => {
       setSelectedLocation,
     ]
   );
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (suggestions.length > 0) {
+        handleSuggestionClick(suggestions[0]);
+      }
+      inputRef.current?.blur();
+    }
+  };
 
   const handleFocus = () => {
     console.info("[AddressSearch] Input focused, searchQuery:", searchQuery);
@@ -348,7 +381,9 @@ export const AddDeliveryAddressMapSearch = () => {
           onBlur={handleBlur}
           onChange={handleInputChange}
           onFocus={handleFocus}
+          onKeyDown={handleKeyDown}
           placeholder={t("searchAddress")}
+          ref={inputRef}
           type="text"
           value={searchQuery}
         />

@@ -29,7 +29,7 @@ export const CategoryPriceInputSkeleton = ({
       <div className="relative">
         {currencySymbol && (
           <span className="text-text-primary font-gilroy absolute inset-y-0 start-0 flex items-center ps-2 text-xs font-normal">
-            {currencySymbol}
+            <bdo dir="ltr">{currencySymbol}</bdo>
           </span>
         )}
         <input

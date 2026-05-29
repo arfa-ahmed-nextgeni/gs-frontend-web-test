@@ -28,6 +28,7 @@ import type { ApiActivityEntrySummary } from "@/lib/api-activity/api-activity-ty
 const API_ACTIVITY_PAGE_SIZE = 50;
 
 type ApiActivityPageSearchParams = Promise<{
+  autoRefresh?: string | string[];
   failed?: string | string[];
   page?: string | string[];
   q?: string | string[];
@@ -125,6 +126,8 @@ async function ApiActivityPageContent({
   }
 
   const allEntries = getApiActivityEntries();
+  const autoRefreshEnabled =
+    getSearchParamValue(resolvedSearchParams.autoRefresh) === "1";
   const searchQuery = getSearchParamValue(resolvedSearchParams.q) ?? "";
   const failedOnly = getSearchParamValue(resolvedSearchParams.failed) === "1";
   const requestedPage = getPageParamValue(resolvedSearchParams.page);
@@ -162,6 +165,7 @@ async function ApiActivityPageContent({
     <main className="max-w-360 mx-auto w-full px-4 py-6 md:px-6 md:py-8">
       <ApiActivityViewer
         allEntries={allEntries}
+        autoRefreshEnabled={autoRefreshEnabled}
         currentPage={currentPage}
         failedOnly={failedOnly}
         pageSize={API_ACTIVITY_PAGE_SIZE}

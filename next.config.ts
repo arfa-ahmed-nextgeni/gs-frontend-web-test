@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
     mcpServer: true,
     prefetchInlining: true,
     rootParams: true,
+    staleTimes: {
+      dynamic: 30,
+    },
+    viewTransition: true,
   },
   async headers() {
     return [
@@ -83,6 +87,15 @@ const nextConfig: NextConfig = {
   output: "standalone",
   productionBrowserSourceMaps:
     process.env.PRODUCTION_BROWSER_SOURCE_MAPS === "true",
+  async redirects() {
+    return [
+      {
+        destination: "/:slug",
+        permanent: true,
+        source: "/:slug(.+)\\.html",
+      },
+    ];
+  },
   serverExternalPackages: ["newrelic", "@newrelic/next"],
   trailingSlash: false,
   turbopack: {

@@ -1,6 +1,8 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+
+import { useLocale } from "next-intl";
 
 import { ZIndexLevel } from "@/lib/constants/ui";
 
@@ -20,6 +22,11 @@ const BlurContext = createContext<BlurContextType | undefined>(undefined);
 
 export const BlurContextProvider = ({ children }: React.PropsWithChildren) => {
   const [hoverStack, setHoverStack] = useState<BlurStackItem[]>([]);
+  const locale = useLocale();
+
+  useEffect(() => {
+    setHoverStack([]);
+  }, [locale]);
 
   const addHover = (level: ZIndexLevel) => {
     const id = Symbol();

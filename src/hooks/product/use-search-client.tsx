@@ -1,10 +1,11 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 import { appApiRequest } from "@/lib/clients/app-client";
 import { APP_API_ENDPOINTS } from "@/lib/constants/api/endpoints";
 import { type Locale } from "@/lib/constants/i18n";
+import { SEARCH_MIN_QUERY_LENGTH } from "@/lib/constants/search";
 import { type ProductCardModel } from "@/lib/models/product-card-model";
 import { isError, isUnauthenticated } from "@/lib/utils/service-result";
 
@@ -25,10 +26,13 @@ export function useSearchAutocomplete(
   options: SearchOptions,
   enabled: boolean
 ) {
+  const trimmedText = options.text.trim();
+
   return useQuery({
-    enabled: enabled && options.text.length >= 2,
-    queryFn: async () => {
-      if (!options.text || options.text.length < 2) {
+    enabled: enabled && trimmedText.length >= SEARCH_MIN_QUERY_LENGTH,
+    placeholderData: keepPreviousData,
+    queryFn: async ({ signal }) => {
+      if (trimmedText.length < SEARCH_MIN_QUERY_LENGTH) {
         return {
           facets: [],
           products: [],
@@ -43,7 +47,8 @@ export function useSearchAutocomplete(
           locale: options.locale,
           page: 1,
           pageSize: 10,
-          phrase: options.text,
+          phrase: trimmedText,
+          signal,
         });
 
         return {
@@ -64,13 +69,11 @@ export function useSearchAutocomplete(
         };
       }
     },
-    queryKey: [
-      "search-autocomplete",
-      options.text,
-      options.locale,
-      options.text.length,
-    ],
-    staleTime: 2 * 60 * 1000,
+    queryKey: ["search-autocomplete", trimmedText, options.locale],
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: 60 * 1000,
   });
 }
 
@@ -80,6 +83,7 @@ async function searchProductsClient(params: {
   page?: number;
   pageSize?: number;
   phrase: string;
+  signal?: AbortSignal;
   sortBy?: string;
 }): Promise<SearchProductsClientResponse> {
   try {
@@ -91,6 +95,9 @@ async function searchProductsClient(params: {
         phrase: params.phrase,
         sortBy: params.sortBy,
       }),
+      options: {
+        signal: params.signal,
+      },
     });
 
     if (isUnauthenticated(response)) {

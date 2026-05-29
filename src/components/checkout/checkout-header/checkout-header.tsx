@@ -28,6 +28,9 @@ export function CheckoutHeader({ email, logoSlot }: CheckoutHeaderProps) {
     useCustomerQuery();
   const resolvedEmail = email ?? currentCustomer?.email;
   const [shouldShowJoinBanner, setShouldShowJoinBanner] = useState(false);
+  const headingText = isOrderConfirmation
+    ? t("header.orderConfirmation")
+    : t("header.secureCheckout");
 
   // Only show banner after customer data is loaded and user has no email
   useEffect(() => {
@@ -53,7 +56,7 @@ export function CheckoutHeader({ email, logoSlot }: CheckoutHeaderProps) {
             <Image alt="back" className="h-5 w-5" src={BackIcon} />
           </Link>
           <span className="text-text-primary text-[20px] font-medium">
-            {t("header.secureCheckout")}
+            {headingText}
           </span>
         </div>
         <div className="flex items-center">
@@ -69,7 +72,7 @@ export function CheckoutHeader({ email, logoSlot }: CheckoutHeaderProps) {
           </Link>
         </div>
         <div className="text-text-primary text-center text-lg font-medium">
-          {t("header.secureCheckout")}
+          {headingText}
         </div>
         <div className="flex items-center justify-end gap-2 text-xs text-[#374957]">
           <span className="inline-flex size-5 items-center justify-center">

@@ -17,6 +17,7 @@ import { type ProductCardModel } from "@/lib/models/product-card-model";
 import { trackInfiniteScrollLoad } from "@/lib/utils/analytics";
 
 interface MobileCategoryProductsProps {
+  categoryId?: number;
   categoryMetadata?: {
     name: string;
     uid: string;
@@ -33,6 +34,7 @@ interface MobileCategoryProductsProps {
 }
 
 export function MobileCategoryProducts({
+  categoryId,
   categoryMetadata,
   categoryPath,
   categoryUid,
@@ -148,7 +150,7 @@ export function MobileCategoryProducts({
           categoryId={
             categoryUid && !Number.isNaN(Number.parseInt(categoryUid, 10))
               ? Number.parseInt(categoryUid, 10)
-              : undefined
+              : categoryId
           }
           isBulletDeliveryEnabled={isBulletDeliveryEnabled}
           products={products}

@@ -63,7 +63,12 @@ export default async function Order({
             productsType={productTypesResult?.data || "mix"}
           />
           <OrderConfirmationContent
-            logoSlot={<SiteLogo className="h-10 w-auto" />}
+            logoSlot={
+              <SiteLogo
+                className="h-10 max-h-10 w-auto object-contain"
+                preserveIntrinsicHeight={false}
+              />
+            }
             order={orderResult.data}
             orderId={orderId}
           />

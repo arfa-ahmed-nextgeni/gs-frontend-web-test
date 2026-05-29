@@ -17,8 +17,15 @@ export const ProductCardStatusBadges = ({
   containerProps?: ComponentProps<"div">;
   discountPercent?: null | number;
   isBulletDeliveryEnabled: boolean;
-  stockStatus: StockStatus;
+  stockStatus?: StockStatus;
 }) => {
+  if (
+    !discountPercent &&
+    !(bulletDelivery && isBulletDeliveryEnabled) &&
+    stockStatus !== StockStatus.OutOfStock
+  )
+    return null;
+
   return (
     <div
       {...containerProps}

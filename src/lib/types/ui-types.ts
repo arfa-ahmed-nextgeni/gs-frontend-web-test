@@ -78,6 +78,12 @@ export type CollapseProps = {
   onToggle: () => void;
   variant?: "transparent" | "underline";
 };
+export type HeaderNavigationType = {
+  items: MainMenuType[];
+  menuHeaderLabel?: string;
+  seeAllLabel?: string;
+};
+
 export type MainMenuType = {
   id: number | string;
   label: string;
@@ -118,6 +124,7 @@ export type Order = {
   // Optional order details used on the confirmation page
   paymentMethod?: string;
   paymentMethodType?: string;
+  pointsToSpend?: number;
   products: OrderItem[];
   shipping_fee: number;
   tax?: number;

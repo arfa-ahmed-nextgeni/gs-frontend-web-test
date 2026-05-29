@@ -18,6 +18,7 @@ import {
 } from "@/lib/constants/i18n";
 
 export const routing = defineRouting({
+  alternateLinks: false,
   defaultLocale: DEFAULT_LOCALE,
 
   domains: [

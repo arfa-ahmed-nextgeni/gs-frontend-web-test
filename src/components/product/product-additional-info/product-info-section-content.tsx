@@ -22,7 +22,7 @@ export const ProductInfoSectionContent = ({
   return (
     <>
       <div
-        className={cn("flex flex-col gap-2.5 overflow-hidden", {
+        className={cn("rich-html overflow-hidden", {
           "lg:max-h-none": shouldAllowMobileCollapse,
           [MOBILE_COLLAPSED_MAX_HEIGHT_CLASS]:
             shouldAllowMobileCollapse && !isExpanded,

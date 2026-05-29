@@ -85,6 +85,7 @@ export const ApplyCouponToCartForm = ({
             {...field}
             error={!!fieldState.error || !!apiError}
             helperText={apiError || fieldState.error?.message}
+            helperTextClassName="text-start leading-snug"
             inputProps={{
               ...field,
               autoCapitalize: "characters",

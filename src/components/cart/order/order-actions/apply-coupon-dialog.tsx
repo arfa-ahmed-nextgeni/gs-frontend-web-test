@@ -27,6 +27,7 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { useRemoveCouponFromCart } from "@/hooks/mutations/cart/use-remove-coupon-from-cart";
 import { useIsMobile } from "@/hooks/use-is-mobile";
+import { useMobileBottomSheetViewport } from "@/hooks/use-mobile-bottom-sheet-viewport";
 import { cn } from "@/lib/utils";
 
 type ApplyCouponDialogProps = {
@@ -42,6 +43,8 @@ export const ApplyCouponDialog = ({
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
   const { isPending, mutate: removeCoupon } = useRemoveCouponFromCart();
+
+  useMobileBottomSheetViewport({ isMobile, open });
 
   const closeDialog = () => setOpen(false);
 

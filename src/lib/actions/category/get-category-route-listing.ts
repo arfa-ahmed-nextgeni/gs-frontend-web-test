@@ -11,6 +11,10 @@ import {
 } from "@/lib/category/query";
 import { catalogServiceGraphqlRequest } from "@/lib/clients/catalog-service-graphql";
 import { CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES } from "@/lib/constants/api/catalog-service-graphql/products";
+import {
+  CATEGORY_LISTING_DEFAULT_PAGE_SIZE,
+  clampCategoryListingPage,
+} from "@/lib/constants/category/category-listing-cap";
 import { type Locale } from "@/lib/constants/i18n";
 import { QueryParamsKey } from "@/lib/constants/query-params";
 import { CategoryListingModel } from "@/lib/models/category-listing-model";
@@ -26,7 +30,7 @@ import {
   serializeStringArrayRecord,
   type StringArrayRecord,
 } from "@/lib/utils/cache-key-records";
-import { buildProductSearchSort } from "@/lib/utils/catalog-service-transformers";
+import { buildCategoryProductSearchSort } from "@/lib/utils/catalog-service-transformers";
 import { failure, isOk, ok } from "@/lib/utils/service-result";
 
 const ATTRIBUTE_ALIAS_MAP: Record<string, string> = {
@@ -64,7 +68,7 @@ type RouteSearchParams = SearchParamsRecord;
 export const getCategoryRouteListing = ({
   categoryPath,
   locale,
-  pageSize = 20,
+  pageSize = CATEGORY_LISTING_DEFAULT_PAGE_SIZE,
   search,
 }: GetCategoryRouteListingArgs) =>
   getCategoryRouteListingCached(
@@ -82,8 +86,11 @@ const getCategoryRouteListingCached = cache(
     serializedSearch: string
   ) => {
     const search = deserializeSearchParamsRecord(serializedSearch);
+    const parsedPage = parsePageParam(search[QueryParamsKey.Page]);
+    const effectivePage = clampCategoryListingPage(parsedPage, pageSize);
+
     const queryState = {
-      currentPage: parsePageParam(search[QueryParamsKey.Page]),
+      currentPage: effectivePage,
       filters: parseFiltersFromSearchParamsRecord(search),
       searchTerm: Array.isArray(search[QueryParamsKey.Search])
         ? search[QueryParamsKey.Search][0]
@@ -95,7 +102,7 @@ const getCategoryRouteListingCached = cache(
       categoryPath,
       filters: queryState.filters,
       locale,
-      page: queryState.currentPage,
+      page: effectivePage,
       pageSize,
       sortBy: queryState.sortBy,
     });
@@ -136,6 +143,7 @@ const getCategoryListingDataCached = cache(
     serializedFilters: string
   ) => {
     const filters = deserializeStringArrayRecord(serializedFilters);
+    const effectivePage = clampCategoryListingPage(page, pageSize);
 
     try {
       const storeConfig = await getStoreConfig({ locale });
@@ -146,7 +154,7 @@ const getCategoryListingDataCached = cache(
 
       const { store } = storeConfig.data;
       const filterClauses = buildCategorySearchClauses(categoryPath, filters);
-      const sort = buildProductSearchSort(sortBy);
+      const sort = buildCategoryProductSearchSort(sortBy);
 
       const response = await catalogServiceGraphqlRequest({
         catalogStoreCode: store.storeCode,
@@ -154,7 +162,7 @@ const getCategoryListingDataCached = cache(
         query: CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES.PRODUCT_SEARCH,
         storeCode: store.code,
         variables: {
-          currentPage: page,
+          currentPage: effectivePage,
           filter: filterClauses,
           pageSize,
           phrase: "",
@@ -164,9 +172,11 @@ const getCategoryListingDataCached = cache(
 
       const productResponse =
         (response.data?.productSearch as ProductSearchResponse | undefined) ||
-        createEmptyProductSearchResponse(page, pageSize);
+        createEmptyProductSearchResponse(effectivePage, pageSize);
 
-      return ok(createCategoryListingModel(productResponse, page, pageSize));
+      return ok(
+        createCategoryListingModel(productResponse, effectivePage, pageSize)
+      );
     } catch (error) {
       console.error("Failed to get category listing data:", error);
       return failure("Failed to get category listing data");
@@ -241,7 +251,7 @@ function createEmptyCategoryListingModel(
 
 function createEmptyProductSearchResponse(
   currentPage = 1,
-  pageSize = 20
+  pageSize = CATEGORY_LISTING_DEFAULT_PAGE_SIZE
 ): ProductSearchResponse {
   return {
     facets: [],

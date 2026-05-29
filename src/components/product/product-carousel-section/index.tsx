@@ -69,7 +69,7 @@ export async function ProductCarouselSection({
 
         <CardRailScrollSnapCarousel
           contentProps={{
-            className: "px-2.5 lg:!px-0",
+            className: "px-2.5 lg:!px-0 gap-[9.6px]",
           }}
           nextButtonProps={{
             className: "xl:translate-x-15 xl:rtl:-translate-x-15",

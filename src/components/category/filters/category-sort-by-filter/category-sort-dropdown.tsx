@@ -15,16 +15,14 @@ import {
 } from "@/components/ui/select";
 import { useFilters } from "@/contexts/category-filter-context";
 import { useSortStatusDropdown } from "@/contexts/sort-status-dropdown-context";
-import {
-  CATEGORY_SORT_OPTIONS,
-  CategorySortKey,
-} from "@/lib/constants/category/category-sort";
+import { CATEGORY_SORT_OPTIONS } from "@/lib/constants/category/category-sort";
 import { cn } from "@/lib/utils";
 
 export const CategorySortDropdown = () => {
   const t = useTranslations("category.sortDropdown");
 
   const {
+    defaultSortKey,
     setSort,
     state: { sortBy },
   } = useFilters();
@@ -37,10 +35,16 @@ export const CategorySortDropdown = () => {
     setSortDropdownOpen(open);
   };
 
+  const defaultSortLabel =
+    CATEGORY_SORT_OPTIONS.find((opt) => opt.value === defaultSortKey)?.label ??
+    "relevance";
+
   const getSortLabel = (sortValue: string | undefined) => {
-    if (!sortValue) return "relevance";
+    if (!sortValue) {
+      return defaultSortLabel;
+    }
     const option = CATEGORY_SORT_OPTIONS.find((opt) => opt.value === sortValue);
-    return option?.label || "relevance";
+    return option?.label ?? defaultSortLabel;
   };
 
   return (
@@ -76,7 +80,7 @@ export const CategorySortDropdown = () => {
         }}
       >
         {CATEGORY_SORT_OPTIONS.map(({ label, value }) => {
-          const isSelected = (sortBy ?? CategorySortKey.Relevance) === value;
+          const isSelected = (sortBy ?? defaultSortKey) === value;
 
           return (
             <SelectItem

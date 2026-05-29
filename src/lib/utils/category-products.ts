@@ -41,8 +41,9 @@ function generateRandomArrayCustom(
 
   for (let i = 0; i < length; i++) {
     const indexStartValue = startValue + i * increment;
-    const randomOffset = Math.floor(Math.random() * rangeSize);
-    result[i] = indexStartValue + randomOffset;
+    // Deterministic spread (no Math.random): stable for SSR / Cache Components.
+    const pseudoOffset = (i * 1103515245 + startValue * 12345) % rangeSize;
+    result[i] = indexStartValue + pseudoOffset;
   }
 
   return result;

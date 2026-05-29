@@ -17,6 +17,7 @@ export const ProductCard = ({
   categoryId,
   containerProps,
   isBulletDeliveryEnabled,
+  isInCarousel,
   isWishlistItem,
   lpColumn,
   lpExtra,
@@ -28,12 +29,18 @@ export const ProductCard = ({
 }: {
   containerProps?: ComponentProps<"div">;
   isBulletDeliveryEnabled: boolean;
+  isInCarousel?: boolean;
   isWishlistItem?: boolean;
   product: ProductCardModel;
 } & ProductCardClickOriginProps) => {
+  const isConfigurable = !!product.options?.choices?.length;
+  const isBundles = product.variant === ProductCardVariant.Bundles;
   const priceAndBadgesContent = (
     <>
       <ProductCardPrice
+        containerProps={{
+          className: cn(isWishlistItem && !isConfigurable && "mt-2"),
+        }}
         countdownTimer={product.countdownTimer}
         oldPrice={product.oldPrice}
         price={product.currentPrice}
@@ -53,12 +60,13 @@ export const ProductCard = ({
       {...containerProps}
       className={cn(
         "h-77.5 transition-default bg-bg-default group relative overflow-hidden rounded-xl",
-        "sm:w-43 w-[calc(50vw-15px)]",
+        "sm:w-43 w-[calc(50vw-15px)] md:w-full",
         "lg:w-48",
         "[contain-intrinsic-size:192px_310px] [content-visibility:auto]",
         {
-          "[contain-intrinsic-size:240px_310px] lg:w-60":
-            product.variant === ProductCardVariant.Bundles,
+          "[contain-intrinsic-size:240px_310px] sm:w-60 md:w-60 lg:w-60":
+            isBundles,
+          "w-60": isBundles && isInCarousel,
         },
         containerProps?.className
       )}
@@ -68,6 +76,7 @@ export const ProductCard = ({
       <ProductCardImage
         categoryId={categoryId}
         imageUrl={product.imageUrl}
+        isInCarousel={isInCarousel}
         isOutOfStock={product.isOutOfStock}
         lpColumn={lpColumn}
         lpExtra={lpExtra}
@@ -88,6 +97,8 @@ export const ProductCard = ({
 
       <ProductCardHeader
         brand={product.brand}
+        isConfigurable={isConfigurable}
+        isWishlistItem={isWishlistItem}
         name={product.name}
         rating={product.rating}
         savedPrice={product.savedPrice}

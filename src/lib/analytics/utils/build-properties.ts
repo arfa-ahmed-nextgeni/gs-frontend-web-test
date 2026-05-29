@@ -86,10 +86,10 @@ export function buildCartInsiderProperties(
     ...(item.color && { color: item.color }),
     custom: {
       brnd: item.brand || "",
-      groupcode: item.skuParent || "",
+      groupcode: item.skuParent || item.sku || "",
       iis: item.stockStatus !== StockStatus.OutOfStock,
       is_gwp: item.isGwp || false,
-      parent_product_integer_id: item.parentId || "",
+      parent_product_integer_id: item.parentId || item.externalId || "",
       product_integer_id: item.externalId || "",
       pt: item.productType || "",
     },
@@ -107,7 +107,8 @@ export function buildCartInsiderProperties(
 
   return {
     items: itemProperties,
-    shipping_cost: cartProps["cart.fees_shipping"] || 0,
+    shipping_cost:
+      parseFloat(String(cartProps["cart.fees_shipping"] ?? 0)) || 0,
     total: cartProps["cart.grandTotal"] || 0,
   };
 }
@@ -130,7 +131,12 @@ export function buildAddRemoveCartInsiderProperties(
 ): InsiderItemProperties {
   let unitPrice: number | undefined = 0;
 
-  const oldPrice = product["product.old_price"] as string | undefined;
+  const sku = product["product.sku"];
+
+  const oldPrice = (product["product.old_price"] ??
+    product[`product.${sku}.old_price`] ??
+    "") as string | undefined;
+
   const price = product["product.price"] as number | undefined;
   const salePrice = product["product.sale_price"] as number | undefined;
 
@@ -142,10 +148,15 @@ export function buildAddRemoveCartInsiderProperties(
   const size = product["product.size"] as string | undefined;
   const brand = product["product.brand"] as string | undefined;
   const type = product["product.type"] as string | undefined;
-  const url = (window.location.origin ?? "") + product["product.url"];
   const groupcode = product["product.sku_parent"] ?? product["product.sku"];
-  const sku = product["product.sku"];
+
   const parentProductId = product["product.parent_id"] ?? product["product.id"];
+  const urlKey = product["product.url"] ?? product[`product.${sku}.url`] ?? "";
+  const url = (window.location.origin ?? "") + "/" + urlKey;
+  const stock =
+    product["product.stock"] ?? product[`product.${sku}.stockLeft`] ?? 0;
+  const imageUrl =
+    product["product.image_url"] ?? product[`product.${sku}.image_url`] ?? "";
 
   return {
     ...(color && { color }),
@@ -160,13 +171,13 @@ export function buildAddRemoveCartInsiderProperties(
     },
     id: (sku as string) ?? "",
     name: (product["product.name"] as string) ?? "",
-    product_image_url: (product["product.image_url"] as string) ?? "",
+    product_image_url: imageUrl as string,
     quantity: (product[`product.${sku}.qty_in_cart`] as number) ?? 0,
     ...(size && { size }),
-    stock: (product["product.stock"] as number) ?? 0,
+    stock: stock as number,
     taxonomy: [brand, type].filter(Boolean) as string[],
     unit_price: unitPrice ?? 0,
-    unit_sale_price: salePrice ?? 0,
+    unit_sale_price: salePrice ?? price ?? 0,
     url,
   };
 }
@@ -201,9 +212,10 @@ export function buildCartProperties(
     storeConfig?: null | Store | undefined;
   }
 ): Partial<CartProperties> {
+  const currency = cart.items[0]?.currency || "SAR";
   const cartProperties: Record<string, unknown> = {
     "cart.grandTotal": cart.grandTotalPrice || 0,
-    "cart.subtotal": cart.subTotalPrice || 0,
+    "cart.subtotal": formatMoneyWithCurrency(cart.subTotalPrice, currency),
   };
 
   // Add discounts if available
@@ -217,7 +229,10 @@ export function buildCartProperties(
   }
 
   // Add shipping fees
-  cartProperties["cart.fees_shipping"] = cart.shippingFee;
+  cartProperties["cart.fees_shipping"] = formatMoneyWithCurrency(
+    cart.shippingFee,
+    currency
+  );
 
   // Extract item IDs from cart items (using externalId which is the cart item id)
   const itemIds = cart.items
@@ -230,7 +245,7 @@ export function buildCartProperties(
 
   // Add product list properties grouped by SKU from cart items
   cart.items.forEach((item) => {
-    const sku = (item.sku || "").toLowerCase();
+    const sku = item.sku || "";
     if (!sku) return;
 
     cartProperties[`product.${sku}.id`] = item.externalId || "";
@@ -240,6 +255,9 @@ export function buildCartProperties(
     cartProperties[`product.${sku}.qty_in_cart`] = item.quantity || 0;
     cartProperties[`product.${sku}.stockLeft`] = item.stockLeft || 0;
     cartProperties[`product.${sku}.isGwp`] = item.isGwp || false;
+    cartProperties[`product.${sku}.image_url`] = item.imageUrl || "";
+    cartProperties[`product.${sku}.url`] = item.urlKey || "";
+    cartProperties[`product.${sku}.old_price`] = item.oldPrice || "";
   });
 
   // If caller provided storeConfig, compute live visibility and override flag.
@@ -289,9 +307,9 @@ export function buildInstallmentPurchasePropertiesFromOrder(
     order.deliveryLabel?.toLowerCase().includes("express") ?? false;
 
   return {
-    "cart.fees_shipping": order.shipping_fee || 0,
+    "cart.fees_shipping": formatMoneyWithCurrency(order.shipping_fee, "SAR"),
     "cart.grandTotal": order.total || 0,
-    "cart.subtotal": subtotal,
+    "cart.subtotal": formatMoneyWithCurrency(subtotal, "SAR"),
     express_delivery_available: expressDeliveryAvailable,
     item_ids: itemIds.join(","),
     payment_method: order.paymentMethodType,
@@ -321,7 +339,10 @@ export function buildOrderPropertiesFromOrder(
   order: Order
 ): Partial<OrderProperties> {
   const orderProperties: Record<string, unknown> = {
-    "cart.subtotal": order.total?.subtotal?.value || 0,
+    "cart.subtotal": formatMoneyWithCurrency(
+      order.total?.subtotal?.value,
+      order.total?.subtotal?.currency
+    ),
     "cart.total": order.total?.grand_total?.value || 0,
     "order.payment_method": order.payment_methods?.[0]?.type || "",
   };
@@ -337,8 +358,10 @@ export function buildOrderPropertiesFromOrder(
 
   // Add shipping fees
   if (order.total?.shipping_handling?.total_amount?.value) {
-    orderProperties["cart.fees_shipping"] =
-      order.total.shipping_handling.total_amount.value;
+    orderProperties["cart.fees_shipping"] = formatMoneyWithCurrency(
+      order.total.shipping_handling.total_amount.value,
+      order.total.shipping_handling.total_amount.currency
+    );
   }
 
   // Add COD fees
@@ -367,14 +390,17 @@ export function buildOrderPropertiesFromUiOrder(
   order: UiOrder
 ): Partial<OrderProperties> {
   const orderProperties: Record<string, unknown> = {
-    "cart.subtotal": 0, // UI order doesn't have subtotal breakdown
+    "cart.subtotal": formatMoneyWithCurrency(0, "SAR"), // UI order doesn't have subtotal breakdown
     "cart.total": order.total || 0,
     "order.payment_method": order.paymentMethod || "",
   };
 
   // Add shipping fees
   if (order.shipping_fee) {
-    orderProperties["cart.fees_shipping"] = order.shipping_fee;
+    orderProperties["cart.fees_shipping"] = formatMoneyWithCurrency(
+      order.shipping_fee,
+      "SAR"
+    );
   }
 
   // Add product list properties grouped by SKU from order products
@@ -405,24 +431,24 @@ export function buildProductInsiderProperties(
     ...(product["product.color"] && { color: product["product.color"] }),
     custom: {
       brnd: product["product.brand"],
-      groupcode: product["product.sku_parent"] ?? "",
+      groupcode: product["product.sku_parent"] ?? product["product.sku"],
       iis: product["product.stock"] ? true : false,
       is_gwp: product["product.is_gwp"] ?? false,
-      parent_product_integer_id: product["product.parent_id"] ?? "",
+      parent_product_integer_id:
+        product["product.parent_id"] ?? product["product.id"],
       product_integer_id: product["product.id"],
       pt: product["product.type"] ?? "",
     },
     id: product["product.sku"],
     name: product["product.name"],
     product_image_url: product["product.image_url"] ?? "",
-    quantity: 1,
     ...(product["product.size"] && { size: product["product.size"] }),
     stock: product["product.stock"] ?? 0,
     taxonomy: [product["product.brand"], product["product.type"]].filter(
       Boolean
     ) as string[],
     unit_price: unitPrice ?? 0,
-    unit_sale_price: product["product.sale_price"] ?? 0,
+    unit_sale_price: product["product.price"] ?? 0,
     url: product["product.url"]
       ? `${typeof window !== "undefined" ? window.location.origin : ""}${product["product.url"]}`
       : "",
@@ -460,10 +486,16 @@ export function buildProductPropertiesFromCard(
     "product.brand": product.brand || undefined,
     "product.brand_id": product.brand || undefined,
     "product.id": product.externalId || "",
+    "product.image_url": product.imageUrl || undefined,
     "product.name": product.name || "",
+    "product.old_price": product.oldPrice || undefined,
+    "product.parent_id": product.parentId || undefined,
     "product.price": product.priceValue || 0,
     "product.sku": product.sku || "",
+    "product.sku_parent": product.skuParent || undefined,
+    "product.stock": product.stockStatus === StockStatus.InStock ? 1 : 0,
     "product.type": product.productType || undefined,
+    "product.url": product.urlKey || undefined,
     // Extract size from options if available
     ...(product.options?.selected?.label && {
       "product.size": product.options.selected.label,
@@ -561,7 +593,9 @@ export function buildProductPropertiesFromDetails(
       "product.color": productColor,
       "product.id": variant.externalId || parentProduct.externalId || "",
       "product.image_url":
-        variant.mediaGallery?.[0]?.url || parentProduct.mediaGallery?.[0]?.url,
+        variant.mediaGallery?.[0]?.url ||
+        parentProduct.mediaGallery?.[0]?.url ||
+        "",
       "product.name": parentProduct.name || variant.label || "",
       "product.old_price": variant.oldPrice || "",
       "product.parent_id": parentProduct.externalId || "",
@@ -601,7 +635,7 @@ export function buildProductPropertiesFromDetails(
     "product.brand_id": productModel.brand || "",
     "product.color": productColor,
     "product.id": productModel.externalId || productModel.id?.toString() || "",
-    "product.image_url": productModel.mediaGallery?.[0]?.url,
+    "product.image_url": productModel.mediaGallery?.[0]?.url ?? "",
     "product.name": productModel.name || "",
     "product.old_price": productModel.oldPrice || "",
     "product.parent_id": productModel.externalId || "",
@@ -980,3 +1014,11 @@ export const calculateAge = (birthDate: string) => {
     today >= new Date(today.getFullYear(), birth.getMonth(), birth.getDate());
   return hasHadBirthdayThisYear ? age : age - 1;
 };
+
+// Format a numeric money value with its currency code, e.g. 192 + "SAR" -> "192 SAR".
+function formatMoneyWithCurrency(
+  value: null | number | undefined,
+  currency: null | string | undefined
+): string {
+  return `${value ?? 0} ${currency || "SAR"}`;
+}

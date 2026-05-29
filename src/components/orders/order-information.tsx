@@ -11,9 +11,7 @@ import { ProductReviewWriteLink } from "@/components/product/product-reviews/pro
 import { JoinBanner } from "@/components/shared/join-banner";
 import { LocalizedPrice } from "@/components/shared/localized-price";
 import { ProductDetailsLink } from "@/components/shared/product-details-link";
-import { Tooltip } from "@/components/shared/tooltip";
 import { useStoreConfig } from "@/contexts/store-config-context";
-import { useCart } from "@/contexts/use-cart";
 import { useStoreCode } from "@/hooks/i18n/use-store-code";
 import { useCustomerQuery } from "@/hooks/queries/use-customer-query";
 import { ROUTES } from "@/lib/constants/routes";
@@ -34,68 +32,16 @@ interface OrderInformationProps {
   orderId?: null | string;
 }
 
-const fallbackItems: DisplayOrderItem[] = [
-  {
-    description:
-      "Orchid accord blend with sumptuous heart notes of dark vanilla and ebony wood",
-    id: "fallback-1",
-    image: {
-      id: "fallback-img-1",
-      original: "",
-      original2: "",
-      thumbnail: "/assets/images/products/p-1.jpg",
-    },
-    name: "Giorgio Armani",
-    originalPrice: 406,
-    price: 329,
-    quantity: 1,
-    size: "50ml",
-  },
-  {
-    description:
-      "Orchid accord blend with sumptuous heart notes of dark vanilla and ebony wood",
-    id: "fallback-2",
-    image: {
-      id: "fallback-img-2",
-      original: "",
-      original2: "",
-      thumbnail: "/assets/images/products/p-2.jpg",
-    },
-    name: "Laura Mercier",
-    originalPrice: 260,
-    price: 159,
-    quantity: 1,
-    size: "50ml",
-  },
-  {
-    description:
-      "Orchid accord blend with sumptuous heart notes of dark vanilla and ebony wood",
-    id: "fallback-3",
-    image: {
-      id: "fallback-img-3",
-      original: "",
-      original2: "",
-      thumbnail: "/assets/images/products/p-3.jpg",
-    },
-    name: "Mont Blanc",
-    originalPrice: 260,
-    price: 190,
-    quantity: 2,
-    size: "50ml",
-  },
-];
-
 const highlightTextClass = "text-[#374957]";
 const mutedTextClass = "text-[#85878A]";
 const rateItClassName =
-  "inline-flex items-center gap-2 text-[14px] font-medium text-[#374957] transition hover:text-[#111827]";
+  "inline-flex items-center gap-[5px] whitespace-nowrap text-[14px] font-medium tracking-[0.28px] text-[#374957] transition hover:text-[#111827]";
 
 export function OrderInformation({ order, orderId }: OrderInformationProps) {
   const { storeConfig } = useStoreConfig();
   const locale = useLocale();
   const t = useTranslations("OrderConfirmation");
   const { isGlobal, storeCode } = useStoreCode();
-  const { cart } = useCart();
   const { data: currentCustomer, isLoading: isCustomerLoading } =
     useCustomerQuery();
 
@@ -103,19 +49,22 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
   const isArabic = locale === "ar";
   const isLoading = false;
 
-  const items: DisplayOrderItem[] =
-    (order?.products as DisplayOrderItem[] | undefined)?.map((item) => {
-      const hasRealOriginalPrice =
-        typeof item.originalPrice === "number" &&
-        item.originalPrice > (item.price || 0);
+  const items: DisplayOrderItem[] = useMemo(
+    () =>
+      (order?.products as DisplayOrderItem[] | undefined)?.map((item) => {
+        const hasRealOriginalPrice =
+          typeof item.originalPrice === "number" &&
+          item.originalPrice > (item.price || 0);
 
-      return {
-        ...item,
-        description: item.description,
-        originalPrice: hasRealOriginalPrice ? item.originalPrice : undefined,
-        size: item.size ?? "50ml",
-      };
-    }) || fallbackItems;
+        return {
+          ...item,
+          description: item.description,
+          originalPrice: hasRealOriginalPrice ? item.originalPrice : undefined,
+          size: item.size,
+        };
+      }) || [],
+    [order?.products]
+  );
 
   const subtotal = useMemo(
     () =>
@@ -128,15 +77,9 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
 
   const shippingFee = order?.shipping_fee ?? 0;
 
-  const serviceFee =
-    typeof order?.total === "number"
-      ? Math.max(order.total - subtotal - shippingFee, 0)
-      : 0;
+  const codFee = order?.cod_fee ?? 0;
 
-  const grandTotal =
-    typeof order?.total === "number"
-      ? order.total
-      : subtotal + shippingFee + serviceFee;
+  const grandTotal = order?.total ?? 0;
   const mokafaaDiscount = order?.mokafaaDiscount || 0;
 
   const formatAmount = (amount: number) =>
@@ -149,21 +92,6 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
         minimumFractionDigits: 0,
       },
     });
-
-  const renderDiscountPrice = (amount: number) => {
-    const formattedPrice = formatAmount(amount);
-    return (
-      <LocalizedPrice
-        containerProps={{
-          className: "inline-flex items-center text-text-teal",
-        }}
-        price={`-${formattedPrice}`}
-        valueProps={{
-          className: "text-sm font-medium text-text-teal",
-        }}
-      />
-    );
-  };
 
   const effectiveOrderId = orderId || order?.tracking_number || "—";
 
@@ -228,20 +156,17 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
       : null;
 
     return (
-      <div className="flex flex-col items-end gap-0.5 text-right">
+      <div className="flex flex-col items-end justify-center gap-2.5 text-right">
         <LocalizedPrice
           containerProps={{
-            className: cn(
-              "text-[16px] font-semibold",
-              original ? "text-[#FE5000]" : "text-text-primary"
-            ),
+            className: "text-[16px] font-semibold text-[#FE5000]",
           }}
           price={price}
         />
         {original && (
           <LocalizedPrice
             containerProps={{
-              className: "text-[12px] text-[#9CA3AF] line-through",
+              className: "text-[12px] text-[#85878A] line-through",
             }}
             price={original}
           />
@@ -253,7 +178,7 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
   const renderRateAction = (product: DisplayOrderItem) => {
     const content = (
       <>
-        <Star className="h-5 w-5 text-[#C2995B]" strokeWidth={1.5} />
+        <Star className="h-[15px] w-[15px] text-[#AF9768]" strokeWidth={1.5} />
         {t("rateIt")}
       </>
     );
@@ -284,7 +209,7 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
 
   return (
     <div className="pb-10 pt-2 lg:px-5 lg:pb-16">
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[797px_394px] lg:gap-[10px]">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[797px_394px] lg:gap-2.5">
         <div className="space-y-4">
           <div>
             <div className="flex flex-col items-center gap-4 lg:flex-row lg:items-center lg:gap-6">
@@ -365,37 +290,35 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
 
                       return (
                         <div
-                          className="flex flex-col gap-4 px-5 py-2.5 lg:flex-row lg:items-center lg:gap-6"
+                          className="flex flex-col gap-4 px-5 py-2.5 lg:h-[100px] lg:flex-row lg:items-center lg:justify-between"
                           key={`${String(product.id ?? "")}-${index}`}
                         >
-                          <div className="flex items-center gap-4 lg:w-[50%]">
-                            <div className="w-10 text-[14px] font-medium text-[#9CA3AF]">
-                              {t("quantityPrefix", {
-                                count: String(product.quantity),
-                              })}
+                          <div className="flex items-center gap-[21px]">
+                            <div className="text-[15px] font-normal tracking-[0.3px] text-[#85878A]">
+                              {`x${product.quantity}`}
                             </div>
                             <ProductDetailsLink
-                              className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-[#F7F8FA]"
+                              className="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl"
                               href={productHref || "#"}
                               title={product.name}
                             >
                               <ProductImageWithFallback
                                 alt={product.name}
-                                className="h-18 w-18 rounded-xl object-contain"
-                                height={72}
+                                className="h-full w-full object-contain"
+                                height={80}
                                 key={product.image?.thumbnail || "placeholder"}
                                 src={product.image?.thumbnail || ""}
-                                width={72}
+                                width={80}
                               />
                             </ProductDetailsLink>
                             <ProductDetailsLink
-                              className="flex flex-1 flex-col gap-1"
+                              className="flex w-[260px] flex-col gap-2.5"
                               href={productHref || "#"}
                               title={product.name}
                             >
                               <p
                                 className={cn(
-                                  "text-text-primary line-clamp-1 text-xs font-semibold",
+                                  "line-clamp-1 text-[12px] font-semibold tracking-[0.24px]",
                                   highlightTextClass
                                 )}
                               >
@@ -403,7 +326,7 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                               </p>
                               <p
                                 className={cn(
-                                  "text-text-primary line-clamp-2 text-xs font-normal",
+                                  "line-clamp-2 text-[12px] font-normal tracking-[0.24px]",
                                   highlightTextClass
                                 )}
                               >
@@ -412,14 +335,20 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                             </ProductDetailsLink>
                           </div>
 
-                          <div className="flex flex-1 items-center justify-between gap-4 lg:gap-8">
-                            {product.size && (
-                              <span className="inline-flex w-fit items-center rounded-full bg-[##AF97680D] px-3 py-1 text-[11px] text-[#4B5563]">
-                                {product.size}
-                              </span>
-                            )}
-                            {renderPrice(product)}
-                            {renderRateAction(product)}
+                          <div className="flex flex-1 items-center justify-between">
+                            <div className="flex w-20 justify-start">
+                              {product.size && (
+                                <span className="h-6.25 inline-flex w-fit items-center justify-center whitespace-nowrap rounded-lg bg-[#AF9768]/5 px-2.5 py-2 text-[11px] font-medium tracking-[0.22px] text-[#374957]">
+                                  {product.size}
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex w-20 justify-end">
+                              {renderPrice(product)}
+                            </div>
+                            <div className="flex w-20 justify-start">
+                              {renderRateAction(product)}
+                            </div>
                           </div>
                         </div>
                       );
@@ -475,79 +404,65 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
             <div className="mt-2 space-y-2 text-sm font-medium text-[#4B5563]">
               <div className="flex items-center justify-between">
                 <span>{t("subtotal")}</span>
-                <LocalizedPrice price={formatAmount(subtotal)} />
+                <LocalizedPrice
+                  currencySymbolProps={{
+                    className: "font-normal",
+                  }}
+                  price={formatAmount(subtotal)}
+                />
               </div>
-              <div className="flex items-center justify-between">
-                {/* <span>{t("serviceFee")}</span> */}
-                <span className="inline-flex items-center gap-1 text-sm font-medium text-[#4B5563]">
-                  {t("serviceFee")}
-                  {cart?.serviceFeeMessage && (
-                    <Tooltip content={cart.serviceFeeMessage} position="right">
-                      <svg
-                        fill="none"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        width="14"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <circle
-                          cx="12"
-                          cy="12"
-                          r="9"
-                          stroke="#9AA3AE"
-                          strokeWidth="1.5"
-                        />
-                        <path
-                          d="M12 8.5v.5m0 2v4"
-                          stroke="#9AA3AE"
-                          strokeLinecap="round"
-                          strokeWidth="1.5"
-                        />
-                      </svg>
-                    </Tooltip>
-                  )}
-                  {!cart?.serviceFeeMessage && (
-                    <svg
-                      fill="none"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      width="14"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <circle
-                        cx="12"
-                        cy="12"
-                        r="9"
-                        stroke="#9AA3AE"
-                        strokeWidth="1.5"
-                      />
-                      <path
-                        d="M12 8.5v.5m0 2v4"
-                        stroke="#9AA3AE"
-                        strokeLinecap="round"
-                        strokeWidth="1.5"
-                      />
-                    </svg>
-                  )}
-                </span>
-                <LocalizedPrice price={formatAmount(serviceFee)} />
-              </div>
+              {(order?.pointsToSpend ?? 0) > 0 && (
+                <div className="flex items-center justify-between">
+                  <span className="text-text-danger">
+                    {t("loyalityPoints")}
+                  </span>
+                  <span className="text-text-danger">
+                    <LocalizedPrice
+                      currencySymbolProps={{
+                        className: "font-normal",
+                      }}
+                      price={`-${formatAmount(order?.pointsToSpend ?? 0)}`}
+                    />
+                  </span>
+                </div>
+              )}
+              {order?.discount && order.discount > 0 && (
+                <div className="flex items-center justify-between">
+                  <span className="text-text-danger">{t("discount")}</span>
+                  <span className="text-text-danger">
+                    <LocalizedPrice
+                      currencySymbolProps={{
+                        className: "font-normal",
+                      }}
+                      price={`-${formatAmount(order.discount)}`}
+                    />
+                  </span>
+                </div>
+              )}
               <div className="flex items-center justify-between">
                 <span>{t("shippingFee")}</span>
-                <span className="text-[#00C7B1]">
+                <span className="text-text-teal">
                   {shippingFee === 0 ? (
                     t("shippingFree")
                   ) : (
-                    <LocalizedPrice price={formatAmount(shippingFee)} />
+                    <LocalizedPrice
+                      currencySymbolProps={{
+                        className: "font-normal",
+                      }}
+                      price={formatAmount(shippingFee)}
+                    />
                   )}
                 </span>
               </div>
-              {order?.discount && order.discount > 0 && (
+              {codFee > 0 && (
                 <div className="flex items-center justify-between">
-                  <span className="text-text-primary text-sm font-medium">
-                    {t("discount")}
-                  </span>
-                  {renderDiscountPrice(order.discount)}
+                  <span>{t("codFee")}</span>
+                  <LocalizedPrice
+                    currencySymbolProps={{
+                      className: "font-normal",
+                    }}
+                    price={formatAmount(codFee)}
+                  />
                 </div>
               )}
               {mokafaaDiscount > 0 && (
@@ -555,7 +470,12 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                   <span className="text-text-primary text-sm font-medium">
                     {t("rajhiMokafaa")}
                   </span>
-                  {renderDiscountPrice(mokafaaDiscount)}
+                  <LocalizedPrice
+                    currencySymbolProps={{
+                      className: "font-normal",
+                    }}
+                    price={formatAmount(mokafaaDiscount)}
+                  />
                 </div>
               )}
               <div className="mt-2 flex items-center justify-between border-t border-[#EEF0F2] pt-3 text-sm font-semibold text-[#374957]">
@@ -568,8 +488,31 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                     </span>
                   )}
                 </div>
-                <LocalizedPrice price={formatAmount(grandTotal)} />
+                <LocalizedPrice
+                  currencySymbolProps={{
+                    className: "font-normal",
+                  }}
+                  price={formatAmount(grandTotal)}
+                />
               </div>
+              {(storeConfig?.cashbackPercent ?? 0) > 0 && (
+                <div className="flex items-center justify-between">
+                  <span className="text-text-primary text-sm font-medium">
+                    {t("cashback")}
+                  </span>
+                  <LocalizedPrice
+                    containerProps={{
+                      className: "text-text-teal",
+                    }}
+                    currencySymbolProps={{
+                      className: "font-normal",
+                    }}
+                    price={formatAmount(
+                      grandTotal * (storeConfig?.cashbackPercent ?? 0)
+                    )}
+                  />
+                </div>
+              )}
             </div>
           </section>
 

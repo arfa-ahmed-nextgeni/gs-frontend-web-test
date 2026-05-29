@@ -11,16 +11,14 @@ import { Locale } from "@/lib/constants/i18n";
 import { PaymentStatus } from "@/lib/constants/payment-status";
 import { QueryParamsKey } from "@/lib/constants/query-params";
 import { ROUTES } from "@/lib/constants/routes";
-import {
-  createErrorHtml,
-  createRedirectHtml,
-} from "@/lib/utils/html-templates";
+import { createRedirectHtml } from "@/lib/utils/html-templates";
 import { getLocaleInfo } from "@/lib/utils/locale";
 import { getBaseUrlFromRequest } from "@/lib/utils/request";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const paymentStatus = searchParams.get(QueryParamsKey.PaymentStatus);
+  const returnTo = searchParams.get(QueryParamsKey.To);
   const baseUrl = getBaseUrlFromRequest(request);
 
   const pendingOrderInfo = await getPendingOrderInfo();
@@ -31,14 +29,39 @@ export async function GET(request: NextRequest) {
       namespace: "RedirectPage",
     });
 
-    const errorHtml = createErrorHtml({
-      heading: t("badRequest"),
-      message: t("orderInfoMissing"),
+    const safeReturnToUrl = getSafeReturnToUrl({
+      baseUrl,
+      returnTo,
     });
 
-    return new Response(errorHtml, {
+    if (safeReturnToUrl) {
+      if (!safeReturnToUrl.searchParams.get(QueryParamsKey.PaymentStatus)) {
+        safeReturnToUrl.searchParams.set(
+          QueryParamsKey.PaymentStatus,
+          PaymentStatus.Cancelled
+        );
+      }
+
+      const redirectHtml = createRedirectHtml({
+        redirectUrl: safeReturnToUrl.toString(),
+        secondaryText: t("ifNotRedirected"),
+      });
+
+      return new Response(redirectHtml, {
+        headers: { "Content-Type": "text/html" },
+        status: 200,
+      });
+    }
+
+    const homeUrl = new URL("/", baseUrl).toString();
+    const redirectHtml = createRedirectHtml({
+      redirectUrl: homeUrl,
+      secondaryText: t("ifNotRedirected"),
+    });
+
+    return new Response(redirectHtml, {
       headers: { "Content-Type": "text/html" },
-      status: 400,
+      status: 200,
     });
   }
 
@@ -98,4 +121,29 @@ export async function GET(request: NextRequest) {
     headers: { "Content-Type": "text/html" },
     status: 200,
   });
+}
+
+function getSafeReturnToUrl({
+  baseUrl,
+  returnTo,
+}: {
+  baseUrl: string;
+  returnTo: null | string;
+}) {
+  if (!returnTo || !returnTo.startsWith("/") || returnTo.startsWith("//")) {
+    return null;
+  }
+
+  try {
+    const parsedBaseUrl = new URL(baseUrl);
+    const parsedReturnTo = new URL(returnTo, baseUrl);
+
+    if (parsedReturnTo.origin !== parsedBaseUrl.origin) {
+      return null;
+    }
+
+    return parsedReturnTo;
+  } catch {
+    return null;
+  }
 }

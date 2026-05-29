@@ -16,7 +16,6 @@ export const CATEGORIES_GRAPHQL_QUERIES = {
             url_key
             url_path
             image
-            api_catnav_image
             api_catnav_icon
             api_celebrity_thumbnail
             celebrity_banner

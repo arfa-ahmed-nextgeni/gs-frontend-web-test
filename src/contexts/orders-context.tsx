@@ -3,9 +3,10 @@
 import { createContext, useCallback, useContext, useState } from "react";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { useRouter } from "@/i18n/navigation";
+import { HTTP_STATUS } from "@/lib/constants/api";
 import { QUERY_KEYS } from "@/lib/constants/query-keys";
 import { QueryParamsKey } from "@/lib/constants/query-params";
 import { ROUTES } from "@/lib/constants/routes";
@@ -35,7 +36,12 @@ export type OrdersContextType = {
   reorderOrder: (
     increment_id: string,
     reorder: boolean
-  ) => Promise<{ cart_id?: string; message?: string; success: boolean }>;
+  ) => Promise<{
+    cart_id?: string;
+    isUnauthenticated?: boolean;
+    message?: string;
+    success: boolean;
+  }>;
   setCurrentPage: (page: number) => void;
   totalCount: number;
 };
@@ -59,6 +65,7 @@ export const OrdersContextProvider = ({
 }) => {
   const queryClient = useQueryClient();
   const locale = useLocale() as Locale;
+  const tMessages = useTranslations("CustomerProfilePage.messages");
   const router = useRouter();
 
   const [orders, setOrders] = useState<Order[]>([]);
@@ -148,7 +155,7 @@ export const OrdersContextProvider = ({
         } else if (isError(result)) {
           setError(result.error || "Failed to load orders");
         } else {
-          setError("Authentication required");
+          setError(tMessages("unAuthorized"));
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
@@ -157,7 +164,7 @@ export const OrdersContextProvider = ({
         setHasLoaded(true);
       }
     },
-    [isLoading, locale]
+    [isLoading, locale, tMessages]
   );
 
   const cancelOrder = useCallback(
@@ -212,6 +219,14 @@ export const OrdersContextProvider = ({
 
         const result = await response?.json();
 
+        if (response.status === HTTP_STATUS.UNAUTHORIZED) {
+          return {
+            isUnauthenticated: true,
+            message: result.error || tMessages("unAuthorized"),
+            success: false,
+          };
+        }
+
         if (result.success) {
           await queryClient.invalidateQueries({
             queryKey: QUERY_KEYS.CART.ROOT(locale),
@@ -236,7 +251,7 @@ export const OrdersContextProvider = ({
         };
       }
     },
-    [locale, queryClient, router]
+    [locale, queryClient, router, tMessages]
   );
 
   const getOrderById = useCallback(

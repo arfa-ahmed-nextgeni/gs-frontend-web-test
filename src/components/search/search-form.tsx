@@ -1,6 +1,7 @@
 import React from "react";
 
 import SearchIcon from "@/components/icons/search-icon";
+import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 
 type SearchBoxProps = {
@@ -8,6 +9,7 @@ type SearchBoxProps = {
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   >;
+  isLoading?: boolean;
   onFocus?: (e: React.SyntheticEvent) => void;
   onSubmit: (e: React.SyntheticEvent) => void;
   placeholder?: string;
@@ -17,6 +19,7 @@ type SearchBoxProps = {
 
 export const SearchForm = ({
   inputProps,
+  isLoading = false,
   onFocus,
   onSubmit,
   placeholder,
@@ -42,15 +45,22 @@ export const SearchForm = ({
       onSubmit={onSubmit}
       role="search"
     >
-      <span className="ltr:lg:left-7.5 rtl:lg:right-7.5 absolute top-0 flex h-full shrink-0 items-center justify-center focus:outline-none ltr:left-5 rtl:right-5">
-        <SearchIcon />
+      <span
+        aria-live="polite"
+        className="ltr:lg:left-7.5 rtl:lg:right-7.5 absolute top-0 flex h-full shrink-0 items-center justify-center focus:outline-none ltr:left-5 rtl:right-5"
+      >
+        {isLoading ? (
+          <Spinner label="Searching" size={18} variant="dark" />
+        ) : (
+          <SearchIcon />
+        )}
       </span>
       <label className="flex flex-1 items-center py-0.5" htmlFor={searchId}>
         <input
           aria-label={searchId}
           autoComplete="off"
           className={cn(
-            "rounded-4xl text-text-primary lg:ltr:pl-17.5 lg:rtl:pr-17.5 ltr:pl-12.5 rtl:pr-12.5 placeholder:text-text-placeholder bg-bg-surface focus:bg-bg-default w-full border-none py-[10px] text-base font-normal outline-none focus:border-transparent focus:ring-0 lg:text-sm ltr:pr-5 lg:ltr:pr-12 rtl:pl-5 lg:rtl:pl-12",
+            "rounded-4xl text-text-primary lg:ltr:pl-17.5 lg:rtl:pr-17.5 ltr:pl-12.5 rtl:pr-12.5 placeholder:text-text-placeholder bg-bg-surface focus:bg-bg-default max-h-10 w-full border-none py-2.5 text-base font-normal outline-none focus:border-transparent focus:ring-0 lg:text-sm ltr:pr-5 lg:ltr:pr-12 rtl:pl-5 lg:rtl:pl-12",
             className
           )}
           id={searchId}

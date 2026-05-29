@@ -136,7 +136,7 @@ export function CheckoutGiftWrapping({
               {isGwpWrapItem ? (
                 <div className="flex flex-col items-end text-right lg:flex-row lg:items-center lg:gap-2 rtl:items-start rtl:text-left">
                   <p className="text-text-danger text-[16px] font-semibold">
-                    {t("delivery.freeGiftLabel")}
+                    {t("delivery.free")}
                   </p>
                   <LocalizedPrice
                     containerProps={{

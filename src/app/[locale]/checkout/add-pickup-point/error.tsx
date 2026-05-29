@@ -1,10 +1,6 @@
-"use client";
+﻿"use client";
 
-import { useEffect } from "react";
-
-import { useTranslations } from "next-intl";
-
-import { MaintenanceErrorFallback } from "@/components/shared/maintenance-error-fallback";
+import { ErrorBoundary } from "@/components/shared/error-boundary";
 
 type ErrorProps = {
   error: { digest?: string } & Error;
@@ -12,18 +8,5 @@ type ErrorProps = {
 };
 
 export default function Error({ error, reset }: ErrorProps) {
-  const t = useTranslations("errors.maintenance");
-
-  useEffect(() => {
-    console.error(error);
-  }, [error]);
-
-  return (
-    <MaintenanceErrorFallback
-      description={t("description")}
-      onRetry={reset}
-      retryLabel={t("retry")}
-      title={t("title")}
-    />
-  );
+  return <ErrorBoundary error={error} reset={reset} />;
 }

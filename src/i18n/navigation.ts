@@ -8,6 +8,7 @@ import { createNavigation } from "next-intl/navigation";
 
 import { LinkPendingSignal } from "@/components/ui/link-pending-signal";
 import { routing } from "@/i18n/routing";
+import { LINK_PREFETCH_DISABLED } from "@/lib/config/client-env";
 
 // Lightweight wrappers around Next.js' navigation
 // APIs that consider the routing configuration
@@ -21,12 +22,14 @@ const {
 
 export const Link = ({
   children,
-  prefetch = false,
+  prefetch,
   ...props
 }: PropsWithChildren<ComponentProps<typeof BaseLink>>) => {
+  const resolvedPrefetch =
+    prefetch ?? (LINK_PREFETCH_DISABLED ? false : undefined);
   return createElement(
     BaseLink,
-    { ...props, prefetch },
+    { ...props, prefetch: resolvedPrefetch },
     children,
     createElement(LinkPendingSignal)
   );

@@ -190,12 +190,11 @@ export const AddDeliveryAddressMapContent = ({
       >
         <Image
           alt="Selected Location"
-          className="size-8 cursor-grab active:cursor-grabbing"
+          className="size-11 cursor-grab active:cursor-grabbing"
           draggable={false} // Prevent image drag, let marker handle it
-          height={32}
+          height={44}
           src={LocationPinIcon}
-          style={{ filter: "hue-rotate(10deg) saturate(150%)" }}
-          width={32}
+          width={44}
         />
       </AdvancedMarker>
 

@@ -2,22 +2,29 @@
 
 import Image from "next/image";
 
+import { useTranslations } from "next-intl";
+
 import AddToBagIcon from "@/assets/icons/add-to-bag-icon.svg";
 import TrashIcon from "@/assets/icons/trash-icon.svg";
+import { ProductCardBulletDelivery } from "@/components/product/product-card/product-card-bullet-delivery";
 import { ProductCardPrice } from "@/components/product/product-card/product-card-price";
 import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import { ProductDetailsLink } from "@/components/shared/product-details-link";
 import { Spinner } from "@/components/ui/spinner";
 import { useRemoveProductFromCart } from "@/hooks/mutations/cart/use-remove-product-from-cart";
+import { useBulletDeliveryEnabled } from "@/hooks/use-bullet-delivery-enabled";
 import { ProductOption } from "@/lib/models/product-card-model";
 import { CountdownTimer } from "@/lib/types/product/countdown-timer";
 import { cn } from "@/lib/utils";
 import { getProductDetailsHref } from "@/lib/utils/get-product-details-href";
 
 type CartDrawerItemBaseProps = {
+  brand: string;
+  bulletDelivery?: boolean;
   countdownTimer?: CountdownTimer | null;
-  description: string;
   image: string;
+  isGwp?: boolean;
+  isOutOfStock?: boolean;
   name: string;
   oldPrice?: string;
   options?: ProductOption;
@@ -26,6 +33,7 @@ type CartDrawerItemBaseProps = {
   uid: string;
   urlKey?: string;
 };
+
 type CartDrawerMiniProps =
   | ({
       quantity: number;
@@ -37,9 +45,12 @@ type CartDrawerMiniProps =
 
 export const CartDrawerItem = (props: CartDrawerMiniProps) => {
   const {
+    brand,
+    bulletDelivery,
     countdownTimer,
-    description,
     image,
+    isGwp,
+    isOutOfStock,
     name,
     oldPrice,
     options,
@@ -49,9 +60,14 @@ export const CartDrawerItem = (props: CartDrawerMiniProps) => {
     urlKey,
     variant,
   } = props;
+  const tDelivery = useTranslations("CheckoutPage.delivery");
+  const tCart = useTranslations("CartPage");
   // Hooks
   const { isPending: isRemovingItem, mutate: removeFromCart } =
     useRemoveProductFromCart({ sku: sku || "" });
+  const isBulletDeliveryEnabled = useBulletDeliveryEnabled();
+  const showBulletDelivery = Boolean(bulletDelivery) && isBulletDeliveryEnabled;
+
   // Actions
   const handleRemoveFromCart = () => {
     removeFromCart({ itemUid: uid });
@@ -64,6 +80,7 @@ export const CartDrawerItem = (props: CartDrawerMiniProps) => {
   const renderActionButton = () => {
     switch (variant) {
       case "cart":
+        if (isGwp) return null;
         return (
           <button disabled={isRemovingItem} onClick={handleRemoveFromCart}>
             {isRemovingItem ? (
@@ -94,10 +111,15 @@ export const CartDrawerItem = (props: CartDrawerMiniProps) => {
     }
   };
   return (
-    <div className="h-25 w-65.75 min-w-65.75 bg-bg-default gap-1.25 flex flex-row overflow-hidden rounded-xl">
+    <div className="h-25 w-65.75 min-w-65.75 bg-bg-default gap-1.25 relative flex flex-row overflow-hidden rounded-xl">
+      {showBulletDelivery && (
+        <div className="inset-s-1.5 absolute top-1.5 z-10 scale-[0.85] ltr:origin-top-left rtl:origin-top-right">
+          <ProductCardBulletDelivery />
+        </div>
+      )}
       {/* Image */}
       <ProductDetailsLink
-        className="my-auto overflow-hidden rounded-xl"
+        className="relative my-auto overflow-hidden rounded-xl"
         href={productHref || "#"}
         title={name}
       >
@@ -108,6 +130,13 @@ export const CartDrawerItem = (props: CartDrawerMiniProps) => {
           src={image}
           width={80}
         />
+        {isOutOfStock && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="h-6.25 flex items-center justify-center gap-2.5 rounded-lg bg-black/50 px-2.5 py-2 text-[11px] font-medium leading-none text-white">
+              {tCart("outOfStock")}
+            </span>
+          </div>
+        )}
       </ProductDetailsLink>
       {/* Content */}
       <div
@@ -121,15 +150,15 @@ export const CartDrawerItem = (props: CartDrawerMiniProps) => {
           title={name}
         >
           <p className="text-text-primary line-clamp-1 text-xs font-semibold">
-            {name}
+            {brand}
           </p>
           <p
             className={cn(
-              "text-text-primary line-clamp-2 text-xs font-normal",
+              "text-text-primary line-clamp-1 text-xs font-normal",
               { "line-clamp-1": selectedOptionLabel }
             )}
           >
-            {description}
+            {name}
           </p>
           {selectedOptionLabel && (
             <p className="text-text-secondary text-xs font-normal">
@@ -143,9 +172,9 @@ export const CartDrawerItem = (props: CartDrawerMiniProps) => {
               containerProps={{
                 className: "px-0",
               }}
-              countdownTimer={countdownTimer}
-              oldPrice={oldPrice}
-              price={price}
+              countdownTimer={isGwp ? undefined : countdownTimer}
+              oldPrice={isGwp ? undefined : oldPrice}
+              price={isGwp ? tDelivery("free") : price}
             />
           </span>
           {renderActionButton()}

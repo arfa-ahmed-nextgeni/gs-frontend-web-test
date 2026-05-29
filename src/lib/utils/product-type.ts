@@ -4,6 +4,12 @@ import type { GetProductDetailsQuery } from "@/catalog-service-graphql/graphql";
 
 const PERFUME_ATTRIBUTE_KEYWORDS = ["perfume", "fragrance"];
 
+const BUNDLES_PRODUCT_TYPE_LABELS: readonly string[] = ["Bundles", "مجموعات"];
+
+export const isBundlesProductType = (
+  value: null | string | undefined
+): boolean => !!value && BUNDLES_PRODUCT_TYPE_LABELS.includes(value);
+
 type ProductData = NonNullable<
   NonNullable<GetProductDetailsQuery["products"]>[number]
 >;

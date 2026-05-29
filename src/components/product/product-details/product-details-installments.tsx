@@ -67,7 +67,12 @@ export const ProductDetailsInstallments = () => {
             {t.rich("message", {
               price: () => (
                 <span className="text-text-brand">
-                  <LocalizedPrice price={installmentPrice} />
+                  <LocalizedPrice
+                    currencySymbolProps={{
+                      className: "font-normal",
+                    }}
+                    price={installmentPrice}
+                  />
                 </span>
               ),
             })}

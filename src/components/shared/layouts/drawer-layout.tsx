@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 type DrawerLayoutProps = PropsWithChildren<{
   className?: string;
   contentContainerClassName?: string;
+  hideOverlay?: boolean;
   mobileHeaderEndContent?: React.ReactNode;
   onBack?: () => void;
   onClose: () => void;
@@ -41,6 +42,7 @@ export function DrawerLayout({
   children,
   className,
   contentContainerClassName,
+  hideOverlay = false,
   mobileHeaderEndContent,
   onBack,
   onClose,
@@ -120,6 +122,7 @@ export function DrawerLayout({
       <DrawerContent
         animated={false}
         className={cn(widthClassName, "bg-bg-body border-none")}
+        hideOverlay={hideOverlay}
       >
         <DrawerHeader
           className={cn(

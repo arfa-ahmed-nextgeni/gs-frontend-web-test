@@ -137,8 +137,8 @@ function mapCustomerOrderToUiOrder(order: CustomerOrderModel): UiOrder {
     };
 
     const unitPrice = item.product_sale_price?.value ?? 0;
-    const sku = item.product?.sku || item.id;
-    const key = `${sku}::${unitPrice}`;
+    const variantSku = item.product_sku || item.product?.sku || item.id;
+    const key = `${variantSku}::${unitPrice}`;
 
     const regularPrice = item.product_regular_price?.value;
     const variantSKU = item.product_sku;
@@ -159,7 +159,7 @@ function mapCustomerOrderToUiOrder(order: CustomerOrderModel): UiOrder {
     productMap.set(key, {
       brand,
       color,
-      id: sku,
+      id: variantSku,
       image,
       name: item.product_name,
       price: unitPrice,
@@ -217,6 +217,7 @@ function mapCustomerOrderToUiOrder(order: CustomerOrderModel): UiOrder {
     mokafaaDiscount: order.total?.mokafaa_discount?.value ?? 0,
     paymentMethod: paymentMethodName,
     paymentMethodType,
+    pointsToSpend: order.points_to_spend ?? 0,
     products,
     shipping_fee: shippingFee,
     tax,
@@ -225,8 +226,16 @@ function mapCustomerOrderToUiOrder(order: CustomerOrderModel): UiOrder {
   };
 }
 
-export const getCustomerOrderByNumber = cache(
-  async ({ locale, orderNumber }: { locale: Locale; orderNumber: string }) => {
+export const getCustomerOrderByNumber = ({
+  locale,
+  orderNumber,
+}: {
+  locale: Locale;
+  orderNumber: string;
+}) => getCustomerOrderByNumberCached(locale, orderNumber);
+
+export const getCustomerOrderByNumberCached = cache(
+  async (locale: Locale, orderNumber: string) => {
     try {
       const authToken = await getAuthToken();
 

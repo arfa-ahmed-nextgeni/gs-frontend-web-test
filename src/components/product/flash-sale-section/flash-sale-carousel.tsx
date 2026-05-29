@@ -84,6 +84,7 @@ export const FlashSaleCarousel = ({
         >
           <ProductCard
             isBulletDeliveryEnabled={isBulletDeliveryEnabled}
+            isInCarousel
             lpColumn={1}
             lpExtra={{
               row_count: products.length,

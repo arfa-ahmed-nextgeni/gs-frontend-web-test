@@ -11,8 +11,19 @@ import { useAddDeliveryAddressContext } from "@/contexts/add-delivery-address-co
 
 export const AddDeliveryAddressStandaloneContainer = () => {
   const t = useTranslations("AddDeliveryAddressPage");
-  const { deliveryType, resetFlowState, setShowSaveForm, showSaveForm } =
-    useAddDeliveryAddressContext();
+  const {
+    deliveryType,
+    editingAddressId,
+    resetFlowState,
+    setShowSaveForm,
+    showSaveForm,
+  } = useAddDeliveryAddressContext();
+
+  const isEditing = Boolean(editingAddressId);
+  const isGift = deliveryType === "gift_delivery";
+  const title = isEditing
+    ? t(isGift ? "editGiftTitle" : "editTitle")
+    : t(isGift ? "giftTitle" : "title");
 
   const handleBack = () => {
     if (showSaveForm) {
@@ -52,7 +63,7 @@ export const AddDeliveryAddressStandaloneContainer = () => {
       onClose={handleClose}
       showBackButton
       showDesktopBackButton
-      title={deliveryType === "gift_delivery" ? t("giftTitle") : t("title")}
+      title={title}
     >
       <AddDeliveryAddressView />
     </DrawerLayout>

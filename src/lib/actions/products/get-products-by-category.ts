@@ -34,7 +34,7 @@ const getProductsByCategoryCached = cache(
     variant: ProductCardVariant
   ) => {
     "use cache";
-    cacheTag(CacheTags.Magento);
+    cacheTag(CacheTags.Catalog, CacheTags.CategoryProducts);
 
     try {
       const storeConfig = await getStoreConfig({ locale });

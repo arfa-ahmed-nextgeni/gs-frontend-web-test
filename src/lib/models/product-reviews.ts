@@ -47,7 +47,7 @@ export class ProductReviews extends Helper {
             author: review?.nickname || "",
             date: review?.created_at || "",
             id: review?.review_id || 0,
-            message: review?.detail || "",
+            message: review?.detail || review?.title || "",
             rating: review?.rating || 0,
           })
       ) || [];

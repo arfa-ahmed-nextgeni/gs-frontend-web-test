@@ -1,6 +1,7 @@
 import type { ApiActivityFilterState } from "@/app/tools/api-activity/_components/api-activity-viewer-shared";
 
 export function ApiActivityHiddenFields({
+  autoRefreshEnabled,
   currentPage,
   failedOnly,
   searchQuery,
@@ -8,6 +9,9 @@ export function ApiActivityHiddenFields({
 }: Partial<ApiActivityFilterState>) {
   return (
     <>
+      {autoRefreshEnabled ? (
+        <input name="autoRefresh" type="hidden" value="1" />
+      ) : null}
       {currentPage && currentPage > 1 ? (
         <input name="page" type="hidden" value={String(currentPage)} />
       ) : null}

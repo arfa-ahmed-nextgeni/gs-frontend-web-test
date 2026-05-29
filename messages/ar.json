@@ -25,8 +25,8 @@
         "giftShop": "متجر الهدايا"
       },
       "search": {
-        "placeholder": "ابحث عن العطور والعلامات التجارية أو النوتات",
-        "mobilePlaceholder": "فتّش عن عطور أو ماركات..",
+        "placeholder": "إبحث هنا عن كل العطور و المزيد",
+        "mobilePlaceholder": "إبحث هنا عن كل العطور و المزيد ...",
         "trendingNow": "الأكثر رواجاً الآن",
         "ourPicks": "اختياراتنا لك",
         "recentSearches": "عمليات البحث الأخيرة",
@@ -59,7 +59,7 @@
         "phoneStep": {
           "description": "نحتاج رقم جوالك علشان نكمل طلبك.",
           "phoneLabel": "رقم الهاتف:",
-          "phonePlaceholder": "50 123 4567",
+          "phonePlaceholder": "xx xxx xxxx",
           "otpDescription": "سيتم إرسال رمز تحقق OTP (مكون من 5 أرقام) على جوالك برسالة نصية.",
           "sendButton": "أرسل رمز تحقق",
           "sendingButton": "جاري الإرسال..."
@@ -90,7 +90,7 @@
         "phoneStep": {
           "description": "نحتاج رقم جوالك علشان نكمل طلبك.",
           "phoneLabel": "رقم الهاتف:",
-          "phonePlaceholder": "50 123 4567",
+          "phonePlaceholder": "xx xxx xxxx",
           "otpDescription": "سيتم إرسال رمز تحقق OTP (مكون من 5 أرقام) على جوالك برسالة نصية.",
           "sendButton": "أرسل رمز تحقق",
           "sendingButton": "جاري الإرسال..."
@@ -490,7 +490,8 @@
       "failedToRemoveFromWishlist": "فشل في إزالة المنتج من قائمة الأمنيات",
       "addToWishlistSuccess": "تمت إضافة المنتج إلى قائمة الأمنيات",
       "addToWishlistFailed": "فشل في إضافة المنتج إلى قائمة الأمنيات"
-    }
+    },
+    "bundlesWishlist": "المجموعات المفضلة"
   },
   "WalletPage": {
     "title": "المحفظة",
@@ -644,6 +645,7 @@
       "title": "تصنيف",
       "shortTitle": "تصفية",
       "options": {
+        "position": "الترتيب",
         "relevance": "ماتبحث عنه",
         "new": "جديد",
         "offers": "العروض",
@@ -654,6 +656,7 @@
         "title": "تصنيف",
         "shortTitle": "تصفية",
         "options": {
+          "position": "الترتيب",
           "relevance": "ماتبحث عنه",
           "new": "جديد",
           "offers": "العروض",
@@ -975,18 +978,21 @@
       "title": "ملخص الطلب",
       "subtotal": "المجموع",
       "serviceFee": "رسوم الخدمة",
+      "codFee": "رسوم الدفع عند الاستلام",
       "shippingFee": "رسوم التوصيل",
       "free": "مجاني",
       "grandTotal": "الإجمالي الكلي",
       "walletBalance": "رصيد المحفظة",
       "rajhiMokafaa": "مكافأة الراجحي",
+      "discount": "خصم",
       "freeDeliverySuccess": "تهانينا! 🎉 لقد حصلت على <b>توصيل مجاني عادي</b>",
       "actions": {
         "redeemMokafaa": "استبدل <b>نقاط الراجحي</b> مكافأة",
         "mokafaaUsed": "تم استخدام <b>{amount}</b> من نقاط مكافأة الأهلي",
         "spendAdditionalToUnlock": "أنفق <amount></amount> إضافية لفتح محفظة الاسترجاع النقدي",
         "useWallet": "استخدم <amount></amount> من المحفظة",
-        "usedWallet": "تم استخدام <amount></amount> من المحفظة"
+        "usedWallet": "تم استخدام <amount></amount> من المحفظة",
+        "mutualExclusiveDisclaimer": "لا يمكن استخدام نقاط المحفظة ومكافأة معاً."
       },
       "perks": {
         "cashback": "سوف تكسب <b><amount></amount></b> كاش باك",
@@ -1036,13 +1042,15 @@
     },
     "giftItems": {
       "orderIncludesFreeGift": "🥳 طلبك يحتوي على <strong>هدية مجانية</strong>",
-      "freeGiftLabel": "{count} هدية مجانية"
+      "freeGiftLabel": "{count, plural, one {# مجاناً} two {# مجاناً} few {# مجاناً} many {# مجاناً} other {# مجاناً}}"
     },
     "shoppingBag": "حقيبة التسوق",
     "itemCount": "{count, plural, one {# منتج في حقيبتك} two {# منتجان في حقيبتك} few {# منتجات في حقيبتك} many {# منتجًا في حقيبتك} other {# منتج في حقيبتك}}",
     "giftsCount": "(يشمل {giftsCount, plural, one {# هدية} two {# هديتان} few {# هدايا} many {# هدية} other {# هدية}})",
     "emptyBag": "سلتك فارغة",
     "continueShopping": "→ متابعة التسوق",
+    "outOfStock": "غير متوفر",
+    "removeOutOfStockToProceed": "أزل المنتجات غير المتوفرة للمتابعة",
     "proceedToCheckout": "المتابعة للدفع",
     "suggestions": "إليك بعض الاقتراحات لبدء تسوقك!",
     "successfullyAddedToCart": "تم اضافة المنتج فى السلة",
@@ -1381,12 +1389,14 @@
     "maintenance": {
       "title": "سنعود خلال لحظات",
       "description": "نحن نقوم حاليًا ببعض أعمال صيانة النظام",
-      "retry": "إعادة المحاولة"
+      "retry": "إعادة المحاولة",
+      "retrying": "جاري إعادة المحاولة..."
     }
   },
   "CheckoutPage": {
     "header": {
       "secureCheckout": "الدفع الآمن",
+      "orderConfirmation": "تأكد الطلب",
       "trustText": "عملية الدفع لدينا آمنة وموثوقة. <br />استرجاع سهل. منتجات أصلية 100%",
       "joinHere": "انضم من هنا!",
       "joinBannerText": "انضم لعائلة قولدن سنت عشان تاخذ كاش باك، وتتابع طلباتك وأكثر!"
@@ -1571,9 +1581,11 @@
       "title": "ملخص الطلب",
       "itemsInBag": "{count} منتجات في حقيبتك (تشمل {gifts} هدايا)",
       "itemsInBagNoGifts": "{count} منتجات في حقيبتك",
+      "outOfStock": "نفذ المخزون",
       "quantity": "العدد: {qty}",
       "subtotal": "المجموع الفرعي",
       "serviceFee": "رسوم الخدمة",
+      "codFee": "رسوم الدفع عند الاستلام",
       "shippingFee": "رسوم الشحن",
       "grandTotal": "المجموع الكلي",
       "includingTaxes": "شامل الضرائب والرسوم",
@@ -1597,7 +1609,9 @@
       "addChangeAddress": "إضافة / تغيير العنوان",
       "enterCvv": "أدخل رمز CVV",
       "pleaseAddCard": "يرجى إضافة بطاقة",
-      "pay": "دفع"
+      "pay": "دفع",
+      "removeOutOfStockToProceed": "أزل المنتجات غير المتوفرة للمتابعة",
+      "removeOutOfStockItems": "أزل المنتجات غير المتوفرة لإتمام الطلب"
     },
     "AddGiftWrappingDrawer": {
       "title": "إضافة تغليف هدية",
@@ -1628,6 +1642,7 @@
       "failedToSetPaymentMethod": "فشل تعيين طريقة الدفع",
       "failedToUpdatePaymentMethod": "فشل تحديث طريقة الدفع",
       "failedToSetShippingMethod": "فشل تعيين طريقة الشحن",
+      "shippingUnavailableDueToOutOfStock": "أزل المنتجات غير المتوفرة لاختيار طريقة التوصيل",
       "failedToUpdateShippingMethod": "فشل تحديث طريقة الشحن",
       "failedToSetBillingAddress": "فشل تعيين عنوان الفوترة",
       "failedToUpdateShippingAddress": "فشل تحديث عنوان الشحن",
@@ -1702,6 +1717,8 @@
   "AddDeliveryAddressPage": {
     "title": "أضف عنوان جديد",
     "giftTitle": "إضافة عنوان توصيل الهدية",
+    "editTitle": "تعديل عنوان التوصيل",
+    "editGiftTitle": "تعديل عنوان توصيل الهدية",
     "map": {
       "gettingYourLocation": "اختر العنوان من الخريطة...",
       "locationPermissionRequired": "مطلوب إذن الموقع",
@@ -1774,11 +1791,14 @@
     "breakdownTitle": "تفاصيل الطلب",
     "subtotal": "المجموع الفرعي",
     "serviceFee": "رسوم الخدمة",
+    "codFee": "رسوم الدفع عند الاستلام",
     "shippingFee": "رسوم الشحن",
     "shippingFree": "مجانًا",
     "discount": "خصم",
+    "loyalityPoints": "نقاط الولاء",
     "rajhiMokafaa": "مكافأة الراجحي",
     "grandTotal": "المجموع الكلي",
+    "cashback": "كاش باك",
     "deliveryAddress": "عنوان التوصيل",
     "fallbackDeliveryEstimate": "١ - ٣ أيام عمل",
     "fallbackAddress": "الإمارات، دبي، مدينة دبي للإنترنت، شارع الفلك، برج الشاطئ، مكتب 1209",

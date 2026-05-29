@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 
 import { BulletDeliveryToastTrigger } from "@/components/bullet-delivery/bullet-delivery-toast-trigger";
 import { useCart } from "@/contexts/use-cart";
+import { usePaymentStatusError } from "@/hooks/checkout/use-payment-status-error";
 import { Link } from "@/i18n/navigation";
 import { trackContinueShopping } from "@/lib/analytics/events";
 
@@ -17,6 +18,7 @@ export const CartContent = ({
   suggestedProducts: React.ReactNode;
 }) => {
   const { cart, isLoading } = useCart();
+  usePaymentStatusError();
   const items = cart?.items ?? [];
   const itemCount = cart?.totalQuantity ?? 0;
   const giftsCount = items.reduce(

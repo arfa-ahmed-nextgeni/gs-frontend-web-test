@@ -25,10 +25,10 @@ export function CheckoutStickyFooter({
 
   const buttonClassName =
     variant === "primary"
-      ? "flex h-[50px] w-full max-w-[390px] items-center justify-center gap-2 rounded-xl bg-[#3B82F6] px-8 text-[20px] font-medium text-white hover:bg-[#3B82F6]/90 disabled:cursor-not-allowed disabled:opacity-50 lg:w-[390px]"
+      ? "relative flex h-[50px] w-full max-w-[390px] items-center justify-center rounded-xl bg-[#3B82F6] px-8 text-[20px] font-medium text-white hover:bg-[#3B82F6]/90 disabled:cursor-not-allowed disabled:opacity-50 lg:w-[390px]"
       : variant === "applePay"
         ? "apple-pay-button-styled h-[50px] min-h-[44px] w-full max-w-[390px] rounded-xl border-0 p-0 text-[0] leading-none text-transparent disabled:cursor-not-allowed disabled:opacity-50 [&>*]:hidden lg:w-[390px]"
-        : "flex h-[50px] w-full max-w-[390px] items-center justify-center gap-2 rounded-xl bg-[#3F4852] px-8 text-[20px] font-medium text-white hover:bg-[#3F4852]/90 disabled:cursor-not-allowed disabled:opacity-50 lg:w-[390px]";
+        : "relative flex h-[50px] w-full max-w-[430px] items-center justify-center rounded-xl bg-[#3F4852] px-8 text-[20px] font-medium text-white hover:bg-[#3F4852]/90 disabled:cursor-not-allowed disabled:opacity-50 lg:w-[430px]";
 
   return (
     <div className="bottom-15 fixed inset-x-0 z-10 bg-white lg:bottom-0">
@@ -47,8 +47,16 @@ export function CheckoutStickyFooter({
           {/* For other buttons, show spinner and text normally */}
           {variant !== "applePay" && (
             <>
-              {isLoading && <Spinner size={20} variant="light" />}
-              {buttonText || t("button.selectAddress")}
+              {isLoading && (
+                <Spinner
+                  className="absolute left-4 top-1/2 -translate-y-1/2"
+                  size={20}
+                  variant="light"
+                />
+              )}
+              <span className="truncate">
+                {buttonText || t("button.selectAddress")}
+              </span>
             </>
           )}
         </button>

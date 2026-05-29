@@ -1010,6 +1010,7 @@ export type BundleOrderItem = OrderItemInterface & {
   product_sku: Scalars["String"]["output"];
   /** The type of product, such as simple, configurable, etc. */
   product_type?: Maybe<Scalars["String"]["output"]>;
+  product_type_new2_label?: Maybe<Scalars["String"]["output"]>;
   /** URL key of the base product. */
   product_url_key?: Maybe<Scalars["String"]["output"]>;
   /** The number of canceled items. */
@@ -1051,6 +1052,8 @@ export type BundleProduct = CustomizableProductInterface &
     base_notes?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     bottle_design?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    brand_keyword?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     brand_new?: Maybe<Scalars["Int"]["output"]>;
     brand_new_label?: Maybe<Scalars["String"]["output"]>;
@@ -1208,6 +1211,7 @@ export type BundleProduct = CustomizableProductInterface &
     product_type_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_type_new2?: Maybe<Scalars["String"]["output"]>;
+    product_type_new2_label?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     quantity?: Maybe<Scalars["Int"]["output"]>;
     /** The average of all the ratings given to the product. */
@@ -1222,10 +1226,6 @@ export type BundleProduct = CustomizableProductInterface &
     review_count: Scalars["Int"]["output"];
     /** The list of products reviews. */
     reviews: ProductReviews;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    search_key?: Maybe<Scalars["String"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    search_keywords?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     season?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -2479,6 +2479,8 @@ export type ConfigurableProduct = CustomizableProductInterface &
     /** @deprecated Use the `custom_attributes` field instead. */
     bottle_design?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    brand_keyword?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     brand_new?: Maybe<Scalars["Int"]["output"]>;
     brand_new_label?: Maybe<Scalars["String"]["output"]>;
     /** The relative canonical URL. This value is returned only if the system setting 'Use Canonical Link Meta Tag For Products' is enabled. */
@@ -2627,6 +2629,7 @@ export type ConfigurableProduct = CustomizableProductInterface &
     product_type_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_type_new2?: Maybe<Scalars["String"]["output"]>;
+    product_type_new2_label?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     quantity?: Maybe<Scalars["Int"]["output"]>;
     /** The average of all the ratings given to the product. */
@@ -2641,10 +2644,6 @@ export type ConfigurableProduct = CustomizableProductInterface &
     review_count: Scalars["Int"]["output"];
     /** The list of products reviews. */
     reviews: ProductReviews;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    search_key?: Maybe<Scalars["String"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    search_keywords?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     season?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -4518,7 +4517,7 @@ export type CustomerStoreCreditHistoryItem = {
   __typename?: "CustomerStoreCreditHistoryItem";
   /** The action that was made on the store credit. */
   action?: Maybe<Scalars["String"]["output"]>;
-  /** The store credit available to the customer as a result of this action. */
+  /** The store credit available to the customer as a result of this action.  */
   actual_balance?: Maybe<Money>;
   /** The amount added to or subtracted from the store credit as a result of this action. */
   balance_change?: Maybe<Money>;
@@ -5071,6 +5070,7 @@ export type DownloadableOrderItem = OrderItemInterface & {
   product_sku: Scalars["String"]["output"];
   /** The type of product, such as simple, configurable, etc. */
   product_type?: Maybe<Scalars["String"]["output"]>;
+  product_type_new2_label?: Maybe<Scalars["String"]["output"]>;
   /** URL key of the base product. */
   product_url_key?: Maybe<Scalars["String"]["output"]>;
   /** The number of canceled items. */
@@ -5111,6 +5111,8 @@ export type DownloadableProduct = CustomizableProductInterface &
     base_notes?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     bottle_design?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    brand_keyword?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     brand_new?: Maybe<Scalars["Int"]["output"]>;
     brand_new_label?: Maybe<Scalars["String"]["output"]>;
@@ -5266,6 +5268,7 @@ export type DownloadableProduct = CustomizableProductInterface &
     product_type_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_type_new2?: Maybe<Scalars["String"]["output"]>;
+    product_type_new2_label?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     quantity?: Maybe<Scalars["Int"]["output"]>;
     /** The average of all the ratings given to the product. */
@@ -5280,10 +5283,6 @@ export type DownloadableProduct = CustomizableProductInterface &
     review_count: Scalars["Int"]["output"];
     /** The list of products reviews. */
     reviews: ProductReviews;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    search_key?: Maybe<Scalars["String"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    search_keywords?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     season?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -5946,6 +5945,7 @@ export type GiftCardOrderItem = OrderItemInterface & {
   product_sku: Scalars["String"]["output"];
   /** The type of product, such as simple, configurable, etc. */
   product_type?: Maybe<Scalars["String"]["output"]>;
+  product_type_new2_label?: Maybe<Scalars["String"]["output"]>;
   /** URL key of the base product. */
   product_url_key?: Maybe<Scalars["String"]["output"]>;
   /** The number of canceled items. */
@@ -5991,6 +5991,8 @@ export type GiftCardProduct = CustomizableProductInterface &
     base_notes?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     bottle_design?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
+    brand_keyword?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     brand_new?: Maybe<Scalars["Int"]["output"]>;
     brand_new_label?: Maybe<Scalars["String"]["output"]>;
@@ -6152,6 +6154,7 @@ export type GiftCardProduct = CustomizableProductInterface &
     product_type_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_type_new2?: Maybe<Scalars["String"]["output"]>;
+    product_type_new2_label?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     quantity?: Maybe<Scalars["Int"]["output"]>;
     /** The average of all the ratings given to the product. */
@@ -6166,10 +6169,6 @@ export type GiftCardProduct = CustomizableProductInterface &
     review_count: Scalars["Int"]["output"];
     /** The list of products reviews. */
     reviews: ProductReviews;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    search_key?: Maybe<Scalars["String"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    search_keywords?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     season?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -6709,6 +6708,8 @@ export type GroupedProduct = PhysicalProductInterface &
     /** @deprecated Use the `custom_attributes` field instead. */
     bottle_design?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    brand_keyword?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     brand_new?: Maybe<Scalars["Int"]["output"]>;
     brand_new_label?: Maybe<Scalars["String"]["output"]>;
     /** The relative canonical URL. This value is returned only if the system setting 'Use Canonical Link Meta Tag For Products' is enabled. */
@@ -6853,6 +6854,7 @@ export type GroupedProduct = PhysicalProductInterface &
     product_type_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_type_new2?: Maybe<Scalars["String"]["output"]>;
+    product_type_new2_label?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     quantity?: Maybe<Scalars["Int"]["output"]>;
     /** The average of all the ratings given to the product. */
@@ -6867,10 +6869,6 @@ export type GroupedProduct = PhysicalProductInterface &
     review_count: Scalars["Int"]["output"];
     /** The list of products reviews. */
     reviews: ProductReviews;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    search_key?: Maybe<Scalars["String"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    search_keywords?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     season?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -8194,6 +8192,7 @@ export type OrderItem = OrderItemInterface & {
   product_sku: Scalars["String"]["output"];
   /** The type of product, such as simple, configurable, etc. */
   product_type?: Maybe<Scalars["String"]["output"]>;
+  product_type_new2_label?: Maybe<Scalars["String"]["output"]>;
   /** URL key of the base product. */
   product_url_key?: Maybe<Scalars["String"]["output"]>;
   /** The number of canceled items. */
@@ -8240,6 +8239,7 @@ export type OrderItemInterface = {
   product_sku: Scalars["String"]["output"];
   /** The type of product, such as simple, configurable, etc. */
   product_type?: Maybe<Scalars["String"]["output"]>;
+  product_type_new2_label?: Maybe<Scalars["String"]["output"]>;
   /** URL key of the base product. */
   product_url_key?: Maybe<Scalars["String"]["output"]>;
   /** The number of canceled items. */
@@ -8907,6 +8907,8 @@ export type ProductAttributeFilterInput = {
   area_of_apply?: InputMaybe<FilterEqualTypeInput>;
   /** Attribute label: Base Notes */
   base_notes?: InputMaybe<FilterMatchTypeInput>;
+  /** Attribute label: Brand Keyword for LiveSearch */
+  brand_keyword?: InputMaybe<FilterMatchTypeInput>;
   /** Attribute label: Brand */
   brand_new?: InputMaybe<FilterEqualTypeInput>;
   /** Deprecated: use `category_uid` to filter product by category ID. */
@@ -8951,6 +8953,8 @@ export type ProductAttributeFilterInput = {
   name?: InputMaybe<FilterMatchTypeInput>;
   /** Attribute label: Set Product as New from Date */
   news_from_date?: InputMaybe<FilterRangeTypeInput>;
+  /** Attribute label: Notes */
+  notes?: InputMaybe<FilterEqualTypeInput>;
   /** Attribute label: Category */
   perfume_category?: InputMaybe<FilterEqualTypeInput>;
   /** Attribute label: Color */
@@ -8967,16 +8971,10 @@ export type ProductAttributeFilterInput = {
   product_type_new2?: InputMaybe<FilterEqualTypeInput>;
   /** Attribute label: Product Category */
   productcategory?: InputMaybe<FilterEqualTypeInput>;
-  /** Attribute label: Search Key */
-  search_key?: InputMaybe<FilterMatchTypeInput>;
-  /** Attribute label: Search Keyword */
-  search_keywords?: InputMaybe<FilterMatchTypeInput>;
   /** Attribute label: Serie */
   serie_new?: InputMaybe<FilterEqualTypeInput>;
   /** Attribute label: series */
   series?: InputMaybe<FilterEqualTypeInput>;
-  /** Attribute label: Short Description */
-  short_description?: InputMaybe<FilterMatchTypeInput>;
   /** Attribute label: Short Name */
   short_name?: InputMaybe<FilterMatchTypeInput>;
   /** Attribute label: Skin Concern */
@@ -9149,6 +9147,8 @@ export type ProductInterface = {
   /** @deprecated Use the `custom_attributes` field instead. */
   bottle_design?: Maybe<Scalars["String"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
+  brand_keyword?: Maybe<Scalars["String"]["output"]>;
+  /** @deprecated Use the `custom_attributes` field instead. */
   brand_new?: Maybe<Scalars["Int"]["output"]>;
   brand_new_label?: Maybe<Scalars["String"]["output"]>;
   /** The relative canonical URL. This value is returned only if the system setting 'Use Canonical Link Meta Tag For Products' is enabled. */
@@ -9291,6 +9291,7 @@ export type ProductInterface = {
   product_type_new?: Maybe<Scalars["String"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
   product_type_new2?: Maybe<Scalars["String"]["output"]>;
+  product_type_new2_label?: Maybe<Scalars["String"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
   quantity?: Maybe<Scalars["Int"]["output"]>;
   /** The average of all the ratings given to the product. */
@@ -9301,10 +9302,6 @@ export type ProductInterface = {
   review_count: Scalars["Int"]["output"];
   /** The list of products reviews. */
   reviews: ProductReviews;
-  /** @deprecated Use the `custom_attributes` field instead. */
-  search_key?: Maybe<Scalars["String"]["output"]>;
-  /** @deprecated Use the `custom_attributes` field instead. */
-  search_keywords?: Maybe<Scalars["String"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
   season?: Maybe<Scalars["String"]["output"]>;
   /** @deprecated Use the `custom_attributes` field instead. */
@@ -11297,6 +11294,8 @@ export type SimpleProduct = CustomizableProductInterface &
     /** @deprecated Use the `custom_attributes` field instead. */
     bottle_design?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    brand_keyword?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     brand_new?: Maybe<Scalars["Int"]["output"]>;
     brand_new_label?: Maybe<Scalars["String"]["output"]>;
     /** The relative canonical URL. This value is returned only if the system setting 'Use Canonical Link Meta Tag For Products' is enabled. */
@@ -11441,6 +11440,7 @@ export type SimpleProduct = CustomizableProductInterface &
     product_type_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_type_new2?: Maybe<Scalars["String"]["output"]>;
+    product_type_new2_label?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     quantity?: Maybe<Scalars["Int"]["output"]>;
     /** The average of all the ratings given to the product. */
@@ -11455,10 +11455,6 @@ export type SimpleProduct = CustomizableProductInterface &
     review_count: Scalars["Int"]["output"];
     /** The list of products reviews. */
     reviews: ProductReviews;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    search_key?: Maybe<Scalars["String"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    search_keywords?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     season?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -12864,6 +12860,8 @@ export type VirtualProduct = CustomizableProductInterface &
     /** @deprecated Use the `custom_attributes` field instead. */
     bottle_design?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
+    brand_keyword?: Maybe<Scalars["String"]["output"]>;
+    /** @deprecated Use the `custom_attributes` field instead. */
     brand_new?: Maybe<Scalars["Int"]["output"]>;
     brand_new_label?: Maybe<Scalars["String"]["output"]>;
     /** The relative canonical URL. This value is returned only if the system setting 'Use Canonical Link Meta Tag For Products' is enabled. */
@@ -13008,6 +13006,7 @@ export type VirtualProduct = CustomizableProductInterface &
     product_type_new?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     product_type_new2?: Maybe<Scalars["String"]["output"]>;
+    product_type_new2_label?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     quantity?: Maybe<Scalars["Int"]["output"]>;
     /** The average of all the ratings given to the product. */
@@ -13022,10 +13021,6 @@ export type VirtualProduct = CustomizableProductInterface &
     review_count: Scalars["Int"]["output"];
     /** The list of products reviews. */
     reviews: ProductReviews;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    search_key?: Maybe<Scalars["String"]["output"]>;
-    /** @deprecated Use the `custom_attributes` field instead. */
-    search_keywords?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
     season?: Maybe<Scalars["String"]["output"]>;
     /** @deprecated Use the `custom_attributes` field instead. */
@@ -13508,6 +13503,11 @@ export type CartDetailsFieldsFragment = {
       currency?: CurrencyEnum | null;
       value?: number | null;
     } | null;
+    cod_fee?: {
+      __typename?: "Money";
+      currency?: CurrencyEnum | null;
+      value?: number | null;
+    } | null;
     mokafaa_discount?: {
       __typename?: "Money";
       currency?: CurrencyEnum | null;
@@ -13608,6 +13608,7 @@ export type CartDetailsFieldsFragment = {
           __typename?: "BundleCartItem";
           uid: string;
           quantity: number;
+          is_available: boolean;
           is_gwp?: boolean | null;
           is_wrap?: boolean | null;
           prices?: {
@@ -13943,6 +13944,7 @@ export type CartDetailsFieldsFragment = {
           attribute_set?: string | null;
           uid: string;
           quantity: number;
+          is_available: boolean;
           is_gwp?: boolean | null;
           is_wrap?: boolean | null;
           configurable_options: Array<{
@@ -13957,6 +13959,7 @@ export type CartDetailsFieldsFragment = {
                 __typename?: "BundleProduct";
                 id?: number | null;
                 sku?: string | null;
+                stock_status?: ProductStockStatus | null;
                 express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
@@ -13984,11 +13987,17 @@ export type CartDetailsFieldsFragment = {
                     } | null;
                   };
                 };
+                thumbnail?: {
+                  __typename?: "ProductImage";
+                  url?: string | null;
+                  label?: string | null;
+                } | null;
               }
             | {
                 __typename?: "ConfigurableProduct";
                 id?: number | null;
                 sku?: string | null;
+                stock_status?: ProductStockStatus | null;
                 express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
@@ -14016,11 +14025,17 @@ export type CartDetailsFieldsFragment = {
                     } | null;
                   };
                 };
+                thumbnail?: {
+                  __typename?: "ProductImage";
+                  url?: string | null;
+                  label?: string | null;
+                } | null;
               }
             | {
                 __typename?: "DownloadableProduct";
                 id?: number | null;
                 sku?: string | null;
+                stock_status?: ProductStockStatus | null;
                 express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
@@ -14048,11 +14063,17 @@ export type CartDetailsFieldsFragment = {
                     } | null;
                   };
                 };
+                thumbnail?: {
+                  __typename?: "ProductImage";
+                  url?: string | null;
+                  label?: string | null;
+                } | null;
               }
             | {
                 __typename?: "GiftCardProduct";
                 id?: number | null;
                 sku?: string | null;
+                stock_status?: ProductStockStatus | null;
                 express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
@@ -14080,11 +14101,17 @@ export type CartDetailsFieldsFragment = {
                     } | null;
                   };
                 };
+                thumbnail?: {
+                  __typename?: "ProductImage";
+                  url?: string | null;
+                  label?: string | null;
+                } | null;
               }
             | {
                 __typename?: "GroupedProduct";
                 id?: number | null;
                 sku?: string | null;
+                stock_status?: ProductStockStatus | null;
                 express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
@@ -14112,11 +14139,17 @@ export type CartDetailsFieldsFragment = {
                     } | null;
                   };
                 };
+                thumbnail?: {
+                  __typename?: "ProductImage";
+                  url?: string | null;
+                  label?: string | null;
+                } | null;
               }
             | {
                 __typename?: "SimpleProduct";
                 id?: number | null;
                 sku?: string | null;
+                stock_status?: ProductStockStatus | null;
                 express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
@@ -14144,11 +14177,17 @@ export type CartDetailsFieldsFragment = {
                     } | null;
                   };
                 };
+                thumbnail?: {
+                  __typename?: "ProductImage";
+                  url?: string | null;
+                  label?: string | null;
+                } | null;
               }
             | {
                 __typename?: "VirtualProduct";
                 id?: number | null;
                 sku?: string | null;
+                stock_status?: ProductStockStatus | null;
                 express_delivery_available?: boolean | null;
                 countdown_timer_enabled?: number | null;
                 countdown_timer_end_date?: string | null;
@@ -14176,6 +14215,11 @@ export type CartDetailsFieldsFragment = {
                     } | null;
                   };
                 };
+                thumbnail?: {
+                  __typename?: "ProductImage";
+                  url?: string | null;
+                  label?: string | null;
+                } | null;
               };
           prices?: {
             __typename?: "CartItemPrices";
@@ -14509,6 +14553,7 @@ export type CartDetailsFieldsFragment = {
           __typename?: "DownloadableCartItem";
           uid: string;
           quantity: number;
+          is_available: boolean;
           is_gwp?: boolean | null;
           is_wrap?: boolean | null;
           prices?: {
@@ -14843,6 +14888,7 @@ export type CartDetailsFieldsFragment = {
           __typename?: "GiftCardCartItem";
           uid: string;
           quantity: number;
+          is_available: boolean;
           is_gwp?: boolean | null;
           is_wrap?: boolean | null;
           prices?: {
@@ -15178,6 +15224,7 @@ export type CartDetailsFieldsFragment = {
           attribute_set?: string | null;
           uid: string;
           quantity: number;
+          is_available: boolean;
           is_gwp?: boolean | null;
           is_wrap?: boolean | null;
           product:
@@ -15554,6 +15601,7 @@ export type CartDetailsFieldsFragment = {
           __typename?: "VirtualCartItem";
           uid: string;
           quantity: number;
+          is_available: boolean;
           is_gwp?: boolean | null;
           is_wrap?: boolean | null;
           prices?: {
@@ -15942,6 +15990,11 @@ export type GetCartDetailsQuery = {
         currency?: CurrencyEnum | null;
         value?: number | null;
       } | null;
+      cod_fee?: {
+        __typename?: "Money";
+        currency?: CurrencyEnum | null;
+        value?: number | null;
+      } | null;
       mokafaa_discount?: {
         __typename?: "Money";
         currency?: CurrencyEnum | null;
@@ -16046,6 +16099,7 @@ export type GetCartDetailsQuery = {
             __typename?: "BundleCartItem";
             uid: string;
             quantity: number;
+            is_available: boolean;
             is_gwp?: boolean | null;
             is_wrap?: boolean | null;
             prices?: {
@@ -16381,6 +16435,7 @@ export type GetCartDetailsQuery = {
             attribute_set?: string | null;
             uid: string;
             quantity: number;
+            is_available: boolean;
             is_gwp?: boolean | null;
             is_wrap?: boolean | null;
             configurable_options: Array<{
@@ -16395,6 +16450,7 @@ export type GetCartDetailsQuery = {
                   __typename?: "BundleProduct";
                   id?: number | null;
                   sku?: string | null;
+                  stock_status?: ProductStockStatus | null;
                   express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
@@ -16422,11 +16478,17 @@ export type GetCartDetailsQuery = {
                       } | null;
                     };
                   };
+                  thumbnail?: {
+                    __typename?: "ProductImage";
+                    url?: string | null;
+                    label?: string | null;
+                  } | null;
                 }
               | {
                   __typename?: "ConfigurableProduct";
                   id?: number | null;
                   sku?: string | null;
+                  stock_status?: ProductStockStatus | null;
                   express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
@@ -16454,11 +16516,17 @@ export type GetCartDetailsQuery = {
                       } | null;
                     };
                   };
+                  thumbnail?: {
+                    __typename?: "ProductImage";
+                    url?: string | null;
+                    label?: string | null;
+                  } | null;
                 }
               | {
                   __typename?: "DownloadableProduct";
                   id?: number | null;
                   sku?: string | null;
+                  stock_status?: ProductStockStatus | null;
                   express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
@@ -16486,11 +16554,17 @@ export type GetCartDetailsQuery = {
                       } | null;
                     };
                   };
+                  thumbnail?: {
+                    __typename?: "ProductImage";
+                    url?: string | null;
+                    label?: string | null;
+                  } | null;
                 }
               | {
                   __typename?: "GiftCardProduct";
                   id?: number | null;
                   sku?: string | null;
+                  stock_status?: ProductStockStatus | null;
                   express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
@@ -16518,11 +16592,17 @@ export type GetCartDetailsQuery = {
                       } | null;
                     };
                   };
+                  thumbnail?: {
+                    __typename?: "ProductImage";
+                    url?: string | null;
+                    label?: string | null;
+                  } | null;
                 }
               | {
                   __typename?: "GroupedProduct";
                   id?: number | null;
                   sku?: string | null;
+                  stock_status?: ProductStockStatus | null;
                   express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
@@ -16550,11 +16630,17 @@ export type GetCartDetailsQuery = {
                       } | null;
                     };
                   };
+                  thumbnail?: {
+                    __typename?: "ProductImage";
+                    url?: string | null;
+                    label?: string | null;
+                  } | null;
                 }
               | {
                   __typename?: "SimpleProduct";
                   id?: number | null;
                   sku?: string | null;
+                  stock_status?: ProductStockStatus | null;
                   express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
@@ -16582,11 +16668,17 @@ export type GetCartDetailsQuery = {
                       } | null;
                     };
                   };
+                  thumbnail?: {
+                    __typename?: "ProductImage";
+                    url?: string | null;
+                    label?: string | null;
+                  } | null;
                 }
               | {
                   __typename?: "VirtualProduct";
                   id?: number | null;
                   sku?: string | null;
+                  stock_status?: ProductStockStatus | null;
                   express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
@@ -16614,6 +16706,11 @@ export type GetCartDetailsQuery = {
                       } | null;
                     };
                   };
+                  thumbnail?: {
+                    __typename?: "ProductImage";
+                    url?: string | null;
+                    label?: string | null;
+                  } | null;
                 };
             prices?: {
               __typename?: "CartItemPrices";
@@ -16947,6 +17044,7 @@ export type GetCartDetailsQuery = {
             __typename?: "DownloadableCartItem";
             uid: string;
             quantity: number;
+            is_available: boolean;
             is_gwp?: boolean | null;
             is_wrap?: boolean | null;
             prices?: {
@@ -17281,6 +17379,7 @@ export type GetCartDetailsQuery = {
             __typename?: "GiftCardCartItem";
             uid: string;
             quantity: number;
+            is_available: boolean;
             is_gwp?: boolean | null;
             is_wrap?: boolean | null;
             prices?: {
@@ -17616,6 +17715,7 @@ export type GetCartDetailsQuery = {
             attribute_set?: string | null;
             uid: string;
             quantity: number;
+            is_available: boolean;
             is_gwp?: boolean | null;
             is_wrap?: boolean | null;
             product:
@@ -17992,6 +18092,7 @@ export type GetCartDetailsQuery = {
             __typename?: "VirtualCartItem";
             uid: string;
             quantity: number;
+            is_available: boolean;
             is_gwp?: boolean | null;
             is_wrap?: boolean | null;
             prices?: {
@@ -18417,6 +18518,11 @@ export type GetCustomerCartDetailsQuery = {
         currency?: CurrencyEnum | null;
         value?: number | null;
       } | null;
+      cod_fee?: {
+        __typename?: "Money";
+        currency?: CurrencyEnum | null;
+        value?: number | null;
+      } | null;
       mokafaa_discount?: {
         __typename?: "Money";
         currency?: CurrencyEnum | null;
@@ -18521,6 +18627,7 @@ export type GetCustomerCartDetailsQuery = {
             __typename?: "BundleCartItem";
             uid: string;
             quantity: number;
+            is_available: boolean;
             is_gwp?: boolean | null;
             is_wrap?: boolean | null;
             prices?: {
@@ -18856,6 +18963,7 @@ export type GetCustomerCartDetailsQuery = {
             attribute_set?: string | null;
             uid: string;
             quantity: number;
+            is_available: boolean;
             is_gwp?: boolean | null;
             is_wrap?: boolean | null;
             configurable_options: Array<{
@@ -18870,6 +18978,7 @@ export type GetCustomerCartDetailsQuery = {
                   __typename?: "BundleProduct";
                   id?: number | null;
                   sku?: string | null;
+                  stock_status?: ProductStockStatus | null;
                   express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
@@ -18897,11 +19006,17 @@ export type GetCustomerCartDetailsQuery = {
                       } | null;
                     };
                   };
+                  thumbnail?: {
+                    __typename?: "ProductImage";
+                    url?: string | null;
+                    label?: string | null;
+                  } | null;
                 }
               | {
                   __typename?: "ConfigurableProduct";
                   id?: number | null;
                   sku?: string | null;
+                  stock_status?: ProductStockStatus | null;
                   express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
@@ -18929,11 +19044,17 @@ export type GetCustomerCartDetailsQuery = {
                       } | null;
                     };
                   };
+                  thumbnail?: {
+                    __typename?: "ProductImage";
+                    url?: string | null;
+                    label?: string | null;
+                  } | null;
                 }
               | {
                   __typename?: "DownloadableProduct";
                   id?: number | null;
                   sku?: string | null;
+                  stock_status?: ProductStockStatus | null;
                   express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
@@ -18961,11 +19082,17 @@ export type GetCustomerCartDetailsQuery = {
                       } | null;
                     };
                   };
+                  thumbnail?: {
+                    __typename?: "ProductImage";
+                    url?: string | null;
+                    label?: string | null;
+                  } | null;
                 }
               | {
                   __typename?: "GiftCardProduct";
                   id?: number | null;
                   sku?: string | null;
+                  stock_status?: ProductStockStatus | null;
                   express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
@@ -18993,11 +19120,17 @@ export type GetCustomerCartDetailsQuery = {
                       } | null;
                     };
                   };
+                  thumbnail?: {
+                    __typename?: "ProductImage";
+                    url?: string | null;
+                    label?: string | null;
+                  } | null;
                 }
               | {
                   __typename?: "GroupedProduct";
                   id?: number | null;
                   sku?: string | null;
+                  stock_status?: ProductStockStatus | null;
                   express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
@@ -19025,11 +19158,17 @@ export type GetCustomerCartDetailsQuery = {
                       } | null;
                     };
                   };
+                  thumbnail?: {
+                    __typename?: "ProductImage";
+                    url?: string | null;
+                    label?: string | null;
+                  } | null;
                 }
               | {
                   __typename?: "SimpleProduct";
                   id?: number | null;
                   sku?: string | null;
+                  stock_status?: ProductStockStatus | null;
                   express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
@@ -19057,11 +19196,17 @@ export type GetCustomerCartDetailsQuery = {
                       } | null;
                     };
                   };
+                  thumbnail?: {
+                    __typename?: "ProductImage";
+                    url?: string | null;
+                    label?: string | null;
+                  } | null;
                 }
               | {
                   __typename?: "VirtualProduct";
                   id?: number | null;
                   sku?: string | null;
+                  stock_status?: ProductStockStatus | null;
                   express_delivery_available?: boolean | null;
                   countdown_timer_enabled?: number | null;
                   countdown_timer_end_date?: string | null;
@@ -19089,6 +19234,11 @@ export type GetCustomerCartDetailsQuery = {
                       } | null;
                     };
                   };
+                  thumbnail?: {
+                    __typename?: "ProductImage";
+                    url?: string | null;
+                    label?: string | null;
+                  } | null;
                 };
             prices?: {
               __typename?: "CartItemPrices";
@@ -19422,6 +19572,7 @@ export type GetCustomerCartDetailsQuery = {
             __typename?: "DownloadableCartItem";
             uid: string;
             quantity: number;
+            is_available: boolean;
             is_gwp?: boolean | null;
             is_wrap?: boolean | null;
             prices?: {
@@ -19756,6 +19907,7 @@ export type GetCustomerCartDetailsQuery = {
             __typename?: "GiftCardCartItem";
             uid: string;
             quantity: number;
+            is_available: boolean;
             is_gwp?: boolean | null;
             is_wrap?: boolean | null;
             prices?: {
@@ -20091,6 +20243,7 @@ export type GetCustomerCartDetailsQuery = {
             attribute_set?: string | null;
             uid: string;
             quantity: number;
+            is_available: boolean;
             is_gwp?: boolean | null;
             is_wrap?: boolean | null;
             product:
@@ -20467,6 +20620,7 @@ export type GetCustomerCartDetailsQuery = {
             __typename?: "VirtualCartItem";
             uid: string;
             quantity: number;
+            is_available: boolean;
             is_gwp?: boolean | null;
             is_wrap?: boolean | null;
             prices?: {
@@ -20871,6 +21025,11 @@ export type AddProductsToCartMutation = {
           currency?: CurrencyEnum | null;
           value?: number | null;
         } | null;
+        cod_fee?: {
+          __typename?: "Money";
+          currency?: CurrencyEnum | null;
+          value?: number | null;
+        } | null;
         mokafaa_discount?: {
           __typename?: "Money";
           currency?: CurrencyEnum | null;
@@ -20975,6 +21134,7 @@ export type AddProductsToCartMutation = {
               __typename?: "BundleCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -21310,6 +21470,7 @@ export type AddProductsToCartMutation = {
               attribute_set?: string | null;
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               configurable_options: Array<{
@@ -21324,6 +21485,7 @@ export type AddProductsToCartMutation = {
                     __typename?: "BundleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -21351,11 +21513,17 @@ export type AddProductsToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -21383,11 +21551,17 @@ export type AddProductsToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -21415,11 +21589,17 @@ export type AddProductsToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -21447,11 +21627,17 @@ export type AddProductsToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -21479,11 +21665,17 @@ export type AddProductsToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -21511,11 +21703,17 @@ export type AddProductsToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -21543,6 +21741,11 @@ export type AddProductsToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   };
               prices?: {
                 __typename?: "CartItemPrices";
@@ -21876,6 +22079,7 @@ export type AddProductsToCartMutation = {
               __typename?: "DownloadableCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -22210,6 +22414,7 @@ export type AddProductsToCartMutation = {
               __typename?: "GiftCardCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -22545,6 +22750,7 @@ export type AddProductsToCartMutation = {
               attribute_set?: string | null;
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               product:
@@ -22921,6 +23127,7 @@ export type AddProductsToCartMutation = {
               __typename?: "VirtualCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -23320,6 +23527,11 @@ export type AddProductsToCartWithGiftMessageMutation = {
           currency?: CurrencyEnum | null;
           value?: number | null;
         } | null;
+        cod_fee?: {
+          __typename?: "Money";
+          currency?: CurrencyEnum | null;
+          value?: number | null;
+        } | null;
         mokafaa_discount?: {
           __typename?: "Money";
           currency?: CurrencyEnum | null;
@@ -23424,6 +23636,7 @@ export type AddProductsToCartWithGiftMessageMutation = {
               __typename?: "BundleCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -23759,6 +23972,7 @@ export type AddProductsToCartWithGiftMessageMutation = {
               attribute_set?: string | null;
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               configurable_options: Array<{
@@ -23773,6 +23987,7 @@ export type AddProductsToCartWithGiftMessageMutation = {
                     __typename?: "BundleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -23800,11 +24015,17 @@ export type AddProductsToCartWithGiftMessageMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -23832,11 +24053,17 @@ export type AddProductsToCartWithGiftMessageMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -23864,11 +24091,17 @@ export type AddProductsToCartWithGiftMessageMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -23896,11 +24129,17 @@ export type AddProductsToCartWithGiftMessageMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -23928,11 +24167,17 @@ export type AddProductsToCartWithGiftMessageMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -23960,11 +24205,17 @@ export type AddProductsToCartWithGiftMessageMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -23992,6 +24243,11 @@ export type AddProductsToCartWithGiftMessageMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   };
               prices?: {
                 __typename?: "CartItemPrices";
@@ -24325,6 +24581,7 @@ export type AddProductsToCartWithGiftMessageMutation = {
               __typename?: "DownloadableCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -24659,6 +24916,7 @@ export type AddProductsToCartWithGiftMessageMutation = {
               __typename?: "GiftCardCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -24994,6 +25252,7 @@ export type AddProductsToCartWithGiftMessageMutation = {
               attribute_set?: string | null;
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               product:
@@ -25370,6 +25629,7 @@ export type AddProductsToCartWithGiftMessageMutation = {
               __typename?: "VirtualCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -25769,6 +26029,11 @@ export type ApplyCouponToCartMutation = {
           currency?: CurrencyEnum | null;
           value?: number | null;
         } | null;
+        cod_fee?: {
+          __typename?: "Money";
+          currency?: CurrencyEnum | null;
+          value?: number | null;
+        } | null;
         mokafaa_discount?: {
           __typename?: "Money";
           currency?: CurrencyEnum | null;
@@ -25873,6 +26138,7 @@ export type ApplyCouponToCartMutation = {
               __typename?: "BundleCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -26208,6 +26474,7 @@ export type ApplyCouponToCartMutation = {
               attribute_set?: string | null;
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               configurable_options: Array<{
@@ -26222,6 +26489,7 @@ export type ApplyCouponToCartMutation = {
                     __typename?: "BundleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -26249,11 +26517,17 @@ export type ApplyCouponToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -26281,11 +26555,17 @@ export type ApplyCouponToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -26313,11 +26593,17 @@ export type ApplyCouponToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -26345,11 +26631,17 @@ export type ApplyCouponToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -26377,11 +26669,17 @@ export type ApplyCouponToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -26409,11 +26707,17 @@ export type ApplyCouponToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -26441,6 +26745,11 @@ export type ApplyCouponToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   };
               prices?: {
                 __typename?: "CartItemPrices";
@@ -26774,6 +27083,7 @@ export type ApplyCouponToCartMutation = {
               __typename?: "DownloadableCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -27108,6 +27418,7 @@ export type ApplyCouponToCartMutation = {
               __typename?: "GiftCardCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -27443,6 +27754,7 @@ export type ApplyCouponToCartMutation = {
               attribute_set?: string | null;
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               product:
@@ -27819,6 +28131,7 @@ export type ApplyCouponToCartMutation = {
               __typename?: "VirtualCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -28211,6 +28524,11 @@ export type ApplyRewardPointsToCartMutation = {
           currency?: CurrencyEnum | null;
           value?: number | null;
         } | null;
+        cod_fee?: {
+          __typename?: "Money";
+          currency?: CurrencyEnum | null;
+          value?: number | null;
+        } | null;
         mokafaa_discount?: {
           __typename?: "Money";
           currency?: CurrencyEnum | null;
@@ -28315,6 +28633,7 @@ export type ApplyRewardPointsToCartMutation = {
               __typename?: "BundleCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -28650,6 +28969,7 @@ export type ApplyRewardPointsToCartMutation = {
               attribute_set?: string | null;
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               configurable_options: Array<{
@@ -28664,6 +28984,7 @@ export type ApplyRewardPointsToCartMutation = {
                     __typename?: "BundleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -28691,11 +29012,17 @@ export type ApplyRewardPointsToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -28723,11 +29050,17 @@ export type ApplyRewardPointsToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -28755,11 +29088,17 @@ export type ApplyRewardPointsToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -28787,11 +29126,17 @@ export type ApplyRewardPointsToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -28819,11 +29164,17 @@ export type ApplyRewardPointsToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -28851,11 +29202,17 @@ export type ApplyRewardPointsToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -28883,6 +29240,11 @@ export type ApplyRewardPointsToCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   };
               prices?: {
                 __typename?: "CartItemPrices";
@@ -29216,6 +29578,7 @@ export type ApplyRewardPointsToCartMutation = {
               __typename?: "DownloadableCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -29550,6 +29913,7 @@ export type ApplyRewardPointsToCartMutation = {
               __typename?: "GiftCardCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -29885,6 +30249,7 @@ export type ApplyRewardPointsToCartMutation = {
               attribute_set?: string | null;
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               product:
@@ -30261,6 +30626,7 @@ export type ApplyRewardPointsToCartMutation = {
               __typename?: "VirtualCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -30762,6 +31128,11 @@ export type RemoveCouponFromCartMutation = {
           currency?: CurrencyEnum | null;
           value?: number | null;
         } | null;
+        cod_fee?: {
+          __typename?: "Money";
+          currency?: CurrencyEnum | null;
+          value?: number | null;
+        } | null;
         mokafaa_discount?: {
           __typename?: "Money";
           currency?: CurrencyEnum | null;
@@ -30866,6 +31237,7 @@ export type RemoveCouponFromCartMutation = {
               __typename?: "BundleCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -31201,6 +31573,7 @@ export type RemoveCouponFromCartMutation = {
               attribute_set?: string | null;
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               configurable_options: Array<{
@@ -31215,6 +31588,7 @@ export type RemoveCouponFromCartMutation = {
                     __typename?: "BundleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -31242,11 +31616,17 @@ export type RemoveCouponFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -31274,11 +31654,17 @@ export type RemoveCouponFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -31306,11 +31692,17 @@ export type RemoveCouponFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -31338,11 +31730,17 @@ export type RemoveCouponFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -31370,11 +31768,17 @@ export type RemoveCouponFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -31402,11 +31806,17 @@ export type RemoveCouponFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -31434,6 +31844,11 @@ export type RemoveCouponFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   };
               prices?: {
                 __typename?: "CartItemPrices";
@@ -31767,6 +32182,7 @@ export type RemoveCouponFromCartMutation = {
               __typename?: "DownloadableCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -32101,6 +32517,7 @@ export type RemoveCouponFromCartMutation = {
               __typename?: "GiftCardCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -32436,6 +32853,7 @@ export type RemoveCouponFromCartMutation = {
               attribute_set?: string | null;
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               product:
@@ -32812,6 +33230,7 @@ export type RemoveCouponFromCartMutation = {
               __typename?: "VirtualCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -33204,6 +33623,11 @@ export type RemoveFromCartMutation = {
           currency?: CurrencyEnum | null;
           value?: number | null;
         } | null;
+        cod_fee?: {
+          __typename?: "Money";
+          currency?: CurrencyEnum | null;
+          value?: number | null;
+        } | null;
         mokafaa_discount?: {
           __typename?: "Money";
           currency?: CurrencyEnum | null;
@@ -33308,6 +33732,7 @@ export type RemoveFromCartMutation = {
               __typename?: "BundleCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -33643,6 +34068,7 @@ export type RemoveFromCartMutation = {
               attribute_set?: string | null;
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               configurable_options: Array<{
@@ -33657,6 +34083,7 @@ export type RemoveFromCartMutation = {
                     __typename?: "BundleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -33684,11 +34111,17 @@ export type RemoveFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -33716,11 +34149,17 @@ export type RemoveFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -33748,11 +34187,17 @@ export type RemoveFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -33780,11 +34225,17 @@ export type RemoveFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -33812,11 +34263,17 @@ export type RemoveFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -33844,11 +34301,17 @@ export type RemoveFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -33876,6 +34339,11 @@ export type RemoveFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   };
               prices?: {
                 __typename?: "CartItemPrices";
@@ -34209,6 +34677,7 @@ export type RemoveFromCartMutation = {
               __typename?: "DownloadableCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -34543,6 +35012,7 @@ export type RemoveFromCartMutation = {
               __typename?: "GiftCardCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -34878,6 +35348,7 @@ export type RemoveFromCartMutation = {
               attribute_set?: string | null;
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               product:
@@ -35254,6 +35725,7 @@ export type RemoveFromCartMutation = {
               __typename?: "VirtualCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -35646,6 +36118,11 @@ export type RemoveRewardPointsFromCartMutation = {
           currency?: CurrencyEnum | null;
           value?: number | null;
         } | null;
+        cod_fee?: {
+          __typename?: "Money";
+          currency?: CurrencyEnum | null;
+          value?: number | null;
+        } | null;
         mokafaa_discount?: {
           __typename?: "Money";
           currency?: CurrencyEnum | null;
@@ -35750,6 +36227,7 @@ export type RemoveRewardPointsFromCartMutation = {
               __typename?: "BundleCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -36085,6 +36563,7 @@ export type RemoveRewardPointsFromCartMutation = {
               attribute_set?: string | null;
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               configurable_options: Array<{
@@ -36099,6 +36578,7 @@ export type RemoveRewardPointsFromCartMutation = {
                     __typename?: "BundleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -36126,11 +36606,17 @@ export type RemoveRewardPointsFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -36158,11 +36644,17 @@ export type RemoveRewardPointsFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -36190,11 +36682,17 @@ export type RemoveRewardPointsFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -36222,11 +36720,17 @@ export type RemoveRewardPointsFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -36254,11 +36758,17 @@ export type RemoveRewardPointsFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -36286,11 +36796,17 @@ export type RemoveRewardPointsFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -36318,6 +36834,11 @@ export type RemoveRewardPointsFromCartMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   };
               prices?: {
                 __typename?: "CartItemPrices";
@@ -36651,6 +37172,7 @@ export type RemoveRewardPointsFromCartMutation = {
               __typename?: "DownloadableCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -36985,6 +37507,7 @@ export type RemoveRewardPointsFromCartMutation = {
               __typename?: "GiftCardCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -37320,6 +37843,7 @@ export type RemoveRewardPointsFromCartMutation = {
               attribute_set?: string | null;
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               product:
@@ -37696,6 +38220,7 @@ export type RemoveRewardPointsFromCartMutation = {
               __typename?: "VirtualCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -38353,6 +38878,11 @@ export type UpdateCartItemsMutation = {
           currency?: CurrencyEnum | null;
           value?: number | null;
         } | null;
+        cod_fee?: {
+          __typename?: "Money";
+          currency?: CurrencyEnum | null;
+          value?: number | null;
+        } | null;
         mokafaa_discount?: {
           __typename?: "Money";
           currency?: CurrencyEnum | null;
@@ -38457,6 +38987,7 @@ export type UpdateCartItemsMutation = {
               __typename?: "BundleCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -38792,6 +39323,7 @@ export type UpdateCartItemsMutation = {
               attribute_set?: string | null;
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               configurable_options: Array<{
@@ -38806,6 +39338,7 @@ export type UpdateCartItemsMutation = {
                     __typename?: "BundleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -38833,11 +39366,17 @@ export type UpdateCartItemsMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -38865,11 +39404,17 @@ export type UpdateCartItemsMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -38897,11 +39442,17 @@ export type UpdateCartItemsMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -38929,11 +39480,17 @@ export type UpdateCartItemsMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -38961,11 +39518,17 @@ export type UpdateCartItemsMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -38993,11 +39556,17 @@ export type UpdateCartItemsMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
                     sku?: string | null;
+                    stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
                     countdown_timer_enabled?: number | null;
                     countdown_timer_end_date?: string | null;
@@ -39025,6 +39594,11 @@ export type UpdateCartItemsMutation = {
                         } | null;
                       };
                     };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   };
               prices?: {
                 __typename?: "CartItemPrices";
@@ -39358,6 +39932,7 @@ export type UpdateCartItemsMutation = {
               __typename?: "DownloadableCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -39692,6 +40267,7 @@ export type UpdateCartItemsMutation = {
               __typename?: "GiftCardCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -40027,6 +40603,7 @@ export type UpdateCartItemsMutation = {
               attribute_set?: string | null;
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               product:
@@ -40403,6 +40980,7 @@ export type UpdateCartItemsMutation = {
               __typename?: "VirtualCartItem";
               uid: string;
               quantity: number;
+              is_available: boolean;
               is_gwp?: boolean | null;
               is_wrap?: boolean | null;
               prices?: {
@@ -40784,7 +41362,6 @@ export type GetBrandsQuery = {
         url_key?: string | null;
         url_path?: string | null;
         image?: string | null;
-        api_catnav_image?: string | null;
         api_catnav_icon?: string | null;
         api_celebrity_thumbnail?: string | null;
         celebrity_banner?: string | null;
@@ -40876,6 +41453,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -40909,24 +41487,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -40935,27 +41495,11 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
-                variants?: Array<{
-                  __typename?: "ConfigurableVariant";
-                  product?: {
-                    __typename?: "SimpleProduct";
-                    id?: number | null;
-                  } | null;
-                } | null> | null;
-                configurable_options?: Array<{
-                  __typename?: "ConfigurableProductOptions";
-                  attribute_code?: string | null;
-                  label?: string | null;
-                  values?: Array<{
-                    __typename?: "ConfigurableProductOptionsValues";
-                    uid?: string | null;
-                    label?: string | null;
-                  } | null> | null;
-                } | null> | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -40985,24 +41529,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -41011,6 +41537,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41044,24 +41571,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -41070,6 +41579,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41103,24 +41613,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -41129,6 +41621,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41162,24 +41655,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -41188,6 +41663,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41221,24 +41697,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -41247,6 +41705,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41280,24 +41739,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | null;
@@ -41307,6 +41748,7 @@ export type WishlistDetailsFieldsFragment = {
           id: string;
           configurable_options?: Array<{
             __typename?: "SelectedConfigurableOption";
+            option_label: string;
             value_label: string;
             configurable_product_option_uid: string;
             configurable_product_option_value_uid: string;
@@ -41315,51 +41757,268 @@ export type WishlistDetailsFieldsFragment = {
             | {
                 __typename?: "BundleProduct";
                 id?: number | null;
+                sku?: string | null;
                 stock_status?: ProductStockStatus | null;
                 express_delivery_available?: boolean | null;
-                sku?: string | null;
+                countdown_timer_enabled?: number | null;
+                countdown_timer_end_date?: string | null;
+                countdown_timer_start_date?: string | null;
+                countdown_timer_subtitle?: string | null;
+                countdown_timer_title?: string | null;
+                price_range: {
+                  __typename?: "PriceRange";
+                  minimum_price: {
+                    __typename?: "ProductPrice";
+                    final_price: {
+                      __typename?: "Money";
+                      value?: number | null;
+                      currency?: CurrencyEnum | null;
+                    };
+                    regular_price: {
+                      __typename?: "Money";
+                      value?: number | null;
+                      currency?: CurrencyEnum | null;
+                    };
+                    discount?: {
+                      __typename?: "ProductDiscount";
+                      amount_off?: number | null;
+                      percent_off?: number | null;
+                    } | null;
+                  };
+                };
+                thumbnail?: {
+                  __typename?: "ProductImage";
+                  url?: string | null;
+                  label?: string | null;
+                } | null;
               }
             | {
                 __typename?: "ConfigurableProduct";
                 id?: number | null;
+                sku?: string | null;
                 stock_status?: ProductStockStatus | null;
                 express_delivery_available?: boolean | null;
-                sku?: string | null;
+                countdown_timer_enabled?: number | null;
+                countdown_timer_end_date?: string | null;
+                countdown_timer_start_date?: string | null;
+                countdown_timer_subtitle?: string | null;
+                countdown_timer_title?: string | null;
+                price_range: {
+                  __typename?: "PriceRange";
+                  minimum_price: {
+                    __typename?: "ProductPrice";
+                    final_price: {
+                      __typename?: "Money";
+                      value?: number | null;
+                      currency?: CurrencyEnum | null;
+                    };
+                    regular_price: {
+                      __typename?: "Money";
+                      value?: number | null;
+                      currency?: CurrencyEnum | null;
+                    };
+                    discount?: {
+                      __typename?: "ProductDiscount";
+                      amount_off?: number | null;
+                      percent_off?: number | null;
+                    } | null;
+                  };
+                };
+                thumbnail?: {
+                  __typename?: "ProductImage";
+                  url?: string | null;
+                  label?: string | null;
+                } | null;
               }
             | {
                 __typename?: "DownloadableProduct";
                 id?: number | null;
+                sku?: string | null;
                 stock_status?: ProductStockStatus | null;
                 express_delivery_available?: boolean | null;
-                sku?: string | null;
+                countdown_timer_enabled?: number | null;
+                countdown_timer_end_date?: string | null;
+                countdown_timer_start_date?: string | null;
+                countdown_timer_subtitle?: string | null;
+                countdown_timer_title?: string | null;
+                price_range: {
+                  __typename?: "PriceRange";
+                  minimum_price: {
+                    __typename?: "ProductPrice";
+                    final_price: {
+                      __typename?: "Money";
+                      value?: number | null;
+                      currency?: CurrencyEnum | null;
+                    };
+                    regular_price: {
+                      __typename?: "Money";
+                      value?: number | null;
+                      currency?: CurrencyEnum | null;
+                    };
+                    discount?: {
+                      __typename?: "ProductDiscount";
+                      amount_off?: number | null;
+                      percent_off?: number | null;
+                    } | null;
+                  };
+                };
+                thumbnail?: {
+                  __typename?: "ProductImage";
+                  url?: string | null;
+                  label?: string | null;
+                } | null;
               }
             | {
                 __typename?: "GiftCardProduct";
                 id?: number | null;
+                sku?: string | null;
                 stock_status?: ProductStockStatus | null;
                 express_delivery_available?: boolean | null;
-                sku?: string | null;
+                countdown_timer_enabled?: number | null;
+                countdown_timer_end_date?: string | null;
+                countdown_timer_start_date?: string | null;
+                countdown_timer_subtitle?: string | null;
+                countdown_timer_title?: string | null;
+                price_range: {
+                  __typename?: "PriceRange";
+                  minimum_price: {
+                    __typename?: "ProductPrice";
+                    final_price: {
+                      __typename?: "Money";
+                      value?: number | null;
+                      currency?: CurrencyEnum | null;
+                    };
+                    regular_price: {
+                      __typename?: "Money";
+                      value?: number | null;
+                      currency?: CurrencyEnum | null;
+                    };
+                    discount?: {
+                      __typename?: "ProductDiscount";
+                      amount_off?: number | null;
+                      percent_off?: number | null;
+                    } | null;
+                  };
+                };
+                thumbnail?: {
+                  __typename?: "ProductImage";
+                  url?: string | null;
+                  label?: string | null;
+                } | null;
               }
             | {
                 __typename?: "GroupedProduct";
                 id?: number | null;
+                sku?: string | null;
                 stock_status?: ProductStockStatus | null;
                 express_delivery_available?: boolean | null;
-                sku?: string | null;
+                countdown_timer_enabled?: number | null;
+                countdown_timer_end_date?: string | null;
+                countdown_timer_start_date?: string | null;
+                countdown_timer_subtitle?: string | null;
+                countdown_timer_title?: string | null;
+                price_range: {
+                  __typename?: "PriceRange";
+                  minimum_price: {
+                    __typename?: "ProductPrice";
+                    final_price: {
+                      __typename?: "Money";
+                      value?: number | null;
+                      currency?: CurrencyEnum | null;
+                    };
+                    regular_price: {
+                      __typename?: "Money";
+                      value?: number | null;
+                      currency?: CurrencyEnum | null;
+                    };
+                    discount?: {
+                      __typename?: "ProductDiscount";
+                      amount_off?: number | null;
+                      percent_off?: number | null;
+                    } | null;
+                  };
+                };
+                thumbnail?: {
+                  __typename?: "ProductImage";
+                  url?: string | null;
+                  label?: string | null;
+                } | null;
               }
             | {
                 __typename?: "SimpleProduct";
                 id?: number | null;
+                sku?: string | null;
                 stock_status?: ProductStockStatus | null;
                 express_delivery_available?: boolean | null;
-                sku?: string | null;
+                countdown_timer_enabled?: number | null;
+                countdown_timer_end_date?: string | null;
+                countdown_timer_start_date?: string | null;
+                countdown_timer_subtitle?: string | null;
+                countdown_timer_title?: string | null;
+                price_range: {
+                  __typename?: "PriceRange";
+                  minimum_price: {
+                    __typename?: "ProductPrice";
+                    final_price: {
+                      __typename?: "Money";
+                      value?: number | null;
+                      currency?: CurrencyEnum | null;
+                    };
+                    regular_price: {
+                      __typename?: "Money";
+                      value?: number | null;
+                      currency?: CurrencyEnum | null;
+                    };
+                    discount?: {
+                      __typename?: "ProductDiscount";
+                      amount_off?: number | null;
+                      percent_off?: number | null;
+                    } | null;
+                  };
+                };
+                thumbnail?: {
+                  __typename?: "ProductImage";
+                  url?: string | null;
+                  label?: string | null;
+                } | null;
               }
             | {
                 __typename?: "VirtualProduct";
                 id?: number | null;
+                sku?: string | null;
                 stock_status?: ProductStockStatus | null;
                 express_delivery_available?: boolean | null;
-                sku?: string | null;
+                countdown_timer_enabled?: number | null;
+                countdown_timer_end_date?: string | null;
+                countdown_timer_start_date?: string | null;
+                countdown_timer_subtitle?: string | null;
+                countdown_timer_title?: string | null;
+                price_range: {
+                  __typename?: "PriceRange";
+                  minimum_price: {
+                    __typename?: "ProductPrice";
+                    final_price: {
+                      __typename?: "Money";
+                      value?: number | null;
+                      currency?: CurrencyEnum | null;
+                    };
+                    regular_price: {
+                      __typename?: "Money";
+                      value?: number | null;
+                      currency?: CurrencyEnum | null;
+                    };
+                    discount?: {
+                      __typename?: "ProductDiscount";
+                      amount_off?: number | null;
+                      percent_off?: number | null;
+                    } | null;
+                  };
+                };
+                thumbnail?: {
+                  __typename?: "ProductImage";
+                  url?: string | null;
+                  label?: string | null;
+                } | null;
               }
             | null;
           product?:
@@ -41369,6 +42028,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41402,24 +42062,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -41428,27 +42070,11 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
-                variants?: Array<{
-                  __typename?: "ConfigurableVariant";
-                  product?: {
-                    __typename?: "SimpleProduct";
-                    id?: number | null;
-                  } | null;
-                } | null> | null;
-                configurable_options?: Array<{
-                  __typename?: "ConfigurableProductOptions";
-                  attribute_code?: string | null;
-                  label?: string | null;
-                  values?: Array<{
-                    __typename?: "ConfigurableProductOptionsValues";
-                    uid?: string | null;
-                    label?: string | null;
-                  } | null> | null;
-                } | null> | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -41478,24 +42104,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -41504,6 +42112,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41537,24 +42146,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -41563,6 +42154,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41596,24 +42188,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -41622,6 +42196,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41655,24 +42230,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -41681,6 +42238,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41714,24 +42272,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -41740,6 +42280,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41773,24 +42314,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | null;
@@ -41805,6 +42328,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41838,24 +42362,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -41864,27 +42370,11 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
-                variants?: Array<{
-                  __typename?: "ConfigurableVariant";
-                  product?: {
-                    __typename?: "SimpleProduct";
-                    id?: number | null;
-                  } | null;
-                } | null> | null;
-                configurable_options?: Array<{
-                  __typename?: "ConfigurableProductOptions";
-                  attribute_code?: string | null;
-                  label?: string | null;
-                  values?: Array<{
-                    __typename?: "ConfigurableProductOptionsValues";
-                    uid?: string | null;
-                    label?: string | null;
-                  } | null> | null;
-                } | null> | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -41914,24 +42404,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -41940,6 +42412,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -41973,24 +42446,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -41999,6 +42454,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42032,24 +42488,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -42058,6 +42496,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42091,24 +42530,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -42117,6 +42538,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42150,24 +42572,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -42176,6 +42580,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42209,24 +42614,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | null;
@@ -42241,6 +42628,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42274,24 +42662,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -42300,27 +42670,11 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
-                variants?: Array<{
-                  __typename?: "ConfigurableVariant";
-                  product?: {
-                    __typename?: "SimpleProduct";
-                    id?: number | null;
-                  } | null;
-                } | null> | null;
-                configurable_options?: Array<{
-                  __typename?: "ConfigurableProductOptions";
-                  attribute_code?: string | null;
-                  label?: string | null;
-                  values?: Array<{
-                    __typename?: "ConfigurableProductOptionsValues";
-                    uid?: string | null;
-                    label?: string | null;
-                  } | null> | null;
-                } | null> | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -42350,24 +42704,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -42376,6 +42712,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42409,24 +42746,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -42435,6 +42754,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42468,24 +42788,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -42494,6 +42796,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42527,24 +42830,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -42553,6 +42838,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42586,24 +42872,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -42612,6 +42880,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42645,24 +42914,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | null;
@@ -42677,6 +42928,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42710,24 +42962,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -42736,27 +42970,11 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
-                variants?: Array<{
-                  __typename?: "ConfigurableVariant";
-                  product?: {
-                    __typename?: "SimpleProduct";
-                    id?: number | null;
-                  } | null;
-                } | null> | null;
-                configurable_options?: Array<{
-                  __typename?: "ConfigurableProductOptions";
-                  attribute_code?: string | null;
-                  label?: string | null;
-                  values?: Array<{
-                    __typename?: "ConfigurableProductOptionsValues";
-                    uid?: string | null;
-                    label?: string | null;
-                  } | null> | null;
-                } | null> | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -42786,24 +43004,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -42812,6 +43012,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42845,24 +43046,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -42871,6 +43054,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42904,24 +43088,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -42930,6 +43096,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -42963,24 +43130,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -42989,6 +43138,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -43022,24 +43172,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -43048,6 +43180,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -43081,24 +43214,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | null;
@@ -43113,6 +43228,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -43146,24 +43262,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -43172,27 +43270,11 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
-                variants?: Array<{
-                  __typename?: "ConfigurableVariant";
-                  product?: {
-                    __typename?: "SimpleProduct";
-                    id?: number | null;
-                  } | null;
-                } | null> | null;
-                configurable_options?: Array<{
-                  __typename?: "ConfigurableProductOptions";
-                  attribute_code?: string | null;
-                  label?: string | null;
-                  values?: Array<{
-                    __typename?: "ConfigurableProductOptionsValues";
-                    uid?: string | null;
-                    label?: string | null;
-                  } | null> | null;
-                } | null> | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -43222,24 +43304,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -43248,6 +43312,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -43281,24 +43346,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -43307,6 +43354,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -43340,24 +43388,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -43366,6 +43396,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -43399,24 +43430,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -43425,6 +43438,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -43458,24 +43472,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -43484,6 +43480,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -43517,24 +43514,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | null;
@@ -43549,6 +43528,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -43582,24 +43562,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -43608,27 +43570,11 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
                 stock_status?: ProductStockStatus | null;
-                variants?: Array<{
-                  __typename?: "ConfigurableVariant";
-                  product?: {
-                    __typename?: "SimpleProduct";
-                    id?: number | null;
-                  } | null;
-                } | null> | null;
-                configurable_options?: Array<{
-                  __typename?: "ConfigurableProductOptions";
-                  attribute_code?: string | null;
-                  label?: string | null;
-                  values?: Array<{
-                    __typename?: "ConfigurableProductOptionsValues";
-                    uid?: string | null;
-                    label?: string | null;
-                  } | null> | null;
-                } | null> | null;
                 short_description?: {
                   __typename?: "ComplexTextValue";
                   html: string;
@@ -43658,24 +43604,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -43684,6 +43612,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -43717,24 +43646,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -43743,6 +43654,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -43776,24 +43688,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -43802,6 +43696,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -43835,24 +43730,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -43861,6 +43738,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -43894,24 +43772,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | {
@@ -43920,6 +43780,7 @@ export type WishlistDetailsFieldsFragment = {
                 id?: number | null;
                 name?: string | null;
                 brand_new_label?: string | null;
+                product_type_new2_label?: string | null;
                 sku?: string | null;
                 url_key?: string | null;
                 rating_summary: number;
@@ -43953,24 +43814,6 @@ export type WishlistDetailsFieldsFragment = {
                       percent_off?: number | null;
                     } | null;
                   };
-                  maximum_price?: {
-                    __typename?: "ProductPrice";
-                    regular_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    final_price: {
-                      __typename?: "Money";
-                      value?: number | null;
-                      currency?: CurrencyEnum | null;
-                    };
-                    discount?: {
-                      __typename?: "ProductDiscount";
-                      amount_off?: number | null;
-                      percent_off?: number | null;
-                    } | null;
-                  } | null;
                 };
               }
             | null;
@@ -44135,9 +43978,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -44154,19 +43998,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -44210,11 +44041,33 @@ export type GetCustomerOrdersListQuery = {
                         __typename?: "SimpleProduct";
                         id?: number | null;
                         sku?: string | null;
+                        thumbnail?: {
+                          __typename?: "ProductImage";
+                          label?: string | null;
+                          url?: string | null;
+                        } | null;
+                        price_range: {
+                          __typename?: "PriceRange";
+                          minimum_price: {
+                            __typename?: "ProductPrice";
+                            regular_price: {
+                              __typename?: "Money";
+                              value?: number | null;
+                              currency?: CurrencyEnum | null;
+                            };
+                            final_price: {
+                              __typename?: "Money";
+                              value?: number | null;
+                              currency?: CurrencyEnum | null;
+                            };
+                          };
+                        };
                       } | null;
                     } | null> | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -44231,19 +44084,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -44276,9 +44116,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -44295,19 +44136,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -44340,9 +44168,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -44359,19 +44188,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -44404,9 +44220,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -44423,19 +44240,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -44468,9 +44272,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -44487,19 +44292,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -44532,9 +44324,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -44551,19 +44344,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -44587,6 +44367,11 @@ export type GetCustomerOrdersListQuery = {
                     } | null;
                   }
                 | null;
+              selected_options?: Array<{
+                __typename?: "OrderItemOption";
+                label: string;
+                value: string;
+              } | null> | null;
             }
           | {
               __typename?: "DownloadableOrderItem";
@@ -44611,9 +44396,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -44630,19 +44416,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -44686,11 +44459,33 @@ export type GetCustomerOrdersListQuery = {
                         __typename?: "SimpleProduct";
                         id?: number | null;
                         sku?: string | null;
+                        thumbnail?: {
+                          __typename?: "ProductImage";
+                          label?: string | null;
+                          url?: string | null;
+                        } | null;
+                        price_range: {
+                          __typename?: "PriceRange";
+                          minimum_price: {
+                            __typename?: "ProductPrice";
+                            regular_price: {
+                              __typename?: "Money";
+                              value?: number | null;
+                              currency?: CurrencyEnum | null;
+                            };
+                            final_price: {
+                              __typename?: "Money";
+                              value?: number | null;
+                              currency?: CurrencyEnum | null;
+                            };
+                          };
+                        };
                       } | null;
                     } | null> | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -44707,19 +44502,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -44752,9 +44534,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -44771,19 +44554,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -44816,9 +44586,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -44835,19 +44606,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -44880,9 +44638,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -44899,19 +44658,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -44944,9 +44690,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -44963,19 +44710,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -45008,9 +44742,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -45027,19 +44762,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -45063,6 +44785,11 @@ export type GetCustomerOrdersListQuery = {
                     } | null;
                   }
                 | null;
+              selected_options?: Array<{
+                __typename?: "OrderItemOption";
+                label: string;
+                value: string;
+              } | null> | null;
             }
           | {
               __typename?: "GiftCardOrderItem";
@@ -45087,9 +44814,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -45106,19 +44834,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -45162,11 +44877,33 @@ export type GetCustomerOrdersListQuery = {
                         __typename?: "SimpleProduct";
                         id?: number | null;
                         sku?: string | null;
+                        thumbnail?: {
+                          __typename?: "ProductImage";
+                          label?: string | null;
+                          url?: string | null;
+                        } | null;
+                        price_range: {
+                          __typename?: "PriceRange";
+                          minimum_price: {
+                            __typename?: "ProductPrice";
+                            regular_price: {
+                              __typename?: "Money";
+                              value?: number | null;
+                              currency?: CurrencyEnum | null;
+                            };
+                            final_price: {
+                              __typename?: "Money";
+                              value?: number | null;
+                              currency?: CurrencyEnum | null;
+                            };
+                          };
+                        };
                       } | null;
                     } | null> | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -45183,19 +44920,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -45228,9 +44952,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -45247,19 +44972,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -45292,9 +45004,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -45311,19 +45024,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -45356,9 +45056,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -45375,19 +45076,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -45420,9 +45108,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -45439,19 +45128,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -45484,9 +45160,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -45503,19 +45180,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -45539,6 +45203,11 @@ export type GetCustomerOrdersListQuery = {
                     } | null;
                   }
                 | null;
+              selected_options?: Array<{
+                __typename?: "OrderItemOption";
+                label: string;
+                value: string;
+              } | null> | null;
             }
           | {
               __typename?: "OrderItem";
@@ -45563,9 +45232,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -45582,19 +45252,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -45638,11 +45295,33 @@ export type GetCustomerOrdersListQuery = {
                         __typename?: "SimpleProduct";
                         id?: number | null;
                         sku?: string | null;
+                        thumbnail?: {
+                          __typename?: "ProductImage";
+                          label?: string | null;
+                          url?: string | null;
+                        } | null;
+                        price_range: {
+                          __typename?: "PriceRange";
+                          minimum_price: {
+                            __typename?: "ProductPrice";
+                            regular_price: {
+                              __typename?: "Money";
+                              value?: number | null;
+                              currency?: CurrencyEnum | null;
+                            };
+                            final_price: {
+                              __typename?: "Money";
+                              value?: number | null;
+                              currency?: CurrencyEnum | null;
+                            };
+                          };
+                        };
                       } | null;
                     } | null> | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -45659,19 +45338,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -45704,9 +45370,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -45723,19 +45390,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -45768,9 +45422,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -45787,19 +45442,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -45832,9 +45474,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -45851,19 +45494,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -45896,9 +45526,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -45915,19 +45546,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -45960,9 +45578,10 @@ export type GetCustomerOrdersListQuery = {
                     type_id?: string | null;
                     stock_status?: ProductStockStatus | null;
                     product_type_new2?: string | null;
-                    image?: {
+                    thumbnail?: {
                       __typename?: "ProductImage";
                       url?: string | null;
+                      label?: string | null;
                     } | null;
                     price_range: {
                       __typename?: "PriceRange";
@@ -45979,19 +45598,6 @@ export type GetCustomerOrdersListQuery = {
                           currency?: CurrencyEnum | null;
                         };
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                      } | null;
                     };
                     custom_attributesV2?: {
                       __typename?: "ProductCustomAttributes";
@@ -46015,6 +45621,11 @@ export type GetCustomerOrdersListQuery = {
                     } | null;
                   }
                 | null;
+              selected_options?: Array<{
+                __typename?: "OrderItemOption";
+                label: string;
+                value: string;
+              } | null> | null;
             }
           | null
         > | null;
@@ -46028,24 +45639,6 @@ export type GetCustomerOrdersListQuery = {
             value?: string | null;
           } | null> | null;
         } | null> | null;
-        billing_address?: {
-          __typename?: "OrderAddress";
-          city: string;
-          company?: string | null;
-          country_code?: CountryCodeEnum | null;
-          fax?: string | null;
-          firstname: string;
-          lastname: string;
-          middlename?: string | null;
-          postcode?: string | null;
-          prefix?: string | null;
-          region?: string | null;
-          region_id?: string | null;
-          street: Array<string | null>;
-          suffix?: string | null;
-          telephone?: string | null;
-          vat_id?: string | null;
-        } | null;
         shipping_address?: {
           __typename?: "OrderAddress";
           city: string;
@@ -46111,11 +45704,11 @@ export type GetCustomerOrdersListQuery = {
               value?: number | null;
             } | null;
           } | null;
-          subtotal: {
+          subtotal_including_tax?: {
             __typename?: "Money";
             currency?: CurrencyEnum | null;
             value?: number | null;
-          };
+          } | null;
           mokafaa_discount?: {
             __typename?: "Money";
             currency?: CurrencyEnum | null;
@@ -46254,6 +45847,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46287,24 +45881,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -46313,27 +45889,11 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -46363,24 +45923,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -46389,6 +45931,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46422,24 +45965,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -46448,6 +45973,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46481,24 +46007,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -46507,6 +46015,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46540,24 +46049,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -46566,6 +46057,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46599,24 +46091,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -46625,6 +46099,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46658,24 +46133,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -46685,6 +46142,7 @@ export type GetCustomerWishlistQuery = {
               id: string;
               configurable_options?: Array<{
                 __typename?: "SelectedConfigurableOption";
+                option_label: string;
                 value_label: string;
                 configurable_product_option_uid: string;
                 configurable_product_option_value_uid: string;
@@ -46693,51 +46151,268 @@ export type GetCustomerWishlistQuery = {
                 | {
                     __typename?: "BundleProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | null;
               product?:
@@ -46747,6 +46422,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46780,24 +46456,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -46806,27 +46464,11 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -46856,24 +46498,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -46882,6 +46506,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46915,24 +46540,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -46941,6 +46548,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -46974,24 +46582,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -47000,6 +46590,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47033,24 +46624,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -47059,6 +46632,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47092,24 +46666,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -47118,6 +46674,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47151,24 +46708,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -47183,6 +46722,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47216,24 +46756,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -47242,27 +46764,11 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -47292,24 +46798,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -47318,6 +46806,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47351,24 +46840,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -47377,6 +46848,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47410,24 +46882,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -47436,6 +46890,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47469,24 +46924,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -47495,6 +46932,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47528,24 +46966,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -47554,6 +46974,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47587,24 +47008,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -47619,6 +47022,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47652,24 +47056,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -47678,27 +47064,11 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -47728,24 +47098,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -47754,6 +47106,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47787,24 +47140,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -47813,6 +47148,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47846,24 +47182,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -47872,6 +47190,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47905,24 +47224,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -47931,6 +47232,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -47964,24 +47266,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -47990,6 +47274,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48023,24 +47308,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -48055,6 +47322,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48088,24 +47356,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -48114,27 +47364,11 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -48164,24 +47398,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -48190,6 +47406,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48223,24 +47440,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -48249,6 +47448,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48282,24 +47482,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -48308,6 +47490,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48341,24 +47524,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -48367,6 +47532,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48400,24 +47566,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -48426,6 +47574,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48459,24 +47608,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -48491,6 +47622,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48524,24 +47656,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -48550,27 +47664,11 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -48600,24 +47698,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -48626,6 +47706,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48659,24 +47740,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -48685,6 +47748,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48718,24 +47782,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -48744,6 +47790,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48777,24 +47824,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -48803,6 +47832,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48836,24 +47866,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -48862,6 +47874,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48895,24 +47908,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -48927,6 +47922,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -48960,24 +47956,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -48986,27 +47964,11 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -49036,24 +47998,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -49062,6 +48006,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49095,24 +48040,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -49121,6 +48048,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49154,24 +48082,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -49180,6 +48090,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49213,24 +48124,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -49239,6 +48132,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49272,24 +48166,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -49298,6 +48174,7 @@ export type GetCustomerWishlistQuery = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49331,24 +48208,6 @@ export type GetCustomerWishlistQuery = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -49437,6 +48296,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49470,24 +48330,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -49496,27 +48338,11 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -49546,24 +48372,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -49572,6 +48380,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49605,24 +48414,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -49631,6 +48422,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49664,24 +48456,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -49690,6 +48464,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49723,24 +48498,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -49749,6 +48506,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49782,24 +48540,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -49808,6 +48548,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49841,24 +48582,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -49868,6 +48591,7 @@ export type AddProductsToWishlistMutation = {
               id: string;
               configurable_options?: Array<{
                 __typename?: "SelectedConfigurableOption";
+                option_label: string;
                 value_label: string;
                 configurable_product_option_uid: string;
                 configurable_product_option_value_uid: string;
@@ -49876,51 +48600,268 @@ export type AddProductsToWishlistMutation = {
                 | {
                     __typename?: "BundleProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | null;
               product?:
@@ -49930,6 +48871,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -49963,24 +48905,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -49989,27 +48913,11 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -50039,24 +48947,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -50065,6 +48955,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50098,24 +48989,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -50124,6 +48997,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50157,24 +49031,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -50183,6 +49039,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50216,24 +49073,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -50242,6 +49081,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50275,24 +49115,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -50301,6 +49123,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50334,24 +49157,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -50366,6 +49171,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50399,24 +49205,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -50425,27 +49213,11 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -50475,24 +49247,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -50501,6 +49255,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50534,24 +49289,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -50560,6 +49297,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50593,24 +49331,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -50619,6 +49339,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50652,24 +49373,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -50678,6 +49381,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50711,24 +49415,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -50737,6 +49423,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50770,24 +49457,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -50802,6 +49471,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50835,24 +49505,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -50861,27 +49513,11 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -50911,24 +49547,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -50937,6 +49555,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -50970,24 +49589,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -50996,6 +49597,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51029,24 +49631,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -51055,6 +49639,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51088,24 +49673,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -51114,6 +49681,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51147,24 +49715,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -51173,6 +49723,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51206,24 +49757,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -51238,6 +49771,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51271,24 +49805,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -51297,27 +49813,11 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -51347,24 +49847,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -51373,6 +49855,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51406,24 +49889,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -51432,6 +49897,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51465,24 +49931,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -51491,6 +49939,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51524,24 +49973,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -51550,6 +49981,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51583,24 +50015,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -51609,6 +50023,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51642,24 +50057,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -51674,6 +50071,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51707,24 +50105,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -51733,27 +50113,11 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -51783,24 +50147,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -51809,6 +50155,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51842,24 +50189,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -51868,6 +50197,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51901,24 +50231,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -51927,6 +50239,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -51960,24 +50273,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -51986,6 +50281,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52019,24 +50315,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -52045,6 +50323,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52078,24 +50357,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -52110,6 +50371,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52143,24 +50405,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -52169,27 +50413,11 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -52219,24 +50447,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -52245,6 +50455,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52278,24 +50489,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -52304,6 +50497,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52337,24 +50531,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -52363,6 +50539,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52396,24 +50573,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -52422,6 +50581,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52455,24 +50615,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -52481,6 +50623,7 @@ export type AddProductsToWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52514,24 +50657,6 @@ export type AddProductsToWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -52588,6 +50713,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52621,24 +50747,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -52647,27 +50755,11 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -52697,24 +50789,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -52723,6 +50797,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52756,24 +50831,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -52782,6 +50839,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52815,24 +50873,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -52841,6 +50881,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52874,24 +50915,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -52900,6 +50923,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52933,24 +50957,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -52959,6 +50965,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -52992,24 +50999,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -53019,6 +51008,7 @@ export type AddWishlistItemsToCartMutation = {
               id: string;
               configurable_options?: Array<{
                 __typename?: "SelectedConfigurableOption";
+                option_label: string;
                 value_label: string;
                 configurable_product_option_uid: string;
                 configurable_product_option_value_uid: string;
@@ -53027,51 +51017,268 @@ export type AddWishlistItemsToCartMutation = {
                 | {
                     __typename?: "BundleProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | null;
               product?:
@@ -53081,6 +51288,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53114,24 +51322,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -53140,27 +51330,11 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -53190,24 +51364,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -53216,6 +51372,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53249,24 +51406,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -53275,6 +51414,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53308,24 +51448,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -53334,6 +51456,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53367,24 +51490,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -53393,6 +51498,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53426,24 +51532,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -53452,6 +51540,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53485,24 +51574,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -53517,6 +51588,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53550,24 +51622,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -53576,27 +51630,11 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -53626,24 +51664,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -53652,6 +51672,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53685,24 +51706,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -53711,6 +51714,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53744,24 +51748,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -53770,6 +51756,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53803,24 +51790,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -53829,6 +51798,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53862,24 +51832,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -53888,6 +51840,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53921,24 +51874,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -53953,6 +51888,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -53986,24 +51922,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -54012,27 +51930,11 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -54062,24 +51964,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -54088,6 +51972,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54121,24 +52006,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -54147,6 +52014,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54180,24 +52048,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -54206,6 +52056,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54239,24 +52090,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -54265,6 +52098,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54298,24 +52132,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -54324,6 +52140,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54357,24 +52174,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -54389,6 +52188,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54422,24 +52222,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -54448,27 +52230,11 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -54498,24 +52264,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -54524,6 +52272,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54557,24 +52306,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -54583,6 +52314,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54616,24 +52348,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -54642,6 +52356,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54675,24 +52390,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -54701,6 +52398,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54734,24 +52432,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -54760,6 +52440,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54793,24 +52474,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -54825,6 +52488,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54858,24 +52522,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -54884,27 +52530,11 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -54934,24 +52564,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -54960,6 +52572,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -54993,24 +52606,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -55019,6 +52614,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55052,24 +52648,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -55078,6 +52656,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55111,24 +52690,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -55137,6 +52698,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55170,24 +52732,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -55196,6 +52740,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55229,24 +52774,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -55261,6 +52788,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55294,24 +52822,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -55320,27 +52830,11 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -55370,24 +52864,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -55396,6 +52872,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55429,24 +52906,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -55455,6 +52914,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55488,24 +52948,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -55514,6 +52956,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55547,24 +52990,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -55573,6 +52998,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55606,24 +53032,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -55632,6 +53040,7 @@ export type AddWishlistItemsToCartMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55665,24 +53074,6 @@ export type AddWishlistItemsToCartMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -55825,6 +53216,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55858,24 +53250,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -55884,27 +53258,11 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -55934,24 +53292,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -55960,6 +53300,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -55993,24 +53334,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -56019,6 +53342,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -56052,24 +53376,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -56078,6 +53384,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -56111,24 +53418,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -56137,6 +53426,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -56170,24 +53460,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -56196,6 +53468,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -56229,24 +53502,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -56256,6 +53511,7 @@ export type RemoveProductsFromWishlistMutation = {
               id: string;
               configurable_options?: Array<{
                 __typename?: "SelectedConfigurableOption";
+                option_label: string;
                 value_label: string;
                 configurable_product_option_uid: string;
                 configurable_product_option_value_uid: string;
@@ -56264,51 +53520,268 @@ export type RemoveProductsFromWishlistMutation = {
                 | {
                     __typename?: "BundleProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "ConfigurableProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "DownloadableProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GiftCardProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "GroupedProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "SimpleProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | {
                     __typename?: "VirtualProduct";
                     id?: number | null;
+                    sku?: string | null;
                     stock_status?: ProductStockStatus | null;
                     express_delivery_available?: boolean | null;
-                    sku?: string | null;
+                    countdown_timer_enabled?: number | null;
+                    countdown_timer_end_date?: string | null;
+                    countdown_timer_start_date?: string | null;
+                    countdown_timer_subtitle?: string | null;
+                    countdown_timer_title?: string | null;
+                    price_range: {
+                      __typename?: "PriceRange";
+                      minimum_price: {
+                        __typename?: "ProductPrice";
+                        final_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        regular_price: {
+                          __typename?: "Money";
+                          value?: number | null;
+                          currency?: CurrencyEnum | null;
+                        };
+                        discount?: {
+                          __typename?: "ProductDiscount";
+                          amount_off?: number | null;
+                          percent_off?: number | null;
+                        } | null;
+                      };
+                    };
+                    thumbnail?: {
+                      __typename?: "ProductImage";
+                      url?: string | null;
+                      label?: string | null;
+                    } | null;
                   }
                 | null;
               product?:
@@ -56318,6 +53791,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -56351,24 +53825,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -56377,27 +53833,11 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -56427,24 +53867,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -56453,6 +53875,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -56486,24 +53909,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -56512,6 +53917,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -56545,24 +53951,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -56571,6 +53959,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -56604,24 +53993,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -56630,6 +54001,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -56663,24 +54035,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -56689,6 +54043,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -56722,24 +54077,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -56754,6 +54091,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -56787,24 +54125,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -56813,27 +54133,11 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -56863,24 +54167,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -56889,6 +54175,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -56922,24 +54209,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -56948,6 +54217,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -56981,24 +54251,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -57007,6 +54259,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -57040,24 +54293,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -57066,6 +54301,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -57099,24 +54335,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -57125,6 +54343,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -57158,24 +54377,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -57190,6 +54391,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -57223,24 +54425,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -57249,27 +54433,11 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -57299,24 +54467,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -57325,6 +54475,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -57358,24 +54509,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -57384,6 +54517,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -57417,24 +54551,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -57443,6 +54559,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -57476,24 +54593,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -57502,6 +54601,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -57535,24 +54635,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -57561,6 +54643,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -57594,24 +54677,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -57626,6 +54691,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -57659,24 +54725,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -57685,27 +54733,11 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -57735,24 +54767,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -57761,6 +54775,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -57794,24 +54809,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -57820,6 +54817,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -57853,24 +54851,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -57879,6 +54859,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -57912,24 +54893,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -57938,6 +54901,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -57971,24 +54935,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -57997,6 +54943,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -58030,24 +54977,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -58062,6 +54991,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -58095,24 +55025,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -58121,27 +55033,11 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -58171,24 +55067,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -58197,6 +55075,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -58230,24 +55109,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -58256,6 +55117,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -58289,24 +55151,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -58315,6 +55159,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -58348,24 +55193,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -58374,6 +55201,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -58407,24 +55235,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -58433,6 +55243,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -58466,24 +55277,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -58498,6 +55291,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -58531,24 +55325,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -58557,27 +55333,11 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
                     stock_status?: ProductStockStatus | null;
-                    variants?: Array<{
-                      __typename?: "ConfigurableVariant";
-                      product?: {
-                        __typename?: "SimpleProduct";
-                        id?: number | null;
-                      } | null;
-                    } | null> | null;
-                    configurable_options?: Array<{
-                      __typename?: "ConfigurableProductOptions";
-                      attribute_code?: string | null;
-                      label?: string | null;
-                      values?: Array<{
-                        __typename?: "ConfigurableProductOptionsValues";
-                        uid?: string | null;
-                        label?: string | null;
-                      } | null> | null;
-                    } | null> | null;
                     short_description?: {
                       __typename?: "ComplexTextValue";
                       html: string;
@@ -58607,24 +55367,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -58633,6 +55375,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -58666,24 +55409,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -58692,6 +55417,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -58725,24 +55451,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -58751,6 +55459,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -58784,24 +55493,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -58810,6 +55501,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -58843,24 +55535,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | {
@@ -58869,6 +55543,7 @@ export type RemoveProductsFromWishlistMutation = {
                     id?: number | null;
                     name?: string | null;
                     brand_new_label?: string | null;
+                    product_type_new2_label?: string | null;
                     sku?: string | null;
                     url_key?: string | null;
                     rating_summary: number;
@@ -58902,24 +55577,6 @@ export type RemoveProductsFromWishlistMutation = {
                           percent_off?: number | null;
                         } | null;
                       };
-                      maximum_price?: {
-                        __typename?: "ProductPrice";
-                        regular_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        final_price: {
-                          __typename?: "Money";
-                          value?: number | null;
-                          currency?: CurrencyEnum | null;
-                        };
-                        discount?: {
-                          __typename?: "ProductDiscount";
-                          amount_off?: number | null;
-                          percent_off?: number | null;
-                        } | null;
-                      } | null;
                     };
                   }
                 | null;
@@ -61036,6 +57693,10 @@ export const CartDetailsFieldsFragmentDoc = new TypedDocumentString(
       currency
       value
     }
+    cod_fee {
+      currency
+      value
+    }
     mokafaa_discount {
       currency
       value
@@ -61120,6 +57781,7 @@ export const CartDetailsFieldsFragmentDoc = new TypedDocumentString(
     items {
       uid
       quantity
+      is_available
       is_gwp
       is_wrap
       prices {
@@ -61193,6 +57855,7 @@ export const CartDetailsFieldsFragmentDoc = new TypedDocumentString(
         configured_variant {
           id
           sku
+          stock_status
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -61214,6 +57877,10 @@ export const CartDetailsFieldsFragmentDoc = new TypedDocumentString(
                 percent_off
               }
             }
+          }
+          thumbnail {
+            url
+            label
           }
         }
       }
@@ -61250,16 +57917,43 @@ export const WishlistDetailsFieldsFragmentDoc = new TypedDocumentString(
       __typename
       id
       ... on ConfigurableWishlistItem {
+        __typename
         configurable_options {
+          option_label
           value_label
           configurable_product_option_uid
           configurable_product_option_value_uid
         }
         configured_variant {
           id
+          sku
           stock_status
           express_delivery_available
-          sku
+          countdown_timer_enabled
+          countdown_timer_end_date
+          countdown_timer_start_date
+          countdown_timer_subtitle
+          countdown_timer_title
+          price_range {
+            minimum_price {
+              final_price {
+                value
+                currency
+              }
+              regular_price {
+                value
+                currency
+              }
+              discount {
+                amount_off
+                percent_off
+              }
+            }
+          }
+          thumbnail {
+            url
+            label
+          }
         }
       }
       product {
@@ -61268,6 +57962,7 @@ export const WishlistDetailsFieldsFragmentDoc = new TypedDocumentString(
         id
         name
         brand_new_label
+        product_type_new2_label
         sku
         url_key
         rating_summary
@@ -61292,35 +57987,6 @@ export const WishlistDetailsFieldsFragmentDoc = new TypedDocumentString(
             discount {
               amount_off
               percent_off
-            }
-          }
-          maximum_price {
-            regular_price {
-              value
-              currency
-            }
-            final_price {
-              value
-              currency
-            }
-            discount {
-              amount_off
-              percent_off
-            }
-          }
-        }
-        ... on ConfigurableProduct {
-          variants {
-            product {
-              id
-            }
-          }
-          configurable_options {
-            attribute_code
-            label
-            values {
-              uid
-              label
             }
           }
         }
@@ -61440,6 +58106,10 @@ export const GetCartDetailsDocument = new TypedDocumentString(`
       currency
       value
     }
+    cod_fee {
+      currency
+      value
+    }
     mokafaa_discount {
       currency
       value
@@ -61524,6 +58194,7 @@ export const GetCartDetailsDocument = new TypedDocumentString(`
     items {
       uid
       quantity
+      is_available
       is_gwp
       is_wrap
       prices {
@@ -61597,6 +58268,7 @@ export const GetCartDetailsDocument = new TypedDocumentString(`
         configured_variant {
           id
           sku
+          stock_status
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -61618,6 +58290,10 @@ export const GetCartDetailsDocument = new TypedDocumentString(`
                 percent_off
               }
             }
+          }
+          thumbnail {
+            url
+            label
           }
         }
       }
@@ -61711,6 +58387,10 @@ export const GetCustomerCartDetailsDocument = new TypedDocumentString(`
       currency
       value
     }
+    cod_fee {
+      currency
+      value
+    }
     mokafaa_discount {
       currency
       value
@@ -61795,6 +58475,7 @@ export const GetCustomerCartDetailsDocument = new TypedDocumentString(`
     items {
       uid
       quantity
+      is_available
       is_gwp
       is_wrap
       prices {
@@ -61868,6 +58549,7 @@ export const GetCustomerCartDetailsDocument = new TypedDocumentString(`
         configured_variant {
           id
           sku
+          stock_status
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -61889,6 +58571,10 @@ export const GetCustomerCartDetailsDocument = new TypedDocumentString(`
                 percent_off
               }
             }
+          }
+          thumbnail {
+            url
+            label
           }
         }
       }
@@ -61966,6 +58652,10 @@ export const AddProductsToCartDocument = new TypedDocumentString(`
       currency
       value
     }
+    cod_fee {
+      currency
+      value
+    }
     mokafaa_discount {
       currency
       value
@@ -62050,6 +58740,7 @@ export const AddProductsToCartDocument = new TypedDocumentString(`
     items {
       uid
       quantity
+      is_available
       is_gwp
       is_wrap
       prices {
@@ -62123,6 +58814,7 @@ export const AddProductsToCartDocument = new TypedDocumentString(`
         configured_variant {
           id
           sku
+          stock_status
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -62144,6 +58836,10 @@ export const AddProductsToCartDocument = new TypedDocumentString(`
                 percent_off
               }
             }
+          }
+          thumbnail {
+            url
+            label
           }
         }
       }
@@ -62219,6 +58915,10 @@ export const AddProductsToCartWithGiftMessageDocument =
       currency
       value
     }
+    cod_fee {
+      currency
+      value
+    }
     mokafaa_discount {
       currency
       value
@@ -62303,6 +59003,7 @@ export const AddProductsToCartWithGiftMessageDocument =
     items {
       uid
       quantity
+      is_available
       is_gwp
       is_wrap
       prices {
@@ -62376,6 +59077,7 @@ export const AddProductsToCartWithGiftMessageDocument =
         configured_variant {
           id
           sku
+          stock_status
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -62397,6 +59099,10 @@ export const AddProductsToCartWithGiftMessageDocument =
                 percent_off
               }
             }
+          }
+          thumbnail {
+            url
+            label
           }
         }
       }
@@ -62460,6 +59166,10 @@ export const ApplyCouponToCartDocument = new TypedDocumentString(`
       currency
       value
     }
+    cod_fee {
+      currency
+      value
+    }
     mokafaa_discount {
       currency
       value
@@ -62544,6 +59254,7 @@ export const ApplyCouponToCartDocument = new TypedDocumentString(`
     items {
       uid
       quantity
+      is_available
       is_gwp
       is_wrap
       prices {
@@ -62617,6 +59328,7 @@ export const ApplyCouponToCartDocument = new TypedDocumentString(`
         configured_variant {
           id
           sku
+          stock_status
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -62638,6 +59350,10 @@ export const ApplyCouponToCartDocument = new TypedDocumentString(`
                 percent_off
               }
             }
+          }
+          thumbnail {
+            url
+            label
           }
         }
       }
@@ -62701,6 +59417,10 @@ export const ApplyRewardPointsToCartDocument = new TypedDocumentString(`
       currency
       value
     }
+    cod_fee {
+      currency
+      value
+    }
     mokafaa_discount {
       currency
       value
@@ -62785,6 +59505,7 @@ export const ApplyRewardPointsToCartDocument = new TypedDocumentString(`
     items {
       uid
       quantity
+      is_available
       is_gwp
       is_wrap
       prices {
@@ -62858,6 +59579,7 @@ export const ApplyRewardPointsToCartDocument = new TypedDocumentString(`
         configured_variant {
           id
           sku
+          stock_status
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -62879,6 +59601,10 @@ export const ApplyRewardPointsToCartDocument = new TypedDocumentString(`
                 percent_off
               }
             }
+          }
+          thumbnail {
+            url
+            label
           }
         }
       }
@@ -63043,6 +59769,10 @@ export const RemoveCouponFromCartDocument = new TypedDocumentString(`
       currency
       value
     }
+    cod_fee {
+      currency
+      value
+    }
     mokafaa_discount {
       currency
       value
@@ -63127,6 +59857,7 @@ export const RemoveCouponFromCartDocument = new TypedDocumentString(`
     items {
       uid
       quantity
+      is_available
       is_gwp
       is_wrap
       prices {
@@ -63200,6 +59931,7 @@ export const RemoveCouponFromCartDocument = new TypedDocumentString(`
         configured_variant {
           id
           sku
+          stock_status
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -63221,6 +59953,10 @@ export const RemoveCouponFromCartDocument = new TypedDocumentString(`
                 percent_off
               }
             }
+          }
+          thumbnail {
+            url
+            label
           }
         }
       }
@@ -63284,6 +60020,10 @@ export const RemoveFromCartDocument = new TypedDocumentString(`
       currency
       value
     }
+    cod_fee {
+      currency
+      value
+    }
     mokafaa_discount {
       currency
       value
@@ -63368,6 +60108,7 @@ export const RemoveFromCartDocument = new TypedDocumentString(`
     items {
       uid
       quantity
+      is_available
       is_gwp
       is_wrap
       prices {
@@ -63441,6 +60182,7 @@ export const RemoveFromCartDocument = new TypedDocumentString(`
         configured_variant {
           id
           sku
+          stock_status
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -63462,6 +60204,10 @@ export const RemoveFromCartDocument = new TypedDocumentString(`
                 percent_off
               }
             }
+          }
+          thumbnail {
+            url
+            label
           }
         }
       }
@@ -63525,6 +60271,10 @@ export const RemoveRewardPointsFromCartDocument = new TypedDocumentString(`
       currency
       value
     }
+    cod_fee {
+      currency
+      value
+    }
     mokafaa_discount {
       currency
       value
@@ -63609,6 +60359,7 @@ export const RemoveRewardPointsFromCartDocument = new TypedDocumentString(`
     items {
       uid
       quantity
+      is_available
       is_gwp
       is_wrap
       prices {
@@ -63682,6 +60433,7 @@ export const RemoveRewardPointsFromCartDocument = new TypedDocumentString(`
         configured_variant {
           id
           sku
+          stock_status
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -63703,6 +60455,10 @@ export const RemoveRewardPointsFromCartDocument = new TypedDocumentString(`
                 percent_off
               }
             }
+          }
+          thumbnail {
+            url
+            label
           }
         }
       }
@@ -63982,6 +60738,10 @@ export const UpdateCartItemsDocument = new TypedDocumentString(`
       currency
       value
     }
+    cod_fee {
+      currency
+      value
+    }
     mokafaa_discount {
       currency
       value
@@ -64066,6 +60826,7 @@ export const UpdateCartItemsDocument = new TypedDocumentString(`
     items {
       uid
       quantity
+      is_available
       is_gwp
       is_wrap
       prices {
@@ -64139,6 +60900,7 @@ export const UpdateCartItemsDocument = new TypedDocumentString(`
         configured_variant {
           id
           sku
+          stock_status
           express_delivery_available
           countdown_timer_enabled
           countdown_timer_end_date
@@ -64160,6 +60922,10 @@ export const UpdateCartItemsDocument = new TypedDocumentString(`
                 percent_off
               }
             }
+          }
+          thumbnail {
+            url
+            label
           }
         }
       }
@@ -64215,7 +60981,6 @@ export const GetBrandsDocument = new TypedDocumentString(`
         url_key
         url_path
         image
-        api_catnav_image
         api_catnav_icon
         api_celebrity_thumbnail
         celebrity_banner
@@ -64408,8 +61173,9 @@ export const GetCustomerOrdersListDocument = new TypedDocumentString(`
             name
             brand_new_label
             url_key
-            image {
+            thumbnail {
               url
+              label
             }
             type_id
             url_key
@@ -64417,16 +61183,6 @@ export const GetCustomerOrdersListDocument = new TypedDocumentString(`
             product_type_new2
             price_range {
               minimum_price {
-                regular_price {
-                  value
-                  currency
-                }
-                final_price {
-                  value
-                  currency
-                }
-              }
-              maximum_price {
                 regular_price {
                   value
                   currency
@@ -64460,9 +61216,29 @@ export const GetCustomerOrdersListDocument = new TypedDocumentString(`
                 product {
                   id
                   sku
+                  thumbnail {
+                    label
+                    url
+                  }
+                  price_range {
+                    minimum_price {
+                      regular_price {
+                        value
+                        currency
+                      }
+                      final_price {
+                        value
+                        currency
+                      }
+                    }
+                  }
                 }
               }
             }
+          }
+          selected_options {
+            label
+            value
           }
         }
         payment_methods {
@@ -64472,23 +61248,6 @@ export const GetCustomerOrdersListDocument = new TypedDocumentString(`
             name
             value
           }
-        }
-        billing_address {
-          city
-          company
-          country_code
-          fax
-          firstname
-          lastname
-          middlename
-          postcode
-          prefix
-          region
-          region_id
-          street
-          suffix
-          telephone
-          vat_id
         }
         shipping_address {
           city
@@ -64544,7 +61303,7 @@ export const GetCustomerOrdersListDocument = new TypedDocumentString(`
               value
             }
           }
-          subtotal {
+          subtotal_including_tax {
             currency
             value
           }
@@ -64648,16 +61407,43 @@ export const GetCustomerWishlistDocument = new TypedDocumentString(`
       __typename
       id
       ... on ConfigurableWishlistItem {
+        __typename
         configurable_options {
+          option_label
           value_label
           configurable_product_option_uid
           configurable_product_option_value_uid
         }
         configured_variant {
           id
+          sku
           stock_status
           express_delivery_available
-          sku
+          countdown_timer_enabled
+          countdown_timer_end_date
+          countdown_timer_start_date
+          countdown_timer_subtitle
+          countdown_timer_title
+          price_range {
+            minimum_price {
+              final_price {
+                value
+                currency
+              }
+              regular_price {
+                value
+                currency
+              }
+              discount {
+                amount_off
+                percent_off
+              }
+            }
+          }
+          thumbnail {
+            url
+            label
+          }
         }
       }
       product {
@@ -64666,6 +61452,7 @@ export const GetCustomerWishlistDocument = new TypedDocumentString(`
         id
         name
         brand_new_label
+        product_type_new2_label
         sku
         url_key
         rating_summary
@@ -64690,35 +61477,6 @@ export const GetCustomerWishlistDocument = new TypedDocumentString(`
             discount {
               amount_off
               percent_off
-            }
-          }
-          maximum_price {
-            regular_price {
-              value
-              currency
-            }
-            final_price {
-              value
-              currency
-            }
-            discount {
-              amount_off
-              percent_off
-            }
-          }
-        }
-        ... on ConfigurableProduct {
-          variants {
-            product {
-              id
-            }
-          }
-          configurable_options {
-            attribute_code
-            label
-            values {
-              uid
-              label
             }
           }
         }
@@ -64786,16 +61544,43 @@ export const AddProductsToWishlistDocument = new TypedDocumentString(`
       __typename
       id
       ... on ConfigurableWishlistItem {
+        __typename
         configurable_options {
+          option_label
           value_label
           configurable_product_option_uid
           configurable_product_option_value_uid
         }
         configured_variant {
           id
+          sku
           stock_status
           express_delivery_available
-          sku
+          countdown_timer_enabled
+          countdown_timer_end_date
+          countdown_timer_start_date
+          countdown_timer_subtitle
+          countdown_timer_title
+          price_range {
+            minimum_price {
+              final_price {
+                value
+                currency
+              }
+              regular_price {
+                value
+                currency
+              }
+              discount {
+                amount_off
+                percent_off
+              }
+            }
+          }
+          thumbnail {
+            url
+            label
+          }
         }
       }
       product {
@@ -64804,6 +61589,7 @@ export const AddProductsToWishlistDocument = new TypedDocumentString(`
         id
         name
         brand_new_label
+        product_type_new2_label
         sku
         url_key
         rating_summary
@@ -64828,35 +61614,6 @@ export const AddProductsToWishlistDocument = new TypedDocumentString(`
             discount {
               amount_off
               percent_off
-            }
-          }
-          maximum_price {
-            regular_price {
-              value
-              currency
-            }
-            final_price {
-              value
-              currency
-            }
-            discount {
-              amount_off
-              percent_off
-            }
-          }
-        }
-        ... on ConfigurableProduct {
-          variants {
-            product {
-              id
-            }
-          }
-          configurable_options {
-            attribute_code
-            label
-            values {
-              uid
-              label
             }
           }
         }
@@ -64899,16 +61656,43 @@ export const AddWishlistItemsToCartDocument = new TypedDocumentString(`
       __typename
       id
       ... on ConfigurableWishlistItem {
+        __typename
         configurable_options {
+          option_label
           value_label
           configurable_product_option_uid
           configurable_product_option_value_uid
         }
         configured_variant {
           id
+          sku
           stock_status
           express_delivery_available
-          sku
+          countdown_timer_enabled
+          countdown_timer_end_date
+          countdown_timer_start_date
+          countdown_timer_subtitle
+          countdown_timer_title
+          price_range {
+            minimum_price {
+              final_price {
+                value
+                currency
+              }
+              regular_price {
+                value
+                currency
+              }
+              discount {
+                amount_off
+                percent_off
+              }
+            }
+          }
+          thumbnail {
+            url
+            label
+          }
         }
       }
       product {
@@ -64917,6 +61701,7 @@ export const AddWishlistItemsToCartDocument = new TypedDocumentString(`
         id
         name
         brand_new_label
+        product_type_new2_label
         sku
         url_key
         rating_summary
@@ -64941,35 +61726,6 @@ export const AddWishlistItemsToCartDocument = new TypedDocumentString(`
             discount {
               amount_off
               percent_off
-            }
-          }
-          maximum_price {
-            regular_price {
-              value
-              currency
-            }
-            final_price {
-              value
-              currency
-            }
-            discount {
-              amount_off
-              percent_off
-            }
-          }
-        }
-        ... on ConfigurableProduct {
-          variants {
-            product {
-              id
-            }
-          }
-          configurable_options {
-            attribute_code
-            label
-            values {
-              uid
-              label
             }
           }
         }
@@ -65069,16 +61825,43 @@ export const RemoveProductsFromWishlistDocument = new TypedDocumentString(`
       __typename
       id
       ... on ConfigurableWishlistItem {
+        __typename
         configurable_options {
+          option_label
           value_label
           configurable_product_option_uid
           configurable_product_option_value_uid
         }
         configured_variant {
           id
+          sku
           stock_status
           express_delivery_available
-          sku
+          countdown_timer_enabled
+          countdown_timer_end_date
+          countdown_timer_start_date
+          countdown_timer_subtitle
+          countdown_timer_title
+          price_range {
+            minimum_price {
+              final_price {
+                value
+                currency
+              }
+              regular_price {
+                value
+                currency
+              }
+              discount {
+                amount_off
+                percent_off
+              }
+            }
+          }
+          thumbnail {
+            url
+            label
+          }
         }
       }
       product {
@@ -65087,6 +61870,7 @@ export const RemoveProductsFromWishlistDocument = new TypedDocumentString(`
         id
         name
         brand_new_label
+        product_type_new2_label
         sku
         url_key
         rating_summary
@@ -65111,35 +61895,6 @@ export const RemoveProductsFromWishlistDocument = new TypedDocumentString(`
             discount {
               amount_off
               percent_off
-            }
-          }
-          maximum_price {
-            regular_price {
-              value
-              currency
-            }
-            final_price {
-              value
-              currency
-            }
-            discount {
-              amount_off
-              percent_off
-            }
-          }
-        }
-        ... on ConfigurableProduct {
-          variants {
-            product {
-              id
-            }
-          }
-          configurable_options {
-            attribute_code
-            label
-            values {
-              uid
-              label
             }
           }
         }

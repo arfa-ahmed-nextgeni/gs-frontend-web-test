@@ -1,9 +1,9 @@
 import { BeforeYouGoSection } from "@/components/cart/order/before-you-go-section";
 import { getCartDetails } from "@/lib/actions/cart/get-cart-details";
-import { searchProductsByAttributeAction } from "@/lib/actions/catalog-service/search-products-by-category";
 import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
+import { getProductsByCategory } from "@/lib/actions/products/get-products-by-category";
 import { Locale } from "@/lib/constants/i18n";
-import { transformProductViewToCardModel } from "@/lib/utils/catalog-service-product-transformer";
+import { ProductCardVariant } from "@/lib/constants/product/product-card";
 
 interface SuggestedProductsProps {
   locale: string;
@@ -41,20 +41,18 @@ export const SuggestedProducts = async ({ locale }: SuggestedProductsProps) => {
     return null;
   }
 
-  const response = await searchProductsByAttributeAction({
+  const response = await getProductsByCategory({
     category: categoryId,
     locale: locale as Locale,
-    quantity: suggestedProducts.maximumProducts,
+    pageSize: suggestedProducts.maximumProducts,
+    variant: ProductCardVariant.Single,
   });
 
-  if (!response.items || response.items.length === 0) {
+  if (!response?.data?.products || response.data.products.length === 0) {
     return null;
   }
 
-  const categoryProducts =
-    response.items?.map((item) =>
-      transformProductViewToCardModel(item?.productView || ({} as any))
-    ) || [];
+  const categoryProducts = response.data.products || [];
 
   return (
     <BeforeYouGoSection

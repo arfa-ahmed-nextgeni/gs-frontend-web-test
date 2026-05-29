@@ -41,13 +41,7 @@ export const TopTrendsContentSkeleton = ({
         <div className="col-span-12 lg:hidden">
           <div className="grid grid-cols-12 gap-2">
             <Skeleton className="h-33.75 relative col-span-4 overflow-hidden rounded-2xl" />
-            <div className="relative col-span-8 flex flex-col justify-between overflow-hidden rounded-2xl">
-              <div className="flex flex-col gap-2 p-4">
-                <Skeleton className="h-6 w-32" />
-                <Skeleton className="h-10 w-24 rounded-xl" />
-              </div>
-              <Skeleton className="h-16.25 w-16.75 absolute bottom-0 end-0" />
-            </div>
+            <Skeleton className="h-33.75 relative col-span-8 overflow-hidden rounded-2xl" />
             <Skeleton className="h-30 relative col-span-12 overflow-hidden rounded-2xl" />
           </div>
         </div>
@@ -71,13 +65,7 @@ export const TopTrendsContentSkeleton = ({
         <div className="hidden lg:col-span-7 lg:grid lg:grid-cols-7 lg:grid-rows-12 lg:gap-2.5">
           <Skeleton className="relative col-span-5 row-span-7 overflow-hidden rounded-2xl" />
           <Skeleton className="relative col-span-2 row-span-7 overflow-hidden rounded-2xl" />
-          <div className="relative col-span-3 row-span-5 flex flex-col justify-between overflow-hidden rounded-2xl">
-            <div className="flex flex-col gap-2 p-4">
-              <Skeleton className="h-6 w-32" />
-              <Skeleton className="h-10 w-24 rounded-xl" />
-            </div>
-            <Skeleton className="h-17.5 w-17.5 absolute bottom-0 end-0" />
-          </div>
+          <Skeleton className="relative col-span-3 row-span-5 overflow-hidden rounded-2xl" />
           <Skeleton className="relative col-span-4 row-span-5 overflow-hidden rounded-2xl" />
         </div>
       </div>

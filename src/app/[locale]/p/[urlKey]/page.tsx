@@ -6,20 +6,21 @@ import { ProductTracker } from "@/components/analytics/product-tracker";
 import { AsyncBoundary } from "@/components/common/async-boundary";
 import { ProductAdditionalInfo } from "@/components/product/product-additional-info";
 import { ProductDetails } from "@/components/product/product-details";
+import { ProductJsonLd } from "@/components/product/product-json-ld";
 import { ProductMediaGallery } from "@/components/product/product-media-gallery";
 import { ProductReviewsSection } from "@/components/product/product-reviews/product-reviews-section";
 import { SimilarProductsSection } from "@/components/product/similar-products-section";
 import { StickyAddToCart } from "@/components/product/sticky-add-to-cart";
 import { ViewedProductTracker } from "@/components/product/viewed-product-tracker";
 import { YouMightAlsoLikeProductsSection } from "@/components/product/you-might-also-like-products-section";
-import { JsonLdScript } from "@/components/seo/json-ld-script";
 import Container from "@/components/shared/container";
 import { ProductDetailsProvider } from "@/contexts/product-details-context";
 import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
 import { getProductDetails } from "@/lib/actions/products/get-product-details";
+import { PRODUCT_DETAILS_CACHE_DISABLED } from "@/lib/config/server-env";
 import { ROUTE_PLACEHOLDER } from "@/lib/constants/routes";
+import { collectProductStaticUrlKeys } from "@/lib/product/static-params-extractors";
 import { initializePageLocale } from "@/lib/utils/locale";
-import { generateProductSchema } from "@/lib/utils/schema";
 import {
   generateAbsoluteCanonicalUrl,
   generateHreflangTags,
@@ -38,7 +39,9 @@ const PRODUCT_PAGE_REVIEWS_VISIBILITY_CLASS_NAME =
 export async function generateMetadata({
   params,
 }: PageProps<"/[locale]/p/[urlKey]">): Promise<Metadata> {
-  await connection();
+  if (PRODUCT_DETAILS_CACHE_DISABLED) {
+    await connection();
+  }
 
   const { locale, urlKey } = await params;
 
@@ -121,14 +124,24 @@ export async function generateMetadata({
   };
 }
 
-export function generateStaticParams() {
-  return [{ urlKey: ROUTE_PLACEHOLDER }];
+export async function generateStaticParams({
+  params,
+}: {
+  params: Awaited<LayoutProps<"/[locale]">["params"]>;
+}) {
+  const urlKeys = await collectProductStaticUrlKeys({ locale: params.locale });
+  return [
+    { urlKey: ROUTE_PLACEHOLDER },
+    ...urlKeys.map((urlKey) => ({ urlKey })),
+  ];
 }
 
 export default async function ProductPage({
   params,
 }: PageProps<"/[locale]/p/[urlKey]">) {
-  await connection();
+  if (PRODUCT_DETAILS_CACHE_DISABLED) {
+    await connection();
+  }
 
   const { locale, urlKey } = await params;
 
@@ -161,20 +174,21 @@ export default async function ProductPage({
             ?.appLinks
         : null;
 
-    // Generate Product schema for SEO
-    const productSchema = generateProductSchema({
-      locale: locale as Locale,
-      product: productDetails.data,
-      productUrl: `/p/${urlKey}`,
-    });
-
     return (
       <ProductDetailsProvider
         appLinks={appLinks}
         product={structuredClone(productDetails.data)}
       >
-        {/* Product Schema - enables rich product snippets */}
-        <JsonLdScript data={productSchema} id="product-schema" />
+        {/* Product Schema - enables rich product snippets. Deferred to
+            runtime via connection() because generateProductSchema reads
+            Date.now() for the rolling 30-day priceValidUntil window. */}
+        <AsyncBoundary fallback={null}>
+          <ProductJsonLd
+            locale={locale as Locale}
+            product={productDetails.data}
+            productUrl={`/p/${urlKey}`}
+          />
+        </AsyncBoundary>
 
         <ProductTracker />
         <AsyncBoundary fallback={null}>
@@ -183,7 +197,7 @@ export default async function ProductPage({
         <div className="pb-22.5">
           {/* <ProductBreadcrumb product={productDetails.data} /> */}
 
-          <Container className="lg:h-148.75 lg:mt-12.5 px-0! mb-2.5 grid grid-cols-6 gap-5 lg:grid-cols-12 lg:gap-2.5">
+          <Container className="lg:h-148.75 lg:mt-12.5 px-0! md:h-148.75 md:mt-12.5 mb-2.5 grid grid-cols-6 gap-5 md:grid-cols-12 md:gap-2.5 lg:grid-cols-12">
             <ProductMediaGallery />
             <ProductDetails
               locale={locale as Locale}

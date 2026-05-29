@@ -27,6 +27,8 @@ import { failure, ok } from "@/lib/utils/service-result";
 
 // const GENERIC_ADDRESS_ERROR_MESSAGE = "Something went wrong, please try again";
 
+const STREET_FALLBACK = "N/A";
+
 export const updateCustomerAddress = async ({
   data,
   id,
@@ -55,6 +57,8 @@ export const updateCustomerAddress = async ({
     const globalStore = isGlobalStore(storeCode);
 
     const payload = addressFormSchema(storeCode).parse(data);
+    const buildingName =
+      payload[AddressFormField.BuildingName]?.trim() || STREET_FALLBACK;
 
     const isGiftAddress =
       payload[AddressFormField.AddressLabel]?.toLowerCase() === "gift";
@@ -88,7 +92,7 @@ export const updateCustomerAddress = async ({
             payload[AddressFormField.Street],
             payload[AddressFormField.BuildingName],
           ]
-        : [payload[AddressFormField.BuildingName]],
+        : [buildingName],
       telephone: `${payload[AddressFormField.PhoneNumber]?.countryCode}${payload[AddressFormField.PhoneNumber]?.number}`,
       ...(payload[AddressFormField.Latitude] && {
         latitude: payload[AddressFormField.Latitude],

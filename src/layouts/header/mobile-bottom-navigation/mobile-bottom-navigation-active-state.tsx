@@ -3,12 +3,12 @@
 import { useRouteMatch } from "@/hooks/use-route-match";
 
 export function MobileBottomNavigationActiveState() {
-  const { isCart, isCategory, isCustomer, isHome } = useRouteMatch();
+  const { isCart, isCustomer, isHome, isMenu } = useRouteMatch();
 
-  const activeTab = isHome
-    ? "home"
-    : isCategory
-      ? "menu"
+  const activeTab = isMenu
+    ? "menu"
+    : isHome
+      ? "home"
       : isCart
         ? "cart"
         : isCustomer

@@ -27,10 +27,10 @@ export const CategoryProductGridClient = ({
   }
 
   // Calculate row and column based on grid layout
-  // Mobile: 2 columns, Desktop: 5 columns
+  // Mobile: 2 columns, Tablet: 3 columns, Desktop: 5 columns
   // For LP origin tracking:
   // - row: absolute row on landing page = lpRow + gridRow - 1
-  // - column: column within the grid (1-2 for mobile, 1-5 for desktop)
+  // - column: column within the grid (1-2 for mobile, 1-3 for tablet, 1-5 for desktop)
   const getGridPosition = (index: number) => {
     const columns = isMobile ? 2 : 5;
     const gridRow = Math.floor(index / columns) + 1;
@@ -39,7 +39,7 @@ export const CategoryProductGridClient = ({
   };
 
   return (
-    <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-5">
+    <div className="grid grid-cols-2 gap-2.5 md:grid-cols-3 lg:grid-cols-5">
       {products.map((product, idx) => {
         const { gridColumn, gridRow } = getGridPosition(idx);
         return (

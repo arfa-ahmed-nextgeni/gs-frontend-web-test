@@ -73,6 +73,7 @@ export const AddressFormContextProvider = ({
   initialAddressLabel,
   initialSkipArea = false,
   initialSkipState = false,
+  isEditing,
   isFirstAddressInCheckout = false,
   onClose,
   onRootBack,
@@ -91,6 +92,7 @@ export const AddressFormContextProvider = ({
   initialAddressLabel?: string;
   initialSkipArea?: boolean;
   initialSkipState?: boolean;
+  isEditing?: boolean;
   isFirstAddressInCheckout?: boolean;
   onClose?: () => void;
   onRootBack?: () => void;
@@ -101,7 +103,7 @@ export const AddressFormContextProvider = ({
   const { isGlobal } = useStoreCode();
   const { setHandleBack } = useMobileTopBarContext();
 
-  const isEditMode = !!customerAddress;
+  const isEditMode = isEditing ?? !!customerAddress;
 
   const [skipArea, setSkipArea] = useState(initialSkipArea);
   const [skipState, setSkipState] = useState(initialSkipState);
@@ -194,16 +196,26 @@ export const AddressFormContextProvider = ({
   );
 
   useEffect(() => {
+    if (isEditMode) {
+      setHandleBack(
+        () => {
+          rootBackAction();
+        },
+        { navigates: true }
+      );
+      return;
+    }
+
+    if (currentStep > 0 && hasNavigatedSteps) {
+      setHandleBack(prevStep, { navigates: false });
+      return;
+    }
+
     setHandleBack(
-      isEditMode
-        ? () => {
-            rootBackAction();
-          }
-        : currentStep > 0 && hasNavigatedSteps
-          ? prevStep
-          : () => {
-              rootBackAction();
-            }
+      () => {
+        rootBackAction();
+      },
+      { navigates: true }
     );
   }, [
     currentStep,

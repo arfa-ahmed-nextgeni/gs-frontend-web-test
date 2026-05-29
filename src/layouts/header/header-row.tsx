@@ -57,7 +57,10 @@ export const HeaderRow = ({
       variant="FullWidth"
     >
       <HeaderRowShell>
-        <DeferredMobileTopBar fallback={defaultHeaderContent} />
+        <div className="contents lg:hidden">
+          <DeferredMobileTopBar fallback={defaultHeaderContent} />
+        </div>
+        <div className="hidden lg:contents">{defaultHeaderContent}</div>
 
         <div className="hidden h-full flex-row gap-7 lg:flex">
           <AsyncBoundary fallback={<RegionLanguageSwitcherSkeleton />}>
@@ -70,7 +73,7 @@ export const HeaderRow = ({
           />
         </div>
 
-        <MobileMenuButton isSticky={isSticky} />
+        <MobileMenuButton />
       </HeaderRowShell>
     </Container>
   );

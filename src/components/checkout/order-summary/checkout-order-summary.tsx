@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import { useTranslations } from "next-intl";
 
@@ -36,6 +36,7 @@ interface OrderSummaryDeductions {
 
 interface OrderSummaryTotals {
   baseShippingFee: number;
+  codFee: number;
   grandTotal: number;
   hasSelectedShippingMethod: boolean;
   serviceFee: number;
@@ -55,6 +56,32 @@ export function CheckoutOrderSummary({
   const { isGlobal } = useStoreCode();
   const isMounted = useIsMounted();
   const checkoutItemsCarouselApiRef = useRef<CarouselHandle>(null);
+  const carouselWrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = carouselWrapperRef.current;
+    if (!el) return;
+
+    const handleWheel = (event: WheelEvent) => {
+      event.preventDefault();
+
+      const delta =
+        Math.abs(event.deltaX) > Math.abs(event.deltaY)
+          ? event.deltaX
+          : event.deltaY;
+
+      if (Math.abs(delta) <= 5) return;
+
+      if (delta > 0) {
+        checkoutItemsCarouselApiRef.current?.scrollNext();
+      } else {
+        checkoutItemsCarouselApiRef.current?.scrollPrev();
+      }
+    };
+
+    el.addEventListener("wheel", handleWheel, { passive: false });
+    return () => el.removeEventListener("wheel", handleWheel);
+  }, []);
 
   // Calculate order summary data from cart
   const data = useMemo(() => {
@@ -96,14 +123,15 @@ export function CheckoutOrderSummary({
 
   const cartItems = cart?.items.filter((item) => !item.isGwp) || [];
   const giftItems = cart?.items.filter((item) => item.isGwp) || [];
+  const allItems = [...cartItems, ...giftItems];
   const giftCount = giftItems.reduce((sum, item) => sum + item.quantity, 0);
   const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const displayItemCount = isMounted && cart ? itemCount : data?.itemCount || 0;
   const displayGiftCount = isMounted && cart ? giftCount : data?.giftCount || 0;
   const hasItems = isMounted
-    ? cartItems.length > 0
-    : (data?.itemCount || 0) > 0;
+    ? allItems.length > 0
+    : (data?.itemCount || 0) > 0 || (data?.giftCount || 0) > 0;
 
   return (
     <section className="shadow-xs rounded-2xl bg-white p-5">
@@ -125,33 +153,14 @@ export function CheckoutOrderSummary({
           </p>
 
           {/* Products Display */}
-          {hasItems && cartItems.length > 0 && (
+          {hasItems && allItems.length > 0 && (
             <div className="mb-3 border-b border-[#F3F3F3] pb-3">
-              {cartItems.length === 1 ? (
+              {allItems.length === 1 ? (
                 // Single product display
-                <CheckoutProductCard item={cartItems[0]} />
+                <CheckoutProductCard item={allItems[0]} />
               ) : (
                 // Multiple products - slider with peek effect
-                <div
-                  className="relative"
-                  onWheelCapture={(event) => {
-                    if (
-                      Math.abs(event.deltaX) > Math.abs(event.deltaY) ||
-                      Math.abs(event.deltaY) <= 5
-                    ) {
-                      return;
-                    }
-
-                    event.preventDefault();
-
-                    if (event.deltaY > 0) {
-                      checkoutItemsCarouselApiRef.current?.scrollNext();
-                      return;
-                    }
-
-                    checkoutItemsCarouselApiRef.current?.scrollPrev();
-                  }}
-                >
+                <div className="relative touch-pan-x" ref={carouselWrapperRef}>
                   <CardRailScrollSnapCarousel
                     apiRef={checkoutItemsCarouselApiRef}
                     contentProps={{
@@ -165,9 +174,9 @@ export function CheckoutOrderSummary({
                       className: "hidden",
                     }}
                   >
-                    {cartItems.map((item) => (
+                    {allItems.map((item) => (
                       <CardRailScrollSnapCarouselItem
-                        className="min-w-0 flex-shrink-0 basis-[calc(100%-30%)] sm:basis-[70%]"
+                        className="min-w-0 shrink-0 basis-[calc(100%-30%)] sm:basis-[70%]"
                         key={item.uidInCart || item.id}
                       >
                         <CheckoutProductCard item={item} />
@@ -255,6 +264,19 @@ export function CheckoutOrderSummary({
           </div>
         )}
 
+        {totals.codFee > 0 && (
+          <div className="flex items-center justify-between">
+            <span className="text-text-tertiary text-sm font-medium">
+              {t("codFee")}
+            </span>
+            <LocalizedPrice
+              containerProps={{ className: "inline-flex items-center" }}
+              price={formatPrice({ amount: totals.codFee, currencyCode })}
+              valueProps={{ className: "text-[#5D5D5D]" }}
+            />
+          </div>
+        )}
+
         {totals.hasSelectedShippingMethod ? (
           <div className="flex items-center justify-between">
             <span className="text-text-tertiary text-sm font-medium">
@@ -272,14 +294,18 @@ export function CheckoutOrderSummary({
                 />
               ) : (
                 <>
-                  <LocalizedPrice
-                    containerProps={{ className: "inline-flex items-center" }}
-                    price={formatPrice({
-                      amount: totals.baseShippingFee || totals.shippingFee,
-                      currencyCode,
-                    })}
-                    valueProps={{ className: "text-[#BDC2C5] line-through" }}
-                  />
+                  {totals.baseShippingFee > 0 && (
+                    <LocalizedPrice
+                      containerProps={{
+                        className: "inline-flex items-center",
+                      }}
+                      price={formatPrice({
+                        amount: totals.baseShippingFee,
+                        currencyCode,
+                      })}
+                      valueProps={{ className: "text-[#BDC2C5] line-through" }}
+                    />
+                  )}
                   <span className="text-text-teal text-[15px] font-medium">
                     {tDelivery("free")}
                   </span>
@@ -288,24 +314,6 @@ export function CheckoutOrderSummary({
             </span>
           </div>
         ) : null}
-
-        <div className="mt-2 flex items-center justify-between border-t border-[#F3F3F3] pt-2 font-semibold">
-          <div className="flex flex-row items-center gap-3">
-            <span className="text-text-primary text-sm font-semibold">
-              {t("grandTotal")}
-            </span>
-            {!isGlobal && (
-              <span className="text-text-tertiary text-[10px] font-normal">
-                {t("includingTaxes")}
-              </span>
-            )}
-          </div>
-          <LocalizedPrice
-            containerProps={{ className: "inline-flex items-center" }}
-            price={formatPrice({ amount: totals.grandTotal, currencyCode })}
-            valueProps={{ className: "text-xs font-normal" }}
-          />
-        </div>
 
         {/* Deductions */}
         {(deductions.discount > 0 ||
@@ -333,7 +341,8 @@ export function CheckoutOrderSummary({
                 {renderPrice(
                   deductions.mokafaa,
                   true,
-                  "text-sm font-medium text-text-teal"
+                  "text-sm font-medium text-text-teal",
+                  "text-text-teal"
                 )}
               </div>
             )}
@@ -345,17 +354,42 @@ export function CheckoutOrderSummary({
                 {renderPrice(
                   deductions.wallet,
                   true,
-                  "text-sm font-medium text-text-teal"
+                  "text-sm font-medium text-text-teal",
+                  "text-text-teal"
                 )}
               </div>
             )}
           </div>
         )}
 
+        <div className="mt-2 flex items-center justify-between border-t border-[#F3F3F3] pt-2 font-semibold">
+          <div className="flex flex-row items-center gap-3">
+            <span className="text-text-primary text-sm font-semibold">
+              {t("grandTotal")}
+            </span>
+            {!isGlobal && (
+              <span className="text-text-tertiary text-[10px] font-normal">
+                {t("includingTaxes")}
+              </span>
+            )}
+          </div>
+          {totals.grandTotal === 0 ? (
+            <span className="text-text-teal text-sm font-medium">
+              {tDelivery("free")}
+            </span>
+          ) : (
+            <LocalizedPrice
+              containerProps={{ className: "inline-flex items-center" }}
+              price={formatPrice({ amount: totals.grandTotal, currencyCode })}
+              valueProps={{ className: "text-xs font-normal" }}
+            />
+          )}
+        </div>
+
         {/* Savings message */}
         {deductions.totalSavings > 0 && (
           <div
-            className="flex h-[32px] items-center justify-center rounded-[5px] bg-[#E6F7F5]"
+            className="flex h-8 items-center justify-center rounded-[5px] bg-[#E6F7F5]"
             dir="ltr"
           >
             <span className="text-text-primary text-xs font-medium">
@@ -386,12 +420,10 @@ export function CheckoutOrderSummary({
         )}
 
         {/* Cashback */}
-        {deductions.wallet > 0 && (
-          <CashbackDisplay
-            currencyCode={currencyCode}
-            grandTotal={totals.grandTotal}
-          />
-        )}
+        <CashbackDisplay
+          currencyCode={currencyCode}
+          grandTotal={totals.grandTotal}
+        />
       </div>
     </section>
   );

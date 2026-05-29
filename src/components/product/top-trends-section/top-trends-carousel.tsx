@@ -63,6 +63,7 @@ export const TopTrendsCarousel = ({
         >
           <ProductCard
             isBulletDeliveryEnabled={isBulletDeliveryEnabled}
+            isInCarousel
             lpColumn={1}
             lpExtra={{
               row_count: products.length,

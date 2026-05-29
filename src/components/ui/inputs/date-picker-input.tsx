@@ -17,7 +17,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { LanguageCode, Locale } from "@/lib/constants/i18n";
 import { cn } from "@/lib/utils";
+import { getStoreCode } from "@/lib/utils/country";
 
 type DatePickerInputProps = {
   containerProps?: React.ComponentProps<"div">;
@@ -35,14 +37,8 @@ type DatePickerInputProps = {
   value?: string;
 };
 
-function formatDisplayDate(dateStr: string, locale: string): string {
-  const date = dayjs(dateStr).toDate();
-
-  return new Intl.DateTimeFormat(locale.startsWith("ar") ? "ar-SA" : "en-US", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(date);
+function formatDisplayDate(dateStr: string): string {
+  return dayjs(dateStr).format("DD/MM/YYYY");
 }
 
 const calendarClassNames: Partial<ClassNames> = {
@@ -89,8 +85,9 @@ export const DatePickerInput = ({
   const locale = useLocale();
   const [open, setOpen] = useState(false);
 
-  const isRtl = locale.startsWith("ar");
-  const dateFnsLocale = locale.startsWith("ar") ? ar : enUS;
+  const storeCode = getStoreCode(locale as Locale);
+  const isRtl = storeCode.split("_")[0] === LanguageCode.AR;
+  const dateFnsLocale = isRtl ? ar : enUS;
 
   const selected =
     value && dayjs(value).isValid() ? dayjs(value).toDate() : undefined;
@@ -98,7 +95,7 @@ export const DatePickerInput = ({
   const minDate = min ? dayjs(min).toDate() : undefined;
 
   const displayValue =
-    value && dayjs(value).isValid() ? formatDisplayDate(value, locale) : "";
+    value && dayjs(value).isValid() ? formatDisplayDate(value) : "";
 
   const startMonth = minDate ?? dayjs().subtract(100, "years").toDate();
   const endMonth = maxDate ?? new Date();
@@ -161,6 +158,11 @@ export const DatePickerInput = ({
               ...(minDate ? [{ before: minDate }] : []),
             ]}
             endMonth={endMonth}
+            formatters={{
+              formatDay: (date) => date.getDate().toString(),
+              formatYearDropdown: (year) =>
+                (year instanceof Date ? year.getFullYear() : year).toString(),
+            }}
             locale={dateFnsLocale}
             mode="single"
             onSelect={(date: Date | undefined) => {

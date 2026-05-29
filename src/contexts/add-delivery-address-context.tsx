@@ -23,6 +23,7 @@ interface AddDeliveryAddressContextType {
   isManualEntryMode: boolean;
   isSelectedLocationInSaudiArabia: boolean | null;
   ksaAddress: KsaNationalAddress | null;
+  mapSearchResetKey: number;
   resetFlowState: () => void;
   selectedAddress: null | string;
   selectedLocation: google.maps.LatLngLiteral | null;
@@ -115,6 +116,7 @@ export function AddDeliveryAddressContextProvider({
   );
   const [ksaAddress, setKsaAddress] = useState<KsaNationalAddress | null>(null);
   const [showSaveForm, setShowSaveForm] = useState(false);
+  const [mapSearchResetKey, setMapSearchResetKey] = useState(0);
 
   useEffect(() => {
     setCurrentLocation(null);
@@ -137,6 +139,7 @@ export function AddDeliveryAddressContextProvider({
     setSelectedAddress(null);
     setSelectedLocation(initialSelectedLocation);
     setShowSaveForm(false);
+    setMapSearchResetKey((k) => k + 1);
   };
 
   return (
@@ -154,6 +157,7 @@ export function AddDeliveryAddressContextProvider({
         isManualEntryMode,
         isSelectedLocationInSaudiArabia,
         ksaAddress,
+        mapSearchResetKey,
         resetFlowState,
         selectedAddress,
         selectedLocation,

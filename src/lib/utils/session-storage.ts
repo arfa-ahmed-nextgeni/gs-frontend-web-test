@@ -1,5 +1,3 @@
-import "client-only";
-
 /**
  * Get a value from sessionStorage
  * @param key - The sessionStorage key

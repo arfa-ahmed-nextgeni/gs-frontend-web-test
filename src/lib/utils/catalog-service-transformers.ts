@@ -3,6 +3,7 @@
  */
 
 import { SortEnum } from "@/catalog-service-graphql/graphql";
+import { CategorySortKey } from "@/lib/constants/category/category-sort";
 import {
   Aggregation,
   CategoryViewBucket,
@@ -19,16 +20,68 @@ import {
 // ============================================================================
 
 /**
- * Builds the `sort` argument for catalog-service `productSearch`.
- * Default / relevance: same as before (in-stock first), plus explicit relevance
- * now that the default `sort` query param no longer omits it.
- * Other UI sorts: unchanged — in-stock first, then the mapped attribute sort.
+ * Builds the `sort` argument for header autocomplete `productSearch`.
+ * Default: in-stock first, then relevance (search-term match quality).
+ */
+export function buildAutocompleteProductSearchSort(
+  sortBy?: string
+): ProductSearchSortInput[] {
+  const normalized = sortBy?.trim();
+  if (!normalized || normalized === "relevance") {
+    return [
+      { attribute: "inStock", direction: SortEnum.Desc },
+      { attribute: "relevance", direction: SortEnum.Desc },
+    ];
+  }
+
+  return buildProductSearchSort(normalized);
+}
+
+export function buildCategoryProductSearchSort(
+  sortBy?: string
+): ProductSearchSortInput[] {
+  const normalized = sortBy?.trim();
+
+  if (normalized === CategorySortKey.Relevance) {
+    return [
+      { attribute: "inStock", direction: SortEnum.Desc },
+      { attribute: "relevance", direction: SortEnum.Desc },
+    ];
+  }
+
+  if (!normalized || normalized === CategorySortKey.Position) {
+    return [
+      { attribute: "inStock", direction: SortEnum.Desc },
+      { attribute: "position", direction: SortEnum.Asc },
+    ];
+  }
+
+  const userSort = convertSortToProductSearchSort(normalized);
+  return [
+    { attribute: "inStock", direction: SortEnum.Desc },
+    ...(userSort || []),
+  ];
+}
+
+/**
+ * Builds the `sort` argument for search results page `productSearch`.
+ * Relevance (default): in-stock first, then search relevance.
+ * Position: in-stock first, then catalog position.
+ * Other UI sorts: in-stock first, then the mapped attribute sort.
  */
 export function buildProductSearchSort(
   sortBy?: string
 ): ProductSearchSortInput[] {
   const normalized = sortBy?.trim();
-  if (!normalized || normalized === "relevance") {
+
+  if (normalized === CategorySortKey.Position) {
+    return [
+      { attribute: "inStock", direction: SortEnum.Desc },
+      { attribute: "position", direction: SortEnum.Asc },
+    ];
+  }
+
+  if (!normalized || normalized === CategorySortKey.Relevance) {
     return [
       { attribute: "inStock", direction: SortEnum.Desc },
       { attribute: "relevance", direction: SortEnum.Desc },
@@ -67,7 +120,11 @@ export function convertFacetsToDynamicFilters(
 export function convertFacetToDynamicFilter(
   facet: Aggregation
 ): DynamicCategoryFilter | null {
-  if (!facet.attribute || facet?.attribute === "product_meta_type") {
+  if (
+    !facet.attribute ||
+    facet.attribute === "product_meta_type" ||
+    facet.attribute === "categories"
+  ) {
     return null;
   }
 
@@ -119,7 +176,9 @@ export function convertFacetToDynamicFilter(
 export function convertSortToProductSearchSort(
   sortBy?: string
 ): ProductSearchSortInput[] | undefined {
-  if (!sortBy || sortBy === "relevance") return undefined;
+  if (!sortBy || sortBy === "relevance" || sortBy === "position") {
+    return undefined;
+  }
 
   const sortMap: Record<string, ProductSearchSortInput[]> = {
     news_from_date: [{ attribute: "news_to_date", direction: SortEnum.Desc }],

@@ -73,7 +73,7 @@ export function NoProductsFound() {
   };
 
   return (
-    <div className="flex min-h-[500px] flex-col items-center justify-center rounded-lg border border-gray-200 bg-gray-50 p-8">
+    <div className="min-h-125 flex flex-col items-center justify-center rounded-lg border border-gray-200 bg-gray-50 p-8">
       <div className="text-center">
         <svg
           className="mx-auto h-24 w-24 text-gray-400"

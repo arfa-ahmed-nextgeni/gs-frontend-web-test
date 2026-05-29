@@ -9,7 +9,6 @@ import { FilterTracker } from "@/components/analytics/filter-tracker";
 import { CategoryMobileFilterContent } from "@/components/category/filters/category-mobile-filter-content";
 import { Drawer, DrawerTrigger } from "@/components/ui/drawer";
 import { useFilters } from "@/contexts/category-filter-context";
-import { CategorySortKey } from "@/lib/constants/category/category-sort";
 
 export const CategoryMobileFilterActionSheet = ({
   dialogTitle,
@@ -36,13 +35,23 @@ export const CategoryMobileFilterActionSheet = ({
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    const event = new CustomEvent("drawerStateChange", {
-      detail: { open: drawerOpen },
-    });
-    window.dispatchEvent(event);
+    window.dispatchEvent(
+      new CustomEvent("categoryFilterDrawerStateChange", {
+        detail: { open: drawerOpen },
+      })
+    );
+
+    return () => {
+      window.dispatchEvent(
+        new CustomEvent("categoryFilterDrawerStateChange", {
+          detail: { open: false },
+        })
+      );
+    };
   }, [drawerOpen]);
 
   const {
+    isDefaultSort,
     state: { checkboxes, priceMax, priceMin, sortBy },
   } = useFilters();
 
@@ -53,7 +62,7 @@ export const CategoryMobileFilterActionSheet = ({
   const showIndicator =
     isHydrated &&
     (type === "radio"
-      ? sortBy !== CategorySortKey.Relevance
+      ? !isDefaultSort(sortBy)
       : type === "price"
         ? priceMin !== null || priceMax !== null
         : !!checkboxes[sectionId]?.length);

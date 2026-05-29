@@ -157,7 +157,7 @@ export const ProductReviewForm = ({
           </div>
         </div>
 
-        <div className="bg-bg-default border-border-base pb-30 gap-7.5 flex flex-col border-t px-5 pt-2.5 lg:pt-5">
+        <div className="bg-bg-default border-border-base gap-7.5 flex flex-col border-t px-5 pb-5 pt-2.5 lg:pt-5">
           <Controller
             control={control}
             name={AddProductReviewFormField.NameAllowed}

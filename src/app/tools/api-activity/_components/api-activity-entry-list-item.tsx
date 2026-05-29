@@ -10,12 +10,14 @@ import {
 import type { ApiActivityEntrySummary } from "@/lib/api-activity/api-activity-types";
 
 export function ApiActivityEntryListItem({
+  autoRefreshEnabled,
   currentPage,
   entry,
   failedOnly,
   isSelected,
   searchQuery,
 }: {
+  autoRefreshEnabled: boolean;
   currentPage?: number;
   entry: ApiActivityEntrySummary;
   failedOnly: boolean;
@@ -25,6 +27,7 @@ export function ApiActivityEntryListItem({
   return (
     <Form action="" replace scroll={false}>
       <ApiActivityHiddenFields
+        autoRefreshEnabled={autoRefreshEnabled}
         currentPage={currentPage}
         failedOnly={failedOnly}
         searchQuery={searchQuery}

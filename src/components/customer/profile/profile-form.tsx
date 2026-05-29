@@ -223,7 +223,7 @@ export const ProfileForm = ({
           />
         </div>
         <FormSubmitButton
-          className="col-span-2 mt-20 lg:col-span-1 lg:col-start-2"
+          className="col-span-2 mt-0 lg:col-span-1 lg:col-start-2"
           disabled={!isDirty}
           isSubmitting={isSubmitting}
         >

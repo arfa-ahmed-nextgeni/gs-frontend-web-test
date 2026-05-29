@@ -11,16 +11,43 @@ graphql(`
         id
 
         ... on ConfigurableWishlistItem {
+          __typename
           configurable_options {
+            option_label
             value_label
             configurable_product_option_uid
             configurable_product_option_value_uid
           }
           configured_variant {
             id
+            sku
             stock_status
             express_delivery_available
-            sku
+            countdown_timer_enabled
+            countdown_timer_end_date
+            countdown_timer_start_date
+            countdown_timer_subtitle
+            countdown_timer_title
+            price_range {
+              minimum_price {
+                final_price {
+                  value
+                  currency
+                }
+                regular_price {
+                  value
+                  currency
+                }
+                discount {
+                  amount_off
+                  percent_off
+                }
+              }
+            }
+            thumbnail {
+              url
+              label
+            }
           }
         }
 
@@ -30,6 +57,7 @@ graphql(`
           id
           name
           brand_new_label
+          product_type_new2_label
           sku
           url_key
           rating_summary
@@ -54,36 +82,6 @@ graphql(`
               discount {
                 amount_off
                 percent_off
-              }
-            }
-            maximum_price {
-              regular_price {
-                value
-                currency
-              }
-              final_price {
-                value
-                currency
-              }
-              discount {
-                amount_off
-                percent_off
-              }
-            }
-          }
-
-          ... on ConfigurableProduct {
-            variants {
-              product {
-                id
-              }
-            }
-            configurable_options {
-              attribute_code
-              label
-              values {
-                uid
-                label
               }
             }
           }
@@ -223,8 +221,9 @@ export const CUSTOMER_GRAPHQL_QUERIES = {
                 name
                 brand_new_label
                 url_key
-                image {
+                thumbnail {
                   url
+                  label
                 }
                 type_id
                 url_key
@@ -232,16 +231,6 @@ export const CUSTOMER_GRAPHQL_QUERIES = {
                 product_type_new2
                 price_range {
                   minimum_price {
-                    regular_price {
-                      value
-                      currency
-                    }
-                    final_price {
-                      value
-                      currency
-                    }
-                  }
-                  maximum_price {
                     regular_price {
                       value
                       currency
@@ -276,9 +265,29 @@ export const CUSTOMER_GRAPHQL_QUERIES = {
                     product {
                       id
                       sku
+                      thumbnail {
+                        label
+                        url
+                      }
+                      price_range {
+                        minimum_price {
+                          regular_price {
+                            value
+                            currency
+                          }
+                          final_price {
+                            value
+                            currency
+                          }
+                        }
+                      }
                     }
                   }
                 }
+              }
+              selected_options {
+                label
+                value
               }
             }
             payment_methods {
@@ -288,23 +297,6 @@ export const CUSTOMER_GRAPHQL_QUERIES = {
                 name
                 value
               }
-            }
-            billing_address {
-              city
-              company
-              country_code
-              fax
-              firstname
-              lastname
-              middlename
-              postcode
-              prefix
-              region
-              region_id
-              street
-              suffix
-              telephone
-              vat_id
             }
             shipping_address {
               city
@@ -360,7 +352,7 @@ export const CUSTOMER_GRAPHQL_QUERIES = {
                   value
                 }
               }
-              subtotal {
+              subtotal_including_tax {
                 currency
                 value
               }

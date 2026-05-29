@@ -29,7 +29,7 @@ export const ProductDetails = async ({
   return (
     <div
       className={cn(
-        "col-span-6 flex flex-col gap-5 px-2.5 lg:col-span-5 lg:px-0",
+        "col-span-6 flex flex-col gap-5 px-2.5 md:col-span-5 md:px-0 lg:col-span-5 lg:px-0",
         {
           "justify-between":
             product.type &&
@@ -47,9 +47,11 @@ export const ProductDetails = async ({
         />
         {product.type !== ProductType.EGiftCard && (
           <div className="flex flex-row justify-between">
-            <ProductDetailsPrice containerProps={{ className: "lg:mt-9" }} />
+            <ProductDetailsPrice
+              containerProps={{ className: "md:mt-9 lg:mt-9" }}
+            />
             <ProductDetailsOriginalProduct
-              containerProps={{ className: "lg:hidden flex" }}
+              containerProps={{ className: "md:hidden lg:hidden flex" }}
               content={pdpDialogConfig?.originalProduct}
             />
           </div>
@@ -67,7 +69,7 @@ export const ProductDetails = async ({
           ![ProductType.EGiftCard, ProductType.GiftCard].includes(
             product.type
           ) && (
-            <div className="mt-5 flex flex-col gap-2.5 lg:mt-10">
+            <div className="mt-5 flex flex-col gap-2.5 md:mt-10 lg:mt-10 md:ltr:mr-2.5 md:rtl:ml-2.5">
               <ProductDetailsVariants />
               <ProductDetailsInfoGrid product={product} />
             </div>
@@ -76,10 +78,10 @@ export const ProductDetails = async ({
 
       <div
         className={cn("flex flex-col gap-2.5", {
-          "lg:mt-15":
+          "md:mt-15 lg:mt-15":
             (product.type && [ProductType.GiftCard].includes(product.type)) ||
             !TABBY_TAMARA_INSTALLMENTS_ENABLED_STORES.includes(storeCode),
-          "lg:mt-5":
+          "md:mt-5 lg:mt-5":
             product.type && [ProductType.EGiftCard].includes(product.type),
         })}
       >

@@ -23,13 +23,16 @@ function DrawerContent({
   animated = true,
   children,
   className,
+  hideOverlay = false,
   ...props
-}: { animated?: boolean } & React.ComponentProps<
+}: { animated?: boolean; hideOverlay?: boolean } & React.ComponentProps<
   typeof DrawerPrimitive.Content
 >) {
   return (
     <DrawerPortal data-slot="drawer-portal">
-      <DrawerOverlay data-vaul-animate={animated ? "true" : "false"} />
+      {!hideOverlay && (
+        <DrawerOverlay data-vaul-animate={animated ? "true" : "false"} />
+      )}
       <DrawerPrimitive.Content
         aria-describedby={undefined}
         className={cn(

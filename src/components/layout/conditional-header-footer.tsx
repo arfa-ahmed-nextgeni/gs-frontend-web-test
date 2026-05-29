@@ -12,25 +12,25 @@ import { MobileBottomNavigation } from "@/layouts/header/mobile-bottom-navigatio
 
 import type { PromoBanner } from "@/lib/models/promo-banner";
 import type { WebsiteFooter } from "@/lib/models/website-footer";
-import type { MainMenuType } from "@/lib/types/ui-types";
+import type { HeaderNavigationType } from "@/lib/types/ui-types";
 
 interface ConditionalHeaderFooterProps {
   children: ReactNode;
-  navigationItems: MainMenuType[];
+  headerNavigation: HeaderNavigationType;
   promoBanner?: PromoBanner;
   websiteFooter?: WebsiteFooter;
 }
 
 export function ConditionalHeaderFooter({
   children,
-  navigationItems,
+  headerNavigation,
   promoBanner,
   websiteFooter,
 }: ConditionalHeaderFooterProps) {
   return (
     <div className="flex min-h-dvh flex-col">
       <ConditionalHeaderGate>
-        <Header navigationItems={navigationItems} promoBanner={promoBanner} />
+        <Header headerNavigation={headerNavigation} promoBanner={promoBanner} />
       </ConditionalHeaderGate>
 
       <main

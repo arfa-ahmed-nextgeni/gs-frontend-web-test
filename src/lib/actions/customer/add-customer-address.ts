@@ -32,6 +32,8 @@ export type AddCustomerAddressResult = {
   message: string;
 };
 
+const STREET_FALLBACK = "N/A";
+
 export const addCustomerAddress = async (data: AddressFormSchemaType) => {
   const t = await getTranslations("CustomerAddAddressPage.messages");
   const commonT = await getTranslations("CommonErrors");
@@ -54,6 +56,8 @@ export const addCustomerAddress = async (data: AddressFormSchemaType) => {
     const globalStore = isGlobalStore(storeCode);
 
     const payload = addressFormSchema(storeCode).parse(data);
+    const buildingName =
+      payload[AddressFormField.BuildingName]?.trim() || STREET_FALLBACK;
 
     const isGiftAddress =
       payload[AddressFormField.AddressLabel]?.toLowerCase() === "gift";
@@ -63,7 +67,7 @@ export const addCustomerAddress = async (data: AddressFormSchemaType) => {
       city:
         typeof payload[AddressFormField.City] === "string"
           ? payload[AddressFormField.City]
-          : payload[AddressFormField.City].label,
+          : payload[AddressFormField.City].value,
       country_code: globalStore
         ? (payload[AddressFormField.Country].value as CountryCodeEnum)
         : (region as CountryCodeEnum),
@@ -87,7 +91,7 @@ export const addCustomerAddress = async (data: AddressFormSchemaType) => {
             payload[AddressFormField.Street],
             payload[AddressFormField.BuildingName],
           ]
-        : [payload[AddressFormField.BuildingName]],
+        : [buildingName],
       telephone: `${payload[AddressFormField.PhoneNumber]?.countryCode}${payload[AddressFormField.PhoneNumber]?.number}`,
       ...(payload[AddressFormField.Latitude] && {
         latitude: payload[AddressFormField.Latitude],

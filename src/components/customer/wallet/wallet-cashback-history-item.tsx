@@ -63,7 +63,7 @@ export function WalletCashbackHistoryItem({
           width={20}
         />
 
-        <div className="flex flex-col lg:flex-row lg:items-center">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:gap-2">
           <p className="text-text-primary min-w-38.5 text-base font-semibold">
             {orderNumber}
           </p>

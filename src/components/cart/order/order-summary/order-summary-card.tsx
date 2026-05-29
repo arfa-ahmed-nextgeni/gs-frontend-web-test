@@ -17,12 +17,14 @@ export const OrderSummaryCard = () => {
   const grandTotal = cart?.grandTotalPrice ?? 0;
   const hasSelectedShippingMethod = cart?.hasSelectedShippingMethod ?? false;
   const serviceFee = cart?.serviceFee ?? 0;
+  const codFee = cart?.codFee ?? 0;
   const shippingFee = cart?.shippingFee ?? 0;
   const baseShippingFee = cart?.baseShippingFee ?? 0;
   const rewardPointsValue = cart?.appliedRewardPoints
     ? cart?.rewardPointsBaseValue
     : undefined;
   const mokafaaDiscount = cart?.mokafaaDiscount ?? 0;
+  const discount = cart?.discount ?? 0;
 
   if (!cart?.items || cart.items.length === 0) {
     return null;
@@ -34,7 +36,9 @@ export const OrderSummaryCard = () => {
 
       <OrderSummary
         baseShippingFee={baseShippingFee}
+        codFee={codFee}
         currencyCode={currencyCode}
+        discount={discount}
         freeShippingThreshold={freeShippingThreshold}
         grandTotal={grandTotal}
         hasSelectedShippingMethod={hasSelectedShippingMethod}

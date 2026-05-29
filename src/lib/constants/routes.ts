@@ -59,6 +59,7 @@ export const ROUTES = {
   HOME: "/",
   LOGIN: "/login",
   LOGOUT: "/logout",
+  MENU: "/menu",
   NOTIFY_ME: (externalId: string, name: string) =>
     `/notify-me/${externalId}?${QueryParamsKey.Name}=${encodeURIComponent(name)}`,
   ORDERS: "/account-order",

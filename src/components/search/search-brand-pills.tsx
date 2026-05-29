@@ -1,8 +1,13 @@
 import { useTranslations } from "next-intl";
 
+export interface BrandSuggestion {
+  title: string;
+  urlPath?: string;
+}
+
 interface SearchBrandPillsProps {
-  brands: string[];
-  onBrandClick: (brand: string) => void;
+  brands: BrandSuggestion[];
+  onBrandClick: (brand: BrandSuggestion) => void;
 }
 
 const SearchBrandPills = ({ brands, onBrandClick }: SearchBrandPillsProps) => {
@@ -19,10 +24,10 @@ const SearchBrandPills = ({ brands, onBrandClick }: SearchBrandPillsProps) => {
         {brands.slice(0, 6).map((brand) => (
           <button
             className="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-600 transition-colors hover:bg-gray-200 hover:text-gray-800"
-            key={brand}
+            key={brand.title}
             onClick={() => onBrandClick(brand)}
           >
-            {brand}
+            {brand.title}
           </button>
         ))}
       </div>

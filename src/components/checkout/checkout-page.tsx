@@ -40,6 +40,7 @@ import { useApplePayPlaceOrder } from "@/hooks/mutations/checkout/use-apple-pay-
 import { useValidateBin } from "@/hooks/mutations/checkout/use-validate-bin";
 import { useCustomerQuery } from "@/hooks/queries/use-customer-query";
 import { useIsMobile } from "@/hooks/use-is-mobile";
+import { useRouteMatch } from "@/hooks/use-route-match";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { placeOrderAction } from "@/lib/actions/checkout/place-order";
 import { setBillingAddressOnCartAction } from "@/lib/actions/checkout/set-billing-address-on-cart";
@@ -71,6 +72,7 @@ import { ROUTES } from "@/lib/constants/routes";
 import { SessionStorageKey } from "@/lib/constants/session-storage";
 import { DEFAULT_TOAST_DURATION } from "@/lib/constants/ui";
 import { sleep } from "@/lib/utils/async";
+import { getLoginUrlWithRedirect } from "@/lib/utils/auth-redirect";
 import {
   clearLockerInfo,
   getLockerInfo,
@@ -183,6 +185,8 @@ function CheckoutPage({
     useCustomerQuery();
   const { storeConfig } = useStoreConfig();
   const { cart, isLoading: isCartLoading } = useCart();
+  const hasOutOfStockItems =
+    cart?.items.some((item) => item.isOutOfStock) ?? false;
   const { mutateAsync: validateBin } = useValidateBin();
 
   // Memoize estimated delivery days map to avoid recreating on every render
@@ -243,7 +247,6 @@ function CheckoutPage({
       return defaultAddress ? defaultAddress.id : null;
     }
   );
-  const [isAddressDrawerOpen, setIsAddressDrawerOpen] = useState(false);
   const [addressDrawerView, setAddressDrawerView] =
     useState<AddressDrawerView>("list");
   const [initialAddressTab, setInitialAddressTab] = useState<
@@ -313,10 +316,25 @@ function CheckoutPage({
   const hasPrefetchedCardsRef = useRef(false);
   const [isPlacingOrderPending, startPlaceOrderTransition] = useTransition();
   const {
+    isAddressDrawerOpen,
     isShippingOptionDrawerOpen,
+    setCameFromAddressDrawer,
+    setCameFromShippingOptionDrawer,
     setDeliveryAddressFlowState,
+    setIsAddressDrawerOpen,
     setIsShippingOptionDrawerOpen,
   } = useCheckoutContext();
+  const { isAddDeliveryAddress } = useRouteMatch();
+  const [pendingAddressToMapNav, setPendingAddressToMapNav] = useState(false);
+
+  // Defer closing the address drawer until the map drawer route is active.
+  // This prevents a visible flash between the two drawers.
+  useEffect(() => {
+    if (pendingAddressToMapNav && isAddDeliveryAddress) {
+      setPendingAddressToMapNav(false);
+      setIsAddressDrawerOpen(false);
+    }
+  }, [pendingAddressToMapNav, isAddDeliveryAddress, setIsAddressDrawerOpen]);
   const [isLoadingShippingMethods, setIsLoadingShippingMethods] = useState(
     () => initialAddresses.length > 0
   );
@@ -329,6 +347,7 @@ function CheckoutPage({
   const previousSelectedAddressIdRef = useRef<null | string>(null);
   const previousShippingOptionRef = useRef<null | string>(null);
   const previousCartItemsRef = useRef<number>(0);
+  const previousShippingCartSignatureRef = useRef<null | string>(null);
   const lastSetShippingMethodRef = useRef<null | string>(null);
   const lastTrackedShippingMethodRef = useRef<null | string>(null);
   const [isSettingShippingAddress, setIsSettingShippingAddress] =
@@ -927,7 +946,7 @@ function CheckoutPage({
     hasPromptedLoginRef.current = true;
 
     if (isMobile) {
-      router.replace(ROUTES.CUSTOMER.LOGIN);
+      router.replace(getLoginUrlWithRedirect(ROUTES.CHECKOUT.ROOT));
     } else {
       showOtpLoginPopup();
     }
@@ -1036,6 +1055,9 @@ function CheckoutPage({
     const resetSelections = () => {
       // Prevent "auto-apply payment from cart" after a cart change.
       hasAppliedPaymentFromCartRef.current = true;
+      isSettingShippingAddressRef.current = false;
+      previousSelectedAddressIdRef.current = null;
+      previousShippingCartSignatureRef.current = null;
 
       setSelectedDelivery("");
       setSelectedPayment("");
@@ -1308,6 +1330,7 @@ function CheckoutPage({
       // For locker addresses, track cart items changes and reset ref to allow logic to run
       const cartItemsCount = cart?.items?.length || 0;
       previousCartItemsRef.current = cartItemsCount;
+      previousShippingCartSignatureRef.current = cartItemsSignature;
       // Reset the ref to allow locker address logic to run
       isSettingShippingAddressRef.current = false;
     } else {
@@ -1324,8 +1347,10 @@ function CheckoutPage({
 
       // Prevent re-running if only cart changed but address is the same
       // IMPORTANT: Check cartItemsChanged BEFORE updating the ref, otherwise the change won't be detected
-      const cartItemsCount = cart?.items?.length || 0;
-      const cartItemsChanged = previousCartItemsRef.current !== cartItemsCount;
+      // const cartItemsCount = cart?.items?.length || 0;
+      // const cartItemsChanged = previousCartItemsRef.current !== cartItemsCount;
+      const cartItemsChanged =
+        previousShippingCartSignatureRef.current !== cartItemsSignature;
       const shippingOptionChanged =
         previousShippingOptionRef.current !== selectedShippingOption;
       // Only update the ref AFTER we've checked for changes, but BEFORE we use it in early returns
@@ -1342,6 +1367,10 @@ function CheckoutPage({
         !cartItemsChanged &&
         !shippingOptionChanged
       ) {
+        if (!hasReceivedShippingMethods || shippingMethods.length === 0) {
+          setIsLoadingShippingMethods(true);
+          setIsSettingShippingAddress(true);
+        }
         return;
       }
     }
@@ -1355,7 +1384,8 @@ function CheckoutPage({
       const addressActuallyChanged =
         addressChanged && previousSelectedAddressIdRef.current !== null;
       const cartItemsCount = cart?.items?.length || 0;
-      const cartItemsChanged = previousCartItemsRef.current !== cartItemsCount;
+      const cartItemsChanged =
+        previousShippingCartSignatureRef.current !== cartItemsSignature;
       const shippingOptionChanged =
         previousShippingOptionRef.current !== selectedShippingOption;
 
@@ -1383,6 +1413,7 @@ function CheckoutPage({
         isSettingShippingAddressRef.current = false;
         // Update the ref AFTER we've checked for changes and decided to return early
         previousCartItemsRef.current = cartItemsCount;
+        previousShippingCartSignatureRef.current = cartItemsSignature;
         return;
       }
       // Track shipping option change
@@ -1390,6 +1421,7 @@ function CheckoutPage({
 
       // Update the ref AFTER we've checked for changes and decided to proceed
       previousCartItemsRef.current = cartItemsCount;
+      previousShippingCartSignatureRef.current = cartItemsSignature;
     } else {
       // For locker addresses, always allow the logic to run
       isSettingShippingAddressRef.current = true;
@@ -1904,7 +1936,6 @@ function CheckoutPage({
       // the new effect run sets the ref, allowing duplicate API calls.
       setIsSettingShippingAddress(false);
       setIsSettingBillingAddress(false);
-      setIsLoadingShippingMethods(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -1918,6 +1949,7 @@ function CheckoutPage({
     storeConfig?.estimatedDeliveryDays,
     t,
     pathname,
+    cartItemsSignature,
     // Note: selectedDelivery is intentionally not in dependencies
     // We only want to validate it when shipping methods change, not rerun the effect when it changes
   ]);
@@ -2029,7 +2061,12 @@ function CheckoutPage({
         ) {
           return;
         }
-        showError(result.error ?? t("errors.failedToSetShippingMethod"), " ");
+        showError(
+          hasOutOfStockItems
+            ? t("errors.shippingUnavailableDueToOutOfStock")
+            : (result.error ?? t("errors.failedToSetShippingMethod")),
+          " "
+        );
         return;
       }
 
@@ -2073,6 +2110,7 @@ function CheckoutPage({
     cart,
     cart?.items,
     cart?.shippingAddress?.selected_shipping_method,
+    hasOutOfStockItems,
     locale,
     queryClient,
     selectedAddressId,
@@ -2838,6 +2876,13 @@ function CheckoutPage({
     selectedAddressId || selectedLockerAddressType
   );
 
+  const shouldShowDeliveryMethodsLoader = Boolean(
+    hasSelectedAddress &&
+    (isLoadingShippingMethods ||
+      isSettingShippingAddress ||
+      (!hasReceivedShippingMethods && shippingMethods.length === 0))
+  );
+
   const hasRequiredSelections = Boolean(
     hasSelectedAddress && selectedDelivery && selectedPayment
   );
@@ -2874,6 +2919,7 @@ function CheckoutPage({
   }, [selectedPayment, availablePaymentMethods]);
 
   const canPlaceOrder =
+    !hasOutOfStockItems &&
     hasRequiredSelections &&
     availablePaymentMethods.length > 0 &&
     isSelectedPaymentMethodAvailable &&
@@ -2916,13 +2962,16 @@ function CheckoutPage({
     setEditingAddress(null);
     setAddressDrawerView("list");
     setIsAddressDrawerOpen(true);
-  }, [selectedAddress]);
+  }, [selectedAddress, setIsAddressDrawerOpen]);
 
-  const openAddressForm = useCallback((address: CheckoutAddress | null) => {
-    setEditingAddress(address);
-    setAddressDrawerView("form");
-    setIsAddressDrawerOpen(true);
-  }, []);
+  const openAddressForm = useCallback(
+    (address: CheckoutAddress | null) => {
+      setEditingAddress(address);
+      setAddressDrawerView("form");
+      setIsAddressDrawerOpen(true);
+    },
+    [setIsAddressDrawerOpen]
+  );
 
   const getAddressCoordinates = useCallback((address: CheckoutAddress) => {
     const rawAddress = address.customerAddress?.raw as
@@ -2938,12 +2987,21 @@ function CheckoutPage({
         }
       | undefined;
 
-    const latitude = Number(customerAddress?.latitude ?? rawAddress?.latitude);
-    const longitude = Number(
-      customerAddress?.longitude ?? rawAddress?.longitude
-    );
+    const rawLat = customerAddress?.latitude ?? rawAddress?.latitude;
+    const rawLng = customerAddress?.longitude ?? rawAddress?.longitude;
+
+    if (!rawLat || !rawLng) {
+      return null;
+    }
+
+    const latitude = Number(rawLat);
+    const longitude = Number(rawLng);
 
     if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+      return null;
+    }
+
+    if (latitude === 0 && longitude === 0) {
       return null;
     }
 
@@ -2962,13 +3020,11 @@ function CheckoutPage({
   }, []);
 
   const openAddressMapEditor = useCallback(
-    (address: CheckoutAddress) => {
+    (
+      address: CheckoutAddress,
+      origin: "addressDrawer" | "checkoutSection" = "checkoutSection"
+    ) => {
       const coordinates = getAddressCoordinates(address);
-
-      if (!coordinates) {
-        openAddressForm(address);
-        return;
-      }
 
       const params = new URLSearchParams({
         type: getAddressTypeForRoute(address),
@@ -2993,13 +3049,19 @@ function CheckoutPage({
             address.phoneNumber ||
             "",
         },
-        initialSelectedLocation: {
-          lat: coordinates.latitude,
-          lng: coordinates.longitude,
-        },
+        // null when no coordinates — the map will default to Riyadh center
+        initialSelectedLocation: coordinates
+          ? { lat: coordinates.latitude, lng: coordinates.longitude }
+          : null,
       });
       setEditingAddress(null);
-      setIsAddressDrawerOpen(false);
+      // Don't close the address drawer immediately — defer until the map drawer
+      // route is active to avoid a visible flash between the two drawers.
+      setPendingAddressToMapNav(true);
+      // Track whether the edit came from the address drawer (back → reopen it)
+      // or from the checkout shipping section (back → just close).
+      setCameFromAddressDrawer(origin === "addressDrawer");
+      setCameFromShippingOptionDrawer(false);
       router.push(
         `${ROUTES.CHECKOUT.ADD_DELIVERY_ADDRESS}?${params.toString()}`
       );
@@ -3007,10 +3069,12 @@ function CheckoutPage({
     [
       getAddressCoordinates,
       getAddressTypeForRoute,
-      openAddressForm,
       router,
+      setCameFromAddressDrawer,
+      setCameFromShippingOptionDrawer,
       setDeliveryAddressFlowState,
       setEditingAddress,
+      setPendingAddressToMapNav,
     ]
   );
 
@@ -3030,7 +3094,7 @@ function CheckoutPage({
         addresses.find((address) => address.id === addressId) ?? null;
 
       if (addressToEdit) {
-        openAddressMapEditor(addressToEdit);
+        openAddressMapEditor(addressToEdit, "checkoutSection");
       }
     },
     [addresses, openAddressMapEditor, router, selectedLockerAddressType]
@@ -3040,12 +3104,12 @@ function CheckoutPage({
     setIsAddressDrawerOpen(false);
     setAddressDrawerView("list");
     setEditingAddress(null);
-  }, []);
+  }, [setIsAddressDrawerOpen]);
 
   const closeAddressDrawerWithoutViewChange = useCallback(() => {
     setIsAddressDrawerOpen(false);
     setEditingAddress(null);
-  }, []);
+  }, [setIsAddressDrawerOpen]);
 
   const handleAddressFormClose = useCallback(() => {
     const wasAddingNew = editingAddress === null;
@@ -3085,6 +3149,7 @@ function CheckoutPage({
     editingAddress,
     selectedAddressId,
     selectedShippingOption,
+    setIsAddressDrawerOpen,
     setIsShippingOptionDrawerOpen,
   ]);
 
@@ -3094,7 +3159,11 @@ function CheckoutPage({
     setAddressDrawerView("list");
     setEditingAddress(null);
     setIsShippingOptionDrawerOpen(true);
-  }, [setDeliveryAddressFlowState, setIsShippingOptionDrawerOpen]);
+  }, [
+    setDeliveryAddressFlowState,
+    setIsAddressDrawerOpen,
+    setIsShippingOptionDrawerOpen,
+  ]);
 
   const handleShippingOptionConfirm = useCallback(
     (option: string) => {
@@ -4174,6 +4243,14 @@ function CheckoutPage({
       return t("button.placingOrder");
     }
 
+    if (hasOutOfStockItems) {
+      return (
+        <span className="px-4 text-center text-sm">
+          {t("button.removeOutOfStockItems")}
+        </span>
+      );
+    }
+
     if (canPlaceOrder && isCardPaymentMethod) {
       // Use formatPrice and LocalizedPrice component for currency display
       const formattedPrice = formatPrice({
@@ -4271,6 +4348,10 @@ function CheckoutPage({
     (isApplePayPayment && isApplePayAvailabilityPending);
 
   const footerDisabled = (() => {
+    if (hasOutOfStockItems) {
+      return true;
+    }
+
     if (canPlaceOrder) {
       return isPlacingOrder || isAnyApiCallInProgress;
     }
@@ -4332,19 +4413,13 @@ function CheckoutPage({
             <div className="h-[1px] w-full bg-[#EEF0F2]" />
             <CheckoutDeliverySection
               deliveryMethods={
-                hasSelectedAddress &&
-                !isLoadingShippingMethods &&
-                !isSettingShippingAddress
+                hasSelectedAddress && !shouldShowDeliveryMethodsLoader
                   ? shippingMethods
                   : undefined
               }
               giftWrappingEnabled={giftWrapping}
               hasReceivedResponse={hasReceivedShippingMethods}
-              isLoadingDeliveryMethods={
-                hasSelectedAddress
-                  ? isLoadingShippingMethods || isSettingShippingAddress
-                  : false
-              }
+              isLoadingDeliveryMethods={shouldShowDeliveryMethodsLoader}
               isWaitingForMoreInfo={!hasSelectedAddress}
               onGiftWrappingToggle={setGiftWrapping}
               onMethodChange={(methodId) => {
@@ -4415,7 +4490,7 @@ function CheckoutPage({
           onAddNew={startAddAddressFlow}
           onClose={closeAddressDrawer}
           onDelete={handleDeleteAddress}
-          onEdit={openAddressMapEditor}
+          onEdit={(address) => openAddressMapEditor(address, "addressDrawer")}
           onSelect={async (addressId) => {
             // Only clear selections if address actually changed
             if (addressId !== selectedAddressId) {

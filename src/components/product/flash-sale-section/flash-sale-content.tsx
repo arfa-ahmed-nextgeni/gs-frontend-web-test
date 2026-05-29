@@ -104,7 +104,7 @@ export const FlashSaleContent = async ({
               </div>
             </div>
             {/* Countdown Timer */}
-            <div>
+            <div className="inset-s-6 absolute bottom-6">
               {endTime && (
                 <FlashSaleResponsiveCountdown
                   endTime={endTime}

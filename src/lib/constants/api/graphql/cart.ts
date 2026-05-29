@@ -31,6 +31,10 @@ graphql(`
         currency
         value
       }
+      cod_fee {
+        currency
+        value
+      }
       mokafaa_discount {
         currency
         value
@@ -115,6 +119,7 @@ graphql(`
       items {
         uid
         quantity
+        is_available
         is_gwp
         is_wrap
         prices {
@@ -188,6 +193,7 @@ graphql(`
           configured_variant {
             id
             sku
+            stock_status
             express_delivery_available
             countdown_timer_enabled
             countdown_timer_end_date
@@ -209,6 +215,10 @@ graphql(`
                   percent_off
                 }
               }
+            }
+            thumbnail {
+              url
+              label
             }
           }
         }

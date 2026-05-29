@@ -59,6 +59,7 @@ export const SearchBar = ({ isSticky }: { isSticky?: boolean }) => {
   } = useSearchActions();
   const {
     hasDropdownContent: hasSearchDropdownContent,
+    isNavigating,
     queryText,
     showStaticDesktopSearch,
     showStickyDesktopSearch,
@@ -79,8 +80,11 @@ export const SearchBar = ({ isSticky }: { isSticky?: boolean }) => {
 
   const effectiveIsMobile = hasMounted ? responsiveIsMobile : true;
 
+  const mobilePlaceholder = t("mobilePlaceholder");
   const placeholder = effectiveIsMobile
-    ? t("mobilePlaceholder")
+    ? mobilePlaceholder.length > 18
+      ? `${mobilePlaceholder.slice(0, 15)}...`
+      : mobilePlaceholder
     : t("placeholder");
 
   const enableInputFocus = isSticky
@@ -94,6 +98,16 @@ export const SearchBar = ({ isSticky }: { isSticky?: boolean }) => {
     }
 
     loadSearchResults();
+    enableInputFocus();
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleAutoSearch(e);
+    if (inputFocus) return;
+    if (responsiveIsMobile) {
+      openMobileSearch();
+      return;
+    }
     enableInputFocus();
   };
 
@@ -113,8 +127,9 @@ export const SearchBar = ({ isSticky }: { isSticky?: boolean }) => {
                 "rounded-b-none rounded-t-3xl": hasDropdownContent,
               }),
               name: "search",
-              onChange: handleAutoSearch,
+              onChange: handleChange,
             }}
+            isLoading={isNavigating}
             onFocus={handleFocus}
             onSubmit={handleSearch}
             placeholder={placeholder}

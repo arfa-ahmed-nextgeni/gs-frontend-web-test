@@ -1,6 +1,6 @@
 import Form from "next/form";
 
-import { ApiActivityHiddenFields } from "@/app/tools/api-activity/_components/api-activity-hidden-fields";
+import { ApiActivityAutoRefreshCheckbox } from "@/app/tools/api-activity/_components/api-activity-auto-refresh-checkbox";
 import {
   type ApiActivityFilterState,
   formatTimestamp,
@@ -8,14 +8,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+type ApiActivityFilterFormProps = {
+  lastUpdatedAt: null | string;
+} & Pick<
+  ApiActivityFilterState,
+  "autoRefreshEnabled" | "failedOnly" | "searchQuery"
+>;
+
 export function ApiActivityFilterForm({
+  autoRefreshEnabled,
   failedOnly,
   lastUpdatedAt,
   searchQuery,
-  selectedEntryId,
-}: {
-  lastUpdatedAt: null | string;
-} & ApiActivityFilterState) {
+}: ApiActivityFilterFormProps) {
   return (
     <div className="space-y-3">
       <Form action="" replace scroll={false}>
@@ -25,6 +30,7 @@ export function ApiActivityFilterForm({
             name="q"
             placeholder="Search by service, method, path, or status"
           />
+          <ApiActivityAutoRefreshCheckbox defaultChecked={autoRefreshEnabled} />
           <label className="text-text-secondary flex items-center gap-2 text-sm">
             <input
               className="accent-[--color-bg-primary]"
@@ -35,7 +41,6 @@ export function ApiActivityFilterForm({
             />
             Show failures only
           </label>
-          <ApiActivityHiddenFields selectedEntryId={selectedEntryId} />
           <Button type="submit" variant="outline">
             Apply filters
           </Button>

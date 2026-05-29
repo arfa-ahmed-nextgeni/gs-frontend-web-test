@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 
 import Image from "next/image";
 
@@ -41,6 +41,51 @@ import { isError, isOk } from "@/lib/utils/service-result";
 import type { CustomerAddress } from "@/graphql/graphql";
 import type { AddressFormSchemaType } from "@/lib/forms/manage-address";
 import type { ServiceResult } from "@/lib/types/service-result";
+
+// Resolve a district input string to the best-matching value in the options list.
+const resolveDistrictValue = (
+  input: string,
+  options: Array<{ label: string; value: string }>
+): string => {
+  if (!input.trim() || !options.length) return input;
+
+  const lc = (s: string) => s.trim().toLowerCase();
+  const findMatch = (needle: string) =>
+    options.find(
+      (o) => lc(o.label) === lc(needle) || lc(o.value) === lc(needle)
+    );
+
+  // 1. Direct match
+  let match = findMatch(input);
+  if (match) return match.value;
+
+  // 2. Strip "Dist." suffix (e.g. "Al Woroud Dist." → "Al Woroud")
+  const withoutDist = input.replace(/\s*dist\.?\s*$/i, "").trim();
+  if (withoutDist !== input.trim()) {
+    match = findMatch(withoutDist);
+    if (match) return match.value;
+  }
+
+  // 3. Spaces-stripped match (removes all whitespace before comparing)
+  const noSpaces = (s: string) => s.replace(/\s+/g, "").toLowerCase();
+  const strippedNeedle = noSpaces(withoutDist || input);
+  match = options.find(
+    (o) =>
+      noSpaces(o.label) === strippedNeedle ||
+      noSpaces(o.value) === strippedNeedle
+  );
+  if (match) return match.value;
+
+  // 4. Strip leading "Al" (Arabic definite article, e.g. "Al Malaz" → "Malaz")
+  const base = withoutDist || input;
+  const withoutAl = base.replace(/^al[\s-]+/i, "").trim();
+  if (withoutAl !== base.trim()) {
+    match = findMatch(withoutAl);
+    if (match) return match.value;
+  }
+
+  return input;
+};
 
 // Helper to ensure phone number has +966 prefix
 const ensureSaudiPhonePrefix = (phoneNumber: string): string => {
@@ -110,7 +155,7 @@ export const AddDeliveryAddressSaveForm = () => {
       },
     },
   });
-  const phoneWatch = phoneForm.watch("phone");
+  const phoneWatch = useWatch({ control: phoneForm.control, name: "phone" });
   const shouldVerifyCoordinates = useMemo(() => {
     if (!selectedLocation) {
       return false;
@@ -133,7 +178,9 @@ export const AddDeliveryAddressSaveForm = () => {
     });
   const showKsaValidationLoader = shouldVerifyCoordinates && isLoadingKsa;
   const shouldUseSavedAddress =
-    !!editingAddressId && !!initialSelectedLocation && !shouldVerifyCoordinates;
+    !!editingAddressId &&
+    (isManualEntryMode ||
+      (!!initialSelectedLocation && !shouldVerifyCoordinates));
 
   useEffect(() => {
     // Mirror the cached KSA lookup into context so the manual form can reuse it.
@@ -380,7 +427,7 @@ export const AddDeliveryAddressSaveForm = () => {
   const isConfirmDisabled =
     isPending ||
     showKsaValidationLoader ||
-    !selectedLocation ||
+    (!isManualEntryMode && !selectedLocation) ||
     !formData.city.trim() ||
     showNoMatchingCity ||
     !formData.firstName.trim() ||
@@ -396,6 +443,20 @@ export const AddDeliveryAddressSaveForm = () => {
     setIsPending(true);
 
     try {
+      // Resolve the English city value (always English, regardless of display locale)
+      const matchingCityOption = (citiesData || []).find(
+        (c) =>
+          c.label.trim().toLowerCase() === formData.city.trim().toLowerCase() ||
+          c.value.trim().toLowerCase() === formData.city.trim().toLowerCase()
+      );
+      const cityValue = matchingCityOption?.value || formData.city;
+
+      // Resolve the district value, normalising common prefixes/spacing
+      const districtValue = resolveDistrictValue(
+        formData.district,
+        districtsData || []
+      );
+
       // Build profile update payload if customer is missing name data
       const profilePayload: Record<string, string> = {};
 
@@ -443,11 +504,11 @@ export const AddDeliveryAddressSaveForm = () => {
             deliveryType === "gift_delivery" ? "gift" : "home",
           [AddressFormField.Area]: {
             label: formData.district,
-            value: formData.district,
+            value: districtValue,
           },
           [AddressFormField.BuildingName]: formData.buildingName,
           [AddressFormField.City]: {
-            label: formData.city,
+            label: cityValue,
             value: formData.city,
           },
           [AddressFormField.Country]: {
@@ -464,10 +525,10 @@ export const AddDeliveryAddressSaveForm = () => {
           [AddressFormField.LastName]: formData.lastName,
           [AddressFormField.Latitude]: isManualEntryMode
             ? ""
-            : `${selectedLocation.lat}`,
+            : `${selectedLocation?.lat ?? ""}`,
           [AddressFormField.Longitude]: isManualEntryMode
             ? ""
-            : `${selectedLocation.lng}`,
+            : `${selectedLocation?.lng ?? ""}`,
           [AddressFormField.MiddleName]: "",
           [AddressFormField.PhoneNumber]: {
             countryCode: phoneForm.getValues("phone").countryCode ?? "+966",
@@ -492,13 +553,13 @@ export const AddDeliveryAddressSaveForm = () => {
         // Create new address
         result = await addDeliveryAddress({
           addressLabel: deliveryType === "gift_delivery" ? "gift" : "home",
-          city: formData.city,
-          district: formData.district,
+          city: cityValue,
+          district: districtValue,
           firstName: formData.firstName,
           ksaShortAddress: formData.shortNationalAddress,
           lastName: formData.lastName,
-          latitude: isManualEntryMode ? undefined : selectedLocation.lat,
-          longitude: isManualEntryMode ? undefined : selectedLocation.lng,
+          latitude: isManualEntryMode ? undefined : selectedLocation?.lat,
+          longitude: isManualEntryMode ? undefined : selectedLocation?.lng,
           phoneNumber:
             (phoneForm.getValues("phone").countryCode ?? "+966") +
             (phoneForm.getValues("phone").number ?? ""),
@@ -697,7 +758,11 @@ export const AddDeliveryAddressSaveForm = () => {
   };
 
   return (
-    <div className="address-form-filled-ui flex h-[90vh] flex-col overflow-y-auto bg-[#f9f9f9]">
+    <div
+      className="address-form-filled-ui flex h-svh flex-col overflow-y-auto bg-[#f9f9f9]"
+      onWheel={(e) => e.stopPropagation()}
+      style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+    >
       {/* Header */}
 
       {/* Address Display */}
@@ -1039,7 +1104,12 @@ export const AddDeliveryAddressSaveForm = () => {
         </div>
 
         {/* Footer Actions */}
-        <div className="flex shrink-0 flex-col gap-6 pb-8 pt-5">
+        <div
+          className="flex shrink-0 flex-col gap-6 pt-5"
+          style={{
+            paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 6rem)",
+          }}
+        >
           {!isGiftDelivery && (
             <div className="transition-default flex transform items-center gap-2.5 py-1.5">
               <Checkbox

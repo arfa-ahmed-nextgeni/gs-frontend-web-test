@@ -18,7 +18,7 @@ export function ProductGridSkeleton({
   return (
     <div
       className={cn(
-        "grid grid-cols-2 justify-items-center gap-2.5 lg:grid-cols-5",
+        "grid grid-cols-2 justify-items-center gap-2.5 md:grid-cols-3 lg:grid-cols-5",
         {
           "xl:grid-cols-6 xl:gap-2": desktopColumns === 6,
         }

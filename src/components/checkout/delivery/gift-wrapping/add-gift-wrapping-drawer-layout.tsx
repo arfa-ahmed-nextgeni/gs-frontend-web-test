@@ -72,7 +72,7 @@ export const AddGiftWrappingDrawerLayout = ({
 
   return (
     <DrawerLayout
-      contentContainerClassName="flex"
+      contentContainerClassName="bg-bg-body flex overflow-hidden"
       mobileHeaderEndContent={
         <Image
           alt="shield"

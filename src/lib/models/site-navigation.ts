@@ -1,6 +1,9 @@
 import { CSSProperties } from "react";
 
-import { NavHeaderData } from "@/lib/types/contentful/nav-header";
+import {
+  NavHeaderData,
+  NavMenuEntryData,
+} from "@/lib/types/contentful/nav-header";
 import { MainMenuType, SubMenuType } from "@/lib/types/ui-types";
 
 export class NavigationItem implements MainMenuType {
@@ -38,8 +41,13 @@ export class NavigationItem implements MainMenuType {
 
 export class SiteNavigation {
   public items: NavigationItem[];
+  public menuHeaderLabel?: string;
+  public seeAllLabel?: string;
 
   constructor(data: NavHeaderData) {
+    this.menuHeaderLabel = data?.menuHeaderLabel;
+    this.seeAllLabel = data?.seeAllLabel;
+
     // Handle case where data or subMenu might be undefined/null
     if (!data || !data.subMenu || !Array.isArray(data.subMenu)) {
       this.items = [];
@@ -58,24 +66,35 @@ export class SiteNavigation {
           label: fields.title || "Untitled",
           path: fields.url || "#",
           style: fields.configuration?.style,
-          subMenu: fields.subMenu
-            ? fields.subMenu
-                .filter((item) => item && item.fields)
-                .filter(({ fields }) => fields && fields.title)
-                .map(({ fields }) => {
-                  if (!fields) return null;
-
-                  return new NavigationItem({
-                    id: fields.title || "unknown",
-                    label: fields.title || "Untitled",
-                    path: fields.url || "#",
-                    style: fields.configuration?.style,
-                  });
-                })
-                .filter((item) => item !== null)
-            : undefined,
+          subMenu: mapNavigationItems(fields.subMenu),
         });
       })
       .filter((item) => item !== null);
   }
+}
+
+function mapNavigationItems(
+  items: NavMenuEntryData[] | undefined
+): SubMenuType[] | undefined {
+  if (!items || !Array.isArray(items)) {
+    return undefined;
+  }
+
+  const navigationItems = items
+    .filter((item) => item && item.fields)
+    .filter(({ fields }) => fields && (fields.title || fields.slug))
+    .map(({ fields }) => {
+      if (!fields) return null;
+
+      return new NavigationItem({
+        id: fields.slug || fields.title || "unknown",
+        label: fields.title || "Untitled",
+        path: fields.url || "#",
+        style: fields.configuration?.style,
+        subMenu: mapNavigationItems(fields.childMenu),
+      });
+    })
+    .filter((item) => item !== null);
+
+  return navigationItems.length > 0 ? navigationItems : undefined;
 }

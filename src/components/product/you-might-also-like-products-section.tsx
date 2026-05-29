@@ -1,5 +1,6 @@
-import { Suspense } from "react";
+import { connection } from "next/server";
 
+import { AsyncBoundary } from "@/components/common/async-boundary";
 import { CategoryProductsCarouselItemsSkeleton } from "@/components/product/category-products-carousel-items-skeleton";
 import { ProductCarouselSection } from "@/components/product/product-carousel-section";
 import Container from "@/components/shared/container";
@@ -10,12 +11,12 @@ import {
 } from "@/lib/constants/product/product-details";
 import { ProductDetailsModel } from "@/lib/models/product-details-model";
 
-export const YouMightAlsoLikeProductsSection = async ({
+export const YouMightAlsoLikeProductsSection = ({
   product,
 }: {
   product: ProductDetailsModel;
 }) => (
-  <Suspense
+  <AsyncBoundary
     fallback={
       <Container className="mb-7.5 !px-0">
         <CategoryProductsCarouselItemsSkeleton
@@ -25,6 +26,18 @@ export const YouMightAlsoLikeProductsSection = async ({
       </Container>
     }
   >
+    <YouMightAlsoLikeLeaf product={product} />
+  </AsyncBoundary>
+);
+
+const YouMightAlsoLikeLeaf = async ({
+  product,
+}: {
+  product: ProductDetailsModel;
+}) => {
+  await connection();
+
+  return (
     <ProductCarouselSection
       excludeTypes={[ProductType.EGiftCard]}
       linkType={ProductLinkType.AlsoLike}
@@ -38,5 +51,5 @@ export const YouMightAlsoLikeProductsSection = async ({
       productType={product.type}
       titleKey="youMightAlsoLikeSection"
     />
-  </Suspense>
-);
+  );
+};

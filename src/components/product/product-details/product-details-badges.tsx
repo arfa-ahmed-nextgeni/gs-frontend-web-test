@@ -38,7 +38,14 @@ export const ProductDetailsBadges = ({
           >
             <span className="text-text-primary text-[11px] font-medium leading-none">
               {t.rich("savedPrice", {
-                price: () => <LocalizedPrice price={savedPrice} />,
+                price: () => (
+                  <LocalizedPrice
+                    currencySymbolProps={{
+                      className: "font-normal",
+                    }}
+                    price={savedPrice}
+                  />
+                ),
               })}
             </span>
           </ProductDetailBadge>

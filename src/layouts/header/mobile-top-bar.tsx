@@ -1,5 +1,7 @@
 "use client";
 
+import { useTransition } from "react";
+
 import Image from "next/image";
 
 import BackIcon from "@/assets/icons/back-icon.svg";
@@ -13,6 +15,7 @@ import { ProductShareButton } from "@/components/product/product-details/product
 import { useSearchActions } from "@/components/search/search-container";
 import { RouteTitle } from "@/components/shared/route-title";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Spinner } from "@/components/ui/spinner";
 import { useMobileTopBarContext } from "@/contexts/mobile-top-bar-context";
 import { useProductReviews } from "@/contexts/product-reviews-context";
 import { Link } from "@/i18n/navigation";
@@ -30,6 +33,7 @@ export type MobileTopBarRouteProps = {
   isProductReviews: boolean;
   isProductRoot: boolean;
   isProfileRoot: boolean;
+  isSearch: boolean;
 };
 
 export const MobileTopBar = ({
@@ -42,12 +46,14 @@ export const MobileTopBar = ({
   isProductReviews,
   isProductRoot,
   isProfileRoot,
+  isSearch,
 }: MobileTopBarRouteProps) => {
   const router = useRouter();
+  const [isBackPending, startBackTransition] = useTransition();
 
   const { openMobileSearch } = useSearchActions();
 
-  const { handleBack, mobileTopBarTitle, productInfo } =
+  const { handleBack, handleBackNavigates, mobileTopBarTitle, productInfo } =
     useMobileTopBarContext();
   const { toggleSortByFilter } = useProductReviews();
 
@@ -59,18 +65,42 @@ export const MobileTopBar = ({
         : ROUTES.CUSTOMER.ACCOUNT
       : ROUTES.ROOT;
 
-  const handleBackFn =
-    isProduct || isCategory || isOrderDetails ? router.back : handleBack;
+  const shouldUseRouterBack = isProduct || isCategory || isOrderDetails;
+  const showBackButton = shouldUseRouterBack || !!handleBack;
+
+  const handleBackClick = () => {
+    if (shouldUseRouterBack) {
+      startBackTransition(() => {
+        router.back();
+      });
+      return;
+    }
+
+    if (handleBackNavigates) {
+      startBackTransition(() => {
+        handleBack?.();
+      });
+      return;
+    }
+
+    handleBack?.();
+  };
 
   return (
     <div className="flex flex-1 flex-row justify-between">
       <div className="flex flex-row gap-2.5">
-        {handleBackFn ? (
+        {showBackButton ? (
           <button
+            aria-busy={isBackPending}
             className="flex h-full items-center justify-center px-2.5"
-            onClick={handleBackFn}
+            disabled={isBackPending}
+            onClick={handleBackClick}
           >
-            <Image alt="back" className="rtl:rotate-180" src={BackIcon} />
+            {isBackPending ? (
+              <Spinner className="size-5" size={20} variant="dark" />
+            ) : (
+              <Image alt="back" className="rtl:rotate-180" src={BackIcon} />
+            )}
           </button>
         ) : (
           <Link
@@ -118,7 +148,7 @@ export const MobileTopBar = ({
         )}
       </div>
 
-      {isCategory && (
+      {(isCategory || isSearch) && (
         <button onClick={openMobileSearch}>
           <SearchIcon />
         </button>

@@ -88,7 +88,12 @@ export const ProductDetailsVariants = () => {
             {label}
           </p>
           <span className="text-text-placeholder text-sm font-medium leading-none">
-            <LocalizedPrice price={price} />
+            <LocalizedPrice
+              currencySymbolProps={{
+                className: "font-normal",
+              }}
+              price={price}
+            />
           </span>
         </button>
       ))}

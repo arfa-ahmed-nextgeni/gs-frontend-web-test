@@ -80,11 +80,6 @@ export async function setBillingAddressOnCartAction({
       return failure("Either customerAddressId or address must be provided");
     }
 
-    console.info(
-      "[setBillingAddressOnCartAction] Setting billing address:",
-      customerAddressId ? { customerAddressId } : { address }
-    );
-
     const response = await graphqlRequest<
       SetBillingAddressOnCartResponse,
       SetBillingAddressOnCartVariables
@@ -102,11 +97,6 @@ export async function setBillingAddressOnCartAction({
       },
     });
 
-    console.info(
-      "[setBillingAddressOnCartAction] Full response:",
-      JSON.stringify(response, null, 2)
-    );
-
     if (response.errors?.length) {
       const errorMessage =
         response.errors?.[0]?.message || "Failed to set billing address";
@@ -115,15 +105,8 @@ export async function setBillingAddressOnCartAction({
 
     const cart = response.data?.setBillingAddressOnCart?.cart ?? null;
 
-    console.info("[setBillingAddressOnCartAction] Cart object:", cart);
-
     const availablePaymentMethods = cart?.available_payment_methods?.filter(
       (method): method is PaymentMethodSummary => Boolean(method)
-    );
-
-    console.info(
-      "[setBillingAddressOnCartAction] Available payment methods:",
-      availablePaymentMethods
     );
 
     const result = {

@@ -1,10 +1,27 @@
-import type { Document } from "@contentful/rich-text-types";
-
 import { CategoryProducts } from "@/lib/models/category-products";
 import { ResponsiveImage } from "@/lib/models/responsive-image";
 
 import type { TabContentType } from "@/lib/models/page-landing";
-import type { TopTrendsData } from "@/lib/types/contentful/page-landing";
+import type {
+  ContentfulImageData,
+  TopTrendsData,
+} from "@/lib/types/contentful/page-landing";
+
+const toResponsiveImage = (banner: { fields: ContentfulImageData }) =>
+  new ResponsiveImage({
+    desktop: {
+      height: banner.fields.image.fields.file.details.image.height,
+      url: banner.fields.image.fields.file.url || "",
+      width: banner.fields.image.fields.file.details.image.width,
+    },
+    elementId: banner.fields.elementId,
+    mobile: {
+      height: banner.fields.image.fields.file.details.image.height,
+      url: banner.fields.image.fields.file.url || "",
+      width: banner.fields.image.fields.file.details.image.width,
+    },
+    redirectUrl: banner.fields.url,
+  });
 
 export class TopTrendsCategoryProducts extends CategoryProducts {
   public autoSliding: {
@@ -14,11 +31,8 @@ export class TopTrendsCategoryProducts extends CategoryProducts {
     delay: 3000,
     enabled: false,
   };
-  public bannerImages?: ResponsiveImage[];
-  public cashbackButtonTitle?: string;
-  public cashbackButtonUrl?: string;
-  public cashbackCurrencyImage?: ResponsiveImage;
-  public cashbackTitle?: Document;
+  public desktopBannerImages?: ResponsiveImage[];
+  public mobileBannerImages?: ResponsiveImage[];
 
   constructor(data: TopTrendsData, contentType: TabContentType) {
     super(
@@ -32,50 +46,11 @@ export class TopTrendsCategoryProducts extends CategoryProducts {
       contentType
     );
 
-    this.cashbackTitle = data.cashbackTitle;
-    this.cashbackButtonTitle = data.cashbackButtonTitle;
-    this.cashbackButtonUrl = data.cashbackButtonUrl;
     this.autoSliding = {
       delay: data.autoSlidingDelay || 3000,
       enabled: data.autoSliding || false,
     };
-    this.cashbackCurrencyImage = new ResponsiveImage({
-      desktop: {
-        height:
-          data.cashbackCurrencyImage?.fields.image.fields.file.details.image
-            .height,
-        url: data.cashbackCurrencyImage?.fields.image.fields.file.url || "",
-        width:
-          data.cashbackCurrencyImage?.fields.image.fields.file.details.image
-            .width,
-      },
-      mobile: {
-        height:
-          data.cashbackCurrencyImage?.fields.image.fields.file.details.image
-            .height,
-        url: data.cashbackCurrencyImage?.fields.image.fields.file.url || "",
-        width:
-          data.cashbackCurrencyImage?.fields.image.fields.file.details.image
-            .width,
-      },
-      redirectUrl: data.cashbackCurrencyImage?.fields.url,
-    });
-    this.bannerImages = data.banners?.map(
-      (image) =>
-        new ResponsiveImage({
-          desktop: {
-            height: image.fields.image.fields.file.details.image.height,
-            url: image.fields.image.fields.file.url || "",
-            width: image.fields.image.fields.file.details.image.width,
-          },
-          elementId: image.fields.elementId,
-          mobile: {
-            height: image.fields.image.fields.file.details.image.height,
-            url: image.fields.image.fields.file.url || "",
-            width: image.fields.image.fields.file.details.image.width,
-          },
-          redirectUrl: image.fields.url,
-        })
-    );
+    this.desktopBannerImages = data.desktopBanners?.map(toResponsiveImage);
+    this.mobileBannerImages = data.mobileBanners?.map(toResponsiveImage);
   }
 }

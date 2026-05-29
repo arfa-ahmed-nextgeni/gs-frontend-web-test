@@ -4,29 +4,35 @@ import { ProductCardVariant } from "@/lib/constants/product/product-card";
 import { cn } from "@/lib/utils";
 
 export const ProductCardSkeleton = ({
+  isInCarousel,
   variant,
 }: {
+  isInCarousel?: boolean;
   variant: ProductCardVariant;
 }) => {
   const { className, style } = productCardSizeClasses(variant);
+  const isBundles = variant === ProductCardVariant.Bundles;
+  const isBundlesGrid = isBundles && !isInCarousel;
 
   return (
     <div
       className={cn(
         "h-77.5 transition-default bg-bg-default group relative overflow-hidden rounded-xl",
-        "sm:w-43 w-[calc(50vw-15px)]",
+        "sm:w-43 w-[calc(50vw-15px)] md:w-full",
         "lg:w-48",
         "[contain-intrinsic-size:192px_310px] [content-visibility:auto]",
         {
-          "[contain-intrinsic-size:240px_310px] lg:w-60":
-            variant === ProductCardVariant.Bundles,
+          "[contain-intrinsic-size:240px_310px] sm:w-60 md:w-60 lg:w-60":
+            isBundles,
+          "w-60": isBundles && isInCarousel,
         }
       )}
     >
       <div
         className={cn(
           "transition-default relative mx-2.5 mt-2.5 overflow-hidden rounded-xl group-focus-within:mx-5 group-focus-within:mt-5 group-hover:mx-5 group-hover:mt-5",
-          className
+          className,
+          isBundlesGrid && "max-md:mx-auto! max-md:w-[calc(100%-20px)]!"
         )}
         style={style}
       >

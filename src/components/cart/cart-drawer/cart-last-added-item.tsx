@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 
 import { CartQuantityControl } from "@/components/cart/cart-quantity-control";
+import { ProductCardBulletDelivery } from "@/components/product/product-card/product-card-bullet-delivery";
 import { ProductCardDiscount } from "@/components/product/product-card/product-card-discount";
 import { ProductCardLabel } from "@/components/product/product-card/product-card-label";
 import { ProductCardPrice } from "@/components/product/product-card/product-card-price";
@@ -11,6 +12,7 @@ import { ProductDetailsLink } from "@/components/shared/product-details-link";
 import { useCart } from "@/contexts/use-cart";
 import { useRemoveProductFromCart } from "@/hooks/mutations/cart/use-remove-product-from-cart";
 import { useUpdateCartItemQuantity } from "@/hooks/mutations/cart/use-update-cart-item-quantity";
+import { useBulletDeliveryEnabled } from "@/hooks/use-bullet-delivery-enabled";
 import { trackCartLessQty, trackCartMoreQty } from "@/lib/analytics/events";
 import {
   buildCartProperties,
@@ -32,6 +34,7 @@ export const CartLastAddedItem = () => {
     }
   }, [lastAddedItem]);
 
+  const isBulletDeliveryEnabled = useBulletDeliveryEnabled();
   const { isPending, mutate: updateQuantity } = useUpdateCartItemQuantity();
   const { isPending: isRemovingItem, mutate: removeProductFromCart } =
     useRemoveProductFromCart({ sku: lastAddedItem?.sku || "" });
@@ -69,6 +72,8 @@ export const CartLastAddedItem = () => {
   }
 
   const discountPercent = lastAddedItem.discountPercent || null;
+  const showBulletDelivery =
+    Boolean(lastAddedItem.bulletDelivery) && isBulletDeliveryEnabled;
   const selectedOptionLabel = lastAddedItem.options?.choices?.[0]?.label;
   const itemQuantity = lastAddedItem.quantity;
   const productHref = getProductDetailsHref({
@@ -104,9 +109,10 @@ export const CartLastAddedItem = () => {
           quantity={itemQuantity}
         />
       </div>
-      <div className="ms-2.5 flex flex-1 flex-col justify-between lg:gap-4 lg:ltr:!ml-5 lg:rtl:!mr-5">
+      <div className="lg:ltr:ml-5! lg:rtl:mr-5! ms-2.5 flex flex-1 flex-col justify-between pe-2.5 lg:gap-4 lg:pe-0">
         <div className="flex flex-row justify-between gap-5 lg:flex-col lg:gap-2.5">
-          <div className="hidden items-end justify-end lg:flex">
+          <div className="hidden items-end justify-end gap-1 lg:flex">
+            {showBulletDelivery && <ProductCardBulletDelivery />}
             {discountPercent && (
               <ProductCardDiscount discount={discountPercent} />
             )}
@@ -118,17 +124,22 @@ export const CartLastAddedItem = () => {
               title={lastAddedItem.name}
             >
               <p className="text-text-primary line-clamp-1 text-xs font-semibold">
-                {lastAddedItem.name}
+                {lastAddedItem.brand}
               </p>
-              <p className="text-text-primary line-clamp-2 text-xs font-normal">
-                {lastAddedItem.description}
+              <p className="text-text-primary line-clamp-1 text-xs font-normal">
+                {lastAddedItem.name}
               </p>
             </ProductDetailsLink>
           </div>
 
           <div className="gap-1.25 flex flex-col lg:hidden">
-            {discountPercent && (
-              <ProductCardDiscount discount={discountPercent} />
+            {(discountPercent || showBulletDelivery) && (
+              <div className="flex flex-row gap-1">
+                {showBulletDelivery && <ProductCardBulletDelivery />}
+                {discountPercent && (
+                  <ProductCardDiscount discount={discountPercent} />
+                )}
+              </div>
             )}
             {selectedOptionLabel && (
               <ProductCardLabel className="bg-label-muted">

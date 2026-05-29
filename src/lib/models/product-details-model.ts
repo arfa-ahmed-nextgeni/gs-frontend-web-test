@@ -14,6 +14,7 @@ import {
 import { CountdownTimer } from "@/lib/types/product/countdown-timer";
 import { ProductAttribute } from "@/lib/types/product/product-attribute";
 import { ProductTagLabel, ProductTags } from "@/lib/types/product/product-tags";
+import { resolveProductImageUrl } from "@/lib/utils/image";
 import { isPerfumeAttributeSet } from "@/lib/utils/product-type";
 
 export type ProductMedia = {
@@ -115,11 +116,11 @@ export class ProductDetailsModel extends Helper {
     this.metaKeywords = productData?.metaKeyword || undefined;
     this.mediaGallery =
       productData?.images
-        ?.filter((image) => !!image?.url)
         ?.map((image) => ({
-          type: "image",
-          url: image?.url || "",
-        })) || [];
+          type: "image" as const,
+          url: resolveProductImageUrl(image?.url),
+        }))
+        ?.filter((media) => !!media.url) || [];
 
     const videos: ProductMedia[] =
       productData?.videos
@@ -152,110 +153,72 @@ export class ProductDetailsModel extends Helper {
         ""
       ).toLowerCase() === "yes";
 
-    const brand = this.getAttribute<ProductAttribute>(
-      productData?.attributes || [],
+    const attrs = productData?.attributes || [];
+    const emptyAttr: ProductAttribute = { label: "", value: "" };
+
+    const PRODUCT_INFO_KEYS = [
       "brand_new",
-      { label: "", value: "" }
-    );
-
-    this.brand = brand.value;
-
-    const productType = this.getAttribute<ProductAttribute>(
-      productData?.attributes || [],
-      "product_type_new2",
-      { label: "", value: "" }
-    );
-    const gender = this.getAttribute<ProductAttribute>(
-      productData?.attributes || [],
+      "color",
       "gender",
-      { label: "", value: "" }
-    );
-    const year = this.getAttribute<ProductAttribute>(
-      productData?.attributes || [],
-      "year_of_launch",
-      { label: "", value: "" }
-    );
-    const areaOfApply = this.getAttribute<ProductAttribute>(
-      productData?.attributes || [],
+      "product_type_new2",
+      "makeup_color",
       "area_of_apply",
-      { label: "", value: "" }
-    );
-    const skinType = this.getAttribute<ProductAttribute>(
-      productData?.attributes || [],
-      "skin_type",
-      { label: "", value: "" }
-    );
-    const coverage = this.getAttribute<ProductAttribute>(
-      productData?.attributes || [],
-      "coverage",
-      { label: "", value: "" }
-    );
-    const concentration = this.getAttribute<ProductAttribute>(
-      productData?.attributes || [],
-      "concentration",
-      { label: "", value: "" }
-    );
-    const character = this.getAttribute<ProductAttribute>(
-      productData?.attributes || [],
+      "texture",
       "character",
-      { label: "", value: "" }
-    );
-    const productColor = this.getAttribute<ProductAttribute>(
-      productData?.attributes || [],
+      "fragrance_notes",
+      // variant slot inserted before this index
+      "size_new",
+      "year_of_launch",
+      "concentration",
       "product_color",
-      { label: "", value: "" }
-    );
-    const finish = this.getAttribute<ProductAttribute>(
-      productData?.attributes || [],
-      "finish",
-      { label: "", value: "" }
-    );
-    const itemCategory = this.getAttribute<ProductAttribute>(
-      productData?.attributes || [],
       "item_category",
-      { label: "", value: "" }
-    );
-    const categories = this.parseAttribute<{
-      label: string;
-      value: string | string[];
-    }>(productData?.attributes || [], "categories", { label: "", value: [""] });
+      "skin_type",
+      "finish",
+      "coverage",
+      "categories",
+      "top_notes",
+      "middle_notes",
+      "base_notes",
+    ] as const;
+    const VARIANT_SLOT_KEY = "size_new";
+    const ARRAY_VALUE_KEYS = new Set<string>(["categories"]);
+
+    const resolved = PRODUCT_INFO_KEYS.map((key) => {
+      if (ARRAY_VALUE_KEYS.has(key)) {
+        const a = this.parseAttribute<{
+          label: string;
+          value: string | string[];
+        }>(attrs, key, { label: "", value: [""] });
+        const value = Array.isArray(a.value) ? a.value.join(", ") : a.value;
+        return { key, label: a.label, value };
+      }
+      const a = this.getAttribute<ProductAttribute>(attrs, key, emptyAttr);
+      return { key, label: a.label, value: a.value };
+    });
+    const byKey = Object.fromEntries(resolved.map((r) => [r.key, r])) as Record<
+      (typeof PRODUCT_INFO_KEYS)[number],
+      { key: string; label: string; value: string }
+    >;
+
+    this.brand = byKey.brand_new.value;
 
     this.productInfo = {
-      area: areaOfApply.value,
-      coverage: coverage.value,
-      gender: gender.value,
-      intensity: concentration.value,
-      skinType: skinType.value,
-      type: productType.value,
-      year: year.value,
+      area: byKey.area_of_apply.value,
+      coverage: byKey.coverage.value,
+      gender: byKey.gender.value,
+      intensity: byKey.concentration.value,
+      skinType: byKey.skin_type.value,
+      type: byKey.product_type_new2.value,
+      year: byKey.year_of_launch.value,
     };
 
-    if (brand.label && brand.value) this.productInfoList.push(brand);
-    if (character.label && character.value)
-      this.productInfoList.push(character);
-    if (concentration.label && concentration.value)
-      this.productInfoList.push(concentration);
-    if (gender.label && gender.value) this.productInfoList.push(gender);
-    if (productColor.label && productColor.value)
-      this.productInfoList.push(productColor);
-    const variantInfoIndex = this.productInfoList.length;
-    if (productType.label && productType.value)
-      this.productInfoList.push(productType);
-    if (itemCategory.label && itemCategory.value)
-      this.productInfoList.push(itemCategory);
-    if (areaOfApply.label && areaOfApply.value)
-      this.productInfoList.push(areaOfApply);
-    if (skinType.label && skinType.value) this.productInfoList.push(skinType);
-    if (finish.label && finish.value) this.productInfoList.push(finish);
-    if (coverage.label && coverage.value) this.productInfoList.push(coverage);
-    if (categories.label && categories.value)
-      this.productInfoList.push({
-        label: categories.label,
-        value: Array.isArray(categories.value)
-          ? categories.value.join(", ")
-          : categories.value,
-      });
-    if (year.label && year.value) this.productInfoList.push(year);
+    const variantSlotPos = PRODUCT_INFO_KEYS.indexOf(VARIANT_SLOT_KEY);
+    let variantInfoIndex = 0;
+    resolved.forEach((r, i) => {
+      if (!(r.label && r.value)) return;
+      this.productInfoList.push({ label: r.label, value: r.value });
+      if (i < variantSlotPos) variantInfoIndex++;
+    });
 
     const reviewRating = this.parseAttributeValue<ReviewRating>(
       productData?.attributes || [],
@@ -285,10 +248,11 @@ export class ProductDetailsModel extends Helper {
           ? productData.price?.final?.amount?.currency ||
             ProductViewCurrency.Sar
           : ProductViewCurrency.Sar;
-      const amountOff = this.parseAttributeValue<{ amount_off: null | number }>(
-        productData?.attributes || [],
-        "value_off",
-        { amount_off: null }
+      const rawValueOff = this.parseAttributeValue<
+        { amount_off: null | number } | { amount_off: null | number }[]
+      >(productData?.attributes || [], "value_off", { amount_off: null });
+      const amountOff = (
+        Array.isArray(rawValueOff) ? rawValueOff[0] : rawValueOff
       )?.amount_off;
       const bulletDelivery =
         this.getAttributeValue<string>(
@@ -540,21 +504,19 @@ export class ProductVariant extends Helper {
 
     const mediaGallery =
       gallery
-        ?.map((item) => ({
-          type:
-            item.mediaType === "external-video"
-              ? "video"
-              : ("image" as ProductMedia["type"]),
-          url:
-            (item.mediaType === "external-video"
-              ? item.video_url
-              : item.file) || "",
-        }))
+        ?.map((item) => {
+          const isVideo = item.mediaType === "external-video";
+          const rawUrl = (isVideo ? item.video_url : item.file) || "";
+          return {
+            type: (isVideo ? "video" : "image") as ProductMedia["type"],
+            url: isVideo ? rawUrl : resolveProductImageUrl(rawUrl),
+          };
+        })
         ?.filter((mediaItem) => !!mediaItem.url) || [];
-    const imageUrl = this.getValidUrl(image);
+    const imageUrl = resolveProductImageUrl(this.getValidUrl(image));
 
     this.mediaGallery = this.removeDuplicateUrls(
-      imageUrl
+      imageUrl && mediaGallery?.length > 0
         ? [{ type: "image", url: imageUrl }, ...mediaGallery]
         : mediaGallery
     );

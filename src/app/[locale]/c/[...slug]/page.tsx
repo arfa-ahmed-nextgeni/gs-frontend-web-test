@@ -1,14 +1,38 @@
+import { Suspense } from "react";
+
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { CategoryListingRedirectGuard } from "@/components/category/category-listing-redirect-guard";
+import {
+  CategoryFiltersList,
+  CategoryListingExtras,
+  CategoryListingProducts,
+  CategoryMobileStickyFilters,
+  createCategoryListingPromise,
+} from "@/components/category/category-listing-regions";
 import { CategoryPageClientWrapper } from "@/components/category/category-page-client-wrapper";
-import { CategoryPageDataSection } from "@/components/category/category-page-data-section";
+import { CategorySortByFilter } from "@/components/category/filters/category-sort-by-filter";
+import { CategoryTypeFilter } from "@/components/category/filters/category-type-filter";
+import { FilterSectionHeader } from "@/components/category/filters/filter-section-header";
+import { CategoryFiltersListSkeleton } from "@/components/category/skeletons/category-filters-list-skeleton";
+import { CategoryListingProductsSkeleton } from "@/components/category/skeletons/category-listing-products-skeleton";
+import { AsyncBoundary } from "@/components/common/async-boundary";
+import { JsonLdScript } from "@/components/seo/json-ld-script";
 import { DesktopBreadcrumb } from "@/components/shared/breadcrumb/desktop-breadcrumb";
+import Container from "@/components/shared/container";
 import { MobileTopBarTitleSync } from "@/components/shared/mobile-top-bar-title-sync";
+import { redirect } from "@/i18n/navigation";
 import { getCategoryRouteListing } from "@/lib/actions/category/get-category-route-listing";
 import { getCategoryRouteShell } from "@/lib/actions/category/get-category-route-shell";
+import { getCategoryListingHrefIfPageExceedsProductCap } from "@/lib/category/category-listing-redirect";
+import { collectCategoryStaticSlugs } from "@/lib/category/static-params-extractors";
+import { CATEGORY_LISTING_DEFAULT_PAGE_SIZE } from "@/lib/constants/category/category-listing-cap";
 import { type Locale } from "@/lib/constants/i18n";
+import { ROUTE_PLACEHOLDER } from "@/lib/constants/routes";
+import { resolveProductImageUrl } from "@/lib/utils/image";
 import { initializePageLocale } from "@/lib/utils/locale";
+import { generateBreadcrumbSchema } from "@/lib/utils/schema";
 import {
   generateAbsoluteCanonicalUrl,
   generateHreflangTags,
@@ -21,10 +45,13 @@ export default async function CategoryPage({
   params,
   searchParams,
 }: PageProps<"/[locale]/c/[...slug]">) {
-  const resolvedSearchParams = await searchParams;
   const { locale, slug } = await params;
 
   initializePageLocale(locale);
+
+  if (slug[0] === ROUTE_PLACEHOLDER) {
+    notFound();
+  }
 
   const routeShellResult = await getCategoryRouteShell({
     locale: locale as Locale,
@@ -41,6 +68,20 @@ export default async function CategoryPage({
   }
 
   const routeShell = routeShellResult.data;
+
+  const breadcrumbSchema = generateBreadcrumbSchema({
+    items: routeShell.breadcrumbs.map((breadcrumb) => ({
+      name: breadcrumb.title,
+      url: breadcrumb.href,
+    })),
+    locale: locale as Locale,
+  });
+
+  const listingPromise = createCategoryListingPromise({
+    categoryPath: routeShell.categoryPath,
+    locale: locale as Locale,
+    searchParamsPromise: searchParams,
+  });
 
   return (
     <CategoryPageClientWrapper
@@ -64,14 +105,59 @@ export default async function CategoryPage({
         }
       />
 
-      <CategoryPageDataSection
-        breadcrumbs={routeShell.breadcrumbs}
-        category={routeShell.category}
-        categoryPath={routeShell.categoryPath}
-        locale={locale as Locale}
-        routePath={routeShell.routePath}
-        search={resolvedSearchParams}
-      />
+      <JsonLdScript data={breadcrumbSchema} id="category-breadcrumb-schema" />
+
+      <Suspense fallback={null}>
+        <CategoryListingRedirectGuard
+          locale={locale as Locale}
+          routePath={routeShell.routePath}
+          searchParamsPromise={searchParams}
+        />
+      </Suspense>
+
+      <Container className="mt-5 flex flex-col gap-2.5 lg:flex-row">
+        <div className="gap-1.25 lg:mt-15 lg:w-47.75 flex w-full flex-col lg:pb-8">
+          <CategoryTypeFilter
+            breadcrumbs={routeShell.breadcrumbs}
+            category={routeShell.category}
+          />
+          <FilterSectionHeader />
+          <AsyncBoundary fallback={<CategoryFiltersListSkeleton />}>
+            <CategoryFiltersList listingPromise={listingPromise} />
+          </AsyncBoundary>
+        </div>
+
+        <div className="min-w-0 flex-1">
+          <div className="mb-2 ml-2 flex min-w-0 items-center justify-between gap-2 lg:mb-5 lg:ml-0">
+            <h1 className="text-text-primary wrap-break-word min-w-0 flex-1 whitespace-normal text-2xl font-normal lg:text-2xl">
+              {routeShell.category.name}
+            </h1>
+            <div className="shrink-0">
+              <CategorySortByFilter />
+            </div>
+          </div>
+
+          <AsyncBoundary fallback={<CategoryListingProductsSkeleton />}>
+            <CategoryListingProducts
+              category={routeShell.category}
+              categoryPath={routeShell.categoryPath}
+              listingPromise={listingPromise}
+            />
+          </AsyncBoundary>
+        </div>
+      </Container>
+
+      <AsyncBoundary fallback={null}>
+        <CategoryMobileStickyFilters listingPromise={listingPromise} />
+      </AsyncBoundary>
+
+      <AsyncBoundary fallback={null}>
+        <CategoryListingExtras
+          categoryName={routeShell.category.name || ""}
+          listingPromise={listingPromise}
+          routePath={routeShell.routePath}
+        />
+      </AsyncBoundary>
     </CategoryPageClientWrapper>
   );
 }
@@ -82,6 +168,13 @@ export async function generateMetadata({
 }: PageProps<"/[locale]/c/[...slug]">): Promise<Metadata> {
   const search = await searchParams;
   const { locale, slug } = await params;
+
+  if (slug[0] === ROUTE_PLACEHOLDER) {
+    return {
+      description: "The requested category could not be found.",
+      title: "Category Not Found",
+    };
+  }
 
   const routeShellResult = await getCategoryRouteShell({
     locale: locale as Locale,
@@ -96,6 +189,16 @@ export async function generateMetadata({
   }
   const routeShell = routeShellResult.data;
 
+  const categoryListingRedirectHref =
+    getCategoryListingHrefIfPageExceedsProductCap(
+      routeShell.routePath,
+      search,
+      CATEGORY_LISTING_DEFAULT_PAGE_SIZE
+    );
+  if (categoryListingRedirectHref) {
+    redirect({ href: categoryListingRedirectHref, locale });
+  }
+
   const { listingData, queryState } = await getCategoryRouteListing({
     categoryPath: routeShell.categoryPath,
     locale: locale as Locale,
@@ -103,8 +206,9 @@ export async function generateMetadata({
   });
   const currentPage = queryState.currentPage;
 
-  const firstProductImage =
-    listingData.productResponse.items?.[0]?.productView?.images?.[0]?.url;
+  const firstProductImage = resolveProductImageUrl(
+    listingData.productResponse.items?.[0]?.productView?.images?.[0]?.url
+  );
 
   const categoryPathLabel = Array.isArray(slug) ? slug.join(" > ") : slug;
   const baseTitle = routeShell.category.meta_title || routeShell.category.name;
@@ -178,8 +282,11 @@ export async function generateMetadata({
   };
 }
 
-export function generateStaticParams() {
-  const commonCategories = ["fragrances", "beauty", "new", "best-sellers"];
-
-  return commonCategories.map((category) => ({ slug: [category] }));
+export async function generateStaticParams({
+  params,
+}: {
+  params: Awaited<LayoutProps<"/[locale]">["params"]>;
+}) {
+  const slugs = await collectCategoryStaticSlugs({ locale: params.locale });
+  return slugs.map((slug) => ({ slug }));
 }

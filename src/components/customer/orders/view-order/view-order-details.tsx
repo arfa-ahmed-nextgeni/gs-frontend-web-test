@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useTransition } from "react";
+import React, { useMemo, useRef, useState, useTransition } from "react";
 
 import Image from "next/image";
 
@@ -16,6 +16,7 @@ import { LocalizedPrice } from "@/components/shared/localized-price";
 import { ProductDetailsLink } from "@/components/shared/product-details-link";
 import { useOrdersContext } from "@/contexts/orders-context";
 import { useViewOrderContext } from "@/contexts/view-order-context";
+import { useHandleAuthRevoked } from "@/hooks/auth/use-handle-auth-revoked";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useReorderCartActions } from "@/hooks/use-reorder-cart-actions";
 import { useRouter } from "@/i18n/navigation";
@@ -45,6 +46,7 @@ export const ViewOrderDetails = () => {
   const locale = useLocale() as Locale;
   const router = useRouter();
   const { handleSuccessfulReorder } = useReorderCartActions();
+  const handleAuthRevoked = useHandleAuthRevoked();
   const [isDownloadInvoicePending, startDownloadInvoiceTransition] =
     useTransition();
   const [isTrackOrderPending, startTrackOrderTransition] = useTransition();
@@ -55,6 +57,17 @@ export const ViewOrderDetails = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+
+  const subtotal = useMemo(
+    () =>
+      orderData?.items?.reduce(
+        (acc: number, item: any) =>
+          acc +
+          (item.product_sale_price?.value || 0) * (item.quantity_ordered || 0),
+        0
+      ) || 0,
+    [orderData?.items]
+  );
 
   if (!orderData) {
     return null;
@@ -127,7 +140,12 @@ export const ViewOrderDetails = () => {
     const toastPosition = isMobile ? "top" : "bottom";
 
     try {
-      const result = await reorderOrder(orderData.increment_id, false);
+      const result = await reorderOrder(orderData.increment_id, true);
+      if (result.isUnauthenticated) {
+        await handleAuthRevoked();
+        return;
+      }
+
       if (result.success) {
         await handleSuccessfulReorder();
 
@@ -422,6 +440,11 @@ export const ViewOrderDetails = () => {
                   item.product_name ||
                   item.product?.short_name ||
                   "Product";
+                const variantOptionLabel = item.product?.size;
+                const salePrice = item.product_sale_price?.value ?? 0;
+                const regularPrice = item.product_regular_price?.value;
+                const hasRealOriginalPrice =
+                  typeof regularPrice === "number" && regularPrice > salePrice;
 
                 return (
                   <div
@@ -430,7 +453,7 @@ export const ViewOrderDetails = () => {
                   >
                     <div className="flex items-center gap-1 px-2">
                       <ProductDetailsLink
-                        className="my-2.5 h-20 w-20 items-center justify-center overflow-hidden rounded-[10px] bg-gray-100"
+                        className="my-2.5 h-20 w-20 items-center justify-center overflow-hidden rounded-xl"
                         href={productHref || "#"}
                         title={productName}
                       >
@@ -457,20 +480,49 @@ export const ViewOrderDetails = () => {
                           <h4 className="text-text-primary line-clamp-1 text-xs font-semibold">
                             {productBrand}
                           </h4>
-                          <p className="text-text-primary line-clamp-2 text-xs font-normal">
+                          <p
+                            className={`text-text-primary text-xs font-normal ${
+                              variantOptionLabel
+                                ? "line-clamp-1"
+                                : "line-clamp-2"
+                            }`}
+                          >
                             {productName}
                           </p>
+                          {variantOptionLabel && (
+                            <p className="text-text-secondary text-xs font-normal">
+                              {variantOptionLabel}
+                            </p>
+                          )}
                         </ProductDetailsLink>
 
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2 text-base">
                             {item.product_sale_price && (
-                              <span className="font-semibold text-[#5D5D5D]">
+                              <span
+                                className={`font-semibold ${
+                                  hasRealOriginalPrice
+                                    ? "text-[#FE5000]"
+                                    : "text-[#5D5D5D]"
+                                }`}
+                              >
                                 <LocalizedPrice
                                   price={formatPrice({
-                                    amount: item.product_sale_price.value || 0,
+                                    amount: salePrice,
                                     currencyCode:
                                       item.product_sale_price.currency || "SAR",
+                                  })}
+                                />
+                              </span>
+                            )}
+                            {hasRealOriginalPrice && (
+                              <span className="text-text-secondary text-xs line-through">
+                                <LocalizedPrice
+                                  price={formatPrice({
+                                    amount: regularPrice ?? 0,
+                                    currencyCode:
+                                      item.product_regular_price?.currency ||
+                                      "SAR",
                                   })}
                                 />
                               </span>
@@ -499,7 +551,7 @@ export const ViewOrderDetails = () => {
               <span className="text-[#5D5D5D]">
                 <LocalizedPrice
                   price={formatPrice({
-                    amount: orderData.total?.subtotal?.value || 0,
+                    amount: subtotal,
                     currencyCode: orderCurrencyCode,
                   })}
                 />
@@ -507,13 +559,13 @@ export const ViewOrderDetails = () => {
             </div>
             {(orderData.points_to_spend ?? 0) > 0 && (
               <div className="mb-2 flex justify-between">
-                <span className="text-[#FE5000]">{t("loyalityPoints")}</span>
-                <span className="text-[#FE5000]">
+                <span className="text-text-danger">{t("loyalityPoints")}</span>
+                <span className="text-text-danger">
                   <LocalizedPrice
-                    price={formatPrice({
+                    price={`-${formatPrice({
                       amount: orderData.points_to_spend ?? 0,
                       currencyCode: orderCurrencyCode,
-                    })}
+                    })}`}
                   />
                 </span>
               </div>
@@ -521,17 +573,17 @@ export const ViewOrderDetails = () => {
             {orderData.total?.discounts &&
               orderData.total.discounts.length > 0 && (
                 <div className="mb-2 flex justify-between">
-                  <span className="text-[#FE5000]">{t("discount")}</span>
-                  <span className="text-[#FE5000]">
+                  <span className="text-text-danger">{t("discount")}</span>
+                  <span className="text-text-danger">
                     <LocalizedPrice
-                      price={formatPrice({
+                      price={`-${formatPrice({
                         amount: orderData.total.discounts.reduce(
                           (sum, discount) =>
                             sum + (discount.amount?.value || 0),
                           0
                         ),
                         currencyCode: orderCurrencyCode,
-                      })}
+                      })}`}
                     />
                   </span>
                 </div>

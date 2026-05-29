@@ -25,8 +25,8 @@
         "giftShop": "Gift shop"
       },
       "search": {
-        "placeholder": "Search scents, brands, or notes",
-        "mobilePlaceholder": "Search all brands...",
+        "placeholder": "Search here fragrance and more",
+        "mobilePlaceholder": "Search here fragrance and more...",
         "trendingNow": "Trending Now",
         "ourPicks": "Our Picks for You",
         "recentSearches": "Recent Searches",
@@ -59,7 +59,7 @@
         "phoneStep": {
           "description": "We need your phone number to process your order.",
           "phoneLabel": "Phone Number:",
-          "phonePlaceholder": "50 123 4567",
+          "phonePlaceholder": "xx xxx xxxx",
           "otpDescription": "An OTP (5-digit) verification code will be sent to your mobile number via text message.",
           "sendButton": "Request OTP",
           "sendingButton": "Sending..."
@@ -92,7 +92,7 @@
         "phoneStep": {
           "description": "We need your mobile number to complete your request.",
           "phoneLabel": "Phone Number:",
-          "phonePlaceholder": "50 123 4567",
+          "phonePlaceholder": "xx xxx xxxx",
           "otpDescription": "An OTP (5-digit) verification code will be sent to your mobile number via text message.",
           "sendButton": "Request OTP",
           "sendingButton": "Sending..."
@@ -515,7 +515,8 @@
       "failedToRemoveFromWishlist": "Failed to remove product from wishlist",
       "addToWishlistSuccess": "Product added to wishlist successfully",
       "addToWishlistFailed": "Failed to add product to wishlist"
-    }
+    },
+    "bundlesWishlist": "Bundles Wishlist"
   },
   "WalletPage": {
     "title": "Wallet",
@@ -593,7 +594,7 @@
       "hot_seller": "Hot Seller",
       "influencers_picks": "Influencers Picks",
       "max_saving": "Max Saving",
-      "new_arrival": "New Arrival",
+      "new_arrival": "New",
       "sale": "Sale",
       "sale_ends_in": "{hasTitle, select, yes {{title} {countdown}} other {Sale Ends in {countdown}}}",
       "hour_delivery": "{hours}-Hour Delivery",
@@ -620,6 +621,7 @@
       "title": "Sort by",
       "shortTitle": "Sort",
       "options": {
+        "position": "Position",
         "relevance": "Relevance",
         "new": "New",
         "offers": "Offers",
@@ -630,6 +632,7 @@
         "title": "Sort by",
         "shortTitle": "Sort",
         "options": {
+          "position": "Position",
           "relevance": "Relevance",
           "new": "New",
           "offers": "Offers",
@@ -950,23 +953,26 @@
       "title": "Order Summary",
       "subtotal": "Subtotal",
       "serviceFee": "Service Fee",
+      "codFee": "COD Fee",
       "shippingFee": "Shipping Fee",
       "free": "FREE",
       "grandTotal": "Grand Total",
       "walletBalance": "Wallet Balance",
       "rajhiMokafaa": "Rajhi Mokafaa",
+      "discount": "Discount",
       "freeDeliverySuccess": "Congrats! 🎉 You’ve unlocked <b>Free Standard Delivery</b>",
       "actions": {
         "redeemMokafaa": "Redeem <b>Alrajhi Mokafaa</b> Points",
         "mokafaaUsed": "Using <b><amount></amount></b> from Mokafaa Points",
         "spendAdditionalToUnlock": "Spend an additional <amount></amount> to unlock your cashback wallet",
         "useWallet": "Use <amount></amount> from Wallet ",
-        "usedWallet": "<amount></amount> Used from Wallet"
+        "usedWallet": "<amount></amount> Used from Wallet",
+        "mutualExclusiveDisclaimer": "Wallet points and Mokafaa cannot be combined"
       },
       "perks": {
         "cashback": "You Will Earn <b><amount></amount></b> Cashback",
         "giftWrap": "Gift Wrap Available at Checkout",
-        "installments": "4 Interest-Free of <b><amount></amount></b> each"
+        "installments": "4 Interest-Free Installments of <b><amount></amount></b> each"
       },
       "applyCoupon": {
         "trigger": "Apply Coupon",
@@ -1011,8 +1017,10 @@
     },
     "giftItems": {
       "orderIncludesFreeGift": "🥳 Your order includes <strong>FREE GIFT</strong> items",
-      "freeGiftLabel": "{count, plural, one {# Free Gift} other {# Free Gifts}}"
+      "freeGiftLabel": "{count, plural, one {# Free } other {# Free }}"
     },
+    "outOfStock": "Out of Stock",
+    "removeOutOfStockToProceed": "Remove out-of-stock items to continue",
     "proceedToCheckout": "Proceed to Checkout",
     "shoppingBag": "Shopping Bag",
     "itemCount": "{count, plural, one {# item in your bag} other {# items in your bag}}",
@@ -1356,12 +1364,14 @@
     "maintenance": {
       "title": "We'll be back in a bit",
       "description": "We're currently undergoing some system maintenance",
-      "retry": "Retry"
+      "retry": "Retry",
+      "retrying": "Retrying..."
     }
   },
   "CheckoutPage": {
     "header": {
       "secureCheckout": "Secure Checkout",
+      "orderConfirmation": "Order Confirmation",
       "trustText": "Safe & Secure payments, Easy <br /> Returns, 100% Authentic products",
       "joinHere": "Join HERE",
       "joinBannerText": "Join Golden Scent family to get cashback, track orders & more!"
@@ -1545,9 +1555,11 @@
       "title": "Order Summary",
       "itemsInBag": "{count} items in your bag (including {gifts} gift items)",
       "itemsInBagNoGifts": "{count} items in your bag",
+      "outOfStock": "Out of Stock",
       "quantity": "QTY: {qty}",
       "subtotal": "Subtotal",
       "serviceFee": "Service Fee",
+      "codFee": "COD Fee",
       "shippingFee": "Shipping Fee",
       "grandTotal": "GRAND TOTAL",
       "includingTaxes": "Including taxes/duties",
@@ -1571,7 +1583,9 @@
       "addChangeAddress": "Add / Change Address",
       "enterCvv": "Enter CVV",
       "pleaseAddCard": "Please add card",
-      "pay": "Pay"
+      "pay": "Pay",
+      "removeOutOfStockToProceed": "Remove out-of-stock items to continue",
+      "removeOutOfStockItems": "Remove out-of-stock items to place order"
     },
     "AddGiftWrappingDrawer": {
       "add": "Add",
@@ -1602,6 +1616,7 @@
       "failedToSetPaymentMethod": "Failed to set payment method",
       "failedToUpdatePaymentMethod": "Failed to update payment method",
       "failedToSetShippingMethod": "Failed to set shipping method",
+      "shippingUnavailableDueToOutOfStock": "Remove out-of-stock items to select a shipping method",
       "failedToUpdateShippingMethod": "Failed to update shipping method",
       "failedToSetBillingAddress": "Failed to set billing address",
       "failedToUpdateShippingAddress": "Failed to update shipping address",
@@ -1676,6 +1691,8 @@
   "AddDeliveryAddressPage": {
     "title": "Add Delivery Address",
     "giftTitle": "Add Gift Delivery Address",
+    "editTitle": "Edit Delivery Address",
+    "editGiftTitle": "Edit Gift Delivery Address",
     "map": {
       "gettingYourLocation": "Getting your location...",
       "locationPermissionRequired": "Location permission required",
@@ -1748,11 +1765,14 @@
     "breakdownTitle": "Order Breakdown",
     "subtotal": "Subtotal",
     "serviceFee": "Service Fee",
+    "codFee": "COD Fee",
     "shippingFee": "Shipping Fee",
     "shippingFree": "FREE",
     "discount": "Discount",
+    "loyalityPoints": "Loyality points",
     "rajhiMokafaa": "Rajhi Mokafaa",
     "grandTotal": "Grand Total",
+    "cashback": "Cashback",
     "deliveryAddress": "Delivery Address",
     "fallbackDeliveryEstimate": "1 - 3 working days",
     "fallbackAddress": "UAE, Dubai, Dubai Internet City Al Falak St, Al Shatha Tower, Office 1209",

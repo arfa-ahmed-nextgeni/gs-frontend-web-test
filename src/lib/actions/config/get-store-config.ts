@@ -12,27 +12,6 @@ import { getStoreCode } from "@/lib/utils/country";
 import { buildLocaleSwitchOptions } from "@/lib/utils/locale";
 import { ok } from "@/lib/utils/service-result";
 
-import type { Store } from "@/lib/models/stores";
-import type { LocaleSwitchOption } from "@/lib/types/store-config";
-
-const lastSuccessfulStoreConfigByLocale = new Map<
-  Locale,
-  { localeSwitchOptions: LocaleSwitchOption[]; store: Store }
->();
-
-const getPreviousStoreConfig = (locale: Locale) => {
-  const previousConfig = lastSuccessfulStoreConfigByLocale.get(locale);
-
-  if (!previousConfig) {
-    return null;
-  }
-
-  return {
-    localeSwitchOptions: structuredClone(previousConfig.localeSwitchOptions),
-    store: structuredClone(previousConfig.store),
-  };
-};
-
 const DEFAULT_STORE_CONFIG = { localeSwitchOptions: [], store: null };
 
 export const getStoreConfig = ({ locale }: { locale: Locale }) =>
@@ -40,18 +19,12 @@ export const getStoreConfig = ({ locale }: { locale: Locale }) =>
 
 const getStoreConfigCached = cache(async (locale: Locale) => {
   "use cache";
-  cacheTag(CacheTags.Magento);
+  cacheTag(CacheTags.Magento, CacheTags.StoreConfig);
 
   try {
     const storesConfigResult = await getStoresConfig();
 
-    if (!storesConfigResult.data) {
-      const previousConfig = getPreviousStoreConfig(locale);
-
-      if (previousConfig) {
-        return ok(previousConfig);
-      }
-
+    if (!storesConfigResult.data?.[0]?.stores) {
       return ok(DEFAULT_STORE_CONFIG);
     }
 
@@ -65,17 +38,13 @@ const getStoreConfigCached = cache(async (locale: Locale) => {
       return ok(DEFAULT_STORE_CONFIG);
     }
 
-    const successfulConfig = { localeSwitchOptions, store };
-    lastSuccessfulStoreConfigByLocale.set(locale, successfulConfig);
-
-    return ok(successfulConfig);
-  } catch {
-    console.error("Error fetching store config: ", locale);
-    const previousConfig = getPreviousStoreConfig(locale);
-
-    if (previousConfig) {
-      return ok(previousConfig);
-    }
+    return ok({ localeSwitchOptions, store });
+  } catch (error) {
+    console.error(
+      "Error fetching store config: ",
+      locale,
+      JSON.stringify(error)
+    );
 
     return ok(DEFAULT_STORE_CONFIG);
   }

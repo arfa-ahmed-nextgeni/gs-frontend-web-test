@@ -10,6 +10,7 @@ import { DesktopBreadcrumb } from "@/components/shared/breadcrumb/desktop-breadc
 import { getSearchRouteListing } from "@/lib/actions/search/get-search-route-listing";
 import { Locale } from "@/lib/constants/i18n";
 import { ROUTES } from "@/lib/constants/routes";
+import { resolveProductImageUrl } from "@/lib/utils/image";
 import { initializePageLocale } from "@/lib/utils/locale";
 import {
   generateAbsoluteCanonicalUrl,
@@ -49,8 +50,9 @@ export async function generateMetadata({
     },
   });
 
-  const firstProductImage =
-    listingData.productResponse.items?.[0]?.productView?.images?.[0]?.url;
+  const firstProductImage = resolveProductImageUrl(
+    listingData.productResponse.items?.[0]?.productView?.images?.[0]?.url
+  );
   const ogImage = firstProductImage || `${canonicalUrl}/logo-512x512.png`;
 
   return {

@@ -4,6 +4,7 @@ import { ApiActivityHiddenFields } from "@/app/tools/api-activity/_components/ap
 import { Button } from "@/components/ui/button";
 
 export function ApiActivityPagination({
+  autoRefreshEnabled,
   currentPage,
   failedOnly,
   pageSize,
@@ -12,6 +13,7 @@ export function ApiActivityPagination({
   totalEntries,
   totalPages,
 }: {
+  autoRefreshEnabled: boolean;
   currentPage: number;
   failedOnly: boolean;
   pageSize: number;
@@ -37,6 +39,7 @@ export function ApiActivityPagination({
         <div className="flex flex-wrap items-center gap-2">
           <Form action="" replace scroll={false}>
             <ApiActivityHiddenFields
+              autoRefreshEnabled={autoRefreshEnabled}
               currentPage={currentPage - 1}
               failedOnly={failedOnly}
               searchQuery={searchQuery}
@@ -53,6 +56,7 @@ export function ApiActivityPagination({
 
           <Form action="" replace scroll={false}>
             <ApiActivityHiddenFields
+              autoRefreshEnabled={autoRefreshEnabled}
               currentPage={currentPage + 1}
               failedOnly={failedOnly}
               searchQuery={searchQuery}

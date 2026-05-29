@@ -6,7 +6,6 @@ import Image from "next/image";
 
 import BackIcon from "@/assets/icons/back-icon.svg";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useRouteMatch } from "@/hooks/use-route-match";
 
 import type { MobileTopBarRouteProps } from "@/layouts/header/mobile-top-bar";
@@ -46,22 +45,23 @@ export const DeferredMobileTopBar = ({
 }: {
   fallback?: ReactNode;
 }) => {
-  const isMobile = useIsMobile();
   const {
     isAddAddress,
     isAddProductReview,
     isCategory,
     isCustomer,
     isHome,
+    isMenu,
     isOrderDetails,
     isProduct,
     isProductReviews,
     isProductRoot,
     isProfileRoot,
+    isSearch,
   } = useRouteMatch();
 
   const shouldRenderMobileTopBar =
-    isMobile && !(!isCategory && !isCustomer && isHome);
+    !isMenu && !(!isCategory && !isCustomer && isHome);
 
   const routeProps: MobileTopBarRouteProps = {
     isAddAddress,
@@ -73,6 +73,7 @@ export const DeferredMobileTopBar = ({
     isProductReviews,
     isProductRoot,
     isProfileRoot,
+    isSearch,
   };
 
   if (!shouldRenderMobileTopBar) {

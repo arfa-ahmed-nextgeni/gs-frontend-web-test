@@ -72,8 +72,8 @@ export function CheckoutShippingAddressSection({
       "";
 
     const city =
-      (selectedAddress?.customerAddress as any)?.city ||
-      (selectedAddress?.customerAddress as any)?.raw?.city ||
+      (selectedAddress?.customerAddress as any)?.city_code ||
+      (selectedAddress?.customerAddress as any)?.raw?.city_code ||
       "";
 
     const countryName =

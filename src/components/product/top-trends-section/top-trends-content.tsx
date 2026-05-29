@@ -1,9 +1,8 @@
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { SectionHeader } from "@/components/common/section-header";
-import { TopTrendsBannerImage } from "@/components/product/top-trends-section/top-trends-banner-image";
+import { TopTrendsBannerSlot } from "@/components/product/top-trends-section/top-trends-banner-slot";
 import { TopTrendsCarousel } from "@/components/product/top-trends-section/top-trends-carousel";
-import { TopTrendsCashbackCard } from "@/components/product/top-trends-section/top-trends-cashback-card";
 import { getBulletDeliveryEnabled } from "@/lib/actions/config/get-bullet-delivery-enabled";
 import { getProductsByCategory } from "@/lib/actions/products/get-products-by-category";
 import { Locale } from "@/lib/constants/i18n";
@@ -17,16 +16,13 @@ import type { ProductCardModel } from "@/lib/models/product-card-model";
 export const TopTrendsContent = async ({
   autoSliding,
   bannerColumn,
-  bannerImages,
   bannerLpId,
   bannerOrigin,
   bannerRow,
-  cashbackButtonTitle,
-  cashbackButtonUrl,
-  cashbackCurrencyImage,
-  cashbackTitle,
+  desktopBannerImages,
   lpRow,
   maximumProducts,
+  mobileBannerImages,
   productsCategoryId,
   richTitle,
   showViewAll,
@@ -70,23 +66,17 @@ export const TopTrendsContent = async ({
   return (
     <div className="gap-4.5 flex flex-col">
       {isMobileRequest && (
-        <TopTrendsBannerImage
+        <TopTrendsBannerSlot
+          alt="Top Trends 1"
+          banner={mobileBannerImages?.[0]}
           bannerColumn={bannerColumn}
-          bannerInnerPosition={2}
+          bannerInnerPosition={1}
           bannerLpId={bannerLpId}
           bannerOrigin={bannerOrigin}
           bannerRow={bannerRow}
-          bannerStyle="grid"
-          bannerType="banners-in-grid"
           className="h-30 relative overflow-hidden rounded-2xl lg:hidden"
-          elementId={bannerImages?.[2].elementId}
-          imageProps={{
-            alt: "Top Trends 3",
-            fill: true,
-            sizes: "(min-width: 1024px) 25vw, 100vw",
-            src: bannerImages?.[2].mobile.url,
-          }}
-          redirectUrl={bannerImages?.[2].redirectUrl}
+          device="mobile"
+          sizes="(min-width: 1024px) 25vw, 100vw"
         />
       )}
 
@@ -142,51 +132,41 @@ export const TopTrendsContent = async ({
         {isMobileRequest ? (
           <div className="col-span-12 lg:hidden">
             <div className="grid grid-cols-12 gap-2">
-              <TopTrendsBannerImage
+              <TopTrendsBannerSlot
+                alt="Top Trends 2"
+                banner={mobileBannerImages?.[1]}
                 bannerColumn={bannerColumn}
-                bannerInnerPosition={1}
+                bannerInnerPosition={2}
                 bannerLpId={bannerLpId}
                 bannerOrigin={bannerOrigin}
                 bannerRow={bannerRow}
-                bannerStyle="grid"
-                bannerType="banners-in-grid"
                 className="h-33.75 relative col-span-4 overflow-hidden rounded-2xl"
-                elementId={bannerImages?.[1].elementId}
-                imageProps={{
-                  alt: "Top Trends 2",
-                  fill: true,
-                  sizes: "(min-width: 1024px) 12.5vw, 25vw",
-                  src: bannerImages?.[1].mobile.url,
-                }}
-                redirectUrl={bannerImages?.[1].redirectUrl}
+                device="mobile"
+                sizes="(min-width: 1024px) 12.5vw, 25vw"
               />
-              <div className="relative col-span-8 flex flex-col justify-between overflow-hidden">
-                <TopTrendsCashbackCard
-                  buttonClassName="text-text-inverse bg-bg-brand flex w-24 items-center justify-center gap-2.5 overflow-hidden rounded-xl py-2.5 text-xs font-bold"
-                  buttonText={cashbackButtonTitle ?? ""}
-                  cashbackCurrencyImageUrl={cashbackCurrencyImage?.mobile.url}
-                  cashbackTitle={cashbackTitle}
-                  currencyClassName="h-16.25 w-16.75 absolute bottom-0 end-0"
-                  navigateTo={cashbackButtonUrl}
-                />
-              </div>
-              <TopTrendsBannerImage
+              <TopTrendsBannerSlot
+                alt="Top Trends 3"
+                banner={mobileBannerImages?.[2]}
                 bannerColumn={bannerColumn}
                 bannerInnerPosition={3}
                 bannerLpId={bannerLpId}
                 bannerOrigin={bannerOrigin}
                 bannerRow={bannerRow}
-                bannerStyle="grid"
-                bannerType="banners-in-grid"
+                className="h-33.75 relative col-span-8 overflow-hidden rounded-2xl"
+                device="mobile"
+                sizes="(min-width: 1024px) 25vw, 75vw"
+              />
+              <TopTrendsBannerSlot
+                alt="Top Trends 4"
+                banner={mobileBannerImages?.[3]}
+                bannerColumn={bannerColumn}
+                bannerInnerPosition={4}
+                bannerLpId={bannerLpId}
+                bannerOrigin={bannerOrigin}
+                bannerRow={bannerRow}
                 className="h-30 relative col-span-12 overflow-hidden rounded-2xl"
-                elementId={bannerImages?.[0].elementId}
-                imageProps={{
-                  alt: "Top Trends 1",
-                  fill: true,
-                  sizes: "(min-width: 1024px) 25vw, 100vw",
-                  src: bannerImages?.[0].mobile.url,
-                }}
-                redirectUrl={bannerImages?.[0].redirectUrl}
+                device="mobile"
+                sizes="(min-width: 1024px) 25vw, 100vw"
               />
             </div>
           </div>
@@ -210,69 +190,53 @@ export const TopTrendsContent = async ({
 
         {!isMobileRequest && (
           <div className="hidden lg:col-span-7 lg:grid lg:grid-cols-7 lg:grid-rows-12 lg:gap-2.5">
-            <TopTrendsBannerImage
+            <TopTrendsBannerSlot
+              alt="Top Trends 1"
+              banner={desktopBannerImages?.[0]}
               bannerColumn={bannerColumn}
               bannerInnerPosition={1}
               bannerLpId={bannerLpId}
               bannerOrigin={bannerOrigin}
               bannerRow={bannerRow}
-              bannerStyle="grid"
-              bannerType="banners-in-grid"
               className="relative col-span-5 row-span-7 overflow-hidden rounded-2xl"
-              elementId={bannerImages?.[0].elementId}
-              imageProps={{
-                alt: "Top Trends 1",
-                fill: true,
-                sizes: "(min-width: 1024px) 25vw, 100vw",
-                src: bannerImages?.[0].desktop.url,
-              }}
-              redirectUrl={bannerImages?.[0].redirectUrl}
+              device="desktop"
+              sizes="(min-width: 1024px) 25vw, 100vw"
             />
-            <TopTrendsBannerImage
+            <TopTrendsBannerSlot
+              alt="Top Trends 2"
+              banner={desktopBannerImages?.[1]}
               bannerColumn={bannerColumn}
               bannerInnerPosition={2}
               bannerLpId={bannerLpId}
               bannerOrigin={bannerOrigin}
               bannerRow={bannerRow}
-              bannerStyle="grid"
-              bannerType="banners-in-grid"
               className="relative col-span-2 row-span-7 overflow-hidden rounded-2xl"
-              elementId={bannerImages?.[1].elementId}
-              imageProps={{
-                alt: "Top Trends 2",
-                fill: true,
-                sizes: "(min-width: 1024px) 12.5vw, 25vw",
-                src: bannerImages?.[1].desktop.url,
-              }}
-              redirectUrl={bannerImages?.[1].redirectUrl}
+              device="desktop"
+              sizes="(min-width: 1024px) 12.5vw, 25vw"
             />
-            <div className="relative col-span-3 row-span-5 flex flex-col justify-between overflow-hidden">
-              <TopTrendsCashbackCard
-                buttonClassName="text-text-inverse bg-bg-brand flex w-24 items-center justify-center gap-2.5 overflow-hidden rounded-xl rounded-bl-2xl py-2.5 text-xs font-bold"
-                buttonText={cashbackButtonTitle ?? ""}
-                cashbackCurrencyImageUrl={cashbackCurrencyImage?.desktop.url}
-                cashbackTitle={cashbackTitle}
-                currencyClassName="h-17.5 w-17.5 absolute bottom-0 end-0"
-                navigateTo={cashbackButtonUrl}
-              />
-            </div>
-            <TopTrendsBannerImage
+            <TopTrendsBannerSlot
+              alt="Top Trends 3"
+              banner={desktopBannerImages?.[2]}
               bannerColumn={bannerColumn}
               bannerInnerPosition={3}
               bannerLpId={bannerLpId}
               bannerOrigin={bannerOrigin}
               bannerRow={bannerRow}
-              bannerStyle="grid"
-              bannerType="banners-in-grid"
+              className="relative col-span-3 row-span-5 overflow-hidden rounded-2xl"
+              device="desktop"
+              sizes="(min-width: 1024px) 18.75vw, 25vw"
+            />
+            <TopTrendsBannerSlot
+              alt="Top Trends 4"
+              banner={desktopBannerImages?.[3]}
+              bannerColumn={bannerColumn}
+              bannerInnerPosition={4}
+              bannerLpId={bannerLpId}
+              bannerOrigin={bannerOrigin}
+              bannerRow={bannerRow}
               className="relative col-span-4 row-span-5 overflow-hidden rounded-2xl"
-              elementId={bannerImages?.[2].elementId}
-              imageProps={{
-                alt: "Top Trends 3",
-                fill: true,
-                sizes: "(min-width: 1024px) 25vw, 100vw",
-                src: bannerImages?.[2].desktop.url,
-              }}
-              redirectUrl={bannerImages?.[2].redirectUrl}
+              device="desktop"
+              sizes="(min-width: 1024px) 25vw, 100vw"
             />
           </div>
         )}

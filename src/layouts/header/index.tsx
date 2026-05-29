@@ -3,14 +3,14 @@ import { HeaderBody } from "@/layouts/header/header-body";
 import { HeaderContainer } from "@/layouts/header/header-container";
 import { ZIndexLevel } from "@/lib/constants/ui";
 import { PromoBanner } from "@/lib/models/promo-banner";
-import { MainMenuType } from "@/lib/types/ui-types";
+import { HeaderNavigationType } from "@/lib/types/ui-types";
 import { cn } from "@/lib/utils";
 
 export const Header = ({
-  navigationItems,
+  headerNavigation,
   promoBanner,
 }: {
-  navigationItems: MainMenuType[];
+  headerNavigation: HeaderNavigationType;
   promoBanner?: PromoBanner;
 }) => {
   return (
@@ -23,10 +23,10 @@ export const Header = ({
           )}
         >
           <HeaderBody
+            headerNavigation={headerNavigation}
             hoverZIndexLevel={ZIndexLevel.z15}
             isSticky
             lowerZIndexLevel={ZIndexLevel.z10}
-            navigationItems={navigationItems}
             upperZIndexLevel={ZIndexLevel.z20}
           />
         </div>
@@ -34,9 +34,9 @@ export const Header = ({
 
       <div className={cn("static-header w-full", ZIndexLevel.z40)}>
         <HeaderBody
+          headerNavigation={headerNavigation}
           hoverZIndexLevel={ZIndexLevel.z25}
           lowerZIndexLevel={ZIndexLevel.z20}
-          navigationItems={navigationItems}
           promoBanner={promoBanner}
           upperZIndexLevel={ZIndexLevel.z40}
         />

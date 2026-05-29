@@ -8,11 +8,11 @@ type FormatPriceOpts = {
 const formatterCache = new Map<string, Intl.NumberFormat>();
 const currencyConfig = {
   AED: {
-    match: [/AED/i, /د\.إ/],
+    match: [/AED/i, /\u062f\.\u0625\.?/],
     symbol: "<",
   },
   SAR: {
-    match: [/SAR/i, /ر\.س/],
+    match: [/SAR/i, /\u0631\.\u0633\.?/],
     symbol: ">",
   },
 } as const;

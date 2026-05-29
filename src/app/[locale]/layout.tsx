@@ -14,7 +14,7 @@ import { cairo } from "@/app/fonts/cairo";
 import { gilroy } from "@/app/fonts/gilroy";
 import { NewRelicBrowserAgent } from "@/components/analytics/new-relic-browser-agent";
 import { JsonLdScript } from "@/components/seo/json-ld-script";
-import { SpinnerAssetsPreloader } from "@/components/ui/spinner-assets-preloader";
+import { CriticalAssetsPreloader } from "@/components/ui/critical-assets-preloader";
 import { routing } from "@/i18n/routing";
 import { getStoresConfig } from "@/lib/actions/config/get-stores-config";
 import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
@@ -49,6 +49,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const seo = pageLandingData?.seo;
   const title = seo?.pageTitle?.trim() || t("title");
   const description = seo?.pageDescription?.trim() || t("description");
+  const keywordsFromSeo = seo?.metaKeywords;
+  const keywords =
+    keywordsFromSeo && keywordsFromSeo.length > 0
+      ? keywordsFromSeo
+      : t("keywords");
   const localeDomain = LOCALE_TO_DOMAIN[locale as Locale];
   const metadataBaseUrl =
     localeDomain && localeDomain.length > 0
@@ -91,7 +96,7 @@ export async function generateMetadata(): Promise<Metadata> {
         },
       ],
     },
-    keywords: t("keywords"),
+    keywords,
     metadataBase: new URL(metadataBaseUrl),
     openGraph: {
       description,
@@ -126,7 +131,7 @@ export async function generateStaticParams() {
   try {
     const response = await getStoresConfig();
 
-    if (response && isOk(response)) {
+    if (response && isOk(response) && response.data?.[0]?.stores) {
       const stores = new Stores(response.data);
       const params = stores.getAll().map((store) => ({
         locale: store.locale,
@@ -174,7 +179,7 @@ export default async function RootLayout({
         <NewRelicBrowserAgent />
         {/* Organization Schema - appears on every page */}
         <JsonLdScript data={organizationSchema} id="organization-schema" />
-        <SpinnerAssetsPreloader />
+        <CriticalAssetsPreloader />
 
         <AppRootProvider locale={locale as Locale}>
           {children}

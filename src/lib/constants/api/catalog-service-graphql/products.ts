@@ -539,11 +539,12 @@ export const CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES = {
     query GetYouMightAlsoLikeProducts($productType: String!, $gender: String!) {
       productSearch(
         filter: [
-          { attribute: "categoryPath", eq: "sale" }
+          { attribute: "categoryPath", eq: "you-might-also-like" }
           { attribute: "product_type_new2", eq: $productType }
           { attribute: "gender", eq: $gender }
           { attribute: "inStock", eq: "true" }
         ]
+        sort: [{ attribute: "position", direction: ASC }]
         phrase: ""
         page_size: 10
       ) {

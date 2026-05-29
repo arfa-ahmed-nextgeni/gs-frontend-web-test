@@ -11,5 +11,5 @@ interface SearchPageClientWrapperProps {
 export function SearchPageClientWrapper({
   children,
 }: SearchPageClientWrapperProps) {
-  return <FilterProvider>{children}</FilterProvider>;
+  return <FilterProvider listingType="search">{children}</FilterProvider>;
 }

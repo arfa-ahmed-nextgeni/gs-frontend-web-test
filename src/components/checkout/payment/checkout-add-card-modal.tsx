@@ -17,7 +17,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useIsMobile } from "@/hooks/use-is-mobile";
-import { useVisualViewport } from "@/hooks/use-visual-viewport";
 import { addCustomerPaymentCard } from "@/lib/actions/customer/add-customer-payment-card";
 import { trackAddCard } from "@/lib/analytics/events";
 import { PaymentCard } from "@/lib/models/payment-card";
@@ -54,11 +53,6 @@ export const CheckoutAddCardModal = ({
 }: CheckoutAddCardModalProps) => {
   const t = useTranslations("CheckoutPage.addCardDialog");
   const isMobile = useIsMobile();
-  const {
-    hasVisualViewport,
-    height: viewportHeight,
-    offsetTop: viewportTop,
-  } = useVisualViewport();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (data: {
@@ -204,62 +198,17 @@ export const CheckoutAddCardModal = ({
       const dialogContent = document.querySelector(
         '[data-slot="dialog-content"]'
       ) as HTMLElement | null;
-      if (!dialogContent) return false;
-
-      if (hasVisualViewport) {
-        const windowHeight = window.innerHeight;
-        const diff = windowHeight - viewportHeight;
-
-        // Only apply offset if difference is significant (keyboard is visible)
-        // Threshold of 100px to avoid small differences from browser UI
-        if (diff > 100) {
-          // Position modal at the top of the visible viewport (above keyboard)
-          dialogContent.style.bottom = `${windowHeight - viewportHeight - viewportTop}px`;
-          dialogContent.style.maxHeight = `${viewportHeight}px`;
-          dialogContent.style.height = `${viewportHeight}px`;
-        } else {
-          // No keyboard, reset to bottom
-          dialogContent.style.bottom = "0px";
-          dialogContent.style.maxHeight = "90dvh";
-          dialogContent.style.height = "auto";
-        }
-      } else {
-        dialogContent.style.bottom = "0px";
-        dialogContent.style.maxHeight = "90dvh";
-        dialogContent.style.height = "auto";
-      }
-
-      return true;
-    };
-
-    if (updateDialogPosition()) {
-      return;
-    }
-
-    const timeoutId = setTimeout(updateDialogPosition, 0);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [hasVisualViewport, isMobile, open, viewportHeight, viewportTop]);
-
-  useEffect(() => {
-    if (!isMobile || !open || typeof window === "undefined") return;
-
-    const updateDialogPosition = () => {
-      const dialogContent = document.querySelector(
-        '[data-slot="dialog-content"]'
-      ) as HTMLElement | null;
       if (!dialogContent) return;
 
-      if (hasVisualViewport) {
+      const vv = window.visualViewport;
+      if (vv) {
         const windowHeight = window.innerHeight;
-        const diff = windowHeight - viewportHeight;
+        const diff = windowHeight - vv.height;
 
         if (diff > 100) {
-          dialogContent.style.bottom = `${windowHeight - viewportHeight - viewportTop}px`;
-          dialogContent.style.maxHeight = `${viewportHeight}px`;
-          dialogContent.style.height = `${viewportHeight}px`;
+          dialogContent.style.bottom = `${windowHeight - vv.height - vv.offsetTop}px`;
+          dialogContent.style.maxHeight = `${vv.height}px`;
+          dialogContent.style.height = `${vv.height}px`;
         } else {
           dialogContent.style.bottom = "0px";
           dialogContent.style.maxHeight = "90dvh";
@@ -272,15 +221,10 @@ export const CheckoutAddCardModal = ({
       }
     };
 
-    // Handle input focus to adjust position when keyboard appears
     const handleInputFocus = (event: Event) => {
       const target = event.target as HTMLElement;
-      // Scroll the focused input into view
       setTimeout(() => {
-        target.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
+        target.scrollIntoView({ behavior: "smooth", block: "center" });
         updateDialogPosition();
       }, 300);
     };
@@ -289,14 +233,14 @@ export const CheckoutAddCardModal = ({
       setTimeout(updateDialogPosition, 300);
     };
 
-    // Set up event listeners after dialog is rendered
+    let attachedInputs: NodeListOf<Element> | null = null;
+
     const setupEventListeners = () => {
       const dialogContent = document.querySelector(
         '[data-slot="dialog-content"]'
       ) as HTMLElement | null;
       if (!dialogContent) return false;
 
-      // Add input event listeners
       const inputs = dialogContent.querySelectorAll(
         'input[type="text"], input[type="tel"], input[type="number"]'
       );
@@ -304,41 +248,46 @@ export const CheckoutAddCardModal = ({
         input.addEventListener("focus", handleInputFocus);
         input.addEventListener("blur", handleInputBlur);
       });
+      attachedInputs = inputs;
 
-      // Initial position update
       updateDialogPosition();
       return true;
     };
 
-    // Try to set up immediately, then retry if dialog not ready
     let setupAttempts = 0;
     const maxAttempts = 10;
+    let pendingTimeout: null | ReturnType<typeof setTimeout> = null;
     const trySetup = () => {
       if (setupEventListeners() || setupAttempts >= maxAttempts) {
         return;
       }
       setupAttempts++;
-      setTimeout(trySetup, 100);
+      pendingTimeout = setTimeout(trySetup, 100);
     };
 
-    const initialTimeout = setTimeout(trySetup, 100);
+    pendingTimeout = setTimeout(trySetup, 100);
+
+    window.visualViewport?.addEventListener("resize", updateDialogPosition);
+    window.visualViewport?.addEventListener("scroll", updateDialogPosition);
 
     return () => {
-      clearTimeout(initialTimeout);
-      // Remove input event listeners
-      const dialogContentForCleanup = document.querySelector(
-        '[data-slot="dialog-content"]'
-      ) as HTMLElement | null;
-      if (dialogContentForCleanup) {
-        const inputs = dialogContentForCleanup.querySelectorAll(
-          'input[type="text"], input[type="tel"], input[type="number"]'
-        );
-        inputs.forEach((input) => {
+      if (pendingTimeout) clearTimeout(pendingTimeout);
+      window.visualViewport?.removeEventListener(
+        "resize",
+        updateDialogPosition
+      );
+      window.visualViewport?.removeEventListener(
+        "scroll",
+        updateDialogPosition
+      );
+
+      if (attachedInputs) {
+        attachedInputs.forEach((input) => {
           input.removeEventListener("focus", handleInputFocus);
           input.removeEventListener("blur", handleInputBlur);
         });
       }
-      // Reset position on cleanup
+
       const dialogContent = document.querySelector(
         '[data-slot="dialog-content"]'
       ) as HTMLElement | null;
@@ -348,7 +297,7 @@ export const CheckoutAddCardModal = ({
         dialogContent.style.height = "";
       }
     };
-  }, [hasVisualViewport, isMobile, open, viewportHeight, viewportTop]);
+  }, [isMobile, open]);
 
   if (isMobile) {
     return (

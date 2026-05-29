@@ -17,21 +17,57 @@ loadEnvConfig(process.cwd(), false)
 const timeoutPatch = `const http = require('node:http')
 const originalCreateServer = http.createServer
 http.createServer = function (...args) {
-  const server = originalCreateServer.apply(this, args)
+  const [originalHandler, ...rest] = args
 
-  let headersTimeout = parseInt(process.env.NODE_HEADERS_TIMEOUT, 10)
+  // Wrap the original Next.js request handler
+  const patchedHandler = (req, res) => {
+    if (req.url === '/__internal/server-info' && req.method === 'GET') {
+      const info = {
+        keepAliveTimeout: server.keepAliveTimeout,
+        headersTimeout:   server.headersTimeout,
+        env: {
+          KEEP_ALIVE_TIMEOUT:    process.env.KEEP_ALIVE_TIMEOUT ?? 'not set',
+          NODE_HEADERS_TIMEOUT:  process.env.NODE_HEADERS_TIMEOUT ?? 'not set',
+        },
+        node_version:    process.version,
+        uptime_seconds:  process.uptime(),
+      }
+      res.writeHead(200, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify(info, null, 2))
+      return
+    }
 
-  if (
-    Number.isNaN(headersTimeout) ||
-    !Number.isFinite(headersTimeout) ||
-    headersTimeout < 0
-  ) {
-    headersTimeout = undefined
+    // All other requests go to Next.js normally
+    originalHandler(req, res)
   }
 
+  const server = originalCreateServer.apply(this, [patchedHandler, ...rest])
+
+  // --- keepAliveTimeout ---
+  let keepAliveTimeout = parseInt(process.env.KEEP_ALIVE_TIMEOUT, 10)
+  if (!Number.isFinite(keepAliveTimeout) || keepAliveTimeout < 0) {
+    keepAliveTimeout = undefined
+  }
+  if (keepAliveTimeout !== undefined) {
+    server.keepAliveTimeout = keepAliveTimeout
+  }
+
+  // --- headersTimeout ---
+  let headersTimeout = parseInt(process.env.NODE_HEADERS_TIMEOUT, 10)
+  if (!Number.isFinite(headersTimeout) || headersTimeout < 0) {
+    headersTimeout = undefined
+  }
   if (headersTimeout !== undefined) {
     server.headersTimeout = headersTimeout
   }
+
+  // Guard: headersTimeout must exceed keepAliveTimeout
+  if (server.headersTimeout <= server.keepAliveTimeout) {
+    server.headersTimeout = server.keepAliveTimeout + 1000
+    console.warn('[http-patch] headersTimeout auto-corrected to', server.headersTimeout)
+  }
+
+  console.log('[http-patch] applied — keepAliveTimeout=', server.keepAliveTimeout, 'headersTimeout=', server.headersTimeout)
 
   return server
 }

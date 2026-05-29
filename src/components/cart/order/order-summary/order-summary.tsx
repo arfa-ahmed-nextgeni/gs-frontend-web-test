@@ -10,7 +10,9 @@ import { Row } from "./order-summary-helpers";
 
 interface OrderSummaryProps {
   baseShippingFee: number;
+  codFee: number;
   currencyCode: string;
+  discount: number;
   freeShippingThreshold: number;
   grandTotal: number;
   hasSelectedShippingMethod: boolean;
@@ -23,7 +25,9 @@ interface OrderSummaryProps {
 
 export function OrderSummary({
   baseShippingFee,
+  codFee,
   currencyCode,
+  discount,
   freeShippingThreshold,
   grandTotal,
   hasSelectedShippingMethod,
@@ -55,6 +59,9 @@ export function OrderSummary({
           {serviceFee ? (
             <Row label={t("serviceFee")} value={renderPrice(serviceFee)} />
           ) : null}
+          {codFee > 0 ? (
+            <Row label={t("codFee")} value={renderPrice(codFee)} />
+          ) : null}
 
           {hasSelectedShippingMethod ? (
             <div className="flex items-center justify-between">
@@ -64,19 +71,21 @@ export function OrderSummary({
               <span className="font-gilroy flex items-center gap-2 text-sm">
                 {freeShippingUnlocked || shippingFee === 0 ? (
                   <div className="flex items-center gap-1">
-                    <LocalizedPrice
-                      containerProps={{
-                        className:
-                          "flex font-gilroy items-center text-text-secondary text-xs",
-                      }}
-                      price={String(
-                        formatPrice({
-                          amount: baseShippingFee || shippingFee,
-                          currencyCode,
-                        })
-                      )}
-                      valueProps={{ className: "line-through" }}
-                    />
+                    {baseShippingFee > 0 && (
+                      <LocalizedPrice
+                        containerProps={{
+                          className:
+                            "flex font-gilroy items-center text-text-secondary text-xs",
+                        }}
+                        price={String(
+                          formatPrice({
+                            amount: baseShippingFee,
+                            currencyCode,
+                          })
+                        )}
+                        valueProps={{ className: "line-through" }}
+                      />
+                    )}
                     <span className="text-btn-bg-teal">{t("free")}</span>
                   </div>
                 ) : (
@@ -99,6 +108,22 @@ export function OrderSummary({
                 })}
               </div>
             )}
+
+          {discount > 0 && (
+            <Row
+              label={t("discount")}
+              value={
+                <span className="text-btn-bg-teal">
+                  <LocalizedPrice
+                    price={`-${formatPrice({
+                      amount: discount,
+                      currencyCode,
+                    })}`}
+                  />
+                </span>
+              }
+            />
+          )}
 
           {mokafaaDiscount > 0 && (
             <Row
@@ -137,7 +162,15 @@ export function OrderSummary({
             bold
             label={t("grandTotal")}
             labelClass="capitalize"
-            value={renderPrice(grandTotal)}
+            value={
+              grandTotal === 0 ? (
+                <span className="text-text-teal text-sm font-medium">
+                  {t("free")}
+                </span>
+              ) : (
+                renderPrice(grandTotal)
+              )
+            }
             valueClass="text-text-tertiary text-sm font-semibold font-gilroy"
           />
         </div>

@@ -21,6 +21,7 @@ import { isValidPhoneNumber } from "@/lib/utils/country";
 import { isError } from "@/lib/utils/service-result";
 
 interface InputMokafaaNumberFormProps {
+  initialOtpExpiresAt?: number;
   initialOtpToken?: string;
   initialPhoneValue?: {
     countryCode: string;
@@ -29,12 +30,29 @@ interface InputMokafaaNumberFormProps {
   onOtpRequested?: (data: {
     countryCode: string;
     mobileNumber: string;
+    otpExpiresAt: number;
     otpToken: string;
   }) => void;
   onSuccess: () => void;
 }
 
+const DEFAULT_OTP_EXPIRY_SECONDS = 180;
+
+const buildFullPhoneNumber = (countryCode: string, number: string) =>
+  `${countryCode}${number}`;
+
+const getOtpExpiryTimestamp = (expiresInMin?: null | number | string) => {
+  const parsedExpiryInMin = Number(expiresInMin);
+
+  if (Number.isFinite(parsedExpiryInMin) && parsedExpiryInMin > 0) {
+    return Date.now() + parsedExpiryInMin * 60 * 1000;
+  }
+
+  return Date.now() + DEFAULT_OTP_EXPIRY_SECONDS * 1000;
+};
+
 export const InputMokafaaNumberForm = ({
+  initialOtpExpiresAt,
   initialOtpToken,
   initialPhoneValue,
   onOtpRequested,
@@ -98,10 +116,26 @@ export const InputMokafaaNumberForm = ({
             if (res.error?.toLowerCase?.()?.includes("otp")) {
               // Track mokafaa_old_otp_valid when OTP is still valid and user tries to request a new OTP
               trackMokafaaOldOtpValid(eventProperties);
-              if (onOtpRequested && initialOtpToken) {
+              const initialPhoneNumber = initialPhoneValue
+                ? buildFullPhoneNumber(
+                    initialPhoneValue.countryCode,
+                    initialPhoneValue.number
+                  )
+                : "";
+              const submittedPhoneNumber = buildFullPhoneNumber(
+                phoneValue.countryCode,
+                phoneValue.number
+              );
+              const isSamePhoneNumber =
+                !!initialPhoneNumber &&
+                initialPhoneNumber === submittedPhoneNumber;
+
+              if (onOtpRequested && initialOtpToken && isSamePhoneNumber) {
                 onOtpRequested({
                   countryCode: phoneValue.countryCode,
                   mobileNumber: phoneValue.number,
+                  otpExpiresAt:
+                    initialOtpExpiresAt || getOtpExpiryTimestamp(null),
                   otpToken: initialOtpToken || "",
                 });
                 return;
@@ -122,6 +156,7 @@ export const InputMokafaaNumberForm = ({
             onOtpRequested({
               countryCode: phoneValue.countryCode,
               mobileNumber: phoneValue.number,
+              otpExpiresAt: getOtpExpiryTimestamp(res.data?.expiresInMin),
               otpToken: res.data?.otpToken || "",
             });
           } else {

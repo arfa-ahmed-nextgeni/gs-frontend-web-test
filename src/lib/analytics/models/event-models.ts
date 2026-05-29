@@ -34,7 +34,7 @@ export interface CartInsiderProperties {
 export interface CartProperties {
   "cart.discounts"?: number;
   "cart.fees_COD"?: number;
-  "cart.fees_shipping"?: number;
+  "cart.fees_shipping"?: string;
   "cart.gift_wrap_applied"?: boolean;
   "cart.gift_wrap.currency"?: string;
   "cart.gift_wrap.id"?: string;
@@ -42,7 +42,7 @@ export interface CartProperties {
   "cart.gift_wrap.price"?: number;
   "cart.grandTotal"?: number;
   "cart.promo_code"?: string;
-  "cart.subtotal"?: number;
+  "cart.subtotal"?: string;
   "cart.total"?: number;
   express_delivery_available?: boolean;
   item_ids?: string;
@@ -90,6 +90,7 @@ export type DesktopNavigationUrlType = "brands" | "category" | "lp";
 
 export interface InsiderItemProperties {
   color?: string;
+  currency?: string;
   custom: {
     brnd?: string;
     groupcode: string;
@@ -102,7 +103,7 @@ export interface InsiderItemProperties {
   id: string;
   name: string;
   product_image_url: string;
-  quantity: number;
+  quantity?: number;
   size?: string;
   stock: number;
   taxonomy: string[];

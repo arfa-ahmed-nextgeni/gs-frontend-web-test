@@ -28,6 +28,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useIsMobile } from "@/hooks/use-is-mobile";
+import { useMobileBottomSheetViewport } from "@/hooks/use-mobile-bottom-sheet-viewport";
 import { trackMokafaaEditPhoneNumber } from "@/lib/analytics/events";
 import { cn } from "@/lib/utils";
 import { formatPrice } from "@/lib/utils/price";
@@ -35,6 +36,7 @@ import { formatPrice } from "@/lib/utils/price";
 interface OtpRequestedData {
   countryCode: string;
   mobileNumber: string;
+  otpExpiresAt: number;
   otpToken: string;
 }
 
@@ -61,6 +63,8 @@ export const RedeemMokafaaPointsDialog = ({
   const [currentStep, setCurrentStep] = useState<"otp" | "phone">("phone");
   const [otpData, setOtpData] = useState<null | OtpRequestedData>(null);
 
+  useMobileBottomSheetViewport({ isMobile, open });
+
   const handleOtpRequested = (data: OtpRequestedData) => {
     setOtpData(data);
     setCurrentStep("otp");
@@ -72,13 +76,19 @@ export const RedeemMokafaaPointsDialog = ({
     setCurrentStep("phone");
   };
 
-  const handleOtpTokenUpdated = (newOtpToken: string) => {
-    if (otpData) {
-      setOtpData({
-        ...otpData,
-        otpToken: newOtpToken,
-      });
-    }
+  const handleOtpTokenUpdated = (data: {
+    otpExpiresAt: number;
+    otpToken: string;
+  }) => {
+    setOtpData((previousOtpData) =>
+      previousOtpData
+        ? {
+            ...previousOtpData,
+            otpExpiresAt: data.otpExpiresAt,
+            otpToken: data.otpToken,
+          }
+        : previousOtpData
+    );
   };
 
   const closeDialog = () => {
@@ -223,6 +233,7 @@ export const RedeemMokafaaPointsDialog = ({
 
             {currentStep === "phone" ? (
               <InputMokafaaNumberForm
+                initialOtpExpiresAt={otpData?.otpExpiresAt}
                 initialOtpToken={otpData?.otpToken}
                 initialPhoneValue={
                   otpData
@@ -242,6 +253,7 @@ export const RedeemMokafaaPointsDialog = ({
                   mobileNumber={otpData.mobileNumber}
                   onOtpTokenUpdated={handleOtpTokenUpdated}
                   onSuccess={closeDialog}
+                  otpExpiresAt={otpData.otpExpiresAt}
                   otpToken={otpData.otpToken}
                 />
               )
@@ -309,6 +321,7 @@ export const RedeemMokafaaPointsDialog = ({
 
           {currentStep === "phone" ? (
             <InputMokafaaNumberForm
+              initialOtpExpiresAt={otpData?.otpExpiresAt}
               initialOtpToken={otpData?.otpToken}
               initialPhoneValue={
                 otpData
@@ -328,6 +341,7 @@ export const RedeemMokafaaPointsDialog = ({
                 mobileNumber={otpData.mobileNumber}
                 onOtpTokenUpdated={handleOtpTokenUpdated}
                 onSuccess={closeDialog}
+                otpExpiresAt={otpData.otpExpiresAt}
                 otpToken={otpData.otpToken}
               />
             )

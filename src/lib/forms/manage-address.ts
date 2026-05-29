@@ -48,7 +48,7 @@ export const addressFormSchema = (storeCode: StoreCode) => {
       [AddressFormField.Area]: globalStore
         ? mandatoryNameSchema
         : selectOptionSchema,
-      [AddressFormField.BuildingName]: mandatoryStringSchema,
+      [AddressFormField.BuildingName]: optionalStringSchema,
       [AddressFormField.City]: globalStore
         ? mandatoryCitySchema
         : selectOptionSchema,

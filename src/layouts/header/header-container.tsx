@@ -114,7 +114,7 @@ export const HeaderContainer = ({ children }: PropsWithChildren) => {
         <SearchContainer>
           <header
             className={cn(
-              "site-header bg-bg-default top-0 w-full",
+              "site-header bg-bg-default top-0 w-full [view-transition-name:site-header] lg:[view-transition-name:none]",
               isPastTopOffset && "is-scrolling",
               ZIndexLevel.z50
             )}

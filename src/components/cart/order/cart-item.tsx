@@ -2,6 +2,8 @@
 
 import { useRef } from "react";
 
+import { useTranslations } from "next-intl";
+
 import { CartQuantityControl } from "@/components/cart/cart-quantity-control";
 import { CartItemWishlistButton } from "@/components/cart/order/cart-item-wishlist-button";
 import { ProductCardDiscount } from "@/components/product/product-card/product-card-discount";
@@ -22,8 +24,29 @@ import { CartItem as CartItemModel } from "@/lib/models/cart";
 import { cn } from "@/lib/utils";
 import { getProductDetailsHref } from "@/lib/utils/get-product-details-href";
 
-export function CartItem({ item }: { item: CartItemModel }) {
+import type { CountdownTimer } from "@/lib/types/product/countdown-timer";
+
+interface CartItemData {
+  brand: string;
+  bulletDelivery?: boolean;
+  countdownTimer?: CountdownTimer | null;
+  currentPrice: string;
+  discountPercent?: number;
+  imageUrl: string;
+  isOutOfStock: boolean;
+  isWrap?: boolean;
+  name: string;
+  oldPrice?: string;
+  options?: { choices?: { label: string; value: string }[] };
+  quantity: number;
+  sku?: string;
+  uidInCart: string;
+  urlKey: string;
+}
+
+export function CartItem({ item }: { item: CartItemData }) {
   const { cart } = useCart();
+  const t = useTranslations("CartPage");
   const prevQuantityRef = useRef(item.quantity);
   const { isPending, mutate: updateQuantity } = useUpdateCartItemQuantity();
   const { isPending: isRemovingItem, mutate: removeProductFromCart } =
@@ -35,10 +58,11 @@ export function CartItem({ item }: { item: CartItemModel }) {
 
     updateQuantity({ itemUid: item.uidInCart, quantity });
 
-    // Track cart_moreqty or cart_lessqty based on quantity change
     if (cart) {
       const cartProperties = buildCartProperties(cart);
-      const productProperties = buildProductPropertiesFromCartItem(item);
+      const productProperties = buildProductPropertiesFromCartItem(
+        item as CartItemModel
+      );
 
       if (quantity > prevQuantity) {
         trackCartMoreQty(cartProperties, productProperties);
@@ -52,6 +76,7 @@ export function CartItem({ item }: { item: CartItemModel }) {
     removeProductFromCart({ itemUid: item.uidInCart });
   };
 
+  const isOutOfStock = item.isOutOfStock;
   const isLoading = isPending || isRemovingItem;
   const selectedOptionLabel = item.options?.choices?.[0]?.label;
   const discountPercent = item.discountPercent ?? null;
@@ -61,7 +86,11 @@ export function CartItem({ item }: { item: CartItemModel }) {
   });
 
   return (
-    <div className="border-border-base bg-bg-default lg:h-37.5 h-52.5 relative flex flex-row gap-5 overflow-hidden rounded-none border-b p-5 first:rounded-t-xl last:rounded-b-xl last:border-none lg:gap-2.5 lg:p-2.5">
+    <div
+      className={cn(
+        "border-border-base bg-bg-default lg:h-37.5 h-52.5 relative flex flex-row gap-5 overflow-hidden rounded-none border-b p-5 first:rounded-t-xl last:rounded-b-xl last:border-none lg:gap-2.5 lg:p-2.5"
+      )}
+    >
       <div className="gap-1.25 absolute right-5 top-5 flex flex-row items-start rtl:left-5 rtl:right-auto">
         {item.bulletDelivery && <StoreConfiguredProductCardBulletDelivery />}
         {discountPercent && <ProductCardDiscount discount={discountPercent} />}
@@ -74,18 +103,23 @@ export function CartItem({ item }: { item: CartItemModel }) {
           href={productHref || "#"}
           title={item.name}
         >
-          {item.imageUrl && (
-            <ProductImageWithFallback
-              alt={item.name}
-              className="object-contain"
-              fill
-              src={item.imageUrl}
-            />
+          <ProductImageWithFallback
+            alt={item.name}
+            className="object-contain"
+            fill
+            src={item.imageUrl}
+          />
+          {isOutOfStock && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="h-6.25 flex items-center justify-center gap-2.5 rounded-lg bg-black/50 px-2.5 py-2 text-[11px] font-medium leading-none text-white">
+                {t("outOfStock")}
+              </span>
+            </div>
           )}
         </ProductDetailsLink>
         <CartQuantityControl
           containerProps={{ className: "flex w-full lg:hidden" }}
-          disableIncrement={item.isWrap}
+          disableIncrement={isOutOfStock || item.isWrap}
           isLoading={isLoading}
           onRemoveItemAction={handleRemoveItem}
           onUpdateQuantityAction={handleUpdateItemQuantity}
@@ -113,16 +147,14 @@ export function CartItem({ item }: { item: CartItemModel }) {
               )}
             </ProductDetailsLink>
             <div className="flex">
-              {
-                <ProductCardLabel
-                  className={cn(
-                    "bg-label-muted mt-2",
-                    !selectedOptionLabel && "invisible"
-                  )}
-                >
-                  {selectedOptionLabel || ""}
-                </ProductCardLabel>
-              }
+              <ProductCardLabel
+                className={cn(
+                  "bg-label-muted mt-2",
+                  !selectedOptionLabel && "invisible"
+                )}
+              >
+                {selectedOptionLabel || ""}
+              </ProductCardLabel>
             </div>
 
             {/* Quantity + Price + Wishlist row */}
@@ -132,7 +164,7 @@ export function CartItem({ item }: { item: CartItemModel }) {
                   containerProps={{
                     className: "flex max-w-30 w-30 hidden lg:flex",
                   }}
-                  disableIncrement={item.isWrap}
+                  disableIncrement={isOutOfStock || item.isWrap}
                   isLoading={isLoading}
                   onRemoveItemAction={handleRemoveItem}
                   onUpdateQuantityAction={handleUpdateItemQuantity}
@@ -156,7 +188,7 @@ export function CartItem({ item }: { item: CartItemModel }) {
               {/* Wishlist Button */}
               {!item.isWrap && (
                 <div className="flex items-center justify-center pb-0 lg:mr-2.5 lg:pb-2 rtl:ml-2.5">
-                  <CartItemWishlistButton item={item} />
+                  <CartItemWishlistButton item={item as CartItemModel} />
                 </div>
               )}
             </div>

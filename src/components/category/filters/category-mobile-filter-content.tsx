@@ -31,7 +31,6 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useFilters } from "@/contexts/category-filter-context";
 import { useVisualViewport } from "@/hooks/use-visual-viewport";
-import { CategorySortKey } from "@/lib/constants/category/category-sort";
 import { cn } from "@/lib/utils";
 import { arraysEqual } from "@/lib/utils/array";
 
@@ -59,6 +58,7 @@ export const CategoryMobileFilterContent = ({
   const tPrice = useTranslations("category.filtersSection.priceRangeFilter");
 
   const {
+    defaultSortKey,
     isNavigationPending,
     setCheckboxesForSection,
     setPrice,
@@ -86,7 +86,7 @@ export const CategoryMobileFilterContent = ({
   const { hasVisualViewport, height: viewportHeight } = useVisualViewport();
 
   const [selectedOption, setSelectedOption] = useState(
-    type === "radio" ? sortBy || CategorySortKey.Relevance : sortBy
+    type === "radio" ? sortBy || defaultSortKey : sortBy
   );
 
   // Price validation state
@@ -114,10 +114,10 @@ export const CategoryMobileFilterContent = ({
         setPriceMaxState(priceMax ?? null);
         break;
       case "radio":
-        setSelectedOption(sortBy || CategorySortKey.Relevance);
+        setSelectedOption(sortBy || defaultSortKey);
         break;
     }
-  }, [priceMax, priceMin, sectionCheckboxes, sortBy, type]);
+  }, [defaultSortKey, priceMax, priceMin, sectionCheckboxes, sortBy, type]);
 
   useEffect(() => {
     if (!drawerOpen) {
@@ -271,7 +271,7 @@ export const CategoryMobileFilterContent = ({
         setPriceMaxState(null);
         break;
       case "radio":
-        setSelectedOption(CategorySortKey.Relevance);
+        setSelectedOption(defaultSortKey);
         break;
     }
   };
@@ -314,7 +314,7 @@ export const CategoryMobileFilterContent = ({
 
   const isFilterApplied =
     type === "radio"
-      ? selectedOption !== (sortBy || CategorySortKey.Relevance)
+      ? selectedOption !== (sortBy || defaultSortKey)
       : type === "price"
         ? (priceMinState !== priceMin || priceMaxState !== priceMax) &&
           !priceValidation.minError &&
@@ -475,7 +475,9 @@ export const CategoryMobileFilterContent = ({
         "bg-bg-default flex max-h-[85vh] flex-col border-none data-[vaul-drawer-direction=bottom]:rounded-t-none",
         {
           "pb-15": !shouldHideBottomPadding,
-        }
+        },
+        // Override stale inline height/bottom vaul leaves after keyboard close.
+        !isKeyboardOpen && "bottom-0! h-auto!"
       )}
     >
       <DrawerHeader className="py-3.75 border-border-base flex flex-row justify-between border-b px-5">

@@ -2,24 +2,23 @@ import Container from "@/components/shared/container";
 import { BlurOverlay } from "@/components/ui/blur-overlay";
 import { DesktopNavigation } from "@/layouts/header/desktop-navigation";
 import { HeaderRow } from "@/layouts/header/header-row";
-import { MobileNavigation } from "@/layouts/header/mobile-navigation";
 import { PromotionalBanner } from "@/layouts/header/promotional-banner";
 import { ZIndexLevel } from "@/lib/constants/ui";
 import { PromoBanner } from "@/lib/models/promo-banner";
-import { MainMenuType } from "@/lib/types/ui-types";
+import { HeaderNavigationType } from "@/lib/types/ui-types";
 
 export const HeaderBody = ({
+  headerNavigation,
   hoverZIndexLevel = ZIndexLevel.z15,
   isSticky = false,
   lowerZIndexLevel = ZIndexLevel.z10,
-  navigationItems,
   promoBanner,
   upperZIndexLevel = ZIndexLevel.z20,
 }: {
+  headerNavigation: HeaderNavigationType;
   hoverZIndexLevel?: ZIndexLevel;
   isSticky?: boolean;
   lowerZIndexLevel?: ZIndexLevel;
-  navigationItems: MainMenuType[];
   promoBanner?: PromoBanner;
   upperZIndexLevel?: ZIndexLevel;
 }) => {
@@ -41,15 +40,9 @@ export const HeaderBody = ({
       />
 
       <DesktopNavigation
+        headerNavigation={headerNavigation}
         isSticky={isSticky}
         lowerZIndexLevel={lowerZIndexLevel}
-        navigationItems={navigationItems}
-      />
-
-      <MobileNavigation
-        isSticky={isSticky}
-        navigationItems={navigationItems}
-        zIndexLevel={lowerZIndexLevel}
       />
 
       <BlurOverlay />

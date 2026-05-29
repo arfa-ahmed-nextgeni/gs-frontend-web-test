@@ -50,32 +50,42 @@ export const ProductMediaThumbnails = ({
       type="hover"
     >
       <div className="flex flex-col gap-2.5">
-        {items.map((media, index) => {
-          const imageUrl = thumbnails[index];
+        {items.length === 0 ? (
+          <div className="bg-bg-default border-border-light-gray relative aspect-square overflow-hidden rounded-xl border">
+            <ProductImageWithFallback
+              alt="Product thumbnail"
+              fill
+              sizes="91px"
+            />
+          </div>
+        ) : (
+          items.map((media, index) => {
+            const imageUrl = thumbnails[index];
 
-          return (
-            <button
-              className={cn(
-                "bg-bg-default transition-default border-border-light-gray relative aspect-square overflow-hidden rounded-xl border",
-                { "border-border-base": index !== currentIndex }
-              )}
-              key={index}
-              onClick={() => onSelect(index)}
-            >
-              {imageUrl && (
-                <ProductImageWithFallback
-                  alt="Product thumbnail"
-                  className={cn({
-                    "transition-default opacity-50": index !== currentIndex,
-                  })}
-                  fill
-                  sizes="91px"
-                  src={imageUrl}
-                />
-              )}
-            </button>
-          );
-        })}
+            return (
+              <button
+                className={cn(
+                  "bg-bg-default transition-default border-border-light-gray relative aspect-square overflow-hidden rounded-xl border",
+                  { "border-border-base": index !== currentIndex }
+                )}
+                key={index}
+                onClick={() => onSelect(index)}
+              >
+                {imageUrl && (
+                  <ProductImageWithFallback
+                    alt="Product thumbnail"
+                    className={cn({
+                      "transition-default opacity-50": index !== currentIndex,
+                    })}
+                    fill
+                    sizes="91px"
+                    src={imageUrl}
+                  />
+                )}
+              </button>
+            );
+          })
+        )}
       </div>
     </ScrollArea>
   );

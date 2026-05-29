@@ -13,7 +13,10 @@ export const FlashSaleCountdownSkeleton = ({
   return (
     <div
       aria-hidden
-      className={cn("mt-12 flex gap-2.5 lg:mb-10", isMobile && "flex-col")}
+      className={cn(
+        "mt-12 flex gap-2.5 lg:mb-0 lg:mt-0",
+        isMobile && "flex-col"
+      )}
       ref={sentinelRef}
     >
       {Array.from({

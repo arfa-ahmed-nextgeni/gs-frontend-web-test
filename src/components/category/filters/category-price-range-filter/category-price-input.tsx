@@ -90,7 +90,7 @@ export const CategoryPriceInput = ({
               currencyProps?.className
             )}
           >
-            {currencySymbol}
+            <bdo dir="ltr">{currencySymbol}</bdo>
           </span>
         )}
         <input

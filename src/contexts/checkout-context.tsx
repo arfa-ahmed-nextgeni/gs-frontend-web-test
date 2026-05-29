@@ -13,13 +13,17 @@ import { LockerType } from "@/lib/constants/checkout/locker-locations";
 import { CHECKOUT_STORAGE_KEYS } from "@/lib/constants/checkout/storage-keys";
 
 type CheckoutContextType = {
+  cameFromAddressDrawer: boolean;
   cameFromShippingOptionDrawer: boolean;
   deliveryAddressFlowState: DeliveryAddressFlowState | null;
+  isAddressDrawerOpen: boolean;
   isShippingOptionDrawerOpen: boolean;
   selectedLockerAddressType: LockerType | null;
   selectedPayment: string;
+  setCameFromAddressDrawer: (value: boolean) => void;
   setCameFromShippingOptionDrawer: (value: boolean) => void;
   setDeliveryAddressFlowState: (value: DeliveryAddressFlowState | null) => void;
+  setIsAddressDrawerOpen: (value: boolean) => void;
   setIsShippingOptionDrawerOpen: (value: boolean) => void;
   setSelectedLockerAddressType: (type: LockerType | null) => void;
   setSelectedPayment: Dispatch<SetStateAction<string>>;
@@ -70,10 +74,12 @@ export const CheckoutProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const [cameFromAddressDrawer, setCameFromAddressDrawer] = useState(false);
   const [cameFromShippingOptionDrawer, setCameFromShippingOptionDrawer] =
     useState(false);
   const [deliveryAddressFlowState, setDeliveryAddressFlowState] =
     useState<DeliveryAddressFlowState | null>(null);
+  const [isAddressDrawerOpen, setIsAddressDrawerOpen] = useState(false);
   const [isShippingOptionDrawerOpen, setIsShippingOptionDrawerOpen] =
     useState(false);
   const [selectedLockerAddressType, setSelectedLockerAddressType] =
@@ -86,13 +92,17 @@ export const CheckoutProvider = ({
   return (
     <CheckoutContext.Provider
       value={{
+        cameFromAddressDrawer,
         cameFromShippingOptionDrawer,
         deliveryAddressFlowState,
+        isAddressDrawerOpen,
         isShippingOptionDrawerOpen,
         selectedLockerAddressType,
         selectedPayment,
+        setCameFromAddressDrawer,
         setCameFromShippingOptionDrawer,
         setDeliveryAddressFlowState,
+        setIsAddressDrawerOpen,
         setIsShippingOptionDrawerOpen,
         setSelectedLockerAddressType,
         setSelectedPayment,

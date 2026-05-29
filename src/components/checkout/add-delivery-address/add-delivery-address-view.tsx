@@ -27,12 +27,44 @@ export const AddDeliveryAddressView = () => {
   const {
     customerData,
     deliveryType,
+    editingAddressId,
+    initialAddressSnapshot,
+    initialContactData,
     isFirstAddressInCheckout,
     isManualEntryMode,
     resetFlowState,
     setShowSaveForm,
     showSaveForm,
   } = useAddDeliveryAddressContext();
+  const isEditing = Boolean(editingAddressId);
+
+  // Build a CustomerAddress-compatible object from the snapshot so the manual
+  // entry form is pre-populated when editing an existing address.
+  const editingCustomerAddress =
+    isEditing && editingAddressId && initialAddressSnapshot
+      ? {
+          city: initialAddressSnapshot.city,
+          cityCode: initialAddressSnapshot.city,
+          countryCode: "SA",
+          firstName: initialContactData?.firstName || "",
+          formattedAddress: initialAddressSnapshot.formattedAddress,
+          id: editingAddressId,
+          isDefault: initialAddressSnapshot.isDefault,
+          ksaShortAddress: initialAddressSnapshot.shortCode,
+          lastName: initialContactData?.lastName || "",
+          mobileNumber: initialContactData?.phoneNumber || "",
+          name: [initialContactData?.firstName, initialContactData?.lastName]
+            .filter(Boolean)
+            .join(" "),
+          postcode: initialAddressSnapshot.postalCode,
+          raw: {
+            ksa_short_address: initialAddressSnapshot.shortCode,
+            telephone: initialContactData?.phoneNumber || "",
+          },
+          regionName: initialAddressSnapshot.district,
+          street: [initialAddressSnapshot.street],
+        }
+      : undefined;
 
   const notifyCheckoutAddressSaved = (addressId?: string) => {
     if (!addressId) {
@@ -90,10 +122,12 @@ export const AddDeliveryAddressView = () => {
     if (showSaveForm && isManualEntryMode) {
       return (
         <AddressFormContextProvider
+          customerAddress={editingCustomerAddress}
           customerData={customerData}
           initialAddressLabel={
             deliveryType === "gift_delivery" ? "gift" : "home"
           }
+          isEditing={isEditing}
           isFirstAddressInCheckout={isFirstAddressInCheckout}
           onClose={() => {
             // Reset manual/map flow state so the next SA open starts from the map.
@@ -135,6 +169,7 @@ export const AddDeliveryAddressView = () => {
     <AddressFormContextProvider
       customerData={customerData}
       initialAddressLabel={deliveryType === "gift_delivery" ? "gift" : "home"}
+      isEditing={isEditing}
       isFirstAddressInCheckout={isFirstAddressInCheckout}
       onSuccess={(addressId) => {
         notifyCheckoutAddressSaved(addressId);

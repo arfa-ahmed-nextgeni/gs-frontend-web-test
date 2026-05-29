@@ -51,8 +51,6 @@ type AddConfigurableProductsToCartOutput {
   cart: Cart!
 }
 
-"""
-"""
 input AddDownloadableProductsToCartInput {
   """
   The ID of the cart.
@@ -150,22 +148,12 @@ type AddProductsToCartOutput {
   user_errors: [CartUserInputError]!
 }
 
-"""
-"""
 input AddProductsToCartWithGiftMessageInput {
-  """
-  """
   cart_id: String!
-  """
-  """
   cart_items: [CartItemInput]!
-  """
-  """
   gift_message: GiftMessageInput
 }
 
-"""
-"""
 type AddProductsToCartWithGiftMessageOutput {
   cart: Cart!
   gift_message: GiftMessage
@@ -404,8 +392,6 @@ input AggregationsFilterInput {
   category: AggregationsCategoryFilterInput
 }
 
-"""
-"""
 type ApplePayConfig implements PaymentConfigItem {
   """
   The styles for the ApplePay Smart Button configuration
@@ -681,20 +667,10 @@ type Attribute {
 List of all entity types. Populated by the modules introducing EAV entities.
 """
 enum AttributeEntityTypeEnum {
-  """
-  """
   CATALOG_CATEGORY
-  """
-  """
   CATALOG_PRODUCT
-  """
-  """
   CUSTOMER
-  """
-  """
   CUSTOMER_ADDRESS
-  """
-  """
   RMA_ITEM
 }
 
@@ -756,53 +732,21 @@ input AttributeFilterInput {
 EAV attribute frontend input types.
 """
 enum AttributeFrontendInputEnum {
-  """
-  """
   BOOLEAN
-  """
-  """
   DATE
-  """
-  """
   DATETIME
-  """
-  """
   FILE
-  """
-  """
   GALLERY
-  """
-  """
   HIDDEN
-  """
-  """
   IMAGE
-  """
-  """
   MEDIA_IMAGE
-  """
-  """
   MULTILINE
-  """
-  """
   MULTISELECT
-  """
-  """
   PRICE
-  """
-  """
   SELECT
-  """
-  """
   TEXT
-  """
-  """
   TEXTAREA
-  """
-  """
   UNDEFINED
-  """
-  """
   WEIGHT
 }
 
@@ -940,8 +884,6 @@ type AttributeOptionMetadata implements CustomAttributeOptionInterface {
   value: String!
 }
 
-"""
-"""
 type AttributeSelectedOption implements AttributeSelectedOptionInterface {
   """
   The attribute selected option label.
@@ -953,8 +895,6 @@ type AttributeSelectedOption implements AttributeSelectedOptionInterface {
   value: String!
 }
 
-"""
-"""
 interface AttributeSelectedOptionInterface {
   """
   The attribute selected option label.
@@ -966,8 +906,6 @@ interface AttributeSelectedOptionInterface {
   value: String!
 }
 
-"""
-"""
 type AttributeSelectedOptions implements AttributeValueInterface {
   """
   The attribute code.
@@ -976,8 +914,6 @@ type AttributeSelectedOptions implements AttributeValueInterface {
   selected_options: [AttributeSelectedOptionInterface]!
 }
 
-"""
-"""
 type AttributeValue implements AttributeValueInterface {
   """
   The attribute code.
@@ -1007,8 +943,6 @@ input AttributeValueInput {
   value: String
 }
 
-"""
-"""
 interface AttributeValueInterface {
   """
   The attribute code.
@@ -1044,20 +978,14 @@ type AttributesMetadataOutput {
   items: [CustomAttributeMetadataInterface]!
 }
 
-"""
-"""
 input AuthenticateMokafaaCustomerInput {
   """
   The unique ID that identifies the customer's cart.
   """
   cart_id: String!
-  """
-  """
   mobile_number: String!
 }
 
-"""
-"""
 type AuthenticateMokafaaCustomerOutput {
   body: AuthenticationBody
   error_code: String
@@ -1065,8 +993,6 @@ type AuthenticateMokafaaCustomerOutput {
   status_code: String
 }
 
-"""
-"""
 type AuthenticationBody {
   otp: OtpBody
 }
@@ -1159,17 +1085,9 @@ type AvailableShippingMethod {
   taxes_included: String
 }
 
-"""
-"""
 enum BatchMutationStatus {
-  """
-  """
   FAILURE
-  """
-  """
   MIXED_RESULTS
-  """
-  """
   SUCCESS
 }
 
@@ -1306,19 +1224,11 @@ type BillingCartAddress implements CartAddressInterface {
   vat_id: String
 }
 
-"""
-"""
 input BraintreeCcVaultInput {
-  """
-  """
   device_data: String
-  """
-  """
   public_hash: String!
 }
 
-"""
-"""
 input BraintreeInput {
   """
   Contains a fingerprint provided by Braintree JS SDK and should be sent with sale transaction details to the Braintree payment gateway.
@@ -1334,14 +1244,8 @@ input BraintreeInput {
   payment_method_nonce: String!
 }
 
-"""
-"""
 input BraintreeVaultInput {
-  """
-  """
   device_data: String
-  """
-  """
   public_hash: String!
 }
 
@@ -1670,6 +1574,7 @@ type BundleOrderItem implements OrderItemInterface {
   The type of product, such as simple, configurable, etc.
   """
   product_type: String
+  product_type_new2_label: String
   """
   URL key of the base product.
   """
@@ -1726,6 +1631,8 @@ type BundleProduct implements CustomizableProductInterface & PhysicalProductInte
   base_notes: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   bottle_design: String
+    @deprecated(reason: "Use the `custom_attributes` field instead.")
+  brand_keyword: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   brand_new: Int
     @deprecated(reason: "Use the `custom_attributes` field instead.")
@@ -1937,6 +1844,7 @@ type BundleProduct implements CustomizableProductInterface & PhysicalProductInte
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   product_type_new2: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
+  product_type_new2_label: String
   quantity: Int
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   """
@@ -1972,10 +1880,6 @@ type BundleProduct implements CustomizableProductInterface & PhysicalProductInte
     """
     pageSize: Int = 20
   ): ProductReviews!
-  search_key: String
-    @deprecated(reason: "Use the `custom_attributes` field instead.")
-  search_keywords: String
-    @deprecated(reason: "Use the `custom_attributes` field instead.")
   season: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   serie_new: String
@@ -2192,8 +2096,6 @@ type BundleWishlistItem implements WishlistItemInterface {
   quantity: Float!
 }
 
-"""
-"""
 type ButtonStyles {
   """
   The button color
@@ -2253,8 +2155,6 @@ type CancelOrderOutput {
   order: CustomerOrder
 }
 
-"""
-"""
 type CancelOrderResult {
   customerOrderDetail: CustomerOrder
   message: String
@@ -2262,14 +2162,10 @@ type CancelOrderResult {
   success: Boolean
 }
 
-"""
-"""
 type CancellationReason {
   description: String!
 }
 
-"""
-"""
 type Card {
   """
   Card bin details
@@ -2293,8 +2189,6 @@ type Card {
   name: String
 }
 
-"""
-"""
 type CardBin {
   """
   Card bin number
@@ -2433,8 +2327,6 @@ type Cart {
   total_quantity: Float!
 }
 
-"""
-"""
 type CartAddress {
   is_ksa_verified: Boolean
   ksa_additional_number: String
@@ -2491,30 +2383,16 @@ input CartAddressInput {
   The first name of the customer or guest.
   """
   firstname: String!
-  """
-  """
   is_ksa_verified: Boolean
-  """
-  """
   ksa_additional_number: String
-  """
-  """
   ksa_building_number: String
-  """
-  """
   ksa_short_address: String
-  """
-  """
   ksa_villa_number: String
   """
   The last name of the customer or guest.
   """
   lastname: String!
-  """
-  """
   latitude: String
-  """
-  """
   longitude: String
   """
   The middle name of the person associated with the billing/shipping address.
@@ -2558,8 +2436,6 @@ input CartAddressInput {
   vat_id: String
 }
 
-"""
-"""
 interface CartAddressInterface {
   """
   The city specified for the billing or shipping address.
@@ -2659,19 +2535,11 @@ type CartDiscount {
   label: [String]!
 }
 
-"""
-"""
 enum CartDiscountType {
-  """
-  """
   ITEM
-  """
-  """
   SHIPPING
 }
 
-"""
-"""
 type CartItemError {
   """
   An error code that describes the error encountered
@@ -2683,17 +2551,9 @@ type CartItemError {
   message: String!
 }
 
-"""
-"""
 enum CartItemErrorType {
-  """
-  """
   ITEM_INCREMENTS
-  """
-  """
   ITEM_QTY
-  """
-  """
   UNDEFINED
 }
 
@@ -2854,8 +2714,6 @@ input CartItemUpdateInput {
   quantity: Float
 }
 
-"""
-"""
 type CartItems {
   """
   An array of products that have been added to the cart.
@@ -2938,49 +2796,21 @@ type CartUserInputError {
   message: String!
 }
 
-"""
-"""
 enum CartUserInputErrorType {
-  """
-  """
   INSUFFICIENT_STOCK
-  """
-  """
   NOT_SALABLE
-  """
-  """
   PERMISSION_DENIED
-  """
-  """
   PRODUCT_NOT_FOUND
-  """
-  """
   UNDEFINED
 }
 
-"""
-"""
 enum CatalogAttributeApplyToEnum {
-  """
-  """
   BUNDLE
-  """
-  """
   CATEGORY
-  """
-  """
   CONFIGURABLE
-  """
-  """
   DOWNLOADABLE
-  """
-  """
   GROUPED
-  """
-  """
   SIMPLE
-  """
-  """
   VIRTUAL
 }
 
@@ -3587,23 +3417,11 @@ type CheckoutUserInputError {
   path: [String]!
 }
 
-"""
-"""
 enum CheckoutUserInputErrorCodes {
-  """
-  """
   INSUFFICIENT_STOCK
-  """
-  """
   NOT_SALABLE
-  """
-  """
   PRODUCT_NOT_FOUND
-  """
-  """
   REORDER_NOT_AVAILABLE
-  """
-  """
   UNDEFINED
 }
 
@@ -3621,20 +3439,10 @@ type ClearCartError {
   type: ClearCartErrorType!
 }
 
-"""
-"""
 enum ClearCartErrorType {
-  """
-  """
   INACTIVE
-  """
-  """
   NOT_FOUND
-  """
-  """
   UNAUTHORISED
-  """
-  """
   UNDEFINED
 }
 
@@ -3744,8 +3552,6 @@ type CmsPage implements RoutableInterface {
   url_key: String
 }
 
-"""
-"""
 type ColorSwatchData implements SwatchDataInterface {
   """
   The value can be represented as color (HEX code), image link, or text.
@@ -3753,8 +3559,6 @@ type ColorSwatchData implements SwatchDataInterface {
   value: String
 }
 
-"""
-"""
 type Comment {
   attachments: [TicketDetailAttachmentResponse]
   author_id: String
@@ -3844,8 +3648,6 @@ type CompareList {
   uid: ID!
 }
 
-"""
-"""
 type ComplexTextValue {
   """
   Text that can contain HTML tags.
@@ -3966,6 +3768,8 @@ type ConfigurableProduct implements CustomizableProductInterface & PhysicalProdu
   base_notes: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   bottle_design: String
+    @deprecated(reason: "Use the `custom_attributes` field instead.")
+  brand_keyword: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   brand_new: Int
     @deprecated(reason: "Use the `custom_attributes` field instead.")
@@ -4163,6 +3967,7 @@ type ConfigurableProduct implements CustomizableProductInterface & PhysicalProdu
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   product_type_new2: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
+  product_type_new2_label: String
   quantity: Int
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   """
@@ -4198,10 +4003,6 @@ type ConfigurableProduct implements CustomizableProductInterface & PhysicalProdu
     """
     pageSize: Int = 20
   ): ProductReviews!
-  search_key: String
-    @deprecated(reason: "Use the `custom_attributes` field instead.")
-  search_keywords: String
-    @deprecated(reason: "Use the `custom_attributes` field instead.")
   season: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   serie_new: String
@@ -4331,8 +4132,6 @@ type ConfigurableProduct implements CustomizableProductInterface & PhysicalProdu
     @deprecated(reason: "Use the `custom_attributes` field instead.")
 }
 
-"""
-"""
 input ConfigurableProductCartItemInput {
   """
   The ID and value of the option.
@@ -4597,8 +4396,6 @@ enum ConfirmationStatusEnum {
   ACCOUNT_CONFIRMED
 }
 
-"""
-"""
 input ContactUsInput {
   """
   The shopper's comment to the merchant.
@@ -4646,8 +4443,6 @@ type CopyProductsBetweenWishlistsOutput {
   user_errors: [WishListUserInputError]!
 }
 
-"""
-"""
 type CountdownTimerOutput {
   countdown_timer_end_date: String
   countdown_timer_start_date: String
@@ -4655,8 +4450,6 @@ type CountdownTimerOutput {
   countdown_timer_title: String
 }
 
-"""
-"""
 type Country {
   """
   An array of regions within a particular country.
@@ -5728,8 +5521,6 @@ type CreateGiftRegistryOutput {
   gift_registry: GiftRegistry
 }
 
-"""
-"""
 input CreateGuestCartInput {
   """
   Optional client-generated ID
@@ -5737,8 +5528,6 @@ input CreateGuestCartInput {
   cart_uid: ID
 }
 
-"""
-"""
 type CreateGuestCartOutput {
   """
   The newly created cart.
@@ -5986,8 +5775,6 @@ type CreditMemo {
   total: CreditMemoTotal
 }
 
-"""
-"""
 type CreditMemoItem implements CreditMemoItemInterface {
   """
   Details about the final discount amount for the base product, including discounts on options.
@@ -6095,8 +5882,6 @@ type CreditMemoTotal {
   total_tax: Money!
 }
 
-"""
-"""
 type Currency {
   """
   An array of three-letter currency codes accepted by the store, such as USD and EUR.
@@ -6136,515 +5921,175 @@ type Currency {
 The list of available currency codes.
 """
 enum CurrencyEnum {
-  """
-  """
   AED
-  """
-  """
   AFN
-  """
-  """
   ALL
-  """
-  """
   AMD
-  """
-  """
   ANG
-  """
-  """
   AOA
-  """
-  """
   ARS
-  """
-  """
   AUD
-  """
-  """
   AWG
-  """
-  """
   AZM
-  """
-  """
   AZN
-  """
-  """
   BAM
-  """
-  """
   BBD
-  """
-  """
   BDT
-  """
-  """
   BGN
-  """
-  """
   BHD
-  """
-  """
   BIF
-  """
-  """
   BMD
-  """
-  """
   BND
-  """
-  """
   BOB
-  """
-  """
   BRL
-  """
-  """
   BSD
-  """
-  """
   BTN
-  """
-  """
   BUK
-  """
-  """
   BWP
-  """
-  """
   BYN
-  """
-  """
   BZD
-  """
-  """
   CAD
-  """
-  """
   CDF
-  """
-  """
   CHE
-  """
-  """
   CHF
-  """
-  """
   CHW
-  """
-  """
   CLP
-  """
-  """
   CNY
-  """
-  """
   COP
-  """
-  """
   CRC
-  """
-  """
   CUP
-  """
-  """
   CVE
-  """
-  """
   CZK
-  """
-  """
   DJF
-  """
-  """
   DKK
-  """
-  """
   DOP
-  """
-  """
   DZD
-  """
-  """
   EEK
-  """
-  """
   EGP
-  """
-  """
   ERN
-  """
-  """
   ETB
-  """
-  """
   EUR
-  """
-  """
   FJD
-  """
-  """
   FKP
-  """
-  """
   GBP
-  """
-  """
   GEK
-  """
-  """
   GEL
-  """
-  """
   GHS
-  """
-  """
   GIP
-  """
-  """
   GMD
-  """
-  """
   GNF
-  """
-  """
   GQE
-  """
-  """
   GTQ
-  """
-  """
   GYD
-  """
-  """
   HKD
-  """
-  """
   HNL
-  """
-  """
   HRK
-  """
-  """
   HTG
-  """
-  """
   HUF
-  """
-  """
   IDR
-  """
-  """
   ILS
-  """
-  """
   INR
-  """
-  """
   IQD
-  """
-  """
   IRR
-  """
-  """
   ISK
-  """
-  """
   JMD
-  """
-  """
   JOD
-  """
-  """
   JPY
-  """
-  """
   KES
-  """
-  """
   KGS
-  """
-  """
   KHR
-  """
-  """
   KMF
-  """
-  """
   KPW
-  """
-  """
   KRW
-  """
-  """
   KWD
-  """
-  """
   KYD
-  """
-  """
   KZT
-  """
-  """
   LAK
-  """
-  """
   LBP
-  """
-  """
   LKR
-  """
-  """
   LRD
-  """
-  """
   LSL
-  """
-  """
   LSM
-  """
-  """
   LTL
-  """
-  """
   LVL
-  """
-  """
   LYD
-  """
-  """
   MAD
-  """
-  """
   MDL
-  """
-  """
   MGA
-  """
-  """
   MKD
-  """
-  """
   MMK
-  """
-  """
   MNT
-  """
-  """
   MOP
-  """
-  """
   MRO
-  """
-  """
   MUR
-  """
-  """
   MVR
-  """
-  """
   MWK
-  """
-  """
   MXN
-  """
-  """
   MYR
-  """
-  """
   MZN
-  """
-  """
   NAD
-  """
-  """
   NGN
-  """
-  """
   NIC
-  """
-  """
   NOK
-  """
-  """
   NPR
-  """
-  """
   NZD
-  """
-  """
   OMR
-  """
-  """
   PAB
-  """
-  """
   PEN
-  """
-  """
   PGK
-  """
-  """
   PHP
-  """
-  """
   PKR
-  """
-  """
   PLN
-  """
-  """
   PYG
-  """
-  """
   QAR
-  """
-  """
   RHD
-  """
-  """
   ROL
-  """
-  """
   RON
-  """
-  """
   RSD
-  """
-  """
   RUB
-  """
-  """
   RWF
-  """
-  """
   SAR
-  """
-  """
   SBD
-  """
-  """
   SCR
-  """
-  """
   SDG
-  """
-  """
   SEK
-  """
-  """
   SGD
-  """
-  """
   SHP
-  """
-  """
   SKK
-  """
-  """
   SLL
-  """
-  """
   SOS
-  """
-  """
   SRD
-  """
-  """
   STD
-  """
-  """
   SVC
-  """
-  """
   SYP
-  """
-  """
   SZL
-  """
-  """
   THB
-  """
-  """
   TJS
-  """
-  """
   TMM
-  """
-  """
   TND
-  """
-  """
   TOP
-  """
-  """
   TRL
-  """
-  """
   TRY
-  """
-  """
   TTD
-  """
-  """
   TWD
-  """
-  """
   TZS
-  """
-  """
   UAH
-  """
-  """
   UGX
-  """
-  """
   USD
-  """
-  """
   UYU
-  """
-  """
   UZS
-  """
-  """
   VEB
-  """
-  """
   VEF
-  """
-  """
   VND
-  """
-  """
   VUV
-  """
-  """
   WST
-  """
-  """
   XCD
-  """
-  """
   XOF
-  """
-  """
   XPF
-  """
-  """
   YER
-  """
-  """
   YTL
-  """
-  """
   ZAR
-  """
-  """
   ZMK
-  """
-  """
   ZWD
 }
 
@@ -6700,8 +6145,6 @@ interface CustomAttributeMetadataInterface {
   options: [CustomAttributeOptionInterface]!
 }
 
-"""
-"""
 interface CustomAttributeOptionInterface {
   """
   Is the option value default.
@@ -7105,30 +6548,16 @@ input CustomerAddressInput {
   The first name of the person associated with the billing/shipping address.
   """
   firstname: String
-  """
-  """
   is_ksa_verified: Boolean
-  """
-  """
   ksa_additional_number: String
-  """
-  """
   ksa_building_number: String
-  """
-  """
   ksa_short_address: String
-  """
-  """
   ksa_villa_number: String
   """
   The family name of the person associated with the billing/shipping address.
   """
   lastname: String
-  """
-  """
   latitude: String
-  """
-  """
   longitude: String
   """
   The middle name of the person associated with the billing/shipping address.
@@ -7911,14 +7340,8 @@ type CustomizableDateOption implements CustomizableOptionInterface {
 Defines the customizable date type.
 """
 enum CustomizableDateTypeEnum {
-  """
-  """
   DATE
-  """
-  """
   DATE_TIME
-  """
-  """
   TIME
 }
 
@@ -8360,8 +7783,6 @@ type DeleteWishlistOutput {
   wishlists: [Wishlist]!
 }
 
-"""
-"""
 type DetailBody {
   comments: [Comment]
   users: [User]
@@ -8474,14 +7895,8 @@ type DownloadableCreditMemoItem implements CreditMemoItemInterface {
   quantity_refunded: Float
 }
 
-"""
-"""
 enum DownloadableFileTypeEnum {
-  """
-  """
   FILE @deprecated(reason: "`sample_url` serves to get the downloadable sample")
-  """
-  """
   URL @deprecated(reason: "`sample_url` serves to get the downloadable sample")
 }
 
@@ -8595,6 +8010,7 @@ type DownloadableOrderItem implements OrderItemInterface {
   The type of product, such as simple, configurable, etc.
   """
   product_type: String
+  product_type_new2_label: String
   """
   URL key of the base product.
   """
@@ -8651,6 +8067,8 @@ type DownloadableProduct implements CustomizableProductInterface & ProductInterf
   base_notes: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   bottle_design: String
+    @deprecated(reason: "Use the `custom_attributes` field instead.")
+  brand_keyword: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   brand_new: Int
     @deprecated(reason: "Use the `custom_attributes` field instead.")
@@ -8854,6 +8272,7 @@ type DownloadableProduct implements CustomizableProductInterface & ProductInterf
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   product_type_new2: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
+  product_type_new2_label: String
   quantity: Int
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   """
@@ -8889,10 +8308,6 @@ type DownloadableProduct implements CustomizableProductInterface & ProductInterf
     """
     pageSize: Int = 20
   ): ProductReviews!
-  search_key: String
-    @deprecated(reason: "Use the `custom_attributes` field instead.")
-  search_keywords: String
-    @deprecated(reason: "Use the `custom_attributes` field instead.")
   season: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   serie_new: String
@@ -9161,20 +8576,10 @@ type DynamicBlock {
 Indicates the locations the dynamic block can be placed. If this field is not specified, the query returns all locations.
 """
 enum DynamicBlockLocationEnum {
-  """
-  """
   CONTENT
-  """
-  """
   FOOTER
-  """
-  """
   HEADER
-  """
-  """
   LEFT
-  """
-  """
   RIGHT
 }
 
@@ -9182,14 +8587,8 @@ enum DynamicBlockLocationEnum {
 Indicates the selected Dynamic Blocks Rotator inline widget.
 """
 enum DynamicBlockTypeEnum {
-  """
-  """
   CART_PRICE_RULE_RELATED
-  """
-  """
   CATALOG_PRICE_RULE_RELATED
-  """
-  """
   SPECIFIED
 }
 
@@ -9229,8 +8628,6 @@ input DynamicBlocksFilterInput {
   type: DynamicBlockTypeEnum!
 }
 
-"""
-"""
 type EligibleReviewOrder {
   created_at: String
   customer_id: Int
@@ -9239,8 +8636,6 @@ type EligibleReviewOrder {
   order_id: Int
 }
 
-"""
-"""
 type EligibleReviewOrderItem {
   brand: String
   image_url: String
@@ -9305,8 +8700,6 @@ type EntityUrl {
   type: UrlRewriteEntityTypeEnum
 }
 
-"""
-"""
 interface ErrorInterface {
   """
   The returned error message.
@@ -9314,8 +8707,6 @@ interface ErrorInterface {
   message: String!
 }
 
-"""
-"""
 type ErrorsBody {
   code: String
   field: String
@@ -9340,8 +8731,6 @@ input EstimateAddressInput {
   region: CustomerAddressRegionInput
 }
 
-"""
-"""
 input EstimateTotalsInput {
   """
   Customer's address to estimate totals.
@@ -9367,8 +8756,6 @@ type EstimateTotalsOutput {
   cart: Cart
 }
 
-"""
-"""
 type EstimatedDeliveryDay {
   days_ar: String
   days_en: String
@@ -9403,14 +8790,8 @@ input FilterEqualTypeInput {
   in: [String]
 }
 
-"""
-"""
 enum FilterMatchTypeEnum {
-  """
-  """
   FULL
-  """
-  """
   PARTIAL
 }
 
@@ -9468,8 +8849,6 @@ input FilterTypeInput {
   Equals.
   """
   eq: String
-  """
-  """
   finset: [String]
   """
   From. Must be used with the `to` field.
@@ -9595,8 +8974,6 @@ type GetPaymentSDKOutput {
   sdkParams: [PaymentSDKParamsItem]
 }
 
-"""
-"""
 type GetProductViewedOutput {
   message: String
   product_skus: [String]
@@ -9621,8 +8998,6 @@ type GetTicket {
   status_code: String
 }
 
-"""
-"""
 input GetViewedProductInput {
   """
   Device ID
@@ -9759,8 +9134,6 @@ type GiftCardCartItem implements CartItemInterface {
   uid: ID!
 }
 
-"""
-"""
 type GiftCardCreditMemoItem implements CreditMemoItemInterface {
   """
   Details about the final discount amount for the base product, including discounts on options.
@@ -9796,8 +9169,6 @@ type GiftCardCreditMemoItem implements CreditMemoItemInterface {
   quantity_refunded: Float
 }
 
-"""
-"""
 type GiftCardInvoiceItem implements InvoiceItemInterface {
   """
   Information about the final discount amount for the base product, including discounts on options.
@@ -9893,8 +9264,6 @@ type GiftCardOptions {
   sender_name: String
 }
 
-"""
-"""
 type GiftCardOrderItem implements OrderItemInterface {
   brand_new_label: String
   """
@@ -9946,6 +9315,7 @@ type GiftCardOrderItem implements OrderItemInterface {
   The type of product, such as simple, configurable, etc.
   """
   product_type: String
+  product_type_new2_label: String
   """
   URL key of the base product.
   """
@@ -10010,6 +9380,8 @@ type GiftCardProduct implements CustomizableProductInterface & PhysicalProductIn
   base_notes: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   bottle_design: String
+    @deprecated(reason: "Use the `custom_attributes` field instead.")
+  brand_keyword: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   brand_new: Int
     @deprecated(reason: "Use the `custom_attributes` field instead.")
@@ -10229,6 +9601,7 @@ type GiftCardProduct implements CustomizableProductInterface & PhysicalProductIn
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   product_type_new2: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
+  product_type_new2_label: String
   quantity: Int
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   """
@@ -10264,10 +9637,6 @@ type GiftCardProduct implements CustomizableProductInterface & PhysicalProductIn
     """
     pageSize: Int = 20
   ): ProductReviews!
-  search_key: String
-    @deprecated(reason: "Use the `custom_attributes` field instead.")
-  search_keywords: String
-    @deprecated(reason: "Use the `custom_attributes` field instead.")
   season: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   serie_new: String
@@ -10393,8 +9762,6 @@ type GiftCardProduct implements CustomizableProductInterface & PhysicalProductIn
     @deprecated(reason: "Use the `custom_attributes` field instead.")
 }
 
-"""
-"""
 type GiftCardShipmentItem implements ShipmentItemInterface {
   """
   Selected gift card properties for a shipment item.
@@ -10430,14 +9797,8 @@ type GiftCardShipmentItem implements ShipmentItemInterface {
 Specifies the gift card type.
 """
 enum GiftCardTypeEnum {
-  """
-  """
   COMBINED
-  """
-  """
   PHYSICAL
-  """
-  """
   VIRTUAL
 }
 
@@ -10584,8 +9945,6 @@ type GiftRegistry {
   uid: ID!
 }
 
-"""
-"""
 type GiftRegistryDynamicAttribute implements GiftRegistryDynamicAttributeInterface {
   """
   The internal ID of the dynamic attribute.
@@ -10609,23 +9968,11 @@ type GiftRegistryDynamicAttribute implements GiftRegistryDynamicAttributeInterfa
 Defines the group type of a gift registry dynamic attribute.
 """
 enum GiftRegistryDynamicAttributeGroup {
-  """
-  """
   DETAILED_INFORMATION
-  """
-  """
   EVENT_INFORMATION
-  """
-  """
   GENERAL_INFORMATION
-  """
-  """
   PRIVACY_SETTINGS
-  """
-  """
   REGISTRANT
-  """
-  """
   SHIPPING_ADDRESS
 }
 
@@ -10643,8 +9990,6 @@ input GiftRegistryDynamicAttributeInput {
   value: String!
 }
 
-"""
-"""
 interface GiftRegistryDynamicAttributeInterface {
   """
   The internal ID of the dynamic attribute.
@@ -10660,8 +10005,6 @@ interface GiftRegistryDynamicAttributeInterface {
   value: String!
 }
 
-"""
-"""
 type GiftRegistryDynamicAttributeMetadata implements GiftRegistryDynamicAttributeMetadataInterface {
   """
   Indicates which group the dynamic attribute a member of.
@@ -10689,8 +10032,6 @@ type GiftRegistryDynamicAttributeMetadata implements GiftRegistryDynamicAttribut
   sort_order: Int
 }
 
-"""
-"""
 interface GiftRegistryDynamicAttributeMetadataInterface {
   """
   Indicates which group the dynamic attribute a member of.
@@ -10718,8 +10059,6 @@ interface GiftRegistryDynamicAttributeMetadataInterface {
   sort_order: Int
 }
 
-"""
-"""
 type GiftRegistryItem implements GiftRegistryItemInterface {
   """
   The date the product was added to the gift registry.
@@ -10747,8 +10086,6 @@ type GiftRegistryItem implements GiftRegistryItemInterface {
   uid: ID!
 }
 
-"""
-"""
 interface GiftRegistryItemInterface {
   """
   The date the product was added to the gift registry.
@@ -10872,11 +10209,7 @@ interface GiftRegistryOutputInterface {
 Defines the privacy setting of the gift registry.
 """
 enum GiftRegistryPrivacySettings {
-  """
-  """
   PRIVATE
-  """
-  """
   PUBLIC
 }
 
@@ -10906,8 +10239,6 @@ type GiftRegistryRegistrant {
   uid: ID!
 }
 
-"""
-"""
 type GiftRegistryRegistrantDynamicAttribute implements GiftRegistryDynamicAttributeInterface {
   """
   The internal ID of the dynamic attribute.
@@ -10971,11 +10302,7 @@ input GiftRegistryShippingAddressInput {
 Defines the status of the gift registry.
 """
 enum GiftRegistryStatus {
-  """
-  """
   ACTIVE
-  """
-  """
   INACTIVE
 }
 
@@ -11037,8 +10364,6 @@ type GiftWrappingImage {
   url: String!
 }
 
-"""
-"""
 type GooglePayButtonStyles {
   """
   The button color
@@ -11054,8 +10379,6 @@ type GooglePayButtonStyles {
   type: String
 }
 
-"""
-"""
 type GooglePayConfig implements PaymentConfigItem {
   """
   The styles for the GooglePay Button configuration
@@ -11131,6 +10454,8 @@ type GroupedProduct implements PhysicalProductInterface & ProductInterface & Rou
   base_notes: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   bottle_design: String
+    @deprecated(reason: "Use the `custom_attributes` field instead.")
+  brand_keyword: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   brand_new: Int
     @deprecated(reason: "Use the `custom_attributes` field instead.")
@@ -11318,6 +10643,7 @@ type GroupedProduct implements PhysicalProductInterface & ProductInterface & Rou
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   product_type_new2: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
+  product_type_new2_label: String
   quantity: Int
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   """
@@ -11353,10 +10679,6 @@ type GroupedProduct implements PhysicalProductInterface & ProductInterface & Rou
     """
     pageSize: Int = 20
   ): ProductReviews!
-  search_key: String
-    @deprecated(reason: "Use the `custom_attributes` field instead.")
-  search_keywords: String
-    @deprecated(reason: "Use the `custom_attributes` field instead.")
   season: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   serie_new: String
@@ -11531,8 +10853,6 @@ type GroupedProductWishlistItem implements WishlistItemInterface {
   quantity: Float!
 }
 
-"""
-"""
 type GsRefillCartOutput {
   cart_id: String
   message: String
@@ -11540,8 +10860,6 @@ type GsRefillCartOutput {
   success: Boolean!
 }
 
-"""
-"""
 type HostedFieldsConfig implements PaymentConfigItem {
   """
   Vault payment method code
@@ -11683,8 +11001,6 @@ type HttpQueryParameter {
   value: String
 }
 
-"""
-"""
 type ImageSwatchData implements SwatchDataInterface {
   """
   The URL assigned to the thumbnail of the swatch image.
@@ -11758,8 +11074,6 @@ type Invoice {
   total: InvoiceTotal
 }
 
-"""
-"""
 type InvoiceItem implements InvoiceItemInterface {
   """
   Information about the final discount amount for the base product, including discounts on options.
@@ -11939,16 +11253,12 @@ type KeyValue {
   value: String
 }
 
-"""
-"""
 type KsaAddressResponse {
   Message: KsaMessage
   NationalAddress: NationalAddress
   success: Boolean!
 }
 
-"""
-"""
 type KsaMessage {
   MessageCode: String
   MessageDescriptionAr: String
@@ -11980,8 +11290,6 @@ type LayerFilter {
     @deprecated(reason: "Use `Aggregation.attribute_code` instead.")
 }
 
-"""
-"""
 type LayerFilterItem implements LayerFilterItemInterface {
   """
   The count of items per filter.
@@ -11998,8 +11306,6 @@ type LayerFilterItem implements LayerFilterItemInterface {
     @deprecated(reason: "Use `AggregationOption.value` instead.")
 }
 
-"""
-"""
 interface LayerFilterItemInterface {
   """
   The count of items per filter.
@@ -12016,8 +11322,6 @@ interface LayerFilterItemInterface {
     @deprecated(reason: "Use `AggregationOption.value` instead.")
 }
 
-"""
-"""
 type MagentoExtensionContext {
   magento_extension_version: String
 }
@@ -12090,8 +11394,6 @@ interface MediaGalleryInterface {
   url: String
 }
 
-"""
-"""
 type MessageStyleLogo {
   """
   The type of logo for the PayPal Pay Later messaging
@@ -12099,8 +11401,6 @@ type MessageStyleLogo {
   type: String
 }
 
-"""
-"""
 type MessageStyles {
   """
   The message layout
@@ -12112,8 +11412,6 @@ type MessageStyles {
   logo: MessageStyleLogo
 }
 
-"""
-"""
 type Mokafaa {
   enabled_for_apps: Boolean
   enabled_for_web: Boolean
@@ -12169,8 +11467,6 @@ type MoveProductsBetweenWishlistsOutput {
   user_errors: [WishListUserInputError]!
 }
 
-"""
-"""
 type Mutation {
   """
   Add one or more bundle products to the specified cart. We recommend using `addProductsToCart` instead.
@@ -13148,8 +12444,6 @@ type Mutation {
   ): VoteReviewHelpfulOutput
 }
 
-"""
-"""
 type NationalAddress {
   additionalNumber: String
   address1: String
@@ -13278,8 +12572,6 @@ input OrderInformationInput {
   postcode: String!
 }
 
-"""
-"""
 type OrderItem implements OrderItemInterface {
   brand_new_label: String
   """
@@ -13327,6 +12619,7 @@ type OrderItem implements OrderItemInterface {
   The type of product, such as simple, configurable, etc.
   """
   product_type: String
+  product_type_new2_label: String
   """
   URL key of the base product.
   """
@@ -13415,6 +12708,7 @@ interface OrderItemInterface {
   The type of product, such as simple, configurable, etc.
   """
   product_type: String
+  product_type_new2_label: String
   """
   URL key of the base product.
   """
@@ -13485,8 +12779,6 @@ type OrderPaymentMethod {
   type: String!
 }
 
-"""
-"""
 type OrderProcessingHealthCheckOutput {
   message: String!
   order_count: Int!
@@ -13579,8 +12871,6 @@ type OrderTotal {
   total_tax: Money!
 }
 
-"""
-"""
 type OtpBody {
   currency: String
   otp_token: String
@@ -13623,11 +12913,7 @@ input PayflowLinkInput {
 Indicates the mode for payment. Applies to the Payflow Link and Payments Advanced payment methods.
 """
 enum PayflowLinkMode {
-  """
-  """
   LIVE
-  """
-  """
   TEST
 }
 
@@ -13691,8 +12977,6 @@ input PayflowProResponseInput {
   paypal_payload: String!
 }
 
-"""
-"""
 type PayflowProResponseOutput {
   """
   The cart with the updated selected payment method.
@@ -13758,8 +13042,6 @@ input PayflowProUrlInput {
   return_url: String!
 }
 
-"""
-"""
 type PaymentCommonConfig implements PaymentConfigItem {
   """
   The payment method code as defined in the payment gateway
@@ -13843,20 +13125,10 @@ type PaymentConfigOutput {
 Defines the origin location for that payment request
 """
 enum PaymentLocation {
-  """
-  """
   ADMIN
-  """
-  """
   CART
-  """
-  """
   CHECKOUT
-  """
-  """
   MINICART
-  """
-  """
   PRODUCT_DETAIL
 }
 
@@ -13864,29 +13136,13 @@ enum PaymentLocation {
 Defines the payment method.
 """
 input PaymentMethodInput {
-  """
-  """
   braintree: BraintreeInput
-  """
-  """
   braintree_ach_direct_debit: BraintreeInput
-  """
-  """
   braintree_ach_direct_debit_vault: BraintreeVaultInput
-  """
-  """
   braintree_applepay_vault: BraintreeVaultInput
-  """
-  """
   braintree_cc_vault: BraintreeCcVaultInput
-  """
-  """
   braintree_googlepay_vault: BraintreeVaultInput
-  """
-  """
   braintree_paypal: BraintreeInput
-  """
-  """
   braintree_paypal_vault: BraintreeVaultInput
   """
   The internal name for the payment method.
@@ -13964,8 +13220,6 @@ type PaymentOrderOutput {
   status: String
 }
 
-"""
-"""
 type PaymentSDKParamsItem {
   """
   The payment method code used in the order
@@ -13977,8 +13231,6 @@ type PaymentSDKParamsItem {
   params: [SDKParams]
 }
 
-"""
-"""
 type PaymentSourceDetails {
   """
   Details about the card used on the order
@@ -14305,20 +13557,10 @@ type PickupLocations {
   total_count: Int
 }
 
-"""
-"""
 input PickupPointDetailInput {
-  """
-  """
   collection_point_id: String
-  """
-  """
   fodel_pickup: String
-  """
-  """
   pickup: String
-  """
-  """
   pickup_point_id: String
 }
 
@@ -14336,23 +13578,11 @@ type PlaceOrderError {
   message: String!
 }
 
-"""
-"""
 enum PlaceOrderErrorCodes {
-  """
-  """
   CART_NOT_ACTIVE
-  """
-  """
   CART_NOT_FOUND
-  """
-  """
   GUEST_EMAIL_MISSING
-  """
-  """
   UNABLE_TO_PLACE_ORDER
-  """
-  """
   UNDEFINED
 }
 
@@ -14360,21 +13590,13 @@ enum PlaceOrderErrorCodes {
 Specifies the quote to be converted to an order.
 """
 input PlaceOrderInput {
-  """
-  """
   braze_id: String
   """
   The unique ID of a `Cart` object.
   """
   cart_id: String!
-  """
-  """
   external_id: String
-  """
-  """
   user_alias: String
-  """
-  """
   user_id: String
 }
 
@@ -14439,20 +13661,14 @@ type PriceAdjustment {
 `PriceAdjustment.code` is deprecated.
 """
 enum PriceAdjustmentCodesEnum {
-  """
-  """
   TAX
     @deprecated(
       reason: "`PriceAdjustmentCodesEnum` is deprecated. Tax is included or excluded in the price. Tax is not shown separately in Catalog."
     )
-  """
-  """
   WEEE
     @deprecated(
       reason: "WEEE code is deprecated. Use `fixed_product_taxes.label` instead."
     )
-  """
-  """
   WEEE_TAX
     @deprecated(
       reason: "Use `fixed_product_taxes` instead.  Tax is included or excluded in price. The tax is not shown separtely in Catalog."
@@ -14463,11 +13679,7 @@ enum PriceAdjustmentCodesEnum {
 `PriceAdjustmentDescriptionEnum` is deprecated. States whether a price adjustment is included or excluded.
 """
 enum PriceAdjustmentDescriptionEnum {
-  """
-  """
   EXCLUDED
-  """
-  """
   INCLUDED
 }
 
@@ -14507,14 +13719,8 @@ type PriceRange {
 Defines the price type.
 """
 enum PriceTypeEnum {
-  """
-  """
   DYNAMIC
-  """
-  """
   FIXED
-  """
-  """
   PERCENT
 }
 
@@ -14522,16 +13728,10 @@ enum PriceTypeEnum {
 Defines whether a bundle product's price is displayed as the lowest possible value or as a range.
 """
 enum PriceViewEnum {
-  """
-  """
   AS_LOW_AS
-  """
-  """
   PRICE_RANGE
 }
 
-"""
-"""
 type ProcessCronOrderOutput {
   message: String
   success: Boolean
@@ -14563,6 +13763,10 @@ input ProductAttributeFilterInput {
   Attribute label: Base Notes
   """
   base_notes: FilterMatchTypeInput
+  """
+  Attribute label: Brand Keyword for LiveSearch
+  """
+  brand_keyword: FilterMatchTypeInput
   """
   Attribute label: Brand
   """
@@ -14652,6 +13856,10 @@ input ProductAttributeFilterInput {
   """
   news_from_date: FilterRangeTypeInput
   """
+  Attribute label: Notes
+  """
+  notes: FilterEqualTypeInput
+  """
   Attribute label: Category
   """
   perfume_category: FilterEqualTypeInput
@@ -14684,14 +13892,6 @@ input ProductAttributeFilterInput {
   """
   productcategory: FilterEqualTypeInput
   """
-  Attribute label: Search Key
-  """
-  search_key: FilterMatchTypeInput
-  """
-  Attribute label: Search Keyword
-  """
-  search_keywords: FilterMatchTypeInput
-  """
   Attribute label: Serie
   """
   serie_new: FilterEqualTypeInput
@@ -14699,10 +13899,6 @@ input ProductAttributeFilterInput {
   Attribute label: series
   """
   series: FilterEqualTypeInput
-  """
-  Attribute label: Short Description
-  """
-  short_description: FilterMatchTypeInput
   """
   Attribute label: Short Name
   """
@@ -14951,8 +14147,6 @@ input ProductFilterInput {
   The part of the URL that identifies the product
   """
   url_key: FilterTypeInput
-  """
-  """
   url_path: FilterTypeInput
   """
   The weight of the item, in units defined by the store.
@@ -15010,6 +14204,8 @@ interface ProductInterface {
   base_notes: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   bottle_design: String
+    @deprecated(reason: "Use the `custom_attributes` field instead.")
+  brand_keyword: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   brand_new: Int
     @deprecated(reason: "Use the `custom_attributes` field instead.")
@@ -15193,6 +14389,7 @@ interface ProductInterface {
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   product_type_new2: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
+  product_type_new2_label: String
   quantity: Int
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   """
@@ -15220,10 +14417,6 @@ interface ProductInterface {
     """
     pageSize: Int = 20
   ): ProductReviews!
-  search_key: String
-    @deprecated(reason: "Use the `custom_attributes` field instead.")
-  search_keywords: String
-    @deprecated(reason: "Use the `custom_attributes` field instead.")
   season: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   serie_new: String
@@ -15590,14 +14783,8 @@ type ProductReviewRatingsMetadata {
   items: [ProductReviewRatingMetadata]!
 }
 
-"""
-"""
 input ProductReviewSortInput {
-  """
-  """
   direction: String
-  """
-  """
   field: String
 }
 
@@ -15615,8 +14802,6 @@ type ProductReviews {
   page_info: SearchResultPageInfo!
 }
 
-"""
-"""
 type ProductReviewsResponse {
   avg_percent: Int
   avg_rating: Float
@@ -15760,8 +14945,6 @@ input ProductSortInput {
   The part of the URL that identifies the product
   """
   url_key: SortEnum
-  """
-  """
   url_path: SortEnum
   """
   The weight of the item, in units defined by the store.
@@ -15773,11 +14956,7 @@ input ProductSortInput {
 This enumeration states whether a product stock status is in stock or out of stock
 """
 enum ProductStockStatus {
-  """
-  """
   IN_STOCK
-  """
-  """
   OUT_OF_STOCK
 }
 
@@ -15869,8 +15048,6 @@ type Products {
   total_count: Int
 }
 
-"""
-"""
 type Query {
   """
   Retrieve EAV attributes associated to a frontend form. Use countries query provided by DirectoryGraphQl module to retrieve region_id and country_id attribute options.
@@ -16374,43 +15551,19 @@ type ReCaptchaConfigurationV3 {
   website_key: String!
 }
 
-"""
-"""
 enum ReCaptchaFormEnum {
-  """
-  """
   BRAINTREE
-  """
-  """
   CONTACT
-  """
-  """
   CUSTOMER_CREATE
-  """
-  """
   CUSTOMER_EDIT
-  """
-  """
   CUSTOMER_FORGOT_PASSWORD
-  """
-  """
   CUSTOMER_LOGIN
-  """
-  """
   NEWSLETTER
-  """
-  """
   PLACE_ORDER
-  """
-  """
   PRODUCT_REVIEW
-  """
-  """
   SENDFRIEND
 }
 
-"""
-"""
 input RedeemMokafaaPointsInput {
   """
   The amount to be redeemed.
@@ -16420,8 +15573,6 @@ input RedeemMokafaaPointsInput {
   The unique ID that identifies the customer's cart.
   """
   cart_id: String!
-  """
-  """
   otp_token: String!
   """
   The OTP sent to the mobile number.
@@ -16429,8 +15580,6 @@ input RedeemMokafaaPointsInput {
   otp_value: String!
 }
 
-"""
-"""
 type RedeemMokafaaPointsOutput {
   body: RedeemPointsOutputBody
   cart: Cart
@@ -16439,8 +15588,6 @@ type RedeemMokafaaPointsOutput {
   status_code: String
 }
 
-"""
-"""
 type RedeemPointsOutputBody {
   discount_amount: String
   merchant: String
@@ -16451,8 +15598,6 @@ type RedeemPointsOutputBody {
   transaction_type: String
 }
 
-"""
-"""
 type Region {
   """
   The two-letter code for the region, such as TX for Texas.
@@ -16781,8 +15926,6 @@ type ResponseBody {
   user_id: String
 }
 
-"""
-"""
 type ResponseResultBody {
   """
   Ticket Details
@@ -16987,26 +16130,12 @@ type ReturnItemAttributeMetadata implements CustomAttributeMetadataInterface {
   validate_rules: [ValidationRule]
 }
 
-"""
-"""
 enum ReturnItemStatus {
-  """
-  """
   APPROVED
-  """
-  """
   AUTHORIZED
-  """
-  """
   DENIED
-  """
-  """
   PENDING
-  """
-  """
   RECEIVED
-  """
-  """
   REJECTED
 }
 
@@ -17108,55 +16237,23 @@ type ReturnShippingTrackingStatus {
   type: ReturnShippingTrackingStatusType!
 }
 
-"""
-"""
 enum ReturnShippingTrackingStatusType {
-  """
-  """
   ERROR
-  """
-  """
   INFORMATION
 }
 
-"""
-"""
 enum ReturnStatus {
-  """
-  """
   APPROVED
-  """
-  """
   AUTHORIZED
-  """
-  """
   CLOSED
-  """
-  """
   DENIED
-  """
-  """
   PARTIALLY_APPROVED
-  """
-  """
   PARTIALLY_AUTHORIZED
-  """
-  """
   PARTIALLY_RECEIVED
-  """
-  """
   PARTIALLY_REJECTED
-  """
-  """
   PENDING
-  """
-  """
   PROCESSED_AND_CLOSED
-  """
-  """
   RECEIVED
-  """
-  """
   REJECTED
 }
 
@@ -17178,8 +16275,6 @@ type Returns {
   total_count: Int
 }
 
-"""
-"""
 input ReverseMokafaaPointsInput {
   """
   The unique ID that identifies the customer's cart.
@@ -17187,8 +16282,6 @@ input ReverseMokafaaPointsInput {
   cart_id: String!
 }
 
-"""
-"""
 type ReverseMokafaaPointsOutput {
   body: ReversePointsOutputBody
   cart: Cart
@@ -17196,22 +16289,16 @@ type ReverseMokafaaPointsOutput {
   status_code: String
 }
 
-"""
-"""
 type ReversePointsOutputBody {
   request_id: String
 }
 
-"""
-"""
 type ReviewHelpfulCounts {
   helpful_count: Int!
   not_helpful_count: Int!
   review_id: Int!
 }
 
-"""
-"""
 type ReviewItem {
   created_at: String
   detail: String
@@ -17253,8 +16340,6 @@ type RewardPoints {
   subscription_status: RewardPointsSubscriptionStatus
 }
 
-"""
-"""
 type RewardPointsAmount {
   """
   The reward points amount in store currency.
@@ -17266,8 +16351,6 @@ type RewardPointsAmount {
   points: Float!
 }
 
-"""
-"""
 type RewardPointsApplied {
   base_value: Float
   points: Int
@@ -17359,14 +16442,8 @@ type RewardPointsSubscriptionStatus {
   points_expiration_notifications: RewardPointsSubscriptionStatusesEnum!
 }
 
-"""
-"""
 enum RewardPointsSubscriptionStatusesEnum {
-  """
-  """
   NOT_SUBSCRIBED
-  """
-  """
   SUBSCRIBED
 }
 
@@ -17434,8 +16511,6 @@ type SalesCommentItem {
   timestamp: String!
 }
 
-"""
-"""
 type SalesItemInterface {
   """
   The entered gift message for the order item
@@ -17443,15 +16518,11 @@ type SalesItemInterface {
   gift_message: GiftMessage
 }
 
-"""
-"""
 type SaveProductViewedOutput {
   message: String
   status_code: String
 }
 
-"""
-"""
 input SaveViewedProductInput {
   """
   Customer Email
@@ -17479,14 +16550,8 @@ input SaveViewedProductInput {
 This enumeration defines the scope type for customer orders.
 """
 enum ScopeTypeEnum {
-  """
-  """
   GLOBAL
-  """
-  """
   STORE
-  """
-  """
   WEBSITE
 }
 
@@ -18047,16 +17112,10 @@ input ShareGiftRegistrySenderInput {
 Defines whether bundle items must be shipped together.
 """
 enum ShipBundleItemsEnum {
-  """
-  """
   SEPARATELY
-  """
-  """
   TOGETHER
 }
 
-"""
-"""
 type ShipmentItem implements ShipmentItemInterface {
   """
   The unique ID for a `ShipmentItemInterface` object.
@@ -18148,26 +17207,12 @@ input ShippingAddressInput {
   Text provided by the shopper.
   """
   customer_notes: String
-  """
-  """
   is_ksa_verified: Boolean
-  """
-  """
   ksa_additional_number: String
-  """
-  """
   ksa_building_number: String
-  """
-  """
   ksa_short_address: String
-  """
-  """
   ksa_villa_number: String
-  """
-  """
   latitude: String
-  """
-  """
   longitude: String
   """
   The code of Pickup Location which will be used for In-Store Pickup.
@@ -18327,8 +17372,6 @@ input ShippingMethodInput {
   A string that indicates which service a commercial carrier will use to ship items. For offline delivery methods, this value is similar to the label displayed on the checkout page.
   """
   method_code: String!
-  """
-  """
   pickup_point: PickupPointDetailInput
 }
 
@@ -18401,6 +17444,8 @@ type SimpleProduct implements CustomizableProductInterface & PhysicalProductInte
   base_notes: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   bottle_design: String
+    @deprecated(reason: "Use the `custom_attributes` field instead.")
+  brand_keyword: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   brand_new: Int
     @deprecated(reason: "Use the `custom_attributes` field instead.")
@@ -18588,6 +17633,7 @@ type SimpleProduct implements CustomizableProductInterface & PhysicalProductInte
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   product_type_new2: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
+  product_type_new2_label: String
   quantity: Int
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   """
@@ -18623,10 +17669,6 @@ type SimpleProduct implements CustomizableProductInterface & PhysicalProductInte
     """
     pageSize: Int = 20
   ): ProductReviews!
-  search_key: String
-    @deprecated(reason: "Use the `custom_attributes` field instead.")
-  search_keywords: String
-    @deprecated(reason: "Use the `custom_attributes` field instead.")
   season: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   serie_new: String
@@ -18815,8 +17857,6 @@ input SmartButtonMethodInput {
   paypal_order_id: String
 }
 
-"""
-"""
 type SmartButtonsConfig implements PaymentConfigItem {
   """
   The styles for the PayPal Smart Button configuration
@@ -18864,11 +17904,7 @@ type SmartButtonsConfig implements PaymentConfigItem {
 Indicates whether to return results in ascending or descending order.
 """
 enum SortEnum {
-  """
-  """
   ASC
-  """
-  """
   DESC
 }
 
@@ -18904,104 +17940,38 @@ type SortFields {
 Specifies the field to use for sorting quote items
 """
 enum SortQuoteItemsEnum {
-  """
-  """
   BASE_DISCOUNT_AMOUNT
-  """
-  """
   BASE_DISCOUNT_TAX_COMPENSATION_AMOUNT
-  """
-  """
   BASE_PRICE
-  """
-  """
   BASE_PRICE_INC_TAX
-  """
-  """
   BASE_ROW_TOTAL
-  """
-  """
   BASE_ROW_TOTAL_INC_TAX
-  """
-  """
   BASE_TAX_AMOUNT
-  """
-  """
   BASE_TAX_BEFORE_DISCOUNT
-  """
-  """
   CREATED_AT
-  """
-  """
   CUSTOM_PRICE
-  """
-  """
   DESCRIPTION
-  """
-  """
   DISCOUNT_AMOUNT
-  """
-  """
   DISCOUNT_PERCENT
-  """
-  """
   DISCOUNT_TAX_COMPENSATION_AMOUNT
-  """
-  """
   FREE_SHIPPING
-  """
-  """
   ITEM_ID
-  """
-  """
   NAME
-  """
-  """
   ORIGINAL_CUSTOM_PRICE
-  """
-  """
   PRICE
-  """
-  """
   PRICE_INC_TAX
-  """
-  """
   PRODUCT_ID
-  """
-  """
   PRODUCT_TYPE
-  """
-  """
   QTY
-  """
-  """
   ROW_TOTAL
-  """
-  """
   ROW_TOTAL_INC_TAX
-  """
-  """
   ROW_TOTAL_WITH_DISCOUNT
-  """
-  """
   ROW_WEIGHT
-  """
-  """
   SKU
-  """
-  """
   TAX_AMOUNT
-  """
-  """
   TAX_BEFORE_DISCOUNT
-  """
-  """
   TAX_PERCENT
-  """
-  """
   UPDATED_AT
-  """
-  """
   WEIGHT
 }
 
@@ -19872,8 +18842,6 @@ type StoreConfig {
   zero_subtotal_title: String
 }
 
-"""
-"""
 type StoreConfigurationContext {
   allow_all_products: Boolean
   currency_code: String
@@ -19887,8 +18855,6 @@ type StoreConfigurationContext {
   page_size_options: String
 }
 
-"""
-"""
 type StorefrontInstanceContext {
   api_key: String
   base_currency_code: String
@@ -19946,8 +18912,6 @@ type SubscribeEmailToNewsletterOutput {
   status: SubscriptionStatusesEnum
 }
 
-"""
-"""
 input SubscribeStockNotificationInput {
   """
   Device ID.
@@ -19967,8 +18931,6 @@ input SubscribeStockNotificationInput {
   product_id: Int!
 }
 
-"""
-"""
 type SubscribeStockNotificationOutput {
   message: String
   status_code: String
@@ -19978,17 +18940,9 @@ type SubscribeStockNotificationOutput {
 Indicates the status of the request.
 """
 enum SubscriptionStatusesEnum {
-  """
-  """
   NOT_ACTIVE
-  """
-  """
   SUBSCRIBED
-  """
-  """
   UNCONFIRMED
-  """
-  """
   UNSUBSCRIBED
 }
 
@@ -20006,8 +18960,6 @@ type SwatchData {
   value: String
 }
 
-"""
-"""
 interface SwatchDataInterface {
   """
   The value can be represented as color (HEX code), image link, or text.
@@ -20019,64 +18971,26 @@ interface SwatchDataInterface {
 Swatch attribute metadata input types.
 """
 enum SwatchInputTypeEnum {
-  """
-  """
   BOOLEAN
-  """
-  """
   DATE
-  """
-  """
   DATETIME
-  """
-  """
   DROPDOWN
-  """
-  """
   FILE
-  """
-  """
   GALLERY
-  """
-  """
   HIDDEN
-  """
-  """
   IMAGE
-  """
-  """
   MEDIA_IMAGE
-  """
-  """
   MULTILINE
-  """
-  """
   MULTISELECT
-  """
-  """
   PRICE
-  """
-  """
   SELECT
-  """
-  """
   TEXT
-  """
-  """
   TEXTAREA
-  """
-  """
   UNDEFINED
-  """
-  """
   VISUAL
-  """
-  """
   WEIGHT
 }
 
-"""
-"""
 type SwatchLayerFilterItem implements LayerFilterItemInterface & SwatchLayerFilterItemInterface {
   """
   The count of items per filter.
@@ -20097,8 +19011,6 @@ type SwatchLayerFilterItem implements LayerFilterItemInterface & SwatchLayerFilt
     @deprecated(reason: "Use `AggregationOption.value` instead.")
 }
 
-"""
-"""
 interface SwatchLayerFilterItemInterface {
   """
   Data required to render a swatch filter item.
@@ -20138,22 +19050,12 @@ type TaxItem {
   title: String!
 }
 
-"""
-"""
 enum TaxWrappingEnum {
-  """
-  """
   DISPLAY_EXCLUDING_TAX
-  """
-  """
   DISPLAY_INCLUDING_TAX
-  """
-  """
   DISPLAY_TYPE_BOTH
 }
 
-"""
-"""
 type TextSwatchData implements SwatchDataInterface {
   """
   The value can be represented as color (HEX code), image link, or text.
@@ -20165,14 +19067,8 @@ type TextSwatchData implements SwatchDataInterface {
 3D Secure mode.
 """
 enum ThreeDSMode {
-  """
-  """
   OFF
-  """
-  """
   SCA_ALWAYS
-  """
-  """
   SCA_WHEN_REQUIRED
 }
 
@@ -20216,8 +19112,6 @@ input TicketCreateInput {
   subject: String!
 }
 
-"""
-"""
 type TicketDetailAttachmentResponse {
   attachment_url: String
   content_type: String
@@ -20304,8 +19198,6 @@ type TicketResults {
 Defines Attachment Fields
 """
 input TicketUpdateAttachmentInput {
-  """
-  """
   ContentLength: String!
   """
   Allowed type: application/pdf, image/jpeg, image/png
@@ -20315,8 +19207,6 @@ input TicketUpdateAttachmentInput {
   Base64 converted image
   """
   file: String!
-  """
-  """
   name: String!
 }
 
@@ -20324,8 +19214,6 @@ input TicketUpdateAttachmentInput {
 An input object for updating a ticket.
 """
 input TicketUpdateInput {
-  """
-  """
   ticket: TicketUpdateInputObject
 }
 
@@ -20539,16 +19427,12 @@ type UpdateTicket {
   status_code: String
 }
 
-"""
-"""
 type UpdateTicketAttachmentsResponse {
   attachment_url: String
   message_id: String
   ticket_id: String
 }
 
-"""
-"""
 type UpdateTicketResponseBody {
   attachments: UpdateTicketAttachmentsResponse
   body: String
@@ -20596,14 +19480,8 @@ type UrlRewrite {
 This enumeration defines the entity type.
 """
 enum UrlRewriteEntityTypeEnum {
-  """
-  """
   CATEGORY
-  """
-  """
   CMS_PAGE
-  """
-  """
   PRODUCT
 }
 
@@ -20611,34 +19489,22 @@ enum UrlRewriteEntityTypeEnum {
 Defines whether the attribute is filterable in layered navigation.
 """
 enum UseInLayeredNavigationOptions {
-  """
-  """
   FILTERABLE_NO_RESULT
-  """
-  """
   FILTERABLE_WITH_RESULTS
-  """
-  """
   NO
 }
 
-"""
-"""
 type User {
   agent: Boolean
   id: String
   name: String
 }
 
-"""
-"""
 type UserAction {
   action: String
   label: String
 }
 
-"""
-"""
 type ValidateBinResult {
   bank_code: String
   bin: String
@@ -20666,32 +19532,14 @@ type ValidationRule {
 List of validation rule names applied to a customer attribute.
 """
 enum ValidationRuleEnum {
-  """
-  """
   DATE_RANGE_MAX
-  """
-  """
   DATE_RANGE_MIN
-  """
-  """
   FILE_EXTENSIONS
-  """
-  """
   INPUT_VALIDATION
-  """
-  """
   MAX_FILE_SIZE
-  """
-  """
   MAX_IMAGE_HEIGHT
-  """
-  """
   MAX_IMAGE_WIDTH
-  """
-  """
   MAX_TEXT_LENGTH
-  """
-  """
   MIN_TEXT_LENGTH
 }
 
@@ -20705,8 +19553,6 @@ type VaultConfigOutput {
   credit_card: VaultCreditCardConfig
 }
 
-"""
-"""
 type VaultCreditCardConfig {
   """
   Is vault enabled
@@ -20821,6 +19667,8 @@ type VirtualProduct implements CustomizableProductInterface & ProductInterface &
   base_notes: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   bottle_design: String
+    @deprecated(reason: "Use the `custom_attributes` field instead.")
+  brand_keyword: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   brand_new: Int
     @deprecated(reason: "Use the `custom_attributes` field instead.")
@@ -21008,6 +19856,7 @@ type VirtualProduct implements CustomizableProductInterface & ProductInterface &
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   product_type_new2: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
+  product_type_new2_label: String
   quantity: Int
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   """
@@ -21043,10 +19892,6 @@ type VirtualProduct implements CustomizableProductInterface & ProductInterface &
     """
     pageSize: Int = 20
   ): ProductReviews!
-  search_key: String
-    @deprecated(reason: "Use the `custom_attributes` field instead.")
-  search_keywords: String
-    @deprecated(reason: "Use the `custom_attributes` field instead.")
   season: String
     @deprecated(reason: "Use the `custom_attributes` field instead.")
   serie_new: String
@@ -21213,8 +20058,6 @@ type VirtualWishlistItem implements WishlistItemInterface {
   quantity: Float!
 }
 
-"""
-"""
 type VoteReviewHelpfulOutput {
   helpful_count: Int!
   message: String
@@ -21275,11 +20118,7 @@ type WishListUserInputError {
 A list of possible error types.
 """
 enum WishListUserInputErrorType {
-  """
-  """
   PRODUCT_NOT_FOUND
-  """
-  """
   UNDEFINED
 }
 
@@ -21344,17 +20183,9 @@ type WishlistCartUserInputError {
 A list of possible error types.
 """
 enum WishlistCartUserInputErrorType {
-  """
-  """
   INSUFFICIENT_STOCK
-  """
-  """
   NOT_SALABLE
-  """
-  """
   PRODUCT_NOT_FOUND
-  """
-  """
   UNDEFINED
 }
 
@@ -21546,11 +20377,7 @@ type WishlistOutput {
 Defines the wish list visibility types.
 """
 enum WishlistVisibilityEnum {
-  """
-  """
   PRIVATE
-  """
-  """
   PUBLIC
 }
 

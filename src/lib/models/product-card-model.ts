@@ -41,6 +41,7 @@ export class ProductCardModel extends Helper {
   id: string;
   imageUrl: string;
   isGwp?: boolean;
+  isOutOfStock: boolean;
   isWrap?: boolean;
   name: string;
   oldPrice?: string;
@@ -57,10 +58,6 @@ export class ProductCardModel extends Helper {
   stockStatus: StockStatus;
   urlKey: string;
   variant: ProductCardVariant;
-
-  get isOutOfStock() {
-    return this.stockStatus === StockStatus.OutOfStock;
-  }
 
   constructor({
     attributeSet,
@@ -162,6 +159,7 @@ export class ProductCardModel extends Helper {
         }
       : undefined;
     this.stockStatus = stockStatus as StockStatus;
+    this.isOutOfStock = this.stockStatus === StockStatus.OutOfStock;
     this.variant = variant ?? ProductCardVariant.Single;
     this.description = description;
     this.rating =

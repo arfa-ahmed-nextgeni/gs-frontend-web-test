@@ -39,7 +39,9 @@ export function loadInsiderScript(): Promise<void> {
             script.async = true;
             script.dataset.insider = "insider-script";
 
-            script.onload = () => resolve();
+            script.onload = () => {
+              resolve();
+            };
             script.onerror = () => {
               reject(new Error("Failed to load Insider script."));
             };

@@ -7,6 +7,7 @@ import {
   MobileBottomNavigationHomeIcon,
   MobileBottomNavigationProfileIcon,
 } from "@/layouts/header/mobile-bottom-navigation/mobile-bottom-navigation-icons";
+import { MobileBottomNavigationMenuLink } from "@/layouts/header/mobile-bottom-navigation/mobile-bottom-navigation-menu-link";
 import { ROUTES } from "@/lib/constants/routes";
 import { MOBILE_BOTTOM_NAVIGATION_TRACKING_DATA_ATTRIBUTE } from "@/lib/constants/tracking-data-attributes";
 import { ZIndexLevel } from "@/lib/constants/ui";
@@ -53,6 +54,7 @@ export function MobileBottomNavigation() {
         position: "fixed",
         right: 0,
         transform: "translateZ(0)",
+        viewTransitionName: "mobile-bottom-navigation",
         WebkitTransform: "translateZ(0)",
         zIndex: ZIndexLevel.MobileBottomNavigation,
       }}
@@ -72,18 +74,12 @@ export function MobileBottomNavigation() {
         />
       </Link>
 
-      <Link
-        {...{ [MOBILE_BOTTOM_NAVIGATION_TRACKING_DATA_ATTRIBUTE]: "menu" }}
-        aria-label="Menu"
-        className={getNavItemClassName("menu")}
-        href={ROUTES.CATEGORY.BY_SLUG("fragrances")}
-        title="Menu"
-      >
+      <MobileBottomNavigationMenuLink className={getNavItemClassName("menu")}>
         <MobileBottomNavigationCategoryIcon
           aria-hidden="true"
           className={navIconClassName}
         />
-      </Link>
+      </MobileBottomNavigationMenuLink>
 
       <CartButton
         className={getNavItemClassName("cart")}

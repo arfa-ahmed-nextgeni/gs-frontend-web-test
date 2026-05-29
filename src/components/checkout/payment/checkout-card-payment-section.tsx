@@ -118,10 +118,16 @@ export const CheckoutCardPaymentSection = ({
   }, [initialSavedCards]);
 
   const displayCards = useMemo(() => {
-    const list: PaymentCardData[] = [...savedCards];
+    const list: PaymentCardData[] = savedCards.filter(
+      (card) => !card.isExpired
+    );
 
     // Always keep the currently selected card visible in the list (prevents "selected then unselected" UX).
-    if (selectedCard && !list.some((c) => c.id === selectedCard.id)) {
+    if (
+      selectedCard &&
+      !selectedCard.isExpired &&
+      !list.some((c) => c.id === selectedCard.id)
+    ) {
       list.unshift(selectedCard);
     }
 
@@ -371,7 +377,7 @@ export const CheckoutCardPaymentSection = ({
         initialSavedCards.find((c) => c.id === cardIdToRestore) ||
         savedCards.find((c) => c.id === cardIdToRestore);
 
-      if (cardToRestore) {
+      if (cardToRestore && !cardToRestore.isExpired) {
         onCardTokenReady("", cardToRestore, undefined, "");
         return;
       }

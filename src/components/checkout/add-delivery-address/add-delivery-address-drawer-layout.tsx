@@ -17,11 +17,18 @@ export const AddDeliveryAddressDrawerLayout = ({
 }: PropsWithChildren) => {
   const t = useTranslations("AddDeliveryAddressPage");
 
-  const { deliveryType, resetFlowState, setShowSaveForm, showSaveForm } =
-    useAddDeliveryAddressContext();
   const {
+    deliveryType,
+    editingAddressId,
+    resetFlowState,
+    setShowSaveForm,
+    showSaveForm,
+  } = useAddDeliveryAddressContext();
+  const {
+    cameFromAddressDrawer,
     cameFromShippingOptionDrawer,
     setDeliveryAddressFlowState,
+    setIsAddressDrawerOpen,
     setIsShippingOptionDrawerOpen,
   } = useCheckoutContext();
 
@@ -38,6 +45,10 @@ export const AddDeliveryAddressDrawerLayout = ({
       // only reopen shipping option drawer if we came from it
       setIsShippingOptionDrawerOpen(true);
       closeDrawer();
+    } else if (cameFromAddressDrawer) {
+      // Reopen address drawer when navigating back from an edit started there
+      setIsAddressDrawerOpen(true);
+      closeDrawer();
     } else {
       closeDrawer();
     }
@@ -53,6 +64,9 @@ export const AddDeliveryAddressDrawerLayout = ({
     if (cameFromShippingOptionDrawer) {
       // only reopen shipping option drawer if we came from it
       setIsShippingOptionDrawerOpen(true);
+    } else if (cameFromAddressDrawer) {
+      // Reopen address drawer when closing from an edit started there
+      setIsAddressDrawerOpen(true);
     }
     closeDrawer();
   };
@@ -66,10 +80,11 @@ export const AddDeliveryAddressDrawerLayout = ({
   };
 
   const getTitle = () => {
+    const isEditing = Boolean(editingAddressId);
     if (deliveryType === "gift_delivery") {
-      return t("giftTitle");
+      return isEditing ? t("editGiftTitle") : t("giftTitle");
     }
-    return t("title");
+    return isEditing ? t("editTitle") : t("title");
   };
 
   return (
@@ -89,6 +104,7 @@ export const AddDeliveryAddressDrawerLayout = ({
       showBackButton
       showDesktopBackButton={cameFromShippingOptionDrawer}
       title={getTitle()}
+      widthClassName="!w-[420px]"
     >
       {children}
     </DrawerLayout>

@@ -3,18 +3,23 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 import StarIcon from "@/assets/icons/star-icon.svg";
+import { ProductCardHeaderName } from "@/components/product/product-card/product-card-header-name";
 import { LocalizedPrice } from "@/components/shared/localized-price";
 import { ProductCardVariant } from "@/lib/constants/product/product-card";
 import { cn } from "@/lib/utils";
 
 export const ProductCardHeader = ({
   brand,
+  isConfigurable,
+  isWishlistItem,
   name,
   rating,
   savedPrice,
   variant,
 }: {
   brand: string;
+  isConfigurable?: boolean;
+  isWishlistItem?: boolean;
   name: string;
   rating?: number;
   savedPrice?: string;
@@ -60,9 +65,13 @@ export const ProductCardHeader = ({
           </div>
         )}
       </div>
-      <div className="text-text-primary line-clamp-2 min-h-8 text-xs font-normal">
-        {name}
-      </div>
+      {isWishlistItem && !isConfigurable ? (
+        <ProductCardHeaderName name={name} />
+      ) : (
+        <div className="text-text-primary line-clamp-2 min-h-8 text-xs font-normal">
+          {name}
+        </div>
+      )}
     </div>
   );
 };

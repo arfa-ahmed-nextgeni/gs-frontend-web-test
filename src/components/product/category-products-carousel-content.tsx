@@ -92,6 +92,9 @@ export const CategoryProductsCarouselContent = async ({
             ...carouselContainerProps?.carouselProps,
             deferUntilInView: true,
           }}
+          contentProps={{
+            className: "gap-[9.6px]",
+          }}
           nextButtonProps={{
             className: "xl:translate-x-15 xl:rtl:-translate-x-15",
           }}
@@ -109,6 +112,7 @@ export const CategoryProductsCarouselContent = async ({
             <CardRailScrollSnapCarouselItem key={`${product.id}-${index}`}>
               <ProductCard
                 isBulletDeliveryEnabled={isBulletDeliveryEnabled}
+                isInCarousel
                 lpColumn={1}
                 lpExtra={{
                   row_count: products.length,

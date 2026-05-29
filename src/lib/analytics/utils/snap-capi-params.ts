@@ -77,9 +77,7 @@ export async function buildSnapCapiParams(
  */
 export function generateCdid(): string {
   const timestamp = Math.floor(Date.now() / 1000);
-  const random = Math.floor(Math.random() * 1e10)
-    .toString()
-    .padStart(10, "0");
+  const random = randomTenDigitSuffix();
   return `${timestamp}_${random}`;
 }
 
@@ -128,4 +126,21 @@ function normalizeName(name: string): string {
     .toLowerCase()
     .replace(/[^\p{L}\p{N}\s]/gu, "")
     .trim();
+}
+
+function randomTenDigitSuffix(): string {
+  if (typeof crypto !== "undefined" && "getRandomValues" in crypto) {
+    // Build 10 decimal digits from random bytes (no BigInt: TS target is ES2017).
+    const bytes = new Uint8Array(10);
+    crypto.getRandomValues(bytes);
+    return Array.from(bytes, (byte) => String(byte % 10)).join("");
+  }
+
+  // No CSPRNG (very old environments): time-based suffix avoids Math.random
+  // during Next prerender / Cache Components (see next-prerender-random).
+  const perfPart =
+    typeof performance !== "undefined"
+      ? Math.floor(performance.now() % 1e6)
+      : 0;
+  return String((Date.now() ^ perfPart) % 1e10).padStart(10, "0");
 }

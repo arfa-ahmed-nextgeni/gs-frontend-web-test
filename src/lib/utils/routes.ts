@@ -58,6 +58,9 @@ export const isWalletPath = (pathname: string) =>
 export const isLoginPath = (pathname: string) =>
   isPathPrefix(pathname, ROUTES.CUSTOMER.LOGIN);
 
+export const isMenuPath = (pathname: string) =>
+  isPathPrefix(pathname, ROUTES.MENU);
+
 export const isDeleteAccountPath = (pathname: string) =>
   isPathPrefix(pathname, ROUTES.CUSTOMER.DELETE_ACCOUNT);
 
@@ -72,6 +75,9 @@ export const isOrderConfirmationPath = (pathname: string) =>
 
 export const isOrderDetailsPath = (pathname: string) =>
   isPathPrefix(pathname, `${ROUTES.CUSTOMER.ORDERS}/view`);
+
+export const isSearchPath = (pathname: string) =>
+  isPathPrefix(pathname, ROUTES.SEARCH);
 
 export const isCartPath = (pathname: string) =>
   isPathPrefix(pathname, ROUTES.CART.ROOT);

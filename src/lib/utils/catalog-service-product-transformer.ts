@@ -25,6 +25,7 @@ import {
   parseAttributeValue,
 } from "@/lib/utils/catalog-service-transformers";
 import { parseProductTagAttributes } from "@/lib/utils/product-tags";
+import { isBundlesProductType } from "@/lib/utils/product-type";
 
 import type { ProductTags } from "@/lib/types/product/product-tags";
 
@@ -63,8 +64,20 @@ export function transformProductViewToCardModel(
     });
   }
 
-  const { currency, discountPercent, finalPrice, regularPrice } =
+  const { currency, finalPrice, regularPrice } =
     extractProductPrice(productView);
+
+  const rawValueOff = parseAttributeValue<
+    | { amount_off?: number; percent_off?: string }
+    | { amount_off?: number; percent_off?: string }[]
+  >(productView?.attributes || [], "value_off", {});
+  const valueOff = Array.isArray(rawValueOff)
+    ? rawValueOff[0] || {}
+    : rawValueOff;
+  const discountPercent = valueOff?.percent_off
+    ? parseFloat(valueOff.percent_off.replace("%", "")) || undefined
+    : undefined;
+  const savedAmount = valueOff?.amount_off || undefined;
 
   const imageUrl = extractProductImage(productView);
 
@@ -232,12 +245,13 @@ export function transformProductViewToCardModel(
     price: finalPrice,
     productType: productType,
     ratingSummary: ratingSummary,
-    savedAmount:
-      finalPrice < regularPrice ? regularPrice - finalPrice : undefined,
+    savedAmount,
     savedCurrency: currency,
     sku: productView.sku,
     stockStatus: inStock ? StockStatus.InStock : StockStatus.OutOfStock,
     urlKey: productView.urlKey || productView.sku?.toLowerCase(),
-    variant: ProductCardVariant.Single,
+    variant: isBundlesProductType(productType)
+      ? ProductCardVariant.Bundles
+      : ProductCardVariant.Single,
   });
 }

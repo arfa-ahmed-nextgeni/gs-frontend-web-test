@@ -327,7 +327,12 @@ export function LoginForm() {
           let navigateTo: string = getPostLoginRedirectUrl(searchParams);
 
           // If no redirect URL, default based on user profile completion
-          if (navigateTo === ROUTES.CUSTOMER.ACCOUNT && !customer?.firstName) {
+          if (shouldRedirectToCartAfterLogin(navigateTo)) {
+            router.replace(ROUTES.CART.ROOT);
+          } else if (
+            navigateTo === ROUTES.CUSTOMER.ACCOUNT &&
+            !customer?.firstName
+          ) {
             navigateTo = ROUTES.CUSTOMER.PROFILE.ROOT;
             router.replace(navigateTo);
           } else {
@@ -495,7 +500,12 @@ export function LoginForm() {
         let navigateTo: string = getPostLoginRedirectUrl(searchParams);
 
         // If no redirect URL, default based on user profile completion
-        if (navigateTo === ROUTES.CUSTOMER.ACCOUNT && !customer?.firstName) {
+        if (shouldRedirectToCartAfterLogin(navigateTo)) {
+          router.replace(ROUTES.CART.ROOT);
+        } else if (
+          navigateTo === ROUTES.CUSTOMER.ACCOUNT &&
+          !customer?.firstName
+        ) {
           navigateTo = ROUTES.CUSTOMER.PROFILE.ROOT;
           router.replace(navigateTo);
         } else {
@@ -1347,5 +1357,11 @@ export function LoginForm() {
         )}
       </div>
     </div>
+  );
+}
+
+function shouldRedirectToCartAfterLogin(redirectUrl: string): boolean {
+  return (
+    redirectUrl === ROUTES.CART.ROOT || redirectUrl === ROUTES.CHECKOUT.ROOT
   );
 }

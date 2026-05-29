@@ -13,6 +13,7 @@ import { catalogServiceGraphqlRequest } from "@/lib/clients/catalog-service-grap
 import { CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES } from "@/lib/constants/api/catalog-service-graphql/products";
 import { type Locale } from "@/lib/constants/i18n";
 import { QueryParamsKey } from "@/lib/constants/query-params";
+import { SEARCH_MIN_QUERY_LENGTH } from "@/lib/constants/search";
 import { CategoryListingModel } from "@/lib/models/category-listing-model";
 import {
   type ProductSearchResponse,
@@ -26,8 +27,13 @@ import {
   serializeStringArrayRecord,
   type StringArrayRecord,
 } from "@/lib/utils/cache-key-records";
-import { buildProductSearchSort } from "@/lib/utils/catalog-service-transformers";
+import {
+  buildAutocompleteProductSearchSort,
+  buildProductSearchSort,
+} from "@/lib/utils/catalog-service-transformers";
 import { failure, isOk, ok } from "@/lib/utils/service-result";
+
+export type SearchListingSortMode = "autocomplete" | "listing";
 
 export interface SearchRouteQueryState {
   currentPage: number;
@@ -43,6 +49,7 @@ interface GetSearchListingDataArgs {
   pageSize: number;
   phrase?: string;
   sortBy?: string;
+  sortMode?: SearchListingSortMode;
 }
 
 interface GetSearchRouteListingArgs {
@@ -105,6 +112,7 @@ export const getSearchListingData = ({
   pageSize,
   phrase,
   sortBy,
+  sortMode = "listing",
 }: GetSearchListingDataArgs) =>
   getSearchListingDataCached(
     locale,
@@ -112,6 +120,7 @@ export const getSearchListingData = ({
     pageSize,
     phrase,
     sortBy,
+    sortMode,
     serializeStringArrayRecord(filters)
   );
 
@@ -122,11 +131,12 @@ const getSearchListingDataCached = cache(
     pageSize: number,
     phrase: string | undefined,
     sortBy: string | undefined,
+    sortMode: SearchListingSortMode,
     serializedFilters: string
   ) => {
     const filters = deserializeStringArrayRecord(serializedFilters);
 
-    if (!phrase || phrase.trim().length < 2) {
+    if (!phrase || phrase.trim().length < SEARCH_MIN_QUERY_LENGTH) {
       return ok(createEmptySearchListingModel(page, pageSize));
     }
 
@@ -138,7 +148,10 @@ const getSearchListingDataCached = cache(
       }
 
       const { store } = storeConfig.data;
-      const sort = buildProductSearchSort(sortBy);
+      const sort =
+        sortMode === "autocomplete"
+          ? buildAutocompleteProductSearchSort(sortBy)
+          : buildProductSearchSort(sortBy);
 
       const response = await catalogServiceGraphqlRequest({
         catalogStoreCode: store.storeCode,

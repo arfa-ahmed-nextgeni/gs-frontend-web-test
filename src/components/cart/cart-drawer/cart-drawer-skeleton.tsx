@@ -20,7 +20,7 @@ export const CartDrawerSkeleton = () => {
       onOpenChange={router.back}
       open={true}
     >
-      <DrawerContent className="bg-bg-body lg:!w-107.5 z-99 flex h-full flex-col border-none">
+      <DrawerContent className="bg-bg-body lg:w-107.5! z-99 flex h-[69dvh] flex-col border-none lg:h-full">
         <CartDrawerHeader />
 
         <div className="mx-5 flex shrink-0 flex-col items-center gap-2.5 pt-5">
@@ -46,7 +46,7 @@ export const CartDrawerSkeleton = () => {
                 </div>
               </div>
             </div>
-            <div className="ms-2.5 flex flex-1 flex-col justify-between lg:gap-4 lg:ltr:!ml-5 lg:rtl:!mr-5">
+            <div className="lg:rtl:mr-5! lg:ltr:ml-5! ms-2.5 flex flex-1 flex-col justify-between lg:gap-4">
               <div className="flex flex-row justify-between gap-5 lg:flex-col">
                 <div className="hidden items-end justify-end lg:flex">
                   <Skeleton className="h-6.25 w-12 rounded-2xl" />

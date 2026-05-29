@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { FloatingLabelInput } from "@/components/ui/floating-label-input";
 import { FormSubmitButton } from "@/components/ui/form-submit-button";
@@ -17,17 +17,35 @@ import {
   trackMokafaaTransactionSuccess,
 } from "@/lib/analytics/events";
 import { buildCartProperties } from "@/lib/analytics/utils/build-properties";
+import { cn } from "@/lib/utils";
+import { getLocaleInfo } from "@/lib/utils/locale";
 import { isError } from "@/lib/utils/service-result";
 
 interface ApplyMokafaaPointsOtpFormProps {
   countryCode: string;
   mobileNumber: string;
-  onOtpTokenUpdated?: (otpToken: string) => void;
+  onOtpTokenUpdated?: (data: {
+    otpExpiresAt: number;
+    otpToken: string;
+  }) => void;
   onRetryOtp?: () => void;
   onSuccess: () => void;
+  otpExpiresAt: number;
   otpToken: string;
   pointsAmount?: number;
 }
+
+const DEFAULT_OTP_EXPIRY_SECONDS = 180;
+
+const getOtpExpiryTimestamp = (expiresInMin?: null | number | string) => {
+  const parsedExpiryInMin = Number(expiresInMin);
+
+  if (Number.isFinite(parsedExpiryInMin) && parsedExpiryInMin > 0) {
+    return Date.now() + parsedExpiryInMin * 60 * 1000;
+  }
+
+  return Date.now() + DEFAULT_OTP_EXPIRY_SECONDS * 1000;
+};
 
 export const ApplyMokafaaPointsOtpForm = ({
   countryCode,
@@ -35,10 +53,14 @@ export const ApplyMokafaaPointsOtpForm = ({
   onOtpTokenUpdated,
   onRetryOtp,
   onSuccess,
+  otpExpiresAt,
   otpToken,
   pointsAmount = 0,
 }: ApplyMokafaaPointsOtpFormProps) => {
   const t = useTranslations("CartPage.orderSummary.mokafaa");
+  const locale = useLocale();
+  const { language } = getLocaleInfo(locale);
+  const dir = language === "ar" ? "rtl" : "ltr";
   const { cart } = useCart();
   const { storeConfig } = useStoreConfig();
   const { isCheckout } = useRouteMatch();
@@ -50,24 +72,24 @@ export const ApplyMokafaaPointsOtpForm = ({
   const [amount, setAmount] = useState(
     pointsAmount > 0 ? pointsAmount.toString() : ""
   );
-  const [countdown, setCountdown] = useState(180); // 3 minutes
-  const [canRetry, setCanRetry] = useState(false);
+  const [nowTs, setNowTs] = useState(() => Date.now());
   const [otpError, setOtpError] = useState("");
   const [amountError, setAmountError] = useState("");
 
   const paymentMethod = cart?.selectedPaymentMethod?.code || "";
 
-  // Countdown logic (3 minutes)
+  // Keep timer based on absolute expiry timestamp so remount does not reset countdown.
   useEffect(() => {
-    if (countdown > 0) {
-      const timer = setTimeout(() => setCountdown((prev) => prev - 1), 1000);
-      return () => clearTimeout(timer);
-    }
+    setNowTs(Date.now());
+  }, [otpExpiresAt]);
 
-    // Schedule the state update asynchronously (prevents cascading renders)
-    const id = setTimeout(() => setCanRetry(true), 0);
-    return () => clearTimeout(id);
-  }, [countdown]);
+  useEffect(() => {
+    const timer = setInterval(() => setNowTs(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const countdown = Math.max(0, Math.ceil((otpExpiresAt - nowTs) / 1000));
+  const canRetry = countdown <= 0;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -186,7 +208,7 @@ export const ApplyMokafaaPointsOtpForm = ({
           error={!!otpError}
           helperText={otpError || ""}
           inputProps={{
-            dir: "ltr",
+            dir,
             disabled: redeemMutation.isPending,
             maxLength: 4,
             name: "otp",
@@ -200,7 +222,7 @@ export const ApplyMokafaaPointsOtpForm = ({
           }}
           label={t("otpLabel")}
           labelProps={{
-            dir: "ltr",
+            dir,
           }}
         />
 
@@ -235,21 +257,23 @@ export const ApplyMokafaaPointsOtpForm = ({
                   {
                     onError: (err: any) => {
                       setOtpError(err?.message || t("errors.generic"));
-                      setCanRetry(true); // Allow retry again on error
                     },
                     onSuccess: (res) => {
                       if (!res || (res as any).error) {
                         setOtpError((res as any).error || t("errors.generic"));
-                        setCanRetry(true); // Allow retry again on error
                         return;
                       }
 
-                      // OTP was sent successfully, start countdown and update the token
-                      setCountdown(180);
-                      setCanRetry(false);
+                      // OTP was sent successfully, update token and absolute expiry timestamp.
                       const newOtpToken = res.data?.otpToken || "";
+                      const newOtpExpiresAt = getOtpExpiryTimestamp(
+                        res.data?.expiresInMin
+                      );
                       if (newOtpToken && onOtpTokenUpdated) {
-                        onOtpTokenUpdated(newOtpToken);
+                        onOtpTokenUpdated({
+                          otpExpiresAt: newOtpExpiresAt,
+                          otpToken: newOtpToken,
+                        });
                       }
                       onRetryOtp?.();
                     },
@@ -282,10 +306,10 @@ export const ApplyMokafaaPointsOtpForm = ({
                 {">"}
               </span>
             ),
-            className: "left-5",
+            className: "start-5",
           }}
           inputProps={{
-            className: "pl-10",
+            className: cn(language === "ar" ? "pe-10 text-right" : "ps-10"),
             dir: "ltr",
             disabled: redeemMutation.isPending,
             max: 9999,
@@ -301,7 +325,7 @@ export const ApplyMokafaaPointsOtpForm = ({
           }}
           label={t("amountLabel")}
           labelProps={{
-            dir: "ltr",
+            dir,
           }}
         />
       </div>

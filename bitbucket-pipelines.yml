@@ -13,6 +13,7 @@ pipelines:
     develop:
       - step:
           name: "Build Next.js Application (Dev)"
+          deployment: develop
           image: node:24-alpine
           size: 2x
           caches:
@@ -69,6 +70,7 @@ pipelines:
     uat:
       - step:
           name: "Build Next.js Application (UAT)"
+          deployment: uat
           image: node:24-alpine
           size: 2x
           caches:

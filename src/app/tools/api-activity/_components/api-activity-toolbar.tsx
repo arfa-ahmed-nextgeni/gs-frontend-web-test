@@ -9,6 +9,7 @@ import { logoutApiActivity } from "@/lib/actions/api-activity/logout-api-activit
 import type { ApiActivityFilterState } from "@/app/tools/api-activity/_components/api-activity-viewer-shared";
 
 export function ApiActivityToolbar({
+  autoRefreshEnabled,
   failedOnly,
   searchQuery,
   selectedEntryId,
@@ -20,6 +21,7 @@ export function ApiActivityToolbar({
 
       <Form action={logoutApiActivity}>
         <ApiActivityHiddenFields
+          autoRefreshEnabled={autoRefreshEnabled}
           failedOnly={failedOnly}
           searchQuery={searchQuery}
           selectedEntryId={selectedEntryId}

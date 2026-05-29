@@ -24,6 +24,7 @@ export const AddDeliveryAddressDrawerSkeleton = () => {
       showBackButton
       showDesktopBackButton
       title=""
+      widthClassName="!w-[420px]"
     >
       {/* Map area skeleton */}
       <div className="relative flex-1">

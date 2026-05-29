@@ -53,6 +53,9 @@ export const CategoryProductsCarouselClient = ({
       />
       <CardRailScrollSnapCarousel
         {...carouselContainerProps}
+        contentProps={{
+          className: "gap-[9.6px]",
+        }}
         nextButtonProps={{
           className: "xl:translate-x-15 xl:rtl:-translate-x-15",
         }}
@@ -67,9 +70,10 @@ export const CategoryProductsCarouselClient = ({
         }}
       >
         {products?.map((product, index) => (
-          <CardRailScrollSnapCarouselItem key={`${product.id}`}>
+          <CardRailScrollSnapCarouselItem key={`${product.id}-${index}`}>
             <ProductCard
               isBulletDeliveryEnabled={isBulletDeliveryEnabled}
+              isInCarousel
               isWishlistItem={isWishlistItem}
               lpColumn={1}
               lpExtra={{

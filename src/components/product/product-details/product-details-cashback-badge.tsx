@@ -53,7 +53,14 @@ export const ProductDetailsCashbackBadge = ({
       >
         <span className="text-text-primary text-[11px] font-medium leading-none">
           {t.rich("earnCashback", {
-            price: () => <LocalizedPrice price={cashbackPrice} />,
+            price: () => (
+              <LocalizedPrice
+                currencySymbolProps={{
+                  className: "font-normal",
+                }}
+                price={cashbackPrice}
+              />
+            ),
           })}
         </span>
       </ProductDetailBadge>

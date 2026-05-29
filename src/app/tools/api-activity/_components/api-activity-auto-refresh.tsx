@@ -5,23 +5,36 @@ import { useEffect, useTransition } from "react";
 
 import { useRouter } from "next/navigation";
 
-export function ApiActivityAutoRefresh({ intervalMs }: { intervalMs: number }) {
+export function ApiActivityAutoRefresh({
+  enabled,
+  intervalMs,
+}: {
+  enabled: boolean;
+  intervalMs: number;
+}) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+
     const intervalId = window.setInterval(() => {
       if (document.visibilityState !== "visible" || isPending) {
         return;
       }
 
       const activeElement = document.activeElement;
-
-      if (
-        activeElement instanceof HTMLInputElement ||
+      const shouldPauseForFocusedField =
+        activeElement instanceof HTMLTextAreaElement ||
         activeElement instanceof HTMLSelectElement ||
-        activeElement instanceof HTMLTextAreaElement
-      ) {
+        (activeElement instanceof HTMLInputElement &&
+          !["button", "checkbox", "radio", "reset", "submit"].includes(
+            activeElement.type
+          ));
+
+      if (shouldPauseForFocusedField) {
         return;
       }
 
@@ -31,7 +44,7 @@ export function ApiActivityAutoRefresh({ intervalMs }: { intervalMs: number }) {
     }, intervalMs);
 
     return () => window.clearInterval(intervalId);
-  }, [intervalMs, isPending, router]);
+  }, [enabled, intervalMs, isPending, router]);
 
   return null;
 }

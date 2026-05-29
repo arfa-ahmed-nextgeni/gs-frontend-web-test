@@ -14,7 +14,7 @@ export default function SearchPageLoading() {
       </Container>
 
       <Container className="mt-10 flex flex-col gap-2.5 lg:flex-row">
-        <div className="gap-1.25 lg:mt-15 flex w-full flex-col lg:w-[191px]">
+        <div className="gap-1.25 lg:mt-15 lg:w-47.75 flex w-full flex-col">
           <div className="mb-2.5 hidden flex-wrap gap-2 lg:flex">
             <div className="rounded-4xl h-7 w-20 animate-pulse bg-gray-200" />
             <div className="rounded-4xl h-7 w-16 animate-pulse bg-gray-200" />

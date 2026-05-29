@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import dynamic from "next/dynamic";
 
+import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import { ProductMediaCarousel } from "@/components/product/product-media-gallery/product-media-carousel";
 import { ProductMediaOverlay } from "@/components/product/product-media-gallery/product-media-overlay";
 import { ProductMediaThumbnailsSkeleton } from "@/components/product/product-media-gallery/product-media-thumbnails-skeleton";
@@ -52,7 +53,7 @@ export const ProductMediaGallery = () => {
   }, [currentIndex, galleryItems.length]);
 
   return (
-    <div className="col-span-6 grid aspect-square grid-cols-6 gap-2.5 lg:col-span-7 lg:aspect-auto lg:grid-cols-7">
+    <div className="col-span-6 grid aspect-square grid-cols-6 gap-2.5 md:col-span-7 md:aspect-auto lg:col-span-7 lg:aspect-auto lg:grid-cols-7">
       {shouldRenderDesktopThumbnails ? (
         <ProductMediaThumbnails
           currentIndex={currentIndex}
@@ -62,13 +63,22 @@ export const ProductMediaGallery = () => {
       ) : (
         <ProductMediaThumbnailsSkeleton />
       )}
-      <div className="bg-bg-default relative col-span-6 overflow-hidden lg:rounded-xl">
-        <ProductMediaCarousel
-          apiRef={carouselApiRef}
-          currentIndex={currentIndex}
-          items={galleryItems}
-          onIndexChangeAction={setCurrentIndex}
-        />
+      <div className="bg-bg-default relative col-span-6 overflow-hidden md:rounded-xl lg:rounded-xl">
+        {galleryItems.length > 0 ? (
+          <ProductMediaCarousel
+            apiRef={carouselApiRef}
+            currentIndex={currentIndex}
+            items={galleryItems}
+            onIndexChangeAction={setCurrentIndex}
+          />
+        ) : (
+          <ProductImageWithFallback
+            alt="Product image"
+            className="object-contain"
+            fill
+            sizes="(max-width: 1024px) 100vw, 78vw"
+          />
+        )}
         {product.type !== ProductType.GiftCard && <ProductMediaOverlay />}
       </div>
     </div>

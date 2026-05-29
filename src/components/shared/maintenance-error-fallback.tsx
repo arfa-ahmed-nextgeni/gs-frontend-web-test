@@ -8,8 +8,10 @@ type MaintenanceErrorFallbackProps = {
   description: string;
   homeHref?: string;
   homeLabel?: string;
+  isRetrying?: boolean;
   onRetry: () => void;
   reloadLabel?: string;
+  retryingLabel?: string;
   retryLabel: string;
   title: string;
 };
@@ -18,17 +20,19 @@ export function MaintenanceErrorFallback({
   description,
   homeHref = "/",
   homeLabel = "Go to homepage",
+  isRetrying = false,
   onRetry,
   reloadLabel = "Reload page",
+  retryingLabel,
   retryLabel,
   title,
 }: MaintenanceErrorFallbackProps) {
   return (
-    <main className="text-text-primary mx-auto flex min-h-dvh w-full max-w-[430px] flex-col items-center justify-between px-5 pb-[120px] pt-5">
+    <main className="text-text-primary max-w-107.5 mx-auto flex h-[calc(100dvh-123px)] w-full flex-col items-center justify-center px-5">
       <div />
       <section
         aria-label="Maintenance message"
-        className="flex flex-col items-center gap-[30px] text-center"
+        className="gap-7.5 flex flex-col items-center text-center"
       >
         <Image
           alt=""
@@ -39,32 +43,33 @@ export function MaintenanceErrorFallback({
           src={MaintenanceIcon}
           width={85}
         />
-        <div className="flex flex-col gap-[10px]">
+        <div className="flex flex-col gap-2.5">
           <h1 className="text-text-primary m-0 text-base font-semibold leading-normal tracking-[0.32px]">
             {title}
           </h1>
-          <p className="text-text-placeholder m-0 max-w-[325px] text-sm font-medium leading-normal tracking-[0.28px]">
+          <p className="text-text-placeholder max-w-81.25 m-0 text-sm font-medium leading-normal tracking-[0.28px]">
             {description}
           </p>
         </div>
       </section>
-      <div className="flex w-full max-w-[390px] flex-col gap-3">
+      <div className="max-w-97.5 mt-8 flex w-full flex-col gap-3">
         <button
-          className="bg-bg-primary text-text-ghost h-[50px] w-full cursor-pointer rounded-[10px] border-0 text-[20px] font-medium leading-normal tracking-[0.4px]"
+          className="bg-bg-primary text-text-ghost h-12.5 w-full cursor-pointer rounded-xl border-0 text-[20px] font-medium leading-normal tracking-[0.4px] disabled:cursor-not-allowed disabled:opacity-70"
+          disabled={isRetrying}
           onClick={onRetry}
           type="button"
         >
-          {retryLabel}
+          {isRetrying && retryingLabel ? retryingLabel : retryLabel}
         </button>
         <button
-          className="border-border-base text-text-primary bg-bg-default h-[50px] w-full cursor-pointer rounded-[10px] border text-[20px] font-medium leading-normal tracking-[0.4px]"
+          className="border-border-base text-text-primary bg-bg-default h-12.5 w-full cursor-pointer rounded-xl border text-[20px] font-medium leading-normal tracking-[0.4px]"
           onClick={() => window.location.reload()}
           type="button"
         >
           {reloadLabel}
         </button>
         <a
-          className="border-border-base text-text-primary bg-bg-default flex h-[50px] w-full items-center justify-center rounded-[10px] border text-[20px] font-medium leading-normal tracking-[0.4px]"
+          className="border-border-base text-text-primary bg-bg-default h-12.5 flex w-full items-center justify-center rounded-xl border text-[20px] font-medium leading-normal tracking-[0.4px]"
           href={homeHref}
         >
           {homeLabel}

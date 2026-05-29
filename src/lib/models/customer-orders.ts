@@ -2,6 +2,8 @@
 // because the orders query fields were expanded. The constructor accepts
 // an "unknown" shaped DTO and maps defensively.
 
+import { resolveProductImageUrl } from "@/lib/utils/image";
+
 export interface Address {
   city: string;
   company?: string;
@@ -179,12 +181,19 @@ export class CustomerOrders {
                 item?.product?.brand_new_label ||
                 this.findProductCustomAttribute(item, "brand_new");
 
-              const priceRange = item?.product?.price_range;
+              const priceRange =
+                matchedVariant?.product?.price_range ||
+                item?.product?.price_range;
               const salePaid = item?.product_sale_price?.value;
 
               const regularPrice = this.productRegularPrice(
                 priceRange,
                 salePaid
+              );
+
+              const resolvedImageUrl = resolveProductImageUrl(
+                matchedVariant?.product?.thumbnail?.url,
+                item?.product?.thumbnail?.url
               );
 
               return {
@@ -194,13 +203,14 @@ export class CustomerOrders {
                   child_id: matchedVariant?.product?.id || item?.product?.id,
                   color: this.findProductAttributes(matchedVariant, "color"),
                   id: item?.product?.id,
-                  image: item?.product?.image && {
-                    url: item?.product?.image?.url,
-                  },
+                  image: resolvedImageUrl
+                    ? { url: resolvedImageUrl }
+                    : undefined,
                   name: item?.product?.name,
                   product_type: item?.product?.product_type_new2,
                   short_name: item?.product?.short_name,
                   size:
+                    item?.selected_options?.[0]?.value ??
                     this.findProductAttributes(matchedVariant, "size_new") ??
                     this.findProductAttributes(matchedVariant, "size"),
                   sku: item?.product?.sku,
@@ -324,9 +334,9 @@ export class CustomerOrders {
               value: order?.total?.shipping_handling?.total_amount?.value ?? 0,
             },
           },
-          subtotal: order?.total?.subtotal && {
-            currency: order?.total?.subtotal?.currency ?? "SAR",
-            value: order?.total?.subtotal?.value ?? 0,
+          subtotal: order?.total?.subtotal_including_tax && {
+            currency: order?.total?.subtotal_including_tax?.currency ?? "SAR",
+            value: order?.total?.subtotal_including_tax?.value ?? 0,
           },
           total_tax: order?.total?.total_tax && {
             currency: order?.total?.total_tax?.currency ?? "SAR",
@@ -391,10 +401,15 @@ export class CustomerOrders {
   }
 
   private productRegularPrice(priceRange: any, salePaid: number | undefined) {
-    return priceRange?.minimum_price?.final_price?.value === salePaid
-      ? priceRange?.minimum_price?.regular_price
-      : priceRange?.maximum_price?.final_price?.value === salePaid
-        ? priceRange?.maximum_price?.regular_price
-        : priceRange?.maximum_price?.regular_price;
+    if (priceRange?.minimum_price?.final_price?.value === salePaid) {
+      return priceRange?.minimum_price?.regular_price;
+    }
+    if (priceRange?.maximum_price?.final_price?.value === salePaid) {
+      return priceRange?.maximum_price?.regular_price;
+    }
+    return (
+      priceRange?.maximum_price?.regular_price ||
+      priceRange?.minimum_price?.regular_price
+    );
   }
 }

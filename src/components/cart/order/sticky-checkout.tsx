@@ -14,7 +14,10 @@ import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useRouter } from "@/i18n/navigation";
 import { ROUTES } from "@/lib/constants/routes";
 import { cn } from "@/lib/utils";
-import { setSuppressRegistration } from "@/lib/utils/auth-redirect";
+import {
+  getLoginUrlWithRedirect,
+  setSuppressRegistration,
+} from "@/lib/utils/auth-redirect";
 
 export const StickyCheckoutBar = () => {
   const t = useTranslations("CartPage");
@@ -44,6 +47,8 @@ export const StickyCheckoutBar = () => {
     mutationKey: ["mokafaa"],
   });
 
+  const hasOutOfStockItems = items.some((item) => item.isOutOfStock);
+
   const isCartOperationInProgress =
     isFetching ||
     isLoading ||
@@ -69,7 +74,11 @@ export const StickyCheckoutBar = () => {
           className={cn(
             "bg-text-primary text-bg-body lg:w-97.5 font-regular flex h-12 w-full max-w-sm items-center justify-center rounded-xl text-xl shadow-md transition-all duration-300 ease-in-out hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 lg:text-xl"
           )}
-          disabled={isCartOperationInProgress || isNavigationPending}
+          disabled={
+            isCartOperationInProgress ||
+            isNavigationPending ||
+            hasOutOfStockItems
+          }
           onClick={() => {
             const isLoggedIn = Boolean(currentCustomer) || isAuthorized;
 
@@ -78,7 +87,7 @@ export const StickyCheckoutBar = () => {
 
               if (isMobile) {
                 startNavigationTransition(() => {
-                  router.push(ROUTES.CUSTOMER.LOGIN);
+                  router.push(getLoginUrlWithRedirect(ROUTES.CART.ROOT));
                 });
               } else {
                 showOtpLoginPopup();
@@ -96,6 +105,10 @@ export const StickyCheckoutBar = () => {
             <div className="flex h-full w-full items-center justify-center">
               <Spinner />
             </div>
+          ) : hasOutOfStockItems ? (
+            <span className="px-4 text-center text-sm">
+              {t("removeOutOfStockToProceed")}
+            </span>
           ) : (
             t("proceedToCheckout")
           )}

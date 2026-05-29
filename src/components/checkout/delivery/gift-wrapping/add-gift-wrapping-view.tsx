@@ -3,9 +3,13 @@ import { getTranslations } from "next-intl/server";
 import { AddGiftWrappingDrawerLayout } from "@/components/checkout/delivery/gift-wrapping/add-gift-wrapping-drawer-layout";
 import { searchGiftWrapItems } from "@/lib/actions/catalog-service/search-gift-wrap-items";
 import { extractProductPrice } from "@/lib/utils/catalog-service-transformers";
+import { resolveProductImageUrl } from "@/lib/utils/image";
 import { formatPrice } from "@/lib/utils/price";
 
-import type { ProductSearchItem } from "@/catalog-service-graphql/graphql";
+import type {
+  ProductSearchItem,
+  ProductSearchResponse,
+} from "@/catalog-service-graphql/graphql";
 import type {
   GiftWrappingProduct,
   GiftWrappingResolvedData,
@@ -51,11 +55,10 @@ type ParsedMetaType =
 
 async function buildGiftWrappingSection(
   config: GiftWrappingSectionConfig,
+  response: ProductSearchResponse,
   getSectionTitle: (sectionId: string) => string
 ): Promise<GiftWrappingSection | null> {
   try {
-    const response = await searchGiftWrapItems();
-
     const items =
       response.items
         ?.map((item) =>
@@ -150,7 +153,7 @@ function mapProductSearchItemToGiftProduct(
     return null;
   }
 
-  const imageUrl = productView?.images?.[0]?.url;
+  const imageUrl = resolveProductImageUrl(productView?.images?.[0]?.url);
   const { currency, finalPrice } = extractProductPrice(productView);
 
   const priceLabel =
@@ -231,6 +234,7 @@ export const AddGiftWrappingView = async ({
   selectedSku,
 }: AddGiftWrappingViewProps) => {
   const t = await getTranslations("CheckoutPage.AddGiftWrappingDrawer");
+  const giftWrapItemsResponse = await searchGiftWrapItems();
 
   const getSectionTitle = (sectionId: string) => {
     return t(`sections.${sectionId}` as any);
@@ -239,7 +243,11 @@ export const AddGiftWrappingView = async ({
   const giftDataPromise: Promise<GiftWrappingResolvedData> = (async () => {
     const giftSections = await Promise.all(
       GIFT_WRAPPING_SECTION_CONFIG.map((section) =>
-        buildGiftWrappingSection(section, getSectionTitle)
+        buildGiftWrappingSection(
+          section,
+          giftWrapItemsResponse,
+          getSectionTitle
+        )
       )
     );
 

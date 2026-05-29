@@ -1,4 +1,6 @@
-import { getLocale } from "next-intl/server";
+import type { CSSProperties } from "react";
+
+import { locale as rootLocale } from "next/root-params";
 
 import { GoldenScentLogo } from "@/components/icons/golden-scent-logo";
 import { ContentfulImage } from "@/components/shared/contentful-image";
@@ -7,10 +9,14 @@ import { cn } from "@/lib/utils";
 
 interface SiteLogoProps {
   className?: string;
+  preserveIntrinsicHeight?: boolean;
 }
 
-export async function SiteLogo({ className }: SiteLogoProps) {
-  const locale = await getLocale();
+export async function SiteLogo({
+  className,
+  preserveIntrinsicHeight = true,
+}: SiteLogoProps) {
+  const locale = await rootLocale();
   const data = await getSiteLogoData({ locale });
 
   if (!data?.fields?.desktopLogo?.fields?.file?.url) {
@@ -30,6 +36,9 @@ export async function SiteLogo({ className }: SiteLogoProps) {
   const mobileLogoUrl =
     effectiveMobileLogo?.fields?.file?.url ?? desktopLogo.fields.file.url;
   const desktopLogoUrl = desktopLogo.fields.file.url;
+  const imageStyle: CSSProperties | undefined = preserveIntrinsicHeight
+    ? { height: "auto" }
+    : undefined;
 
   return (
     <>
@@ -38,7 +47,7 @@ export async function SiteLogo({ className }: SiteLogoProps) {
         className={cn("block lg:hidden", className)}
         height={30}
         src={mobileLogoUrl}
-        style={{ height: "auto" }}
+        style={imageStyle}
         width={mobileLogoWidth}
       />
       <ContentfulImage
@@ -46,7 +55,7 @@ export async function SiteLogo({ className }: SiteLogoProps) {
         className={cn("hidden lg:block", className)}
         height={40}
         src={desktopLogoUrl}
-        style={{ height: "auto" }}
+        style={imageStyle}
         width={desktopLogoWidth}
       />
     </>

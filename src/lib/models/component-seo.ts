@@ -5,6 +5,7 @@ import type {
 
 export interface ComponentSeo {
   canonicalUrl?: string;
+  metaKeywords?: string;
   nofollow: boolean;
   noindex: boolean;
   pageDescription?: string;
@@ -29,6 +30,7 @@ export function parseComponentSeo(
 
   return {
     canonicalUrl: data.canonicalUrl,
+    metaKeywords: data.metaKeywords?.trim() || undefined,
     nofollow: data.nofollow ?? false,
     noindex: data.noindex ?? false,
     pageDescription: data.pageDescription,
@@ -51,6 +53,6 @@ function isResolvedSeoEntry(
 ): seo is { fields: ComponentSeoData } & ResolvedSeoEntry {
   return Boolean(
     seo?.fields &&
-      seo?.sys?.contentType?.sys?.id === COMPONENT_SEO_CONTENT_TYPE_ID
+    seo?.sys?.contentType?.sys?.id === COMPONENT_SEO_CONTENT_TYPE_ID
   );
 }

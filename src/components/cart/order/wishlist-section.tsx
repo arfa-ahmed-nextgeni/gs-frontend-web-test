@@ -61,7 +61,7 @@ export const WishListSection = () => {
             <ProductCardMini
               icon={AddToBagIcon}
               iconContainerClassName="bg-bg-primary"
-              key={product.id}
+              key={product.idInWishlist}
               product={product}
             />
           ))}

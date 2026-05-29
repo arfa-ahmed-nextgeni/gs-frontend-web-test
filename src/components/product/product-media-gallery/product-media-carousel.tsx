@@ -8,7 +8,6 @@ import { ProductMediaVideoSlide } from "@/components/product/product-media-galle
 import { CarouselContainer } from "@/components/ui/carousel/carousel-container";
 import { CarouselItem } from "@/components/ui/carousel/carousel-item";
 import { useIsMobile } from "@/hooks/use-is-mobile";
-import { getShimmerPlaceholder } from "@/lib/utils/image";
 import { getYouTubeThumbnail } from "@/lib/utils/video";
 
 import type { ProductMedia } from "@/lib/models/product-details-model";
@@ -85,7 +84,6 @@ export const ProductMediaCarousel = ({
                 fetchPriority={index === 0 ? "high" : undefined}
                 fill
                 loading={index === 0 ? "eager" : "lazy"}
-                placeholder={getShimmerPlaceholder()}
                 priority={index === 0}
                 sizes="(max-width: 1024px) 100vw, 78vw"
                 src={media.url}

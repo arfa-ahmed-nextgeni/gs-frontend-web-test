@@ -3,12 +3,14 @@ import { ApiActivityEntryListItem } from "@/app/tools/api-activity/_components/a
 import type { ApiActivityEntrySummary } from "@/lib/api-activity/api-activity-types";
 
 export function ApiActivityEntryList({
+  autoRefreshEnabled,
   currentPage,
   failedOnly,
   searchQuery,
   selectedEntryId,
   visibleEntries,
 }: {
+  autoRefreshEnabled: boolean;
   currentPage?: number;
   failedOnly: boolean;
   searchQuery: string;
@@ -27,6 +29,7 @@ export function ApiActivityEntryList({
     <div className="max-h-[calc(100vh-18rem)] overflow-y-auto">
       {visibleEntries.map((entry) => (
         <ApiActivityEntryListItem
+          autoRefreshEnabled={autoRefreshEnabled}
           currentPage={currentPage}
           entry={entry}
           failedOnly={failedOnly}

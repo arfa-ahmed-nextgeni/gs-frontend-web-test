@@ -1,5 +1,6 @@
-import { Suspense } from "react";
+import { connection } from "next/server";
 
+import { AsyncBoundary } from "@/components/common/async-boundary";
 import { CategoryProductsCarouselItemsSkeleton } from "@/components/product/category-products-carousel-items-skeleton";
 import { ProductCarouselSection } from "@/components/product/product-carousel-section";
 import Container from "@/components/shared/container";
@@ -15,7 +16,7 @@ export const SimilarProductsSection = ({
 }: {
   product: ProductDetailsModel;
 }) => (
-  <Suspense
+  <AsyncBoundary
     fallback={
       <Container className="mb-7.5 px-0!">
         <CategoryProductsCarouselItemsSkeleton
@@ -25,6 +26,18 @@ export const SimilarProductsSection = ({
       </Container>
     }
   >
+    <SimilarProductsLeaf product={product} />
+  </AsyncBoundary>
+);
+
+const SimilarProductsLeaf = async ({
+  product,
+}: {
+  product: ProductDetailsModel;
+}) => {
+  await connection();
+
+  return (
     <ProductCarouselSection
       excludeTypes={[ProductType.EGiftCard]}
       linkType={ProductLinkType.Similar}
@@ -38,5 +51,5 @@ export const SimilarProductsSection = ({
       productType={product.type}
       titleKey="similarProductsSection"
     />
-  </Suspense>
-);
+  );
+};

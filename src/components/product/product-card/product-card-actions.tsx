@@ -39,6 +39,11 @@ export const ProductCardActions = (props: ProductCardActionsProps) => {
       return;
     }
 
+    if (props.isWishlistItem && !isConfigurable) {
+      loadActions();
+      return;
+    }
+
     const productCard = sentinelRef.current.parentElement;
 
     if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
@@ -53,13 +58,20 @@ export const ProductCardActions = (props: ProductCardActionsProps) => {
       productCard.removeEventListener("focusin", loadActions);
       productCard.removeEventListener("pointerenter", loadActions);
     };
-  }, [isVisible, sentinelRef, shouldLoad]);
+  }, [
+    isConfigurable,
+    isVisible,
+    props.isWishlistItem,
+    sentinelRef,
+    shouldLoad,
+  ]);
 
   return (
     <div
       className={cn(
         "transition-default absolute bottom-0 flex w-full translate-y-9 flex-row items-center justify-between px-5",
-        "group-focus-within:-translate-y-3 group-hover:-translate-y-3 group-has-[button[data-loading=true]]:-translate-y-3"
+        "group-focus-within:-translate-y-3 group-hover:-translate-y-3 group-has-[button[data-loading=true]]:-translate-y-3",
+        props.isWishlistItem && !isConfigurable && "-translate-y-3"
       )}
       ref={sentinelRef}
     >

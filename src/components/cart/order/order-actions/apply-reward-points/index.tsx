@@ -4,13 +4,11 @@ import Image from "next/image";
 
 import { useTranslations } from "next-intl";
 
-import DirhamCoinIcon from "@/assets/icons/dirham-coin-icon.svg";
-import DollarCoinIcon from "@/assets/icons/dollar-coin-icon.svg";
-import RiyalIcon from "@/assets/icons/riyal-icon.svg";
 import { RewardPointsSwitch } from "@/components/cart/order/order-actions/apply-reward-points/reward-points-switch";
 import { LocalizedPrice } from "@/components/shared/localized-price";
 import { useStoreConfig } from "@/contexts/store-config-context";
 import { useCart } from "@/contexts/use-cart";
+import { useOrderLocaleAssets } from "@/hooks/i18n/use-order-locale-assets";
 import { cn } from "@/lib/utils";
 import { formatPrice } from "@/lib/utils/price";
 
@@ -22,25 +20,12 @@ export function ApplyRewardPoints({ currencyCode }: ApplyRewardPointsProps) {
   const { cart } = useCart();
   const { storeConfig } = useStoreConfig();
   const t = useTranslations("CartPage.orderSummary");
+  const { walletIcon } = useOrderLocaleAssets();
 
   // Only show wallet section if loyalty_rules_effect exists in store config
   if (!storeConfig?.loyaltyRulesEffect) {
     return null;
   }
-
-  const code = storeConfig?.code;
-  const store = code?.endsWith("sa")
-    ? "sa"
-    : code?.endsWith("ae")
-      ? "ae"
-      : "other";
-
-  const walletIcon =
-    store === "sa"
-      ? RiyalIcon
-      : store === "ae"
-        ? DirhamCoinIcon
-        : DollarCoinIcon;
 
   if (!cart?.pointsToSpend || cart.pointsToSpend <= 0) {
     return null;

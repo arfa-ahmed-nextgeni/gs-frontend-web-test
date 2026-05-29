@@ -10,6 +10,7 @@ import {
 import {
   ProductCardVariant,
   ProductOptionType,
+  StockStatus,
 } from "@/lib/constants/product/product-card";
 import { Helper } from "@/lib/models/helper";
 import {
@@ -17,6 +18,8 @@ import {
   ProductOption,
 } from "@/lib/models/product-card-model";
 import { CountdownTimer } from "@/lib/types/product/countdown-timer";
+import { resolveProductImageUrl } from "@/lib/utils/image";
+import { isBundlesProductType } from "@/lib/utils/product-type";
 
 type CartPaymentMethod = {
   code?: null | string;
@@ -75,6 +78,7 @@ export class Cart extends Helper {
   appliedRewardPoints: boolean;
   availablePaymentMethods?: CartPaymentMethod[];
   baseShippingFee?: number;
+  codFee?: number;
   discount: number;
   giftMessage?: string;
   grandTotalFormattedPrice: string;
@@ -137,8 +141,10 @@ export class Cart extends Helper {
     this.items =
       cart?.itemsV2?.items
         ?.filter((item): item is NonNullable<typeof item> => !!item)
-        .map((item) => new CartItem(item as CartItemInterface)) || [];
+        .map((item) => new CartItem(item as CartItemInterface))
+        .sort((a, b) => Number(!!a.isGwp) - Number(!!b.isGwp)) || [];
     this.serviceFee = cart?.prices?.small_order_fee?.value || undefined;
+    this.codFee = cart?.prices?.cod_fee?.value || undefined;
     this.serviceFeeMessage = (cart as any)?.service_fee_message || undefined;
     this.isBulletEligible = cart?.is_bullet_eligible || undefined;
 
@@ -181,19 +187,6 @@ export class Cart extends Helper {
       }
 
       this.baseShippingFee = matchingMethod?.amount?.value || undefined;
-
-      // Debug logging
-      if (!this.baseShippingFee && selectedMethod) {
-        console.warn("[Cart] Could not find base shipping fee:", {
-          availableMethods: availableMethods.map((m) => ({
-            amount: m?.amount?.value,
-            carrier: m?.carrier_code,
-            method: m?.method_code,
-          })),
-          selectedCarrier: selectedMethod.carrier_code,
-          selectedMethod: selectedMethod.method_code,
-        });
-      }
     }
 
     // Fallback to base_amount if we still don't have a value
@@ -216,10 +209,6 @@ export class Cart extends Helper {
       );
       if (methodWithFee) {
         this.baseShippingFee = methodWithFee.amount?.value || undefined;
-        console.info(
-          "[Cart] Using available method as base shipping fee fallback:",
-          methodWithFee.amount?.value
-        );
       }
     }
 
@@ -282,6 +271,8 @@ export class CartItem extends ProductCardModel {
     let size: string | undefined = undefined;
     let color: string | undefined = undefined;
     let stockLeft: number | undefined = undefined;
+    let variantStockStatus: string | undefined = undefined;
+    let variantImageUrl: string | undefined = undefined;
     const attributeSet = (item as any).attribute_set || undefined;
     const productType = (product as any).product_type_new2 || undefined;
 
@@ -296,6 +287,10 @@ export class CartItem extends ProductCardModel {
         stockLeft =
           (confItem.configured_variant as any).only_x_left_in_stock ??
           undefined;
+        variantStockStatus =
+          (confItem.configured_variant as any).stock_status ?? undefined;
+        variantImageUrl =
+          confItem.configured_variant?.thumbnail?.url || undefined;
       }
 
       const sizeOpt = confItem.configurable_options.find((opt) =>
@@ -353,6 +348,12 @@ export class CartItem extends ProductCardModel {
     const currency = minPrice?.final_price?.currency || CurrencyEnum.Sar;
     const discountPercent = minPrice?.discount?.percent_off || undefined;
     const savedAmount = minPrice?.discount?.amount_off || 0;
+    const resolvedStockStatus =
+      variantStockStatus || (product?.stock_status as string) || "";
+    const stockStatus =
+      item.is_available === false
+        ? StockStatus.OutOfStock
+        : resolvedStockStatus;
 
     super({
       attributeSet,
@@ -363,7 +364,10 @@ export class CartItem extends ProductCardModel {
       discountPercent,
       externalId,
       id: product?.uid || "",
-      imageUrl: product?.thumbnail?.url || "",
+      imageUrl: resolveProductImageUrl(
+        variantImageUrl,
+        product?.thumbnail?.url
+      ),
       isGwp: isGwp || false,
       isWrap: isWrap || false,
       name: product?.name || "",
@@ -377,9 +381,11 @@ export class CartItem extends ProductCardModel {
       savedAmount,
       sku,
       skuParent,
-      stockStatus: (product?.stock_status as string) || "",
+      stockStatus,
       urlKey: product?.url_key || "",
-      variant: ProductCardVariant.Single,
+      variant: isBundlesProductType(productType)
+        ? ProductCardVariant.Bundles
+        : ProductCardVariant.Single,
     });
 
     this.quantity = quantity;

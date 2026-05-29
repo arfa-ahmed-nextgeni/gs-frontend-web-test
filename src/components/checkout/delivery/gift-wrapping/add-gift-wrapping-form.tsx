@@ -39,7 +39,7 @@ const GiftWrappingSectionList = ({
 
   return (
     <div
-      className="scrollbar-hidden flex gap-[10px] overflow-x-auto"
+      className="scrollbar-hidden flex min-w-0 gap-[10px] overflow-x-auto"
       ref={scrollRef}
     >
       {items.map((item) => (
@@ -78,9 +78,12 @@ export const AddGiftWrappingForm = ({
 
   const normalizedGiftSections = useMemo(
     () =>
-      giftSections.filter(
-        (section) => section.items && section.items.length > 0
-      ),
+      giftSections
+        .map((section) => ({
+          ...section,
+          items: section.items.filter((item) => item.inStock),
+        }))
+        .filter((section) => section.items.length > 0),
     [giftSections]
   );
 
@@ -257,133 +260,144 @@ export const AddGiftWrappingForm = ({
 
   return (
     <form
-      className="scrollbar-hidden flex max-h-full flex-col gap-4 overflow-y-auto px-5 py-4"
+      className="flex min-h-0 w-full min-w-0 flex-1 flex-col"
       onSubmit={handleSubmit}
       ref={formRef}
     >
-      {normalizedGiftSections.map((section) => (
-        <div className="flex flex-col gap-2" key={section.id}>
+      <div className="scrollbar-hidden min-w-0 flex-1 space-y-4 overflow-y-auto px-5 py-4">
+        {normalizedGiftSections.map((section) => (
+          <div className="flex flex-col gap-2" key={section.id}>
+            <p className="text-text-secondary text-[14px] font-medium">
+              {section.title}
+            </p>
+            <GiftWrappingSectionList
+              items={section.items}
+              onSelect={handleGiftSelect}
+              selectedGiftId={selectedGiftId}
+            />
+          </div>
+        ))}
+
+        <div className="flex flex-col gap-1.5">
           <p className="text-text-secondary text-[14px] font-medium">
-            {section.title}
+            {t("writeMessage")}
           </p>
-          <GiftWrappingSectionList
-            items={section.items}
-            onSelect={handleGiftSelect}
-            selectedGiftId={selectedGiftId}
+          <textarea
+            className="border-border-base bg-bg-surface placeholder:text-text-placeholder text-text-primary focus:border-text-primary min-h-[80px] w-full resize-none rounded-[10px] border px-4 py-2 text-[15px] leading-snug focus:outline-none"
+            onChange={(event) => setMessage(event.target.value)}
+            placeholder={t("messagePlaceholder")}
+            value={message}
           />
         </div>
-      ))}
-
-      <div className="flex flex-col gap-1.5">
-        <p className="text-text-secondary text-[14px] font-medium">
-          {t("writeMessage")}
-        </p>
-        <textarea
-          className="border-border-base bg-bg-surface placeholder:text-text-placeholder text-text-primary focus:border-text-primary min-h-[80px] w-full resize-none rounded-[10px] border px-4 py-2 text-[15px] leading-snug focus:outline-none"
-          onChange={(event) => setMessage(event.target.value)}
-          placeholder={t("messagePlaceholder")}
-          value={message}
-        />
       </div>
 
-      <div className="flex flex-col gap-3 pb-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Checkbox
-              checked={isStandardBoxSelected}
-              id="standard-box"
-              onCheckedChange={(checked) =>
-                handleStandardBoxToggle(checked === true)
-              }
+      <div
+        className="bg-bg-body w-full shrink-0 px-5 pt-3"
+        style={{
+          paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 12px)",
+        }}
+      >
+        <div className="mb-4 flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Checkbox
+                checked={isStandardBoxSelected}
+                id="standard-box"
+                onCheckedChange={(checked) =>
+                  handleStandardBoxToggle(checked === true)
+                }
+              />
+              <label
+                className="text-text-primary text-sm font-medium"
+                htmlFor="standard-box"
+              >
+                {t("standardBox")}
+              </label>
+            </div>
+            <span className="text-btn-bg-teal text-sm font-medium">
+              {t("free")}
+            </span>
+          </div>
+
+          <div className="text-text-tertiary flex items-start gap-2 text-xs leading-snug">
+            <Image
+              alt="note"
+              className="mt-1 shrink-0"
+              height={12}
+              src={AlertIcon}
+              width={12}
             />
-            <label
-              className="text-text-primary text-sm font-medium"
-              htmlFor="standard-box"
+            <div className="rtl:flex rtl:flex-col">
+              <p className="rtl:block">
+                {t("infoMessage")}
+                {isExpanded && (
+                  <>
+                    {" "}
+                    {t("expandedMessage")}{" "}
+                    <button
+                      className="text-text-brand underline rtl:mt-0 rtl:block"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsExpanded(false);
+                      }}
+                      type="button"
+                    >
+                      {t("readLess")}
+                    </button>
+                  </>
+                )}
+                {!isExpanded && (
+                  <>
+                    {" "}
+                    <button
+                      className="text-text-brand underline rtl:mt-0 rtl:block"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsExpanded(true);
+                      }}
+                      type="button"
+                    >
+                      {t("readMore")}
+                    </button>
+                  </>
+                )}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-bg-default -mx-5 mt-1 px-5 py-2 shadow-[0_-1px_2px_0_#f3f3f3]">
+          {isStandardBoxSelected || !isSelectedGiftOutOfStock ? (
+            <FormSubmitButton
+              className="bg-bg-primary text-text-inverse h-[50px] w-full rounded-[10px] text-[20px] font-medium"
+              isSubmitting={isSubmitting}
             >
-              {t("standardBox")}
-            </label>
-          </div>
-          <span className="text-btn-bg-teal text-sm font-medium">
-            {t("free")}
-          </span>
-        </div>
-
-        <div className="text-text-tertiary flex items-start gap-2 text-xs leading-snug">
-          <Image
-            alt="note"
-            className="mt-1 shrink-0"
-            height={12}
-            src={AlertIcon}
-            width={12}
-          />
-          <div className="rtl:flex rtl:flex-col">
-            <p className="rtl:block">
-              {t("infoMessage")}
-              {isExpanded && (
-                <>
-                  {" "}
-                  {t("expandedMessage")}{" "}
-                  <button
-                    className="text-text-brand underline rtl:mt-0 rtl:block"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsExpanded(false);
-                    }}
-                    type="button"
-                  >
-                    {t("readLess")}
-                  </button>
-                </>
+              {isStandardBoxSelected ? t("skip") : t("add")}
+            </FormSubmitButton>
+          ) : (
+            <button
+              className={cn(
+                "transition-default bg-btn-bg-primary text-text-ghost h-12.5 rounded-xl text-xl font-medium",
+                "hover:bg-btn-bg-slate",
+                !isSubmitting && "disabled:bg-btn-bg-muted",
+                { "bg-btn-bg-slate": isSubmitting },
+                "focus:bg-btn-bg-primary focus:outline-none",
+                "h-[50px] w-full rounded-[10px]"
               )}
-              {!isExpanded && (
-                <>
-                  {" "}
-                  <button
-                    className="text-text-brand underline rtl:mt-0 rtl:block"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsExpanded(true);
-                    }}
-                    type="button"
-                  >
-                    {t("readMore")}
-                  </button>
-                </>
+              disabled={isSubmitting}
+              onClick={handleNavigateToNotifyMe}
+              type="button"
+            >
+              {isSubmitting ? (
+                <div className="flex h-full w-full items-center justify-center">
+                  <Spinner label="Loading" />
+                </div>
+              ) : (
+                notifyMeT("notify_me")
               )}
-            </p>
-          </div>
+            </button>
+          )}
         </div>
-
-        {isStandardBoxSelected || !isSelectedGiftOutOfStock ? (
-          <FormSubmitButton
-            className="bg-bg-primary text-text-inverse h-[50px] w-full rounded-[10px] text-[20px] font-medium"
-            isSubmitting={isSubmitting}
-          >
-            {isStandardBoxSelected ? t("skip") : t("add")}
-          </FormSubmitButton>
-        ) : (
-          <button
-            className={cn(
-              "transition-default bg-btn-bg-primary text-text-ghost h-12.5 rounded-xl text-xl font-medium",
-              "hover:bg-btn-bg-slate",
-              !isSubmitting && "disabled:bg-btn-bg-muted",
-              { "bg-btn-bg-slate": isSubmitting },
-              "focus:bg-btn-bg-primary focus:outline-none",
-              "h-[50px] w-full rounded-[10px]"
-            )}
-            disabled={isSubmitting}
-            onClick={handleNavigateToNotifyMe}
-            type="button"
-          >
-            {isSubmitting ? (
-              <div className="flex h-full w-full items-center justify-center">
-                <Spinner label="Loading" />
-              </div>
-            ) : (
-              notifyMeT("notify_me")
-            )}
-          </button>
-        )}
       </div>
     </form>
   );

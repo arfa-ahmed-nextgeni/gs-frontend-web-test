@@ -19,13 +19,11 @@ export const ProductReviewsSummary = async ({ urlKey }: { urlKey: string }) => {
       <div className="h-11.25 flex flex-row justify-between px-5">
         <div className="flex flex-1 flex-row gap-1.5">
           <div className="border-border-base bg-bg-default relative aspect-square h-full shrink-0 overflow-hidden rounded-xl border">
-            {product.image && (
-              <ProductImageWithFallback
-                alt="product image"
-                fill
-                src={product.image}
-              />
-            )}
+            <ProductImageWithFallback
+              alt="product image"
+              fill
+              src={product.image}
+            />
           </div>
           <div className="flex flex-col justify-center">
             <p className="text-text-primary line-clamp-1 text-xs font-semibold">

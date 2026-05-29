@@ -15,6 +15,10 @@ export async function appApiRequest<T>({
   ServiceResultError | ServiceResultOk<T> | ServiceResultUnauthenticated
 > {
   const url = endpoint.startsWith("/api/") ? endpoint : `/api${endpoint}`;
+  const timeoutSignal = AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT);
+  const signal = options?.signal
+    ? AbortSignal.any([options.signal, timeoutSignal])
+    : timeoutSignal;
 
   const response = await fetch(url, {
     ...options,
@@ -22,7 +26,7 @@ export async function appApiRequest<T>({
       "Content-Type": "application/json",
       ...(options?.headers ?? {}),
     },
-    signal: AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT),
+    signal,
   });
 
   const data = (await response.json()) as

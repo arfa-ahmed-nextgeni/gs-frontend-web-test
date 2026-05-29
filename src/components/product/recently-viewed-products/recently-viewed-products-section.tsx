@@ -110,6 +110,9 @@ export async function RecentlyViewedProductsSection({
         carouselProps={{
           deferUntilInView: true,
         }}
+        contentProps={{
+          className: "gap-[9.6px]",
+        }}
         nextButtonProps={{
           className: "xl:translate-x-15 xl:rtl:-translate-x-15",
         }}
@@ -127,6 +130,7 @@ export async function RecentlyViewedProductsSection({
           <CardRailScrollSnapCarouselItem key={`${product.id}-${index}`}>
             <ProductCard
               isBulletDeliveryEnabled={isBulletDeliveryEnabled}
+              isInCarousel
               lpColumn={1}
               lpExtra={{
                 row_count: products.length,

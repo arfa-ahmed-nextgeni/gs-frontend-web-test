@@ -1,77 +1,50 @@
 "use client";
 
-import { useMemo } from "react";
-
-import { useTranslations } from "next-intl";
+import { useEffect, useMemo, useState } from "react";
 
 import { CategoryCheckboxFilterSection } from "@/components/category/filters/category-checkbox-filter/category-checkbox-filter-section";
 import { CategoryClearAllFiltersButton } from "@/components/category/filters/category-clear-all-filters-button";
 import { CategoryPriceRangeFilter } from "@/components/category/filters/category-price-range-filter";
 import { CategorySortByFilter } from "@/components/category/filters/category-sort-by-filter";
-import { CategoryTypeFilter } from "@/components/category/filters/category-type-filter";
-import { FilterSectionHeader } from "@/components/category/filters/filter-section-header";
 import { useFilters } from "@/contexts/category-filter-context";
+import { useWindowScrollThreshold } from "@/hooks/use-window-scroll-threshold";
 import { type DynamicCategoryFilter } from "@/lib/types/catalog-service";
-import { type CategoryBreadcrumb } from "@/lib/types/category-route-data";
-
-interface CategoryInfo {
-  children_count?: number;
-  include_in_menu?: boolean;
-  level?: number;
-  name: string;
-  product_count?: number;
-  uid: string;
-  url_key: string;
-  url_path?: string;
-}
+import { cn } from "@/lib/utils";
 
 interface DynamicCategoryFilterSectionProps {
-  breadcrumbs?: CategoryBreadcrumb[];
-  categoryChildren?: CategoryInfo[];
-  currentCategory?: CategoryInfo;
   filters: DynamicCategoryFilter[];
   priceBounds?: { max: number; min: number };
 }
 
 export const DynamicCategoryFilterSection = ({
-  breadcrumbs,
-  categoryChildren,
-  currentCategory,
   filters,
   priceBounds,
 }: DynamicCategoryFilterSectionProps) => {
-  const t = useTranslations("category");
+  const hasScrolledPastStickyThreshold = useWindowScrollThreshold(200);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const showStickyFilters = hasScrolledPastStickyThreshold || isDrawerOpen;
   const {
     state: { checkboxes },
   } = useFilters();
-  const parentCategories = useMemo(() => {
-    // breadcrumbs always include Home + current category; parent exists only when length > 2.
-    if (!Array.isArray(breadcrumbs) || breadcrumbs.length <= 2) {
-      return [];
-    }
 
-    const parentHref = breadcrumbs.at(-2)?.href || "";
-    const parentPath = parentHref
-      .replace(/^\/c\//, "")
-      .replace(/^\/+|\/+$/g, "");
+  useEffect(() => {
+    const handleDrawerChange = (event: Event) => {
+      const customEvent = event as CustomEvent<{ open?: boolean }>;
+      setIsDrawerOpen(Boolean(customEvent.detail?.open));
+    };
 
-    if (!parentPath) {
-      return [];
-    }
+    window.addEventListener(
+      "categoryFilterDrawerStateChange",
+      handleDrawerChange
+    );
 
-    const parentPathSegments = parentPath.split("/").filter(Boolean);
-    const parentUrlKey = parentPathSegments.at(-1) || parentPath;
-
-    return [
-      {
-        name: t("previous"),
-        product_count: undefined,
-        uid: `parent-${parentPath}`,
-        url_key: parentUrlKey,
-        url_path: parentPath,
-      },
-    ];
-  }, [breadcrumbs, t]);
+    return () => {
+      window.removeEventListener(
+        "categoryFilterDrawerStateChange",
+        handleDrawerChange
+      );
+    };
+  }, []);
 
   const sortedFilters = useMemo(() => {
     const nonPriceFilters = filters.filter(
@@ -89,33 +62,27 @@ export const DynamicCategoryFilterSection = ({
   }, [filters, checkboxes]);
 
   return (
-    <div className="gap-1.25 lg:mt-15 flex w-full flex-col lg:w-[191px]">
-      {currentCategory && (
-        <CategoryTypeFilter
-          currentCategory={currentCategory}
-          parentCategories={parentCategories}
-        >
-          {categoryChildren}
-        </CategoryTypeFilter>
+    <div
+      className={cn(
+        "gap-1.25 scrollbar-hidden overflow-x-auto lg:flex lg:flex-col",
+        showStickyFilters ? "hidden lg:flex" : "flex flex-row"
       )}
-      <FilterSectionHeader />
-      <div className="gap-1.25 scrollbar-hidden flex flex-row overflow-x-auto lg:flex-col">
-        <CategorySortByFilter isMobile />
-        <CategoryPriceRangeFilter priceBounds={priceBounds} />
-        {sortedFilters.map((filter) => (
-          <CategoryCheckboxFilterSection
-            defaultOpen={filter.defaultOpen}
-            dialogTitle={filter.dialogTitle}
-            id={filter.id}
-            isSearchable={filter.isSearchable}
-            key={filter.id}
-            options={filter.options}
-            shortTitle={filter.shortTitle}
-            title={filter.title}
-          />
-        ))}
-        <CategoryClearAllFiltersButton />
-      </div>
+    >
+      <CategorySortByFilter isMobile />
+      <CategoryPriceRangeFilter priceBounds={priceBounds} />
+      {sortedFilters.map((filter) => (
+        <CategoryCheckboxFilterSection
+          defaultOpen={filter.defaultOpen}
+          dialogTitle={filter.dialogTitle}
+          id={filter.id}
+          isSearchable={filter.isSearchable}
+          key={filter.id}
+          options={filter.options}
+          shortTitle={filter.shortTitle}
+          title={filter.title}
+        />
+      ))}
+      <CategoryClearAllFiltersButton />
     </div>
   );
 };

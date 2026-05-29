@@ -160,19 +160,19 @@ export default function Toast({
       } ${ZIndexLevel.z9999}`}
     >
       <div
-        className={`relative min-h-[82px] w-[390px] rounded-xl border px-6 py-2 shadow-2xl backdrop-blur-md ${config.bgGradient} ${config.borderColor}`}
+        className={`w-97.5 min-h-20.5 relative rounded-xl border px-6 py-2 shadow-2xl backdrop-blur-md ${config.bgGradient} ${config.borderColor}`}
       >
         <div className="flex items-center gap-3">
           {/* Icon */}
-          <div className="flex-shrink-0">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg">
+          <div className="shrink-0">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg">
               <Image
                 alt={type}
-                className="h-8 w-8 rounded-lg object-cover"
-                height={32}
+                className="h-9 w-9 rounded-lg object-cover"
+                height={36}
                 src={config.icon}
                 unoptimized
-                width={32}
+                width={36}
               />
             </div>
           </div>
@@ -192,7 +192,7 @@ export default function Toast({
 
         {/* Progress Bar */}
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 px-0">
-          <div className="relative h-1 w-[385px] overflow-hidden rounded-full bg-gray-200">
+          <div className="w-96.25 relative h-1 overflow-hidden rounded-full bg-gray-200">
             <div
               className={`absolute left-0 top-0 h-full rounded-full ${config.progressColor}`}
               style={{

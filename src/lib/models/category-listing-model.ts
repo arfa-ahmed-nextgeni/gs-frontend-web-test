@@ -1,3 +1,8 @@
+import {
+  CATEGORY_LISTING_DEFAULT_PAGE_SIZE,
+  CATEGORY_LISTING_MAX_PRODUCTS_PER_QUERY,
+  getCategoryListingCappedTotalPages,
+} from "@/lib/constants/category/category-listing-cap";
 import { type ProductCardModel } from "@/lib/models/product-card-model";
 import {
   type Aggregation,
@@ -52,8 +57,28 @@ export class CategoryListingModel {
       extractPriceBoundsFromFacets(
         (productResponse.facets || []) as Aggregation[]
       ) || extractPriceBoundsFromProducts(this.products);
-    this.totalCount = productResponse.total_count || 0;
-    this.totalPages = productResponse.page_info?.total_pages || 1;
+
+    const resolvedPageSize =
+      productResponse.page_info?.page_size ??
+      pageSize ??
+      CATEGORY_LISTING_DEFAULT_PAGE_SIZE;
+    const apiTotalPagesRaw = productResponse.page_info?.total_pages;
+    const apiTotalPages =
+      apiTotalPagesRaw != null && apiTotalPagesRaw > 0
+        ? apiTotalPagesRaw
+        : this.products.length > 0
+          ? 1
+          : 0;
+    const rawTotalCount = productResponse.total_count || 0;
+
+    this.totalCount = Math.min(
+      rawTotalCount,
+      CATEGORY_LISTING_MAX_PRODUCTS_PER_QUERY
+    );
+    this.totalPages = getCategoryListingCappedTotalPages(
+      apiTotalPages,
+      resolvedPageSize
+    );
   }
 }
 

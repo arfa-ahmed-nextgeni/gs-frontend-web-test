@@ -135,63 +135,70 @@ export class Stores {
 
   constructor(data: GetStoreConfigResponse) {
     this.storesMap = new Map(
-      Object.values(data[0].stores).map((store) => {
-        const websiteCode = store.website_code || "sa";
-        const storeCode = store.store_code || "main_website_store";
+      Object.values(data[0].stores)
+        .filter((store) => {
+          if (!STORE_TO_LOCALE[store.storeview_code]) {
+            return false;
+          }
+          return true;
+        })
+        .map((store) => {
+          const websiteCode = store.website_code || "sa";
+          const storeCode = store.store_code || "main_website_store";
 
-        return [
-          store.storeview_code,
-          new Store({
-            allowGiftOrder: store.allow_gift_order === "1",
-            bulletDeliveryConfig: store.express_delivery
-              ? {
-                  cartBannerText:
-                    store.express_delivery?.cart_banner_text || "",
-                  cities: store.express_delivery?.cities || {},
-                  cutOffTime: store.express_delivery?.cut_off_time || "",
-                  cutOffTimeMessage:
-                    store.express_delivery?.cut_off_time_message || "",
-                  endHour: store.express_delivery?.end_hour || "",
-                  message: store.express_delivery?.pp_text || "",
-                  startHour: store.express_delivery?.start_hour || "",
-                }
-              : null,
-            checkoutPayEnabled: store.checkoutPayEnabled === 1,
-            code: store.storeview_code,
-            countryCode: store.country_code,
-            currencyCode: store.currencies
-              ? getValues(store.currencies)[0].code
-              : "",
-            estimatedDeliveryDays: store.estimated_delivery_days,
-            freeShippingThreshold: store.free_shipping_subtotal
-              ? +store.free_shipping_subtotal
-              : undefined,
-            id: store.store_id,
-            installmentsWidgetSorting: store.installments_widget_sorting,
-            loyaltyRulesEffect: store.loyalty_rules_effect,
-            storeCode,
-            tabbyInstallments: {
-              enabled:
-                store.tabby_installments_config.enabled === 1 &&
-                TABBY_TAMARA_INSTALLMENTS_ENABLED_STORES.includes(
-                  store.storeview_code
-                ),
-              installments:
-                store.gs_tamara_installments?.web?.[0]?.installments || 0,
-            },
-            tamaraInstallments: {
-              enabled:
-                store.tamara_installments_config?.enabled === 1 &&
-                TABBY_TAMARA_INSTALLMENTS_ENABLED_STORES.includes(
-                  store.storeview_code
-                ),
-              installments:
-                store.gs_tamara_installments?.web?.[0]?.installments || 0,
-            },
-            websiteCode,
-          }),
-        ];
-      })
+          return [
+            store.storeview_code,
+            new Store({
+              allowGiftOrder: store.allow_gift_order === "1",
+              bulletDeliveryConfig: store.express_delivery
+                ? {
+                    cartBannerText:
+                      store.express_delivery?.cart_banner_text || "",
+                    cities: store.express_delivery?.cities || {},
+                    cutOffTime: store.express_delivery?.cut_off_time || "",
+                    cutOffTimeMessage:
+                      store.express_delivery?.cut_off_time_message || "",
+                    endHour: store.express_delivery?.end_hour || "",
+                    message: store.express_delivery?.pp_text || "",
+                    startHour: store.express_delivery?.start_hour || "",
+                  }
+                : null,
+              checkoutPayEnabled: store.checkoutPayEnabled === 1,
+              code: store.storeview_code,
+              countryCode: store.country_code,
+              currencyCode: store.currencies
+                ? getValues(store.currencies)[0].code
+                : "",
+              estimatedDeliveryDays: store.estimated_delivery_days,
+              freeShippingThreshold: store.free_shipping_subtotal
+                ? +store.free_shipping_subtotal
+                : undefined,
+              id: store.store_id,
+              installmentsWidgetSorting: store.installments_widget_sorting,
+              loyaltyRulesEffect: store.loyalty_rules_effect,
+              storeCode,
+              tabbyInstallments: {
+                enabled:
+                  store.tabby_installments_config.enabled === 1 &&
+                  TABBY_TAMARA_INSTALLMENTS_ENABLED_STORES.includes(
+                    store.storeview_code
+                  ),
+                installments:
+                  store.gs_tamara_installments?.web?.[0]?.installments || 0,
+              },
+              tamaraInstallments: {
+                enabled:
+                  store.tamara_installments_config?.enabled === 1 &&
+                  TABBY_TAMARA_INSTALLMENTS_ENABLED_STORES.includes(
+                    store.storeview_code
+                  ),
+                installments:
+                  store.gs_tamara_installments?.web?.[0]?.installments || 0,
+              },
+              websiteCode,
+            }),
+          ];
+        })
     );
   }
 

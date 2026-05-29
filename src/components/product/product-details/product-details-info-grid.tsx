@@ -26,10 +26,10 @@ export const ProductDetailsInfoGrid = ({
   }
 
   return (
-    <div className="bg-bg-surface min-h-15 flex w-max flex-row rounded-xl py-2.5">
+    <div className="bg-bg-surface min-h-15 flex w-max flex-row rounded-xl py-2.5 md:w-full lg:w-max">
       {filteredInfoItems.map((item, index) => (
         <React.Fragment key={index}>
-          <div className="max-w-24.25 flex w-[22.5vw] flex-col items-center justify-start gap-1">
+          <div className="max-w-24.25 lg:max-w-24.25 flex w-[22.5vw] flex-col items-center justify-start gap-1 md:w-auto md:max-w-none md:flex-1 lg:w-[22.5vw] lg:flex-none">
             <p className="text-text-secondary line-clamp-1 text-center text-xs font-normal">
               {t.has(item as any) ? t(item as any) : item}
             </p>

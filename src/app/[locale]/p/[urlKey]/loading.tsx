@@ -8,8 +8,8 @@ export default function ProductPageLoading() {
     <div className="pb-22.5">
       {/* <DesktopBreadcrumbSkeleton /> */}
 
-      <Container className="lg:h-148.75 lg:mt-12.5 mb-2.5 grid grid-cols-6 gap-5 !px-0 lg:grid-cols-12 lg:gap-2.5">
-        <ProductMediaGallerySkeleton />
+      <Container className="lg:h-148.75 lg:mt-12.5 px-0! md:h-148.75 md:mt-12.5 mb-2.5 grid grid-cols-6 gap-5 md:grid-cols-12 md:gap-2.5 lg:grid-cols-12">
+        <ProductMediaGallerySkeleton showImageSkeleton={false} />
         <ProductDetailsSkeleton />
       </Container>
 

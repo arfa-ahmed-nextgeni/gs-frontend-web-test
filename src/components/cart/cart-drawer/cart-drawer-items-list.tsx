@@ -28,10 +28,13 @@ export const CartDrawerItemsList = () => {
       >
         {cartItems.map(
           ({
+            brand,
+            bulletDelivery,
             countdownTimer,
             currentPrice,
-            description,
             imageUrl,
+            isGwp,
+            isOutOfStock,
             name,
             oldPrice,
             options,
@@ -41,9 +44,12 @@ export const CartDrawerItemsList = () => {
             urlKey,
           }) => (
             <CartDrawerItem
+              brand={brand}
+              bulletDelivery={bulletDelivery}
               countdownTimer={countdownTimer}
-              description={description}
               image={imageUrl}
+              isGwp={isGwp}
+              isOutOfStock={isOutOfStock}
               key={uidInCart}
               name={name}
               oldPrice={oldPrice}

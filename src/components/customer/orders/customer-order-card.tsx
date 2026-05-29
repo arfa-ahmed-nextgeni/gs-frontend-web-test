@@ -15,6 +15,7 @@ import { ProductImageWithFallback } from "@/components/product/product-image-wit
 import { useToastContext } from "@/components/providers/toast-provider";
 import { LocalizedPrice } from "@/components/shared/localized-price";
 import { useOrdersContext } from "@/contexts/orders-context";
+import { useHandleAuthRevoked } from "@/hooks/auth/use-handle-auth-revoked";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useReorderCartActions } from "@/hooks/use-reorder-cart-actions";
 import { Link, useRouter } from "@/i18n/navigation";
@@ -46,6 +47,7 @@ export const CustomerOrderCard = ({
   const isMobile = useIsMobile();
   const router = useRouter();
   const { handleSuccessfulReorder } = useReorderCartActions();
+  const handleAuthRevoked = useHandleAuthRevoked();
   const [isReorderPending, startReorderTransition] = useTransition();
   const [isTrackPending, startTrackTransition] = useTransition();
   const [isCancelPending, startCancelTransition] = useTransition();
@@ -215,8 +217,14 @@ export const CustomerOrderCard = ({
     try {
       const result = await reorderOrder(
         order.increment_id || order.id || "",
-        false
+        true
       );
+
+      if (result.isUnauthenticated) {
+        await handleAuthRevoked();
+        return;
+      }
+
       if (result.success) {
         // Refresh cart and open cart drawer
         await handleSuccessfulReorder();

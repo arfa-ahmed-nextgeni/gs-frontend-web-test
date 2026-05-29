@@ -19,6 +19,8 @@ import { AssociatedProducts } from "@/lib/types/product/associated-products";
 import { CountdownTimer } from "@/lib/types/product/countdown-timer";
 import { ProductAttribute } from "@/lib/types/product/product-attribute";
 import { ProductTags } from "@/lib/types/product/product-tags";
+import { resolveProductImageUrl } from "@/lib/utils/image";
+import { isBundlesProductType } from "@/lib/utils/product-type";
 
 export class CategoryProductsModel extends Helper {
   products: ProductCardModel[] = [];
@@ -40,10 +42,13 @@ export class CategoryProductsModel extends Helper {
         const avgRating: number | undefined = this.parseAttributeValue<{
           avg_rating?: number;
         }>(product?.attributes || [], "review_rating", {})?.avg_rating;
-        const valueOff = this.parseAttributeValue<{
-          amount_off?: number;
-          percent_off?: string;
-        }>(product?.attributes || [], "value_off", {});
+        const rawValueOff = this.parseAttributeValue<
+          | { amount_off?: number; percent_off?: string }
+          | { amount_off?: number; percent_off?: string }[]
+        >(product?.attributes || [], "value_off", {});
+        const valueOff = Array.isArray(rawValueOff)
+          ? rawValueOff[0] || {}
+          : rawValueOff;
         const bulletDeliveryAvailable =
           this.getAttributeValue<string>(
             product?.attributes || [],
@@ -142,6 +147,9 @@ export class CategoryProductsModel extends Helper {
           "product_type_new2",
           { label: "", value: "" }
         );
+        const effectiveVariant = isBundlesProductType(productType.value)
+          ? ProductCardVariant.Bundles
+          : variant;
         const productTags = this.parseAttributeValue<ProductTags>(
           product?.attributes || [],
           "product_tags",
@@ -196,11 +204,11 @@ export class CategoryProductsModel extends Helper {
           currency,
           description: product?.shortDescription || "",
           discountPercent: valueOff?.percent_off
-            ? parseFloat(valueOff.percent_off.replace("%", ""))
+            ? parseFloat(valueOff.percent_off.replace("%", "")) || undefined
             : undefined,
           externalId,
           id: product?.id || "",
-          imageUrl: product?.images?.[0]?.url || "",
+          imageUrl: resolveProductImageUrl(product?.images?.[0]?.url),
           name: product?.name || "",
           oldPrice:
             regularPrice && regularPrice > finalPrice
@@ -217,7 +225,7 @@ export class CategoryProductsModel extends Helper {
             ? StockStatus.InStock
             : StockStatus.OutOfStock,
           urlKey: product?.urlKey || "",
-          variant,
+          variant: effectiveVariant,
         });
       }) || [];
   }

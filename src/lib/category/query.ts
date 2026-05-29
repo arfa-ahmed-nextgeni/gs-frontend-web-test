@@ -126,12 +126,8 @@ export function parsePriceRange(rawPriceValue: string | undefined) {
   let normalizedTo = Number.isFinite(to) ? to : undefined;
 
   // Adobe product-search treats the upper bound as exclusive (< to).
-  // For exact price filters (min === max), bump upper bound slightly.
-  if (
-    normalizedFrom !== undefined &&
-    normalizedTo !== undefined &&
-    normalizedFrom === normalizedTo
-  ) {
+  // Bump upper bound slightly to make it inclusive.
+  if (normalizedTo !== undefined) {
     normalizedTo = Number(
       (normalizedTo + PRICE_UPPER_BOUND_INCLUSIVE_STEP).toFixed(2)
     );

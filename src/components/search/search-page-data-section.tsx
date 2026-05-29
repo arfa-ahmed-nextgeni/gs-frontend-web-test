@@ -70,7 +70,7 @@ export async function SearchPageDataSection({
                 })}
               </span>
             </div>
-            <CategorySortByFilter />
+            <CategorySortByFilter listingType="search" />
           </div>
 
           <CategoryProductsSection

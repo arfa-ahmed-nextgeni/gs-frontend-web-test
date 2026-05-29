@@ -16,12 +16,17 @@ export const LocalizedPrice = ({
 }) => {
   const config = findCurrencyConfig(price);
 
-  const cleanedPrice = config
-    ? config.match.reduce(
-        (result, regex) => result.replace(regex, "").trim(),
-        price || ""
-      )
-    : price;
+  const cleanedPrice = (
+    config
+      ? config.match.reduce(
+          (result, regex) => result.replace(regex, ""),
+          price || ""
+        )
+      : price || ""
+  )
+    .replace(/[\u200e\u200f\u061c]/g, "")
+    .replace(/\u00a0/g, " ")
+    .trim();
 
   return (
     <span

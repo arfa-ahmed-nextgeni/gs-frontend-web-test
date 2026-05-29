@@ -18,14 +18,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useIsMobile } from "@/hooks/use-is-mobile";
-import { useVisualViewport } from "@/hooks/use-visual-viewport";
 import { cn } from "@/lib/utils";
 
 export const AddPaymentCardDialog = () => {
   const t = useTranslations("CustomerCardsPage.addNewCardDialog");
 
   const isMobile = useIsMobile();
-  const { hasVisualViewport, height: viewportHeight } = useVisualViewport();
 
   const [open, setOpen] = useState(false);
 
@@ -38,44 +36,53 @@ export const AddPaymentCardDialog = () => {
       const dialogContent = document.querySelector(
         '[data-slot="dialog-content"]'
       ) as HTMLElement | null;
-      if (!dialogContent) return false;
+      if (!dialogContent) return;
 
-      if (hasVisualViewport) {
+      const vv = window.visualViewport;
+      if (vv) {
         const windowHeight = window.innerHeight;
-        const diff = windowHeight - viewportHeight;
-        // Only apply offset if difference is significant (keyboard is visible)
-        // Threshold of 100px to avoid small differences from browser UI
-        const offset = diff > 100 ? diff : 0;
-        dialogContent.style.bottom = `${offset}px`;
+        const diff = windowHeight - vv.height;
+
+        if (diff > 100) {
+          dialogContent.style.bottom = `${windowHeight - vv.height - vv.offsetTop}px`;
+          dialogContent.style.maxHeight = `${vv.height}px`;
+          dialogContent.style.height = `${vv.height}px`;
+        } else {
+          dialogContent.style.bottom = "0px";
+          dialogContent.style.maxHeight = "";
+          dialogContent.style.height = "";
+        }
       } else {
         dialogContent.style.bottom = "0px";
+        dialogContent.style.maxHeight = "";
+        dialogContent.style.height = "";
       }
-
-      return true;
     };
 
-    if (updateDialogPosition()) {
-      return;
-    }
+    updateDialogPosition();
+    const initialTimeout = setTimeout(updateDialogPosition, 0);
 
-    const timeoutId = setTimeout(updateDialogPosition, 0);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [hasVisualViewport, isMobile, open, viewportHeight]);
-
-  useEffect(() => {
-    if (!isMobile || !open || typeof window === "undefined") {
-      return;
-    }
+    window.visualViewport?.addEventListener("resize", updateDialogPosition);
+    window.visualViewport?.addEventListener("scroll", updateDialogPosition);
 
     return () => {
+      clearTimeout(initialTimeout);
+      window.visualViewport?.removeEventListener(
+        "resize",
+        updateDialogPosition
+      );
+      window.visualViewport?.removeEventListener(
+        "scroll",
+        updateDialogPosition
+      );
+
       const dialogContent = document.querySelector(
         '[data-slot="dialog-content"]'
       ) as HTMLElement | null;
       if (dialogContent) {
         dialogContent.style.bottom = "";
+        dialogContent.style.maxHeight = "";
+        dialogContent.style.height = "";
       }
     };
   }, [isMobile, open]);
@@ -88,11 +95,12 @@ export const AddPaymentCardDialog = () => {
         </DialogTrigger>
         <DialogContent
           className={cn(
-            "translate-none max-w-auto bottom-0 left-0 top-auto w-full rounded-none p-0"
+            "translate-none max-w-auto bottom-0 left-0 top-auto w-full rounded-none p-0",
+            "flex max-h-[90dvh] flex-col overflow-hidden"
           )}
           showCloseButton={false}
         >
-          <DialogHeader className="py-3.75 border-border-base flex flex-row justify-between border-b px-5">
+          <DialogHeader className="py-3.75 border-border-base flex shrink-0 flex-row justify-between border-b px-5">
             <DialogTitle className="text-text-primary text-xl font-medium">
               {t("title")}
             </DialogTitle>
@@ -100,7 +108,7 @@ export const AddPaymentCardDialog = () => {
               <Image alt="close" className="size-5" src={CloseIcon} />
             </DialogClose>
           </DialogHeader>
-          <div className="flex flex-col overflow-y-auto">
+          <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
             <DialogDescription className="text-text-tertiary mt-5 px-5 text-sm font-normal">
               {t("description")}
             </DialogDescription>

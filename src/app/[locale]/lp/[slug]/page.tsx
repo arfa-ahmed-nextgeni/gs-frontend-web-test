@@ -73,6 +73,7 @@ export async function generateMetadata({
 
   const title = seo?.pageTitle?.trim() || pageLandingData.internalName || slug;
   const description = seo?.pageDescription?.trim() || undefined;
+  const keywords = seo?.metaKeywords;
 
   const shareImages =
     seo?.shareImageUrls?.length &&
@@ -96,6 +97,7 @@ export async function generateMetadata({
       languages: hreflangs,
     },
     description,
+    keywords,
     openGraph: {
       description,
       images: shareImages,
@@ -332,9 +334,10 @@ function collectLpSlugsFromHomeContent(
         break;
       case TabContentType.TopTrendsCategoryProducts:
         const topTrendsContent = content as TopTrendsCategoryProducts;
-        addSlug(topTrendsContent.cashbackButtonUrl);
-        addSlug(topTrendsContent.cashbackCurrencyImage?.redirectUrl);
-        for (const image of topTrendsContent.bannerImages || []) {
+        for (const image of [
+          ...(topTrendsContent.desktopBannerImages ?? []),
+          ...(topTrendsContent.mobileBannerImages ?? []),
+        ]) {
           addSlug(image.redirectUrl);
         }
         break;

@@ -4,13 +4,13 @@ import { hasLocale } from "next-intl";
 
 import { routing } from "@/i18n/routing";
 import { getCartDetails } from "@/lib/actions/cart/get-cart-details";
-import { searchProductsByAttributeAction } from "@/lib/actions/catalog-service/search-products-by-category";
 import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
+import { getProductsByCategory } from "@/lib/actions/products/get-products-by-category";
 import { type Locale } from "@/lib/constants/i18n";
+import { ProductCardVariant } from "@/lib/constants/product/product-card";
 import { QueryParamsKey } from "@/lib/constants/query-params";
 import { failure, isOk, ok } from "@/lib/utils/service-result";
 
-import type { ProductCardModel } from "@/lib/models/product-card-model";
 import type { CartSuggestedProductsApiData } from "@/lib/types/cart-suggested-products";
 
 const EMPTY_CART_SUGGESTED_PRODUCTS: CartSuggestedProductsApiData = {
@@ -78,15 +78,14 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(ok(EMPTY_CART_SUGGESTED_PRODUCTS));
     }
 
-    const response = await searchProductsByAttributeAction({
+    const response = await getProductsByCategory({
       category: category.categoryId,
       locale,
-      quantity: category.maximumProducts,
+      pageSize: category.maximumProducts,
+      variant: ProductCardVariant.Single,
     });
 
-    const products = (response.items?.map((item) => ({
-      ...item?.productView,
-    })) || []) as ProductCardModel[];
+    const products = response.data?.products ?? [];
 
     return NextResponse.json(
       ok({

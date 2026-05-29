@@ -71,9 +71,6 @@ export const ProductCardMini = ({
           bulletDelivery={product.bulletDelivery}
           discountPercent={product.discountPercent}
           isBulletDeliveryEnabled={isBulletDeliveryEnabled}
-          stockStatus={
-            product.isOutOfStock ? StockStatus.OutOfStock : product.stockStatus
-          }
         />
       </div>
 
@@ -96,10 +93,10 @@ export const ProductCardMini = ({
       <div className="flex flex-1 flex-col justify-between px-3 py-2">
         <div className="flex flex-col">
           <p className="text-text-primary line-clamp-1 text-xs font-semibold leading-snug">
-            {product.name}
+            {product.brand}
           </p>
           <p className="text-text-secondary line-clamp-2 text-[11px] font-normal leading-snug">
-            {product.description}
+            {product.name}
           </p>
         </div>
 

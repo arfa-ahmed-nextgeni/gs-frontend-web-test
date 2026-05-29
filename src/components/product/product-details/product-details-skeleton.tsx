@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export const ProductDetailsSkeleton = () => {
   return (
-    <div className="col-span-6 flex flex-col gap-5 px-2.5 lg:col-span-5 lg:px-0">
+    <div className="col-span-6 flex flex-col justify-between gap-5 px-2.5 md:col-span-5 md:px-0 lg:col-span-5 lg:px-0">
       <div className="flex flex-col">
         <div className="hidden flex-col lg:flex">
           <div className="gap-1.25 flex flex-row items-center">
@@ -21,9 +21,9 @@ export const ProductDetailsSkeleton = () => {
             <Skeleton className="w-19 h-2.5" />
           </div>
         </div>
-        <Skeleton className="h-7.5 w-12.5 lg:mt-9" />
+        <Skeleton className="h-7.5 w-12.5 lg:mt-11.25 md:mt-9" />
 
-        <div className="gap-1.25 mt-3 flex flex-col lg:mt-4">
+        <div className="gap-1.25 mt-4 flex flex-col lg:mt-4">
           <div className="gap-1.25 flex flex-row flex-wrap">
             <Skeleton className="h-6.25 w-38" />
             <Skeleton className="h-6.25 w-38" />
@@ -35,11 +35,11 @@ export const ProductDetailsSkeleton = () => {
           </div>
         </div>
 
-        <div className="mt-5 flex flex-col gap-2.5 lg:mt-10">
+        <div className="mt-6.25 flex flex-col gap-2.5 md:mt-10 lg:mt-10">
           <div className="flex flex-wrap gap-2.5 overflow-x-auto">
             {[...Array(3)].map((_, index) => (
               <Skeleton
-                className="max-w-22.75 h-15 border-border-base bg-bg-default flex w-[21.1vw] flex-shrink-0 flex-col items-center justify-center gap-2 rounded-[10px] border"
+                className="max-w-22.75 h-15 border-border-base bg-bg-default flex w-[21.1vw] shrink-0 flex-col items-center justify-center gap-2 rounded-xl border"
                 key={index}
               />
             ))}
@@ -52,7 +52,7 @@ export const ProductDetailsSkeleton = () => {
                   <Skeleton className="w-12.5 h-5" />
                 </div>
                 {index !== 4 && (
-                  <span className="w-0.25 border-border-light-gray my-auto h-4/5 border" />
+                  <span className="border-border-light-gray my-auto h-4/5 w-px border" />
                 )}
               </React.Fragment>
             ))}
@@ -66,6 +66,18 @@ export const ProductDetailsSkeleton = () => {
             <Skeleton className="w-27.5 h-5" />
           </div>
           <Skeleton className="size-12.5" />
+        </div>
+
+        {/* Installments block (Tabby/Tamara) — mirrors h-11 header + h-12 row */}
+        <div className="bg-bg-default overflow-hidden rounded-xl">
+          <div className="border-border-base flex h-11 items-center justify-center border-b">
+            <Skeleton className="h-3 w-40" />
+          </div>
+          <div className="flex h-12 flex-row items-center justify-center gap-5">
+            <Skeleton className="h-6 w-16" />
+            <span className="border-border-base h-8 w-px border" />
+            <Skeleton className="h-6 w-14" />
+          </div>
         </div>
       </div>
     </div>

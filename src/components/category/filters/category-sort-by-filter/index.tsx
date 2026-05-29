@@ -11,9 +11,18 @@ import { CategorySortDropdown } from "@/components/category/filters/category-sor
 import { CategorySortDropdownSkeleton } from "@/components/category/filters/category-sort-by-filter/category-sort-dropdown-skeleton";
 import Container from "@/components/shared/container";
 import { SortStatusDropdownProvider } from "@/contexts/sort-status-dropdown-context";
-import { CATEGORY_SORT_OPTIONS } from "@/lib/constants/category/category-sort";
+import {
+  CATEGORY_SORT_OPTIONS,
+  type ProductListingSortMode,
+} from "@/lib/constants/category/category-sort";
 
-export const CategorySortByFilter = ({ isMobile }: { isMobile?: boolean }) => {
+export const CategorySortByFilter = ({
+  isMobile,
+  listingType = "category",
+}: {
+  isMobile?: boolean;
+  listingType?: ProductListingSortMode;
+}) => {
   const t = useTranslations("category.sortDropdown");
 
   if (isMobile) {
@@ -40,7 +49,9 @@ export const CategorySortByFilter = ({ isMobile }: { isMobile?: boolean }) => {
 
   return (
     <Container className="mt-5 hidden w-full flex-col items-end lg:flex">
-      <Suspense fallback={<CategorySortDropdownSkeleton />}>
+      <Suspense
+        fallback={<CategorySortDropdownSkeleton listingType={listingType} />}
+      >
         <SortStatusDropdownProvider>
           <CategorySortDropdown />
         </SortStatusDropdownProvider>

@@ -13,6 +13,7 @@ import {
 } from "@/lib/utils/analytics";
 
 interface CategoryProductsClientWrapperProps {
+  categoryId?: number;
   categoryMetadata?: {
     name: string;
     uid: string;
@@ -30,6 +31,7 @@ interface CategoryProductsClientWrapperProps {
 }
 
 export function CategoryProductsClientWrapper({
+  categoryId,
   categoryMetadata,
   categoryPath,
   categoryUid,
@@ -67,6 +69,7 @@ export function CategoryProductsClientWrapper({
     <div className="lg:hidden">
       <ErrorBoundary fallback={<ProductLoadError />}>
         <MobileCategoryProducts
+          categoryId={categoryId}
           categoryMetadata={categoryMetadata}
           categoryPath={categoryPath}
           categoryUid={categoryUid}

@@ -19,7 +19,7 @@ export default function CheckoutPageLoading() {
     <>
       {/* Header Skeleton */}
       {/* Mobile Header */}
-      <div className="mb-5 flex h-[50px] items-center justify-between bg-white px-4 py-4 lg:hidden">
+      <div className="h-12.5 mb-5 flex items-center justify-between bg-white px-4 py-4 lg:hidden">
         <div className="flex items-center gap-3">
           <Skeleton className="h-5 w-5" />
           <Skeleton className="h-6 w-32" />
@@ -28,7 +28,7 @@ export default function CheckoutPageLoading() {
       </div>
 
       {/* Desktop Header */}
-      <div className="bg-bg-default px-30 mb-5 hidden h-[70px] grid-cols-[1fr_auto_1fr] items-center py-4 lg:grid">
+      <div className="bg-bg-default px-30 h-17.5 mb-5 hidden grid-cols-[1fr_auto_1fr] items-center py-4 lg:grid">
         <div className="flex items-center">
           <Skeleton className="h-10 w-32" />
         </div>
@@ -42,10 +42,10 @@ export default function CheckoutPageLoading() {
       </div>
 
       {/* Main Content */}
-      <div className="mx-auto w-full max-w-[1200px] px-4 pb-32 lg:pb-24">
+      <div className="max-w-300 mx-auto w-full px-4 pb-32 lg:pb-24">
         <div className="grid grid-cols-1 gap-2.5 lg:grid-cols-[1fr_400px]">
           {/* Left Column */}
-          <div className="flex flex-col gap-3.5 lg:w-[800px] lg:gap-5">
+          <div className="lg:w-200 flex flex-col gap-3.5 lg:gap-5">
             {/* Edit Bag Link Skeleton */}
             <div className="mb-2.5 hidden lg:block">
               <Skeleton className="h-5 w-24" />

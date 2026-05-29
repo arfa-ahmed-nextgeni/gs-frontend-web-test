@@ -16,8 +16,8 @@ import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
 import { Locale } from "@/lib/constants/i18n";
 import { PromoBanner } from "@/lib/models/promo-banner";
 import { WebsiteFooter } from "@/lib/models/website-footer";
-import { MainMenuType } from "@/lib/types/ui-types";
-import { normalizeStyles } from "@/lib/utils/style-normalization";
+import { HeaderNavigationType } from "@/lib/types/ui-types";
+import { normalizeNavigationItems } from "@/lib/utils/normalize-navigation-items";
 
 import type { CookieConsentPromptModel } from "@/lib/models/cookie-consent-prompt-model";
 import type { OpenAppPromptModel } from "@/lib/models/open-app-prompt-model";
@@ -31,24 +31,18 @@ export async function AppRootProvider({
   ]);
 
   let cookieConsentPrompt: CookieConsentPromptModel | undefined;
-  let navigationItems: MainMenuType[] = [];
+  let headerNavigation: HeaderNavigationType = { items: [] };
   let websiteFooter: undefined | WebsiteFooter;
   let promoBanner: PromoBanner | undefined;
   let openAppPrompt: OpenAppPromptModel | undefined;
 
   if (pageLandingResult.status === "fulfilled" && pageLandingResult.value) {
     const pageData = pageLandingResult.value;
-    navigationItems = (pageData.siteNavigation?.items ?? []).map((item) => ({
-      id: String(item.id),
-      label: item.label,
-      path: item.path,
-      style: normalizeStyles(item.style),
-      subMenu: item.subMenu?.map((sub) => ({
-        ...sub,
-        id: String(sub.id),
-        style: normalizeStyles(sub.style),
-      })),
-    }));
+    headerNavigation = {
+      items: normalizeNavigationItems(pageData.siteNavigation?.items),
+      menuHeaderLabel: pageData.siteNavigation?.menuHeaderLabel,
+      seeAllLabel: pageData.siteNavigation?.seeAllLabel,
+    };
     cookieConsentPrompt = pageData.cookieConsentPrompt;
     websiteFooter = pageData.websiteFooter;
     promoBanner = pageData.promoBanner;
@@ -70,7 +64,7 @@ export async function AppRootProvider({
         <Providers dir={direction}>
           <GlobalLinkLoadingBar />
           <ConditionalHeaderFooter
-            navigationItems={navigationItems}
+            headerNavigation={headerNavigation}
             promoBanner={promoBanner}
             websiteFooter={websiteFooter}
           >

@@ -1,11 +1,8 @@
-"use client";
+﻿"use client";
 
-import { useEffect } from "react";
+import { ErrorBoundary } from "@/components/shared/error-boundary";
 
-import { useTranslations } from "next-intl";
-
-import { CustomerServiceOverlay } from "@/components/shared/customer-service/customer-service-overlay";
-import { MaintenanceErrorFallback } from "@/components/shared/maintenance-error-fallback";
+import PageLoading from "./loading";
 
 type ErrorProps = {
   error: { digest?: string } & Error;
@@ -13,20 +10,11 @@ type ErrorProps = {
 };
 
 export default function Error({ error, reset }: ErrorProps) {
-  const t = useTranslations("errors.maintenance");
-
-  useEffect(() => {
-    console.error(error);
-  }, [error]);
-
   return (
-    <CustomerServiceOverlay>
-      <MaintenanceErrorFallback
-        description={t("description")}
-        onRetry={reset}
-        retryLabel={t("retry")}
-        title={t("title")}
-      />
-    </CustomerServiceOverlay>
+    <ErrorBoundary
+      error={error}
+      loadingFallback={<PageLoading />}
+      reset={reset}
+    />
   );
 }

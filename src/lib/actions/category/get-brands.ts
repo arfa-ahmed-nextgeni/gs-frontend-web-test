@@ -119,7 +119,7 @@ export const getBrands = ({ locale }: { locale: Locale }) =>
 
 const getBrandsCached = cache(async (locale: Locale) => {
   "use cache";
-  cacheTag(CacheTags.Magento);
+  cacheTag(CacheTags.Magento, CacheTags.Brands);
 
   try {
     const response = await graphqlRequest({

@@ -20,7 +20,12 @@ import {
 } from "@/i18n/client-navigation";
 import { trackFilterApply } from "@/lib/analytics/events";
 import { PRICE_RANGE_BOUNDS } from "@/lib/constants/category/category-filters";
-import { CategorySortKey } from "@/lib/constants/category/category-sort";
+import {
+  CategorySortKey,
+  getDefaultSortKey,
+  isDefaultSortForListing,
+  type ProductListingSortMode,
+} from "@/lib/constants/category/category-sort";
 import { QueryParamsKey } from "@/lib/constants/query-params";
 
 export type CategoryFilters = {
@@ -68,12 +73,15 @@ const RESERVED_QUERY_KEYS = new Set([
   QueryParamsKey.Search,
   QueryParamsKey.Sort,
 ]);
-const PRICE_QUERY_DEBOUNCE = debounce(300);
+const PRICE_QUERY_DEBOUNCE = debounce(800);
 
 type CategoryFilterContextValue = {
   clearAllFiltersExceptSearch: () => void;
   clearCheckboxesForSection: (section: string) => void;
+  defaultSortKey: ReturnType<typeof getDefaultSortKey>;
+  isDefaultSort: (sortBy?: string) => boolean;
   isNavigationPending: boolean;
+  listingType: ProductListingSortMode;
   resetToDefaults: () => void;
   setCheckboxesBulk: (map: Record<string, string[]>) => void;
   setCheckboxesForSection: (section: string, values: string[]) => void;
@@ -160,7 +168,18 @@ const CategoryFilterContext = createContext<
   CategoryFilterContextValue | undefined
 >(undefined);
 
-export function CategoryFilterProvider({ children }: { children: ReactNode }) {
+export function CategoryFilterProvider({
+  children,
+  listingType = "category",
+}: {
+  children: ReactNode;
+  listingType?: ProductListingSortMode;
+}) {
+  const defaultSortKey = getDefaultSortKey(listingType);
+  const isDefaultSort = useCallback(
+    (sortBy?: string) => isDefaultSortForListing(sortBy, listingType),
+    [listingType]
+  );
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -242,6 +261,7 @@ export function CategoryFilterProvider({ children }: { children: ReactNode }) {
       router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, {
         scroll: false,
       });
+      router.refresh();
     },
     [pathname, router]
   );
@@ -268,9 +288,14 @@ export function CategoryFilterProvider({ children }: { children: ReactNode }) {
   const setCheckboxesForSection = useCallback(
     (section: string, values: string[]) => {
       const attribute = getAttributeFromFilterId(section);
-      const normalizedValues = Array.from(
-        new Set(values.map((value) => value.trim()))
-      ).filter((value) => value.length > 0);
+      // Preserve raw values (including any leading/trailing whitespace) so
+      // they round-trip exactly between checkbox value, URL, and server query.
+      // Upstream attribute values like "Eucerin " carry trailing whitespace and
+      // trimming here breaks selection (URL has trimmed value, checkbox value
+      // has space, includes() never matches, user cannot deselect).
+      const normalizedValues = Array.from(new Set(values)).filter(
+        (value) => value.length > 0
+      );
 
       updateParams((params) => {
         params.delete(attribute);
@@ -379,7 +404,10 @@ export function CategoryFilterProvider({ children }: { children: ReactNode }) {
     () => ({
       clearAllFiltersExceptSearch,
       clearCheckboxesForSection,
+      defaultSortKey,
+      isDefaultSort,
       isNavigationPending,
+      listingType,
       resetToDefaults,
       setCheckboxesBulk,
       setCheckboxesForSection,
@@ -391,7 +419,10 @@ export function CategoryFilterProvider({ children }: { children: ReactNode }) {
     [
       clearAllFiltersExceptSearch,
       clearCheckboxesForSection,
+      defaultSortKey,
+      isDefaultSort,
       isNavigationPending,
+      listingType,
       resetToDefaults,
       setCheckboxesBulk,
       setCheckboxesForSection,

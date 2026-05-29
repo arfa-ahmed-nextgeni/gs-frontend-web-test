@@ -16,3 +16,22 @@ export function isContentfulSrc(src: string) {
     return false;
   }
 }
+
+const PLACEHOLDER_IMAGE_PATH = "/placeholder/";
+
+export function resolveProductImageUrl(
+  variantUrl?: null | string,
+  parentUrl?: null | string
+): string {
+  if (variantUrl && !isPlaceholderImageUrl(variantUrl)) {
+    return variantUrl;
+  }
+  if (parentUrl && !isPlaceholderImageUrl(parentUrl)) {
+    return parentUrl;
+  }
+  return "";
+}
+
+function isPlaceholderImageUrl(url?: null | string): boolean {
+  return !!url && url.includes(PLACEHOLDER_IMAGE_PATH);
+}

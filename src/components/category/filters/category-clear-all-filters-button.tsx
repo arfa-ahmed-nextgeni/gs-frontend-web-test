@@ -5,13 +5,13 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { useFilters } from "@/contexts/category-filter-context";
-import { CategorySortKey } from "@/lib/constants/category/category-sort";
 import { cn } from "@/lib/utils";
 
 export const CategoryClearAllFiltersButton = () => {
   const t = useTranslations("category.filtersSection");
   const {
     clearAllFiltersExceptSearch,
+    isDefaultSort,
     state: { checkboxes, priceMax, priceMin, sortBy },
   } = useFilters();
 
@@ -26,7 +26,7 @@ export const CategoryClearAllFiltersButton = () => {
     (Object.keys(checkboxes).some((key) => checkboxes[key]?.length > 0) ||
       priceMin !== null ||
       priceMax !== null ||
-      (sortBy && sortBy !== CategorySortKey.Relevance));
+      (sortBy && !isDefaultSort(sortBy)));
 
   if (!hasActiveFilters) {
     return null;

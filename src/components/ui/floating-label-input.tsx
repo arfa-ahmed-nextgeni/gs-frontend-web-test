@@ -12,6 +12,7 @@ export const FloatingLabelInput = ({
   dateInputPickerButtonProps,
   error,
   helperText,
+  helperTextClassName,
   iconContainerProps,
   inputProps,
   label,
@@ -25,6 +26,7 @@ export const FloatingLabelInput = ({
   >;
   error?: boolean;
   helperText?: string;
+  helperTextClassName?: string;
   iconContainerProps?: React.ComponentProps<"div">;
   inputProps?: React.ComponentProps<"input">;
   label?: string;
@@ -140,10 +142,14 @@ export const FloatingLabelInput = ({
       {/* --- Helper/Error Text (Fixed Height) --- */}
       {helperText && (
         <p
-          className={cn("text-end text-xs font-normal transition-all", {
-            "text-text-danger": error,
-            "text-text-tertiary": !error,
-          })}
+          className={cn(
+            "text-end text-xs font-normal transition-all",
+            {
+              "text-text-danger": error,
+              "text-text-tertiary": !error,
+            },
+            helperTextClassName
+          )}
         >
           {helperText}
         </p>

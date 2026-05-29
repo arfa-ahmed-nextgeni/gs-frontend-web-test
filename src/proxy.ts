@@ -6,6 +6,7 @@ import { routing } from "@/i18n/routing";
 import { getAuthToken } from "@/lib/actions/auth/get-auth-token";
 import { CookieName } from "@/lib/constants/cookies";
 import { PaymentStatus } from "@/lib/constants/payment-status";
+import { QueryParamsKey } from "@/lib/constants/query-params";
 import { ROUTES } from "@/lib/constants/routes";
 import { PendingOrderInfo } from "@/lib/types/checkout/order";
 import { getOpenAppRedirectResponse } from "@/lib/utils/open-app-redirect";
@@ -97,6 +98,8 @@ async function authMiddleware(request: NextRequest, response: NextResponse) {
       refillCartPath,
       pendingOrderInfoParsed.baseUrl
     );
+    const requestedRoute = `${request.nextUrl.pathname}${request.nextUrl.search}`;
+    refillCartUrl.searchParams.set(QueryParamsKey.To, requestedRoute);
 
     return NextResponse.redirect(refillCartUrl, 303);
   }

@@ -9,6 +9,7 @@ import {
   PaginationProvider,
   usePagination,
 } from "@/contexts/pagination-context";
+import { useMinimumLoadingDuration } from "@/hooks/use-minimum-loading-duration";
 
 interface CategoryProductsDesktopShellProps {
   children: ReactNode;
@@ -38,7 +39,9 @@ function CategoryProductsDesktopShellContent({
 }: CategoryProductsDesktopShellProps) {
   const { isLoading: isPageLoading } = usePagination();
   const { isNavigationPending } = useFilters();
-  const isLoading = isNavigationPending || isPageLoading;
+  const isLoading = useMinimumLoadingDuration(
+    isNavigationPending || isPageLoading
+  );
 
   return (
     <div className="flex flex-col gap-8">

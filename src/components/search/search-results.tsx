@@ -6,7 +6,9 @@ import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 
 import RecentSearches from "@/components/search/recent-searches";
-import SearchBrandPills from "@/components/search/search-brand-pills";
+import SearchBrandPills, {
+  type BrandSuggestion,
+} from "@/components/search/search-brand-pills";
 import {
   useSearchActions,
   useSearchUiState,
@@ -16,12 +18,17 @@ import { SearchSuggestion } from "@/components/search/search-suggestion";
 import {
   clearStoredRecentSearches,
   getStoredRecentSearches,
+  saveRecentSearch,
 } from "@/components/search/utils/search-storage";
+import { Spinner } from "@/components/ui/spinner";
 import { useSearchAutocomplete } from "@/hooks/product/use-search-client";
+import { Link } from "@/i18n/navigation";
 import { type Locale } from "@/lib/constants/i18n";
+import { ROUTES } from "@/lib/constants/routes";
+import { SEARCH_MIN_QUERY_LENGTH } from "@/lib/constants/search";
 import { cn } from "@/lib/utils";
 
-const extractBrandsFromFacets = (facets: any[]): string[] => {
+const extractBrandsFromFacets = (facets: any[]): BrandSuggestion[] => {
   const brandFacet = facets.find(
     (facet: any) => facet.attribute === "brand_new"
   );
@@ -29,9 +36,16 @@ const extractBrandsFromFacets = (facets: any[]): string[] => {
   if (!brandFacet || !brandFacet.buckets) {
     return [];
   }
+
+  // urlPath is injected server-side in /api/search/route.ts by matching
+  // brand names against the full cached getBrands() list, covering all
+  // brands regardless of what appears in the categories facet.
   return brandFacet.buckets
-    .map((bucket: any) => bucket.title)
-    .filter((title: string) => title && title.trim())
+    .filter((bucket: any) => bucket.title && bucket.title.trim())
+    .map((bucket: any) => ({
+      title: bucket.title,
+      urlPath: bucket.urlPath,
+    }))
     .slice(0, 6);
 };
 
@@ -47,7 +61,6 @@ export const SearchResults = ({
     handleBrandClick,
     handleRecentSearchClick,
     handleSuggestionClick,
-    handleViewAll,
     setHasDropdownContent,
   } = useSearchActions();
   const { hasDropdownContent, queryText } = useSearchUiState();
@@ -56,31 +69,46 @@ export const SearchResults = ({
     getStoredRecentSearches()
   );
 
-  const { data: searchData, isLoading } = useSearchAutocomplete(
+  const { data: searchData, isPending } = useSearchAutocomplete(
     { locale, text: queryText },
     inputFocus
   );
-  const searchResults = searchData?.products;
-  const suggestions = searchData?.suggestions || [];
-  const totalCount = searchData?.totalCount || 0;
 
   const t = useTranslations("HomePage.header.search");
-  const nextHasDropdownContent =
-    isLoading || !!searchResults?.length || !!recentSearches.length;
 
-  const brands = useMemo(() => {
+  const trimmedQuery = queryText.trim();
+  const canSearch = trimmedQuery.length >= SEARCH_MIN_QUERY_LENGTH;
+  const searchResults = canSearch ? searchData?.products || [] : [];
+  const suggestions = canSearch ? searchData?.suggestions || [] : [];
+  const totalCount = canSearch ? searchData?.totalCount || 0 : 0;
+  const brands = useMemo<BrandSuggestion[]>(() => {
+    if (!canSearch) {
+      return [];
+    }
+
     const facets = searchData?.facets || [];
-
     return facets.length > 0 ? extractBrandsFromFacets(facets) : [];
-  }, [searchData?.facets]);
+  }, [canSearch, searchData?.facets]);
+
+  const hasResults = searchResults.length > 0;
+  const showSearchSpinner = canSearch && isPending && !hasResults;
+
+  const nextHasDropdownContent =
+    showSearchSpinner ||
+    hasResults ||
+    suggestions.length > 0 ||
+    brands.length > 0 ||
+    !!recentSearches.length;
 
   useEffect(() => {
     setHasDropdownContent(nextHasDropdownContent);
+  }, [nextHasDropdownContent, setHasDropdownContent]);
 
+  useEffect(() => {
     return () => {
       setHasDropdownContent(false);
     };
-  }, [nextHasDropdownContent, setHasDropdownContent]);
+  }, [setHasDropdownContent]);
 
   if (!inputFocus) return null;
 
@@ -99,16 +127,28 @@ export const SearchResults = ({
         "max-h-[80dvh] rounded-b-3xl ltr:left-0 rtl:right-0": !isMobile,
       })}
     >
-      {searchResults && searchResults.length > 0 ? (
+      {showSearchSpinner ? (
+        <div
+          aria-busy="true"
+          aria-live="polite"
+          className="flex items-center justify-center py-10"
+        >
+          <Spinner size={24} variant="dark" />
+        </div>
+      ) : hasResults ? (
         <div className="px-2 pb-7 pt-5">
           <div>
             <h3 className="text-text-primary mx-4 text-sm font-semibold">
               {t("bestResults")}
             </h3>
             <div className="space-y-0">
-              {searchResults.slice(0, 5).map((product, index) => {
+              {searchResults!.slice(0, 5).map((product, index) => {
                 return (
-                  <div key={product.id || Math.random()}>
+                  <div
+                    key={
+                      product.id ? String(product.id) : `search-result-${index}`
+                    }
+                  >
                     <SearchResultItem
                       onClick={clear}
                       position={index + 1}
@@ -124,14 +164,17 @@ export const SearchResults = ({
             </div>
           </div>
 
-          {searchResults.length > 0 && (
+          {trimmedQuery && (
             <div className="mb-5 mt-2 bg-[#F9F9F9] py-1 text-center">
-              <button
+              <Link
                 className="text-xs font-semibold text-gray-700 hover:text-gray-900"
-                onClick={handleViewAll}
+                href={`${ROUTES.SEARCH}?q=${encodeURIComponent(trimmedQuery)}`}
+                onClick={() => {
+                  saveRecentSearch(trimmedQuery);
+                }}
               >
                 {t("viewAllProducts", { count: totalCount.toString() })}
-              </button>
+              </Link>
             </div>
           )}
 

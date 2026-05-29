@@ -15,6 +15,7 @@ import { isNotifyMePath } from "@/lib/utils/routes";
 
 export type MobileTopBarType = {
   handleBack: (() => void) | null;
+  handleBackNavigates: boolean;
   mobileTopBarTitle: null | string;
   productInfo: {
     brand: string;
@@ -26,7 +27,10 @@ export type MobileTopBarType = {
     type?: string;
   } | null;
   resetProductInfo: () => void;
-  setHandleBack: (fn: (() => void) | null) => void;
+  setHandleBack: (
+    fn: (() => void) | null,
+    options?: { navigates?: boolean }
+  ) => void;
   setMobileTopBarTitle: Dispatch<SetStateAction<null | string>>;
   setProductInfo: Dispatch<
     SetStateAction<{
@@ -47,6 +51,7 @@ export const MobileTopBarContextProvider = ({
   children,
 }: React.PropsWithChildren) => {
   const [handleBack, setHandleBackState] = useState<(() => void) | null>(null);
+  const [handleBackNavigates, setHandleBackNavigates] = useState(false);
   const [mobileTopBarTitle, setMobileTopBarTitle] = useState<null | string>(
     null
   );
@@ -63,9 +68,13 @@ export const MobileTopBarContextProvider = ({
   const { isProduct, pathname } = useRouteMatch();
   const isNotifyMe = isNotifyMePath(pathname);
 
-  const setHandleBack = useCallback((fn: (() => void) | null) => {
-    setHandleBackState(() => fn);
-  }, []);
+  const setHandleBack = useCallback(
+    (fn: (() => void) | null, options?: { navigates?: boolean }) => {
+      setHandleBackNavigates(!!fn && !!options?.navigates);
+      setHandleBackState(() => fn);
+    },
+    []
+  );
 
   const resetProductInfo = useCallback(() => {
     setProductInfo(null);
@@ -83,6 +92,7 @@ export const MobileTopBarContextProvider = ({
     <MobileTopBar.Provider
       value={{
         handleBack,
+        handleBackNavigates,
         mobileTopBarTitle,
         productInfo,
         resetProductInfo,

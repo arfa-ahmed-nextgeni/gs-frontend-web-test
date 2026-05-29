@@ -1,5 +1,6 @@
 import { CurrencyEnum, GetProductBasicInfoQuery } from "@/graphql/graphql";
 import { Helper } from "@/lib/models/helper";
+import { resolveProductImageUrl } from "@/lib/utils/image";
 
 export class ProductBasicInfo extends Helper {
   brand: string;
@@ -25,7 +26,7 @@ export class ProductBasicInfo extends Helper {
     this.name = product?.name || "";
     this.id = product?.id || undefined;
     this.brand = product?.brand_new_label || "";
-    this.image = product?.thumbnail?.url || "";
+    this.image = resolveProductImageUrl(product?.thumbnail?.url);
     this.ratingSummary = this.convertRating(product?.rating_summary);
     this.reviewsCount = product?.review_count || 0;
 

@@ -15,6 +15,7 @@ import { getCurrentCustomer } from "@/lib/actions/customer/get-current-customer"
 import { getCustomerAddresses } from "@/lib/actions/customer/get-customer-addresses";
 import { getCustomerPaymentCards } from "@/lib/actions/customer/get-customer-payment-cards";
 import { ROUTES } from "@/lib/constants/routes";
+import { getLoginUrlWithRedirect } from "@/lib/utils/auth-redirect";
 import { getStoreCode, isGlobalStore } from "@/lib/utils/country";
 import { generateAbsoluteCanonicalUrl } from "@/lib/utils/seo";
 import { isError, isOk, isUnauthenticated } from "@/lib/utils/service-result";
@@ -81,7 +82,7 @@ async function Checkout({ locale }: { locale: Locale }) {
     if (isMobile) {
       // Mobile: redirect to login page
       redirect({
-        href: `${ROUTES.CUSTOMER.LOGIN}?redirect=${encodeURIComponent("/checkout")}`,
+        href: getLoginUrlWithRedirect(ROUTES.CHECKOUT.ROOT),
         locale,
       });
     } else {
@@ -226,7 +227,12 @@ async function Checkout({ locale }: { locale: Locale }) {
         customerInfo={customerInfo}
         initialAddresses={initialAddresses}
         initialPaymentCards={initialPaymentCards}
-        logoSlot={<SiteLogo className="h-10 w-auto" />}
+        logoSlot={
+          <SiteLogo
+            className="h-10 max-h-10 w-auto object-contain"
+            preserveIntrinsicHeight={false}
+          />
+        }
       />
     </>
   );

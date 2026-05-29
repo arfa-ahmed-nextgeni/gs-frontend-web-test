@@ -80,6 +80,7 @@ export type CategoryProductsData = {
 export type ComponentSeoData = {
   canonicalUrl?: string;
   internalName?: string;
+  metaKeywords?: string;
   nofollow?: boolean;
   noindex?: boolean;
   pageDescription?: string;
@@ -271,16 +272,13 @@ export type TitleAndDescriptionData = {
 export type TopTrendsData = {
   autoSliding?: boolean;
   autoSlidingDelay?: number;
-  banners?: {
+  desktopBanners?: {
     fields: ContentfulImageData;
   }[];
-  cashbackButtonTitle?: string;
-  cashbackButtonUrl?: string;
-  cashbackCurrencyImage?: {
-    fields: ContentfulImageData;
-  };
-  cashbackTitle?: Document;
   maximumProducts?: number;
+  mobileBanners?: {
+    fields: ContentfulImageData;
+  }[];
   productsCategoryId?: string;
   showViewAll?: boolean;
   title?: Document;

@@ -8,6 +8,15 @@ import {
 import { CacheTags } from "@/lib/constants/cache/tags";
 
 const VALID_TAGS = Object.values(CacheTags) as string[];
+const PUBLIC_GET_REVALIDATABLE_TAGS = new Set<string>([
+  CacheTags.Brands,
+  CacheTags.Catalog,
+  CacheTags.CategoryProducts,
+  CacheTags.CategoryRouteShell,
+  CacheTags.Magento,
+  CacheTags.ProductDetails,
+  CacheTags.StoreConfig,
+]);
 
 export async function GET(
   request: NextRequest,
@@ -19,11 +28,11 @@ export async function GET(
     return NextResponse.json({ message: "Invalid tag" }, { status: 400 });
   }
 
-  if (tag === CacheTags.Magento) {
+  if (PUBLIC_GET_REVALIDATABLE_TAGS.has(tag)) {
     try {
       revalidateTag(tag, { expire: 0 });
 
-      console.info(`🔄 Cache revalidated via GET (magento):`, {
+      console.info(`🔄 Cache revalidated via GET:`, {
         method: "GET",
         tag,
         timestamp: new Date().toISOString(),

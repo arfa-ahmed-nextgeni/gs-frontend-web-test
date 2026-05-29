@@ -1,4 +1,10 @@
 import {
+  ConfigurableWishlistItem,
+  CurrencyEnum,
+  GetCustomerWishlistQuery,
+  SimpleWishlistItem,
+} from "@/graphql/graphql";
+import {
   ProductCardVariant,
   ProductOptionType,
 } from "@/lib/constants/product/product-card";
@@ -7,13 +13,10 @@ import {
   ProductCardModel,
   type ProductOption,
 } from "@/lib/models/product-card-model";
+import { resolveProductImageUrl } from "@/lib/utils/image";
+import { isBundlesProductType } from "@/lib/utils/product-type";
 
-import type {
-  ConfigurableProduct,
-  ConfigurableWishlistItem,
-  CurrencyEnum,
-  GetCustomerWishlistQuery,
-} from "@/graphql/graphql";
+type WishlistItemType = ConfigurableWishlistItem | SimpleWishlistItem;
 
 export class Wishlist {
   id: string;
@@ -26,11 +29,9 @@ export class Wishlist {
       data?.customer?.wishlists[0]?.items_v2?.page_info?.total_pages || 1;
     this.items =
       data?.customer?.wishlists[0]?.items_v2?.items
-        .filter((item) => item?.product !== undefined)
-        .map(
-          (item) =>
-            new WishlistItem(item as unknown as ConfigurableWishlistItem)
-        ) || [];
+        ?.filter((item): item is NonNullable<typeof item> => !!item)
+        .map((item) => new WishlistItem(item as unknown as WishlistItemType)) ||
+      [];
   }
 }
 
@@ -41,13 +42,9 @@ export class WishlistItem extends ProductCardModel {
   isConfigurable = false;
   size?: string;
 
-  constructor({ __typename, id, product, ...item }: ConfigurableWishlistItem) {
-    const minPrice = product?.price_range?.minimum_price;
-    const finalPrice = minPrice?.final_price?.value || 0;
-    const regularPrice = minPrice?.regular_price?.value;
-
+  constructor({ __typename, id, product, ...item }: WishlistItemType) {
+    let minPrice = product?.price_range?.minimum_price;
     let options: ProductOption | undefined = undefined;
-    let stockStatus = product?.stock_status || "";
     let bulletDelivery = false;
     let externalId = product?.id ? product?.id.toString() : "";
     let sku = product?.sku || "";
@@ -55,57 +52,74 @@ export class WishlistItem extends ProductCardModel {
     let skuParent: string | undefined = undefined;
     let color: string | undefined = undefined;
     let size: string | undefined = undefined;
+    let variantStockStatus: string | undefined = undefined;
+    let variantImageUrl: string | undefined = undefined;
 
     if (__typename === "ConfigurableWishlistItem") {
-      const configurableProduct = product as ConfigurableProduct;
+      const confItem = item as ConfigurableWishlistItem;
 
-      const sizeOpt = item.configurable_options?.find((opt) =>
+      if (confItem.configured_variant) {
+        parentId = externalId;
+        skuParent = sku;
+        externalId = `${confItem.configured_variant.id ?? ""}`;
+        sku = confItem.configured_variant.sku || sku;
+        variantStockStatus =
+          (confItem.configured_variant as any).stock_status ?? undefined;
+        variantImageUrl =
+          confItem.configured_variant?.thumbnail?.url || undefined;
+      }
+
+      const sizeOpt = confItem.configurable_options?.find((opt) =>
         opt?.option_label?.toLowerCase().includes("size")
       );
       size = sizeOpt?.value_label || undefined;
 
-      const colorOpt = item.configurable_options?.find((opt) =>
+      const colorOpt = confItem.configurable_options?.find((opt) =>
         opt?.option_label?.toLowerCase().includes("color")
       );
       color = colorOpt?.value_label || undefined;
 
       options = {
         choices:
-          item.configurable_options?.map((option) => ({
+          confItem.configurable_options?.map((option) => ({
             inStock: true,
             label: option?.value_label || "",
             value: option?.configurable_product_option_value_uid || "",
           })) || [],
         type: ProductOptionType.Size,
       };
+      minPrice = confItem?.configured_variant?.price_range.minimum_price;
 
-      stockStatus = item.configured_variant?.stock_status || "";
       bulletDelivery = Helper.isFlagEnabled(
-        item.configured_variant?.express_delivery_available
+        confItem.configured_variant?.express_delivery_available
       );
+    } else {
+      const simpleItem = item as SimpleWishlistItem;
 
-      if (
-        configurableProduct?.__typename === "ConfigurableProduct" &&
-        item.configured_variant?.id
-      ) {
-        parentId = externalId;
-        skuParent = sku;
-        externalId = item.configured_variant.id.toString();
-        sku = item.configured_variant.sku || sku;
-      }
+      bulletDelivery = Helper.isFlagEnabled(
+        simpleItem.product?.express_delivery_available
+      );
     }
 
-    const productType = product?.product_type_new2 || undefined;
+    const finalPrice = minPrice?.final_price?.value || 0;
+    const regularPrice = minPrice?.regular_price?.value;
+    const currency = minPrice?.final_price.currency || ("SAR" as CurrencyEnum);
+    const discountPercent = minPrice?.discount?.percent_off || undefined;
+    const savedAmount = minPrice?.discount?.amount_off || 0;
+    const productType = product?.product_type_new2_label || undefined;
 
     super({
       brand: product?.brand_new_label || "",
       bulletDelivery,
-      currency: minPrice?.final_price.currency || ("SAR" as CurrencyEnum),
+      currency,
       description: product?.short_description?.html || "",
-      discountPercent: minPrice?.discount?.percent_off || undefined,
+      discountPercent,
       externalId,
       id: product?.uid || "",
-      imageUrl: product?.thumbnail?.url || "",
+      imageUrl: resolveProductImageUrl(
+        variantImageUrl,
+        product?.thumbnail?.url
+      ),
       name: product?.name || "",
       oldPrice: regularPrice || undefined,
       options,
@@ -113,12 +127,15 @@ export class WishlistItem extends ProductCardModel {
       price: finalPrice,
       productType,
       ratingSummary: product?.rating_summary,
-      savedAmount: 0,
+      savedAmount,
+      savedCurrency: currency,
       sku,
       skuParent,
-      stockStatus,
+      stockStatus: variantStockStatus || product?.stock_status || "",
       urlKey: product?.url_key || "",
-      variant: ProductCardVariant.Single,
+      variant: isBundlesProductType(productType)
+        ? ProductCardVariant.Bundles
+        : ProductCardVariant.Single,
     });
 
     this.idInWishlist = id;
@@ -126,8 +143,10 @@ export class WishlistItem extends ProductCardModel {
     this.size = size;
 
     if (__typename === "ConfigurableWishlistItem") {
+      const confItem = item as ConfigurableWishlistItem;
+
       this.isConfigurable = true;
-      this.childSku = item.configured_variant?.sku || undefined;
+      this.childSku = confItem?.configured_variant?.sku || undefined;
     }
   }
 }

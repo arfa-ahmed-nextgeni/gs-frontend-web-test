@@ -14,6 +14,9 @@ export const CategoryProductsCarouselItemsSkeleton = ({
 }) => {
   return (
     <CardRailScrollSnapCarousel
+      contentProps={{
+        className: "gap-[9.6px]",
+      }}
       nextButtonProps={{
         className: "xl:translate-x-15 xl:rtl:-translate-x-15",
       }}
@@ -29,7 +32,7 @@ export const CategoryProductsCarouselItemsSkeleton = ({
     >
       {[...Array(maximumProducts)].map((_, index) => (
         <CardRailScrollSnapCarouselItem key={index}>
-          <ProductCardSkeleton variant={variant} />
+          <ProductCardSkeleton isInCarousel variant={variant} />
         </CardRailScrollSnapCarouselItem>
       ))}
     </CardRailScrollSnapCarousel>

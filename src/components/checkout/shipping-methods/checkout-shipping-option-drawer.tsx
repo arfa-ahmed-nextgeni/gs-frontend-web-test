@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 
 import Image from "next/image";
 import type { StaticImageData } from "next/image";
@@ -112,9 +112,12 @@ export function CheckoutShippingOptionDrawer({
     ShippingMethod[]
   >([]);
   const [isLoadingMethods, setIsLoadingMethods] = useState(true);
-  const [pendingLockerRoute, setPendingLockerRoute] = useState<null | string>(
-    null
-  );
+  const [pendingNavigation, setPendingNavigation] = useState(false);
+  // Keep a ref to onClose so the route-change effect always calls the latest version
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
 
   // Prefetch add-pickup-point and add-delivery-address routes for better performance
   useEffect(() => {
@@ -134,14 +137,15 @@ export function CheckoutShippingOptionDrawer({
     }
   }, [initialSelectedOption]);
 
-  // Close drawer when route changes to add pickup point page or add delivery address page
+  // Once the target route is active (new drawer mounted), close this drawer.
+  // This avoids a visible gap between drawers while still preventing focus conflicts
+  // by blurring the active element before navigation starts.
   useEffect(() => {
-    if (pendingLockerRoute && (isAddPickupPoint || isAddDeliveryAddress)) {
-      // Route has changed to add pickup point or add delivery address, close the drawer
-      onClose();
-      setPendingLockerRoute(null);
+    if (pendingNavigation && (isAddPickupPoint || isAddDeliveryAddress)) {
+      setPendingNavigation(false);
+      onCloseRef.current();
     }
-  }, [isAddPickupPoint, isAddDeliveryAddress, pendingLockerRoute, onClose]);
+  }, [isAddPickupPoint, isAddDeliveryAddress, pendingNavigation]);
 
   useEffect(() => {
     const effectiveCountryCode =
@@ -628,13 +632,13 @@ export function CheckoutShippingOptionDrawer({
                 const targetRoute = ROUTES.CHECKOUT.ADD_PICKUP_POINT(
                   selectedOption as LockerType
                 );
-                // Store the target route to detect when navigation completes
-                setPendingLockerRoute(targetRoute);
-                // Use transition to keep UI responsive during navigation
+                // Blur the focused element so Vaul won't block aria-hidden during
+                // the brief moment both drawers are mounted simultaneously
+                (document.activeElement as HTMLElement | null)?.blur();
+                setPendingNavigation(true);
                 startTransition(() => {
                   router.push(targetRoute);
                 });
-                // Drawer will close automatically when pathname changes (via useEffect)
                 return;
               } else if (
                 selectedOption === "home_delivery" ||
@@ -644,13 +648,13 @@ export function CheckoutShippingOptionDrawer({
                 setCameFromShippingOptionDrawer(true);
                 setDeliveryAddressFlowState(null);
                 const targetRoute = `${ROUTES.CHECKOUT.ADD_DELIVERY_ADDRESS}?type=${selectedOption}`;
-                // Store the target route to detect when navigation completes
-                setPendingLockerRoute(targetRoute);
-                // Use transition to keep UI responsive during navigation
+                // Blur the focused element so Vaul won't block aria-hidden during
+                // the brief moment both drawers are mounted simultaneously
+                (document.activeElement as HTMLElement | null)?.blur();
+                setPendingNavigation(true);
                 startTransition(() => {
                   router.push(targetRoute);
                 });
-                // Drawer will close automatically when pathname changes (via useEffect)
                 return;
               } else {
                 onConfirm(selectedOption);

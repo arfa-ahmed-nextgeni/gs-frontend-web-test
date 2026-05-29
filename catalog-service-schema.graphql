@@ -90,7 +90,8 @@ interface Bucket {
 }
 
 """
-Defines features of a bundle product
+DEPRECATED: Replaced by ProductView and its implementations.
+This type is slated for removal in a future release.
 """
 type BundleProduct implements PhysicalProductInterface & ProductInterface {
   """
@@ -232,6 +233,10 @@ type CategoryView implements Bucket & CategoryViewInterface {
   Category path. For example, `/electronics/laptops`, `/clothing/shirts` or `/books/fiction`.
   """
   path: String
+  """
+  The position of the category in sort order. For example, `1`, `2`, `3` or `10`.
+  """
+  position: Int
   """
   List of roles for the category. For example, `show_on_plp`, `show_in_pdp` or `show_in_search`.
   """
@@ -448,7 +453,8 @@ type ComplexTextValue {
 }
 
 """
-Basic features of a configurable product and its simple product variants
+DEPRECATED: Replaced by ProductView and its implementations.
+This type is slated for removal in a future release.
 """
 type ConfigurableProduct implements PhysicalProductInterface & ProductInterface {
   """
@@ -727,6 +733,20 @@ enum CurrencyEnum {
 }
 
 """
+Attributes of the product currently being viewed on PDP
+"""
+input CurrentProductInput {
+  """
+  Resolved display price of the current product (specialPrice ?? regularPrice)
+  """
+  price: Float
+  """
+  SKU of the current product
+  """
+  sku: String
+}
+
+"""
 A product attribute defined by the merchant
 """
 type CustomAttribute {
@@ -746,7 +766,8 @@ A slightly refined version of RFC-3339 compliant DateTime Scalar
 scalar DateTime
 
 """
-A product that the shopper downloads
+DEPRECATED: Replaced by ProductView and its implementations.
+This type is slated for removal in a future release.
 """
 type DownloadableProduct implements ProductInterface {
   """
@@ -884,7 +905,8 @@ type FixedProductTax {
 }
 
 """
-Defines properties of a gift card, including the minimum and maximum values and an array that contains the current and past values on the specific gift card
+DEPRECATED: Replaced by ProductView and its implementations.
+This type is slated for removal in a future release.
 """
 type GiftCardProduct implements PhysicalProductInterface & ProductInterface {
   """
@@ -990,7 +1012,8 @@ type GiftCardProduct implements PhysicalProductInterface & ProductInterface {
 }
 
 """
-Consists of simple standalone products that are presented as a group
+DEPRECATED: Replaced by ProductView and its implementations.
+This type is slated for removal in a future release.
 """
 type GroupedProduct implements PhysicalProductInterface & ProductInterface {
   """
@@ -1167,7 +1190,8 @@ enum PageType {
 }
 
 """
-Contains attributes specific to tangible products
+DEPRECATED: Replaced by ProductView and its implementations.
+This interface is slated for removal in a future release.
 """
 interface PhysicalProductInterface {
   """
@@ -1255,7 +1279,8 @@ type ProductImage implements MediaGalleryInterface {
 }
 
 """
-Contains attributes that are common to all types of products
+DEPRECATED: Replaced by ProductView and its implementations.
+This interface is slated for removal in a future release.
 """
 interface ProductInterface {
   """
@@ -1394,6 +1419,7 @@ type ProductSearchItem {
   Contains details about the product
   """
   product: ProductInterface!
+    @deprecated(reason: "Use ProductSearchItem.productView instead.")
   """
   Contains a product view
   """
@@ -2230,6 +2256,10 @@ type Query {
     """
     category: String
     """
+    Current product context from PDP (SKU, price, category, etc.)
+    """
+    currentProduct: CurrentProductInput
+    """
     SKU of the product currently being viewed on PDP
     """
     currentSku: String
@@ -2251,6 +2281,10 @@ type Query {
     SKUs of products in the cart
     """
     cartSkus: [String]
+    """
+    Current product context from PDP (SKU, price, category, etc.)
+    """
+    currentProduct: CurrentProductInput
     """
     SKU of the product currently being viewed on PDP
     """
@@ -2469,7 +2503,8 @@ type SearchResultPageInfo {
 }
 
 """
-A simple product is tangible and is usually sold in single units or in fixed quantities
+DEPRECATED: Replaced by ProductView and its implementations.
+This type is slated for removal in a future release.
 """
 type SimpleProduct implements PhysicalProductInterface & ProductInterface {
   """
@@ -2792,7 +2827,8 @@ input ViewHistoryInput {
 }
 
 """
-A non-tangible product that does not require shipping and is not kept in inventory
+DEPRECATED: Replaced by ProductView and its implementations.
+This type is slated for removal in a future release.
 """
 type VirtualProduct implements ProductInterface {
   """

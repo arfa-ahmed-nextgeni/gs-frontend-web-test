@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { hasLocale } from "next-intl";
 
 import { routing } from "@/i18n/routing";
+import { getBrands } from "@/lib/actions/category/get-brands";
 import { getSearchListingData } from "@/lib/actions/search/get-search-route-listing";
 import {
   parseFiltersFromUrlSearchParams,
@@ -44,6 +45,7 @@ export async function GET(request: NextRequest) {
       pageSize,
       phrase,
       sortBy,
+      sortMode: "autocomplete",
     });
 
     if (!isOk(listingResult)) {
@@ -55,8 +57,39 @@ export async function GET(request: NextRequest) {
     const listingData = listingResult.data;
     const response = listingData.productResponse;
 
+    // Build a name → urlPath lookup from the full brand list so every brand
+    // pill can navigate to the correct brand category page. getBrands() is
+    // cached ("use cache" + React cache) so this is a memory read after the
+    // first request — no extra network call.
+    const brandPathByName = new Map<string, string>();
+    const brandsResult = await getBrands({ locale });
+    if (isOk(brandsResult)) {
+      for (const brands of Object.values(brandsResult.data)) {
+        for (const brand of brands) {
+          if (brand.name && brand.urlPath) {
+            brandPathByName.set(brand.name.toLowerCase(), brand.urlPath);
+          }
+        }
+      }
+    }
+
+    // Inject urlPath into brand_new facet buckets so the client can navigate
+    // directly to the brand category page without a separate API call.
+    const facets = (response.facets || []).map((facet: any) => {
+      if (facet.attribute !== "brand_new" || !facet.buckets) return facet;
+      return {
+        ...facet,
+        buckets: facet.buckets.map((bucket: any) => ({
+          ...bucket,
+          urlPath: bucket.title
+            ? brandPathByName.get(bucket.title.toLowerCase())
+            : undefined,
+        })),
+      };
+    });
+
     const responseData = {
-      facets: response.facets || [],
+      facets,
       products: listingData.products,
       related_terms: response.related_terms || [],
       suggestions: response.suggestions || [],

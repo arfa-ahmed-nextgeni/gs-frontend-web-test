@@ -53,6 +53,7 @@ export async function CategoryProductsSection({
       </div>
 
       <CategoryProductsClientWrapper
+        categoryId={categoryId}
         categoryMetadata={categoryMetadata}
         categoryPath={categoryPath}
         categoryUid={categoryUid}

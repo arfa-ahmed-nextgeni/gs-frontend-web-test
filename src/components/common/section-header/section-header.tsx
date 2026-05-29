@@ -75,7 +75,9 @@ export const SectionHeader = ({
           ? documentToReactComponents(richTitle, {
               renderMark: {
                 [MARKS.BOLD]: (text) => (
-                  <h2 className="inline font-semibold rtl:font-bold">{text}</h2>
+                  <span className="inline font-semibold rtl:font-bold">
+                    {text}
+                  </span>
                 ),
               },
               renderNode: {

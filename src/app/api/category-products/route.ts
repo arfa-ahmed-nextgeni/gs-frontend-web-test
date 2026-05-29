@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
       ok({
         page: pageInfo?.current_page || currentPage,
         products: listingData.products,
-        totalPages: pageInfo?.total_pages || 0,
+        totalPages: listingData.totalPages,
       })
     );
   } catch (error) {

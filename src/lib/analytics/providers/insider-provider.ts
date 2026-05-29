@@ -13,7 +13,13 @@ import { CustomerProperties } from "@/lib/analytics/utils/build-properties";
 import { buildUserInsiderProperties } from "@/lib/analytics/utils/build-properties";
 import { buildProductInsiderProperties } from "@/lib/analytics/utils/build-properties";
 import { COUNTRY_CODE_TO_NAME } from "@/lib/constants/i18n";
-import { INSIDER_CUSTOMER_KEY_MAP } from "@/lib/constants/insider";
+import {
+  INSIDER_CUSTOM_EVENTS,
+  INSIDER_CUSTOMER_KEY_MAP,
+  INSIDER_DEFAULT_EVENTS,
+  INSIDER_OTHER_EVENTS,
+  SEARCH_EVENTS,
+} from "@/lib/constants/insider";
 import { INSIDER_EXCLUDE_EVENT_PROPERTIES } from "@/lib/constants/insider";
 import { INSIDER_EVENT_NAME_MAPPING } from "@/lib/constants/insider";
 import { INSIDER_STORE_CONFIG } from "@/lib/constants/insider";
@@ -33,6 +39,8 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
     if (this.isInitialized || typeof window === "undefined") return;
 
     if (locale) this.currentLocale = locale;
+
+    window.InsiderQueue = [];
 
     try {
       if (locale && locale in INSIDER_STORE_CONFIG) {
@@ -59,14 +67,9 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
     if (!this.isAvailable()) return;
 
     try {
-      if (this.currentLocale) {
-        this.pushLocaleToQueue(this.currentLocale);
-        this.pushCustomEvent("logout");
-
-        window.Insider?.reset();
-
-        this.userPropertiesCache = null;
-      }
+      this.pushCustomEvent("logout");
+      this.userPropertiesCache = null;
+      window.Insider?.reset();
     } catch (error) {
       console.error("[Insider] resetUser error:", error);
     }
@@ -115,69 +118,12 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
   track(eventName: string, properties?: Record<string, unknown>): void {
     if (!this.isAvailable()) return;
 
-    console.info("[Insider] track:", eventName, properties);
-
-    switch (eventName) {
-      case "add_to_cart":
-        this.pushDefaultEvent(eventName, properties, false);
-        break;
-      case "add_to_wishlist":
-        this.pushCustomEvent(eventName, properties);
-        break;
-      case "cart_lessqty":
-        this.cartAddRemoveEvent(eventName, properties);
-        break;
-      case "cart_moreqty":
-        this.cartAddRemoveEvent(eventName, properties);
-        break;
-      case "cart_remove":
-        this.pushDefaultEvent(eventName, properties, false);
-      case "cart_clear":
-        this.pushCustomEvent(eventName, properties);
-        break;
-      case "checkout_init":
-        this.pushCustomEvent(eventName, properties);
-        break;
-      case "edit_profile":
-        this.otherEvent("view_account", properties);
-        break;
-      case "home":
-        this.pushDefaultEvent(eventName, properties);
-        break;
-      case "langauge_pick":
-        this.languageChange(properties);
-        break;
-      case "login":
-        this.pushCustomEvent(eventName, properties);
-        break;
-      case "logout":
-        this.pushCustomEvent(eventName, properties);
-        break;
-      case "my_wishlist":
-        this.pushCustomEvent(eventName, properties);
-        break;
-      case "profile_updated":
-        this.otherEvent("view_account", properties);
-        break;
-      case "purchase":
-        this.pushDefaultEvent(eventName, properties);
-        break;
-      case "remove_from_wishlist":
-        this.pushCustomEvent(eventName, properties);
-        break;
-      case "signup":
-        this.pushCustomEvent(eventName, properties);
-        break;
-      case "view_account":
-        this.otherEvent(eventName, properties);
-        break;
-      case "view_cart":
-        this.pushDefaultEvent(eventName, properties);
-        break;
-      case "view_product":
-        this.pushDefaultEvent(eventName, properties);
-        break;
-    }
+    if (INSIDER_DEFAULT_EVENTS.includes(eventName))
+      this.pushDefaultEvent(eventName, properties);
+    else if (INSIDER_CUSTOM_EVENTS.includes(eventName))
+      this.pushCustomEvent(eventName, properties);
+    else if (INSIDER_OTHER_EVENTS.includes(eventName))
+      this.pushOtherEvent(eventName, properties);
   }
 
   private buildEventPayload(
@@ -192,6 +138,9 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
         break;
       case "cart_remove":
         eventValue = buildAddRemoveCartInsiderProperties(properties);
+        break;
+      case "other":
+        eventValue = { name: properties?.["eventName"] ?? "" };
         break;
       case "purchase":
         eventValue = buildPurchaseInsiderProperties(properties);
@@ -209,44 +158,7 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
         break;
     }
 
-    return {
-      type: INSIDER_EVENT_NAME_MAPPING[eventName],
-      ...(Object.keys(eventValue).length > 0 && { value: eventValue }),
-    };
-  }
-
-  private buildOtherEventPayload(eventName: string): Record<string, unknown> {
-    return {
-      type: "other",
-      value: {
-        name: eventName,
-      },
-    };
-  }
-
-  private cartAddRemoveEvent(
-    eventName: string,
-    properties?: Record<string, unknown>
-  ): void {
-    window.InsiderQueue.push(
-      this.buildEventPayload("cart_remove", properties ?? {})
-    );
-
-    if (!properties) return;
-
-    const sku = properties["product.sku"] as string;
-    const qtyKey = `product.${sku}.qty_in_cart`;
-    const qty = properties[qtyKey] as number;
-
-    if (eventName === "cart_moreqty" && properties[qtyKey]) {
-      properties[qtyKey] = qty + 1;
-    } else if (eventName === "cart_lessqty" && properties[qtyKey]) {
-      properties[qtyKey] = qty - 1;
-    }
-
-    window.InsiderQueue.push(
-      this.buildEventPayload("add_to_cart", properties ?? {})
-    );
+    return eventValue;
   }
 
   private languageChange(properites?: Record<string, unknown>) {
@@ -260,34 +172,6 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
         this.currentLocale = Language + "-" + countryCode;
       }
     }
-  }
-
-  private otherEvent(
-    eventName: string,
-    properties?: Record<string, unknown>
-  ): void {
-    if (!this.isAvailable()) return;
-
-    if (this.currentLocale) this.pushLocaleToQueue(this.currentLocale);
-
-    const { customerProperties } = this.splitProperties(properties ?? {});
-
-    let userProperties = {};
-
-    if (customerProperties && Object.keys(customerProperties).length > 0)
-      userProperties = customerProperties;
-    else if (this.userPropertiesCache)
-      userProperties = this.userPropertiesCache;
-
-    if (Object.keys(userProperties).length > 0) {
-      window.InsiderQueue?.push({
-        type: "user",
-        value: buildUserInsiderProperties(userProperties as CustomerProperties),
-      });
-    }
-
-    window.InsiderQueue.push(this.buildOtherEventPayload(eventName));
-    window.InsiderQueue?.push({ type: "init" });
   }
 
   private pushCustomEvent(
@@ -305,16 +189,34 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
       event_name: INSIDER_EVENT_NAME_MAPPING[eventName],
     };
 
-    if (hasProperties && eventName === "add_to_wishlist") {
+    if (
+      hasProperties &&
+      (eventName === "add_to_wishlist" || eventName === "cart_to_wishlist")
+    ) {
       const eventParameters = buildProductInsiderProperties(
         properties as unknown as ProductProperties
       );
+
+      if (this.currentLocale && this.currentLocale in INSIDER_STORE_CONFIG) {
+        const currency =
+          INSIDER_STORE_CONFIG[
+            this.currentLocale as keyof typeof INSIDER_STORE_CONFIG
+          ].currency;
+
+        eventParameters["currency"] = currency ?? "NA";
+      }
 
       eventValue["event_parameters"] = eventParameters;
     }
 
     if (hasProperties && eventName === "remove_from_wishlist") {
       eventValue["event_parameters"] = { id: properties!["sku"] };
+    }
+
+    if (hasProperties && SEARCH_EVENTS.includes(eventName)) {
+      eventValue["event_parameters"] = {
+        custom: { query: properties!["search_text"] },
+      };
     }
 
     if (hasProperties && eventName === "my_wishlist") {
@@ -326,7 +228,7 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
 
         window.InsiderQueue?.push({
           type: "custom_event",
-          value: [{ eventValue }],
+          value: [{ ...eventValue }],
         });
       });
 
@@ -335,18 +237,18 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
 
     window.InsiderQueue?.push({
       type: "custom_event",
-      value: [{ eventValue }],
+      value: [{ ...eventValue }],
     });
   }
 
   private pushDefaultEvent(
     eventName: string,
-    properties?: Record<string, unknown>,
-    pushInit: boolean = true
+    properties?: Record<string, unknown>
   ): void {
     if (!this.isAvailable()) return;
 
-    if (this.currentLocale) this.pushLocaleToQueue(this.currentLocale);
+    if (this.currentLocale && window.InsiderQueue?.length !== 3)
+      this.pushLocaleToQueue(this.currentLocale);
 
     const { customerProperties, eventProperties } = this.splitProperties(
       properties ?? {}
@@ -366,11 +268,26 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
       });
     }
 
-    window.InsiderQueue.push(
-      this.buildEventPayload(eventName, eventProperties)
-    );
+    let eventValue = {};
+    eventValue = this.buildEventPayload(eventName, eventProperties);
+    this.pushInsider(eventName, eventValue ?? {});
+  }
 
-    if (pushInit) window.InsiderQueue?.push({ type: "init" });
+  private pushInsider(
+    eventName: string,
+    properties: Record<string, unknown>,
+    pushInit: boolean = true
+  ): void {
+    if (!this.isAvailable()) return;
+
+    window.InsiderQueue?.push({
+      type: INSIDER_EVENT_NAME_MAPPING[eventName],
+      ...(Object.keys(properties).length > 0 && { value: properties }),
+    });
+
+    if (pushInit) {
+      window.InsiderQueue?.push({ type: "init" });
+    }
   }
 
   private pushLocaleToQueue(locale: string): void {
@@ -378,7 +295,6 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
       INSIDER_STORE_CONFIG[locale as keyof typeof INSIDER_STORE_CONFIG];
     const formattedLocale = locale.replace("-", "_");
 
-    window.InsiderQueue = [];
     window.InsiderQueue.push({
       type: "user",
       value: {
@@ -386,8 +302,57 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
         language: formattedLocale,
       },
     });
+
     window.InsiderQueue.push({ type: "currency", value: store.currency });
     window.InsiderQueue.push({ type: "language", value: formattedLocale });
+  }
+
+  private pushOtherEvent(
+    eventName: string,
+    properties?: Record<string, unknown>
+  ): void {
+    if (!this.isAvailable()) return;
+
+    let eventValue = {};
+
+    if (eventName === "add_to_cart" || eventName === "cart_remove") {
+      eventValue = buildAddRemoveCartInsiderProperties(properties ?? {});
+      this.pushInsider(eventName, eventValue, false);
+      return;
+    }
+
+    if (eventName === "cart_lessqty" || eventName === "cart_moreqty") {
+      eventValue = buildAddRemoveCartInsiderProperties(properties ?? {});
+      this.pushInsider("cart_remove", eventValue, false);
+
+      const sku = properties?.["product.sku"] as string;
+      const qtyKey = `product.${sku}.qty_in_cart`;
+      const qty = properties?.[qtyKey] as number;
+
+      if (eventName === "cart_moreqty" && properties?.[qtyKey]) {
+        properties[qtyKey] = qty + 1;
+      } else if (eventName === "cart_lessqty" && properties?.[qtyKey]) {
+        properties[qtyKey] = qty - 1;
+      }
+
+      eventValue = buildAddRemoveCartInsiderProperties(properties ?? {});
+      this.pushInsider("add_to_cart", eventValue, false);
+      return;
+    }
+
+    if (
+      eventName === "edit_profile" ||
+      eventName === "profile_updated" ||
+      eventName === "view_account"
+    ) {
+      eventValue = this.buildEventPayload("other", { eventName });
+      this.pushInsider("other", eventValue);
+      return;
+    }
+
+    if (eventName === "langauge_pick") {
+      this.languageChange(properties);
+    }
   }
 
   private splitProperties(properties: Record<string, unknown>): {

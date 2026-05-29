@@ -184,10 +184,10 @@ export function trackAddToCart(
     }
   }
 
-  // When adding from PDP and no click.origin from banner/click tracking, set to "pdp"
-  if (eventProperties.location === "pp") {
-    eventProperties["click.origin"] = "pdp";
-  }
+  // // When adding from PDP and no click.origin from banner/click tracking, set to "pdp"
+  // if (eventProperties.location === "pp") {
+  //   eventProperties["click.origin"] = "pdp";
+  // }
 
   if (currency) {
     eventProperties.currency = currency;
@@ -251,10 +251,10 @@ export function trackAddToWishlist(product: Partial<ProductProperties>): void {
     }
   }
 
-  // When adding from PDP and no click.origin from banner/click tracking, set to "pdp"
-  if (eventProperties.location === "pp") {
-    eventProperties["click.origin"] = "pdp";
-  }
+  // // When adding from PDP and no click.origin from banner/click tracking, set to "pdp"
+  // if (eventProperties.location === "pp") {
+  //   eventProperties["click.origin"] = "pdp";
+  // }
 
   analyticsManager.track("add_to_wishlist", eventProperties);
 }

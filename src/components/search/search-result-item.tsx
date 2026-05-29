@@ -19,7 +19,7 @@ const SearchResultItem = ({
   searchTerm,
 }: SearchResultItemProps) => {
   const brand = product.brand || product.name || "";
-  const productName = product.description || product.name || "";
+  const productName = product.name || "";
 
   const handleClick = () => {
     if (searchTerm && position !== undefined) {
@@ -41,10 +41,10 @@ const SearchResultItem = ({
       title={productName || "View product"}
     >
       <div className="flex items-center gap-1.5 px-2 py-1">
-        <div className="h-9 w-9 flex-shrink-0">
+        <div className="relative h-9 w-9 flex-shrink-0 overflow-hidden rounded-lg">
           <ProductImageWithFallback
             alt={productName || "Product Image"}
-            className="h-full w-full rounded-lg object-cover"
+            className="h-full w-full object-cover"
             height={64}
             src={product.imageUrl}
             width={64}

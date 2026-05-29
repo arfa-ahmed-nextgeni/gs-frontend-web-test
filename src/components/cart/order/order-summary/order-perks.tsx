@@ -2,16 +2,14 @@
 
 import { useTranslations } from "next-intl";
 
-import DirhamCoinIcon from "@/assets/icons/dirham-coin-icon.svg";
-import DollarCoinIcon from "@/assets/icons/dollar-coin-icon.svg";
 import GiftIcon from "@/assets/icons/gift-icon.svg";
-import RiyalIcon from "@/assets/icons/riyal-icon.svg";
 import TabbyIcon from "@/assets/icons/tabby-icon.svg";
 import TamaraArIcon from "@/assets/icons/tamara-ar-icon.svg";
 import TamaraIcon from "@/assets/icons/tamara-icon.svg";
 import { LocalizedPrice } from "@/components/shared/localized-price";
 import { Card, CardContent } from "@/components/ui/card";
 import { useStoreConfig } from "@/contexts/store-config-context";
+import { useOrderLocaleAssets } from "@/hooks/i18n/use-order-locale-assets";
 import { formatPrice } from "@/lib/utils/price";
 
 import { Icon, PerkItem, PerkList } from "./order-summary-helpers";
@@ -24,15 +22,7 @@ interface OrderPerksProps {
 export function OrderPerks({ currencyCode, grandTotal }: OrderPerksProps) {
   const t = useTranslations("CartPage.orderSummary");
   const { storeConfig } = useStoreConfig();
-  const code = storeConfig?.code;
-  const locale = storeConfig?.locale;
-
-  const lang = locale?.startsWith("ar") ? "ar" : "en";
-  const store = code?.endsWith("sa")
-    ? "sa"
-    : code?.endsWith("ae")
-      ? "ae"
-      : "other";
+  const { language, walletIcon } = useOrderLocaleAssets();
 
   const localizeStyle = {
     className: "ms-0.75",
@@ -60,19 +50,7 @@ export function OrderPerks({ currencyCode, grandTotal }: OrderPerksProps) {
               ),
               b: (chunks: any) => <b>{chunks}</b>,
             })}
-            right={
-              <Icon
-                className="size-5.5"
-                size={22}
-                src={
-                  store === "sa"
-                    ? RiyalIcon
-                    : store === "ae"
-                      ? DirhamCoinIcon
-                      : DollarCoinIcon
-                }
-              />
-            }
+            right={<Icon className="size-5.5" size={22} src={walletIcon} />}
           />
           <PerkItem
             label={t("perks.giftWrap")}
@@ -97,7 +75,7 @@ export function OrderPerks({ currencyCode, grandTotal }: OrderPerksProps) {
                   <Icon
                     className="size-7.5"
                     size={30}
-                    src={lang === "en" ? TamaraIcon : TamaraArIcon}
+                    src={language === "en" ? TamaraIcon : TamaraArIcon}
                   />
                 </div>
               }

@@ -1,6 +1,7 @@
 import type { ApiActivityEntrySummary } from "@/lib/api-activity/api-activity-types";
 
 export type ApiActivityFilterState = {
+  autoRefreshEnabled: boolean;
   currentPage?: number;
   failedOnly: boolean;
   searchQuery: string;
