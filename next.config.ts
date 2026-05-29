@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 import createNextIntlPlugin from "next-intl/plugin";
 
+const NO_SEO_X_ROBOTS_TAG =
+  "noindex, nofollow, noarchive, nosnippet, noimageindex";
+
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["preexpressive-marcos-intermalar.ngrok-free.dev"],
   cacheComponents: true,
@@ -26,6 +29,15 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
+      {
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: NO_SEO_X_ROBOTS_TAG,
+          },
+        ],
+        source: "/:path*",
+      },
       {
         headers: [
           {
