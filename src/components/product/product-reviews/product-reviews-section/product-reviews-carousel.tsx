@@ -67,8 +67,12 @@ export const ProductReviewsCarousel = async ({
           </div>
         ) : (
           <CardRailScrollSnapCarousel
+            carouselProps={{
+              className:
+                "[&>[data-slot=scroll-snap-carousel-viewport]]:[scroll-padding-inline:0.625rem] lg:[&>[data-slot=scroll-snap-carousel-viewport]]:[scroll-padding-inline:0px]",
+            }}
             contentProps={{
-              className: "px-2.5 lg:!px-0",
+              className: "w-max ps-2.5 pe-2.5 lg:ps-0 lg:pe-0",
             }}
             nextButtonProps={{
               className: "xl:translate-x-15 xl:rtl:-translate-x-15",

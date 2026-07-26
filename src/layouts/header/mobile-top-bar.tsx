@@ -34,6 +34,7 @@ export type MobileTopBarRouteProps = {
   isProductRoot: boolean;
   isProfileRoot: boolean;
   isSearch: boolean;
+  isTrackOrder: boolean;
 };
 
 export const MobileTopBar = ({
@@ -47,6 +48,7 @@ export const MobileTopBar = ({
   isProductRoot,
   isProfileRoot,
   isSearch,
+  isTrackOrder,
 }: MobileTopBarRouteProps) => {
   const router = useRouter();
   const [isBackPending, startBackTransition] = useTransition();
@@ -65,7 +67,8 @@ export const MobileTopBar = ({
         : ROUTES.CUSTOMER.ACCOUNT
       : ROUTES.ROOT;
 
-  const shouldUseRouterBack = isProduct || isCategory || isOrderDetails;
+  const shouldUseRouterBack =
+    isProduct || isCategory || isOrderDetails || isTrackOrder;
   const showBackButton = shouldUseRouterBack || !!handleBack;
 
   const handleBackClick = () => {

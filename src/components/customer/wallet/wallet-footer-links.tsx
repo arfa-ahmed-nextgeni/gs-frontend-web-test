@@ -34,7 +34,7 @@ export function WalletFooterLinks({ className }: WalletFooterLinksProps) {
       </a>
       <Link
         className="text-text-info text-sm font-medium underline"
-        href="/terms-conditions"
+        href="/terms-and-conditions"
       >
         {t("viewTerms")}
       </Link>

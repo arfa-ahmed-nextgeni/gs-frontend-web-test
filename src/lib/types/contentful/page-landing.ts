@@ -1,18 +1,16 @@
 import type { Document } from "@contentful/rich-text-types";
 
-import type { WishlistState } from "@/lib/constants/product/product-card";
 import type { TabContentType } from "@/lib/models/page-landing";
 import type {
   WebsiteFooterContactAndSocialLinks,
   WebsiteFooterLinks,
   WebsiteFooterPromoAndFeatures,
 } from "@/lib/models/website-footer";
+import type { ContentDisplayOn } from "@/lib/types/contentful/display-on";
 import type {
   NavHeaderData,
   PromoBannerData,
 } from "@/lib/types/contentful/nav-header";
-
-export type BannerDisplayOn = "all" | "desktop" | "mobile";
 
 export type BannerSliderData = {
   autoSliding?: boolean;
@@ -54,6 +52,7 @@ export type BannerSliderData = {
 };
 
 export type CartSuggestedProductsData = {
+  displayOn?: ContentDisplayOn;
   emptyCartFallbackCategoryId?: string;
   emptyCartFallbackRichTitle?: Document;
   emptyCartFallbackTitle?: string;
@@ -67,6 +66,7 @@ export type CartSuggestedProductsData = {
 
 export type CategoryProductsData = {
   bundlesVariant?: boolean;
+  displayOn?: ContentDisplayOn;
   grid?: boolean;
   maximumProducts: number;
   productsCategoryId?: string;
@@ -123,33 +123,6 @@ export type ContentfulImageData = {
   url: string;
 };
 
-export type ContentfulProductData = {
-  badges?: {
-    type: string;
-  }[];
-  currency: string;
-  description: string;
-  discountPercent?: number;
-  id: string;
-  imageUrl: string;
-  name: string;
-  oldPrice?: number;
-  options?: {
-    choices: {
-      inStock: boolean;
-      label: string;
-      value: string;
-    }[];
-    type: string;
-  };
-  price: number;
-  ratingSummary: number;
-  savedAmount: number;
-  savedCurrency: string;
-  stockStatus: string;
-  wishlistState: WishlistState;
-};
-
 export type CookieConsentPromptData = {
   allowButtonLabel: string;
   consentVersion: string;
@@ -166,12 +139,14 @@ export type DesktopCategoriesData = {
       id: string;
     };
   }[];
+  displayOn?: ContentDisplayOn;
   title?: string;
 };
 
 export type FlashSaleData = {
   autoSlideDelay?: number;
   autoSliding?: boolean;
+  displayOn?: ContentDisplayOn;
   endTime?: string;
   endTimezone?: string;
   maximumProducts?: number;
@@ -198,6 +173,7 @@ export type FlashSaleData = {
 };
 
 export type OpenAppPromptData = {
+  appIcon: ContentfulAssetData;
   appRating: number;
   appStoreUrl: string;
   dismissButtonLabel: string;
@@ -219,16 +195,13 @@ export type PageLandingData = {
           };
         };
         mobileHeaderTitle?: string;
-        seo?: {
-          fields?: ComponentSeoData;
-          sys?: { contentType?: { sys?: { id: string } } };
-        };
         slug: string;
         tabContent: {
           fields?:
             | BannerSliderData
             | CartSuggestedProductsData
             | CategoryProductsData
+            | ComponentSeoData
             | CookieConsentPromptData
             | DesktopCategoriesData
             | FlashSaleData
@@ -250,6 +223,7 @@ export type PageLandingData = {
 };
 
 export type RecentlyViewedProductsData = {
+  displayOn?: ContentDisplayOn;
   maximumProducts: number;
   productsCategoryId?: string;
   richTitle?: Document;
@@ -261,6 +235,7 @@ export type RecentlyViewedProductsData = {
 export type SeoContentBlockData = {
   content?: Document;
   internalName?: string;
+  title?: string;
 };
 
 export type TitleAndDescriptionData = {
@@ -275,6 +250,7 @@ export type TopTrendsData = {
   desktopBanners?: {
     fields: ContentfulImageData;
   }[];
+  displayOn?: ContentDisplayOn;
   maximumProducts?: number;
   mobileBanners?: {
     fields: ContentfulImageData;
@@ -292,7 +268,7 @@ export type WebsiteBannerData = {
       };
     };
   };
-  displayOn?: BannerDisplayOn;
+  displayOn?: ContentDisplayOn;
   elementId?: string;
   flexPercent?: number;
   height?: number;
@@ -329,7 +305,7 @@ export type WebsiteMultipleBannersData = {
     fields: ContentfulImageData;
     sys: { id: string };
   }[];
-  displayOn?: BannerDisplayOn;
+  displayOn?: ContentDisplayOn;
   imagesHeight?: number;
   imagesHeightMobile?: number;
   imagesWidth?: number;
@@ -338,6 +314,7 @@ export type WebsiteMultipleBannersData = {
 };
 
 export type YoutubeVideoData = {
+  displayOn?: ContentDisplayOn;
   internalName?: string;
   videoUrl?: string;
 };

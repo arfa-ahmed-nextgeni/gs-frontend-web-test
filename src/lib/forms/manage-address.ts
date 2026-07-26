@@ -107,11 +107,7 @@ export const addressFormSchema = (storeCode: StoreCode) => {
             message: "requiredField",
             path: [AddressFormField.PhoneNumber, "countryCode"],
           });
-        } else if (
-          phoneNumber &&
-          phoneNumber.countryCode &&
-          phoneNumber.number
-        ) {
+        } else if (phoneNumber && phoneNumber.countryCode) {
           // Validate phone number format using phoneNumberSchema
           const phoneSchema = phoneNumberSchema(storeCode);
           const phoneResult = phoneSchema.safeParse(phoneNumber);

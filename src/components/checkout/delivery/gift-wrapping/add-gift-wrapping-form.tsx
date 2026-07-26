@@ -14,6 +14,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useNotifyMe } from "@/contexts/notify-me-context";
 import { useAddProductsToCartWithGiftMessage } from "@/hooks/mutations/cart/use-add-products-to-cart-with-gift-message";
 import { useRemoveProductFromCart } from "@/hooks/mutations/cart/use-remove-product-from-cart";
+import { useSwapGiftWrap } from "@/hooks/mutations/cart/use-swap-gift-wrap";
 import { useHorizontalScroll } from "@/hooks/use-horizontal-scroll";
 import { useRouter } from "@/i18n/navigation";
 import { ROUTES } from "@/lib/constants/routes";
@@ -145,6 +146,8 @@ export const AddGiftWrappingForm = ({
     sku: existingWrapItem?.sku || "",
   });
 
+  const swapMutation = useSwapGiftWrap();
+
   const handleGiftSelect = (giftId: string) => {
     setSelectedGiftId(giftId);
     setIsStandardBoxSelected(false);
@@ -189,27 +192,22 @@ export const AddGiftWrappingForm = ({
       return;
     }
 
-    // If in edit mode, first remove the existing wrap item, then add the new one
+    // Edit mode: swap old wrap for new in one server-side step so the cart
+    // never appears empty client-side between remove and add (which would
+    // trigger the checkout-page empty-cart redirect).
     if (isEditMode && existingWrapItem?.uidInCart) {
-      removeMutation.mutate(
-        { itemUid: existingWrapItem.uidInCart },
+      swapMutation.mutate(
+        {
+          giftMessage: {
+            message: message.trim() || undefined,
+          },
+          newSku: selectedGift.sku,
+          oldItemUid: existingWrapItem.uidInCart,
+          selectedOptionId: selectedGiftId ?? undefined,
+        },
         {
           onSuccess: () => {
-            // After successful removal, add the new gift wrap item
-            addToCartMutation.mutate(
-              {
-                giftMessage: {
-                  message: message.trim() || undefined,
-                },
-                sku: selectedGift.sku,
-              },
-              {
-                onSuccess: () => {
-                  // Close the gift wrapping drawer on success
-                  router.back();
-                },
-              }
-            );
+            router.back();
           },
         }
       );
@@ -256,6 +254,7 @@ export const AddGiftWrappingForm = ({
   const isSubmitting =
     addToCartMutation.isPending ||
     removeMutation.isPending ||
+    swapMutation.isPending ||
     isNavigatingToNotifyMe;
 
   return (

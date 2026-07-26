@@ -27,7 +27,7 @@ export default function CategoryPageLoading() {
         <div className="flex-1">
           <div className="mb-2 ml-2 flex items-center justify-between lg:mb-5 lg:ml-0">
             <Skeleton className="h-8 w-48 rounded" />
-            <Skeleton className="h-7 w-32 rounded" />
+            <Skeleton className="hidden h-7 w-32 rounded lg:block" />
           </div>
 
           <CategoryListingProductsSkeleton />

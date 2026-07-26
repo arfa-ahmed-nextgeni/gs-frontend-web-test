@@ -63,7 +63,7 @@ export async function loggedFetch(
         responseClone,
       });
 
-      addApiActivityEntry({
+      await addApiActivityEntry({
         ...createBaseEntry({
           durationMs,
           endedAt,
@@ -85,7 +85,7 @@ export async function loggedFetch(
       throw error;
     }
 
-    scheduleApiActivityTask(() => {
+    scheduleApiActivityTask(() =>
       addApiActivityEntry({
         ...createBaseEntry({
           durationMs,
@@ -100,8 +100,8 @@ export async function loggedFetch(
         },
         id: randomUUID(),
         response: null,
-      });
-    });
+      })
+    );
 
     throw error;
   }

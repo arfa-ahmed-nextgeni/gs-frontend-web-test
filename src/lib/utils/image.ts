@@ -17,6 +17,14 @@ export function isContentfulSrc(src: string) {
   }
 }
 
+export function isSvgSrc(src: string) {
+  try {
+    return new URL(src).pathname.toLowerCase().endsWith(".svg");
+  } catch {
+    return src.split("?", 1)[0].toLowerCase().endsWith(".svg");
+  }
+}
+
 const PLACEHOLDER_IMAGE_PATH = "/placeholder/";
 
 export function resolveProductImageUrl(

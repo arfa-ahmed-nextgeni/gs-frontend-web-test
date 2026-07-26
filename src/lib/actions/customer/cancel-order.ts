@@ -5,6 +5,7 @@ import { graphqlRequest } from "@/lib/clients/graphql";
 import { CUSTOMER_GRAPHQL_MUTATIONS } from "@/lib/constants/api/graphql/customer";
 import { Locale } from "@/lib/constants/i18n";
 import { getStoreCode } from "@/lib/utils/country";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 import { failure, ok, unauthenticated } from "@/lib/utils/service-result";
 
 export const cancelCustomerOrder = async (orderId: string, locale: Locale) => {
@@ -17,6 +18,7 @@ export const cancelCustomerOrder = async (orderId: string, locale: Locale) => {
 
     const response = await graphqlRequest({
       authToken,
+      forwardHeaders: await getForwardedRequestHeaders(),
       query: CUSTOMER_GRAPHQL_MUTATIONS.CANCEL_CUSTOMER_ORDER,
       storeCode: getStoreCode(locale),
       variables: {

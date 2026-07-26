@@ -8,6 +8,7 @@ import { ORDER_ENDPOINTS } from "@/lib/constants/api/endpoints";
 import { Locale } from "@/lib/constants/i18n";
 import { getCommonErrorMessage } from "@/lib/utils/common-error-message";
 import { getStoreCode } from "@/lib/utils/country";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 import { failure, ok } from "@/lib/utils/service-result";
 
 type FinalizePayfortPaymentRequest = {
@@ -69,6 +70,7 @@ export async function finalizePayfortPaymentAction({
     const response = await restRequest<FinalizePayfortPaymentResponse>({
       authToken: authToken ?? undefined,
       endpoint: ORDER_ENDPOINTS.MAKE_PAYMENT,
+      forwardHeaders: await getForwardedRequestHeaders(),
       options: {
         body: JSON.stringify(requestPayload),
         method: "POST",

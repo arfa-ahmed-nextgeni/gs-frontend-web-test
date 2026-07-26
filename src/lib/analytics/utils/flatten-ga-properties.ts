@@ -2,12 +2,12 @@
  * Flatten nested objects for Google Analytics 4
  * GA4 doesn't support nested objects in event parameters - they appear as "[object Object]"
  * GA4 also doesn't support dots in parameter names - they're interpreted as nested objects
- * This function recursively flattens nested objects and converts dots to underscores in keys
+ * This function recursively flattens nested objects and can convert dots to underscores in keys
  * Only includes primitive values (string, number, boolean) - filters out objects, arrays, null, undefined
  *
  * @param obj - The object to flatten
  * @param prefix - Optional prefix for nested keys (used in recursion)
- * @returns Flat object with underscore-separated keys and primitive values
+ * @returns Flat object with primitive values
  *
  * @example
  * // Input: { meta: { country: 'Saudi Arabia', language: 'English' }, value: 100 }
@@ -17,11 +17,17 @@
  * // Input: { 'meta.country': 'Saudi Arabia', 'meta.language': 'English' }
  * // Output: { meta_country: 'Saudi Arabia', meta_language: 'English' }
  */
+type FlattenGAPropertiesOptions = {
+  replaceDotsWithUnderscores?: boolean;
+};
+
 export function flattenGAProperties(
   obj: Record<string, unknown>,
-  prefix = ""
+  prefix = "",
+  options: FlattenGAPropertiesOptions = {}
 ): Record<string, boolean | number | string> {
   const result: Record<string, boolean | number | string> = {};
+  const replaceDotsWithUnderscores = options.replaceDotsWithUnderscores ?? true;
 
   for (const [key, value] of Object.entries(obj)) {
     // Skip undefined and null values
@@ -38,8 +44,9 @@ export function flattenGAProperties(
       typeof value === "number" ||
       typeof value === "boolean"
     ) {
-      // Convert dots to underscores for GA4 compatibility
-      const ga4Key = dotNotationKey.replace(/\./g, "_");
+      const ga4Key = replaceDotsWithUnderscores
+        ? dotNotationKey.replace(/\./g, "_")
+        : dotNotationKey;
       result[ga4Key] = value;
       continue;
     }
@@ -54,8 +61,9 @@ export function flattenGAProperties(
           typeof item === "boolean"
       );
       if (primitiveValues.length > 0) {
-        // Convert dots to underscores for GA4 compatibility
-        const ga4Key = dotNotationKey.replace(/\./g, "_");
+        const ga4Key = replaceDotsWithUnderscores
+          ? dotNotationKey.replace(/\./g, "_")
+          : dotNotationKey;
         result[ga4Key] = primitiveValues.join(",");
       }
       continue;
@@ -65,7 +73,8 @@ export function flattenGAProperties(
     if (typeof value === "object" && value !== null) {
       const flattened = flattenGAProperties(
         value as Record<string, unknown>,
-        dotNotationKey
+        dotNotationKey,
+        options
       );
       Object.assign(result, flattened);
       continue;

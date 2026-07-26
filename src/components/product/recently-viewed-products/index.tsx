@@ -24,7 +24,14 @@ export function RecentlyViewedProducts({
         />
       }
     >
-      <RecentlyViewedProductsSection data={data} lpRow={lpRow} />
+      <RecentlyViewedProductsSection
+        lpRow={lpRow}
+        maximumProducts={data.maximumProducts}
+        productsCategoryId={data.productsCategoryId}
+        richTitle={data.richTitle}
+        showViewAll={data.showViewAll}
+        viewAllUrl={data.viewAllUrl}
+      />
     </AsyncBoundary>
   );
 }

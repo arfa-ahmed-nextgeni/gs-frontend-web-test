@@ -47,54 +47,11 @@ const getPageLandingDataCached = cache(async (locale: string, slug: string) => {
       locale: contentfulLocale,
     });
 
-    if (entries.items && entries.items.length > 0) {
-      const firstItem = entries.items[0];
-      const fields = firstItem.fields || {};
-
-      // Try to resolve SEO from includes if it's missing
-      if (!fields.seo && entries.includes?.Entry) {
-        const seoComponents = entries.includes.Entry.filter(
-          (entry: any) => entry?.sys?.contentType?.sys?.id === "componentSeo"
-        );
-
-        if (seoComponents.length === 1) {
-          const seoComponent = seoComponents[0];
-          if (!firstItem.fields) {
-            firstItem.fields = {};
-          }
-          firstItem.fields.seo = seoComponent;
-          fields.seo = seoComponent;
-        }
-      }
-
-      // Check if SEO is a Link reference that needs resolving
-      const seoField = fields.seo as any;
-      if (
-        seoField &&
-        seoField.fields === undefined &&
-        seoField.sys &&
-        seoField.sys.type === "Link"
-      ) {
-        const linkId = seoField.sys.id;
-        const resolvedSeo = entries.includes?.Entry?.find(
-          (entry: any) => entry?.sys?.id === linkId
-        );
-
-        if (resolvedSeo) {
-          if (!firstItem.fields) {
-            firstItem.fields = {};
-          }
-          firstItem.fields.seo = resolvedSeo;
-          fields.seo = resolvedSeo;
-        }
-      }
-    }
-
     return structuredClone(
       new PageLanding(entries as unknown as PageLandingData)
     );
   } catch (error) {
     console.error("Error getting page landing data", error);
-    return {};
+    return {} as PageLanding;
   }
 });

@@ -6,6 +6,7 @@ import Image from "next/image";
 
 import { useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { useLocale, useTranslations } from "next-intl";
 
 import AlertIcon from "@/assets/icons/Alert.svg";
@@ -64,6 +65,7 @@ export function LoginForm() {
   const router = useRouter();
   const { showResend, showSuccess } = useToastContext();
   const t = useTranslations("HomePage.header.mobileOtpLogin");
+  const tFormErrors = useTranslations("formErrorMessages");
   const tToast = useTranslations("Toast");
   const { isLogin } = useRouteMatch();
 
@@ -94,6 +96,7 @@ export function LoginForm() {
   >(null);
   const [verificationSuccess, setVerificationSuccess] = useState(false);
   const [hasValidationError, setHasValidationError] = useState(false);
+  const [countryCodeError, setCountryCodeError] = useState("");
   const [formattedPhoneNumber, setFormattedPhoneNumber] = useState("");
   const [hasBeenFocused, setHasBeenFocused] = useState(false);
   const [accounts, setAccounts] = useState<
@@ -119,6 +122,7 @@ export function LoginForm() {
     setResendMethod(null);
     setVerificationSuccess(false);
     setHasValidationError(false);
+    setCountryCodeError("");
     setFormattedPhoneNumber("");
     setHasBeenFocused(false);
     setAccounts([]);
@@ -157,6 +161,23 @@ export function LoginForm() {
     setHasBeenFocused(false);
   }, [step]);
 
+  const validateGlobalCountryCode = useCallback(
+    (value: string) => {
+      if (!isGlobalStore(storeCode)) {
+        return true;
+      }
+
+      const cleanCountryCode = value.replace(/^\+/, "");
+      if (cleanCountryCode.length === 0 || !/^\d+$/.test(cleanCountryCode)) {
+        return false;
+      }
+
+      const parsedPhoneNumber = parsePhoneNumberFromString(`${value}11111111`);
+      return parsedPhoneNumber?.countryCallingCode === cleanCountryCode;
+    },
+    [storeCode]
+  );
+
   useEffect(() => {
     if (isLogin) {
       resetFormState();
@@ -165,6 +186,11 @@ export function LoginForm() {
 
   const handleSendOtp = async () => {
     if (step === "phone") {
+      if (isGlobalStore(storeCode) && !validateGlobalCountryCode(countryCode)) {
+        setCountryCodeError(tFormErrors("invalidCountryCode"));
+        return;
+      }
+
       if (!phoneNumber.trim()) {
         setHasValidationError(true);
         return;
@@ -634,11 +660,12 @@ export function LoginForm() {
               width={24}
             ></Image>
           </button>
-          <h1 className="mx-3 text-xl font-medium text-gray-900">
+          {/* SEO: h2 because this form can appear as an overlay — the underlying page already has an h1 */}
+          <h2 className="mx-3 text-xl font-medium text-gray-900">
             {step === "email-selection"
               ? t("emailSelection.pageTitle")
               : t("title")}
-          </h1>
+          </h2>
         </div>
         <Link href={ROUTES.CUSTOMER_SERVICE}>
           <Image
@@ -668,52 +695,75 @@ export function LoginForm() {
 
             {/* Phone Input */}
             <div className="mb-6">
-              <div className="flex h-[50px] gap-2 rtl:flex-row-reverse">
+              <div className="flex gap-2 rtl:flex-row-reverse">
                 {/* Country Code Field */}
-                <div className="flex h-[50px] w-[120px] items-center rounded-xl bg-gray-100 px-3 rtl:flex-row-reverse">
-                  <span className="flex h-[20px] w-[30px] items-center">
-                    {typeof getCountryFlag(countryCode) === "string" ? (
-                      <span className="text-lg">
-                        {getCountryFlag(countryCode)}
-                      </span>
-                    ) : (
-                      <Image
-                        alt={`${countryCode} flag`}
-                        className="h-full w-full object-contain"
-                        src={getCountryFlag(countryCode)}
-                      />
+                <div className="flex w-[120px] flex-col gap-2">
+                  <div
+                    className={cn(
+                      "flex h-[50px] items-center rounded-xl bg-gray-100 px-3 rtl:flex-row-reverse",
+                      countryCodeError && "border-2 border-orange-500"
                     )}
-                  </span>
-                  {isGlobalStore(storeCode) ? (
-                    <input
-                      className="w-[60px] bg-[#FAFAFA] text-lg font-normal outline-none rtl:ml-2"
-                      dir="ltr"
-                      onChange={(e) => {
-                        let value = e.target.value;
-                        // Ensure it starts with + and only contains numbers
-                        if (!value.startsWith("+")) {
-                          value = "+" + value.replace(/[^0-9]/g, "");
-                        } else {
-                          value = "+" + value.slice(1).replace(/[^0-9]/g, "");
-                        }
-                        // Limit country code: + plus 1-3 digits (total length 2-4)
-                        if (value.length >= 2 && value.length <= 4) {
-                          setCountryCode(value);
-                        } else if (value === "+") {
-                          setCountryCode(value); // Allow just "+" while typing
-                        }
-                      }}
-                      placeholder="+1"
-                      type="text"
-                      value={countryCode}
-                    />
-                  ) : (
-                    <span
-                      className="text-lg font-normal text-gray-700 rtl:ml-2"
-                      dir="ltr"
-                    >
-                      {countryCode}
+                  >
+                    <span className="flex h-[20px] w-[30px] items-center">
+                      {typeof getCountryFlag(countryCode) === "string" ? (
+                        <span className="text-lg">
+                          {getCountryFlag(countryCode)}
+                        </span>
+                      ) : (
+                        <Image
+                          alt={`${countryCode} flag`}
+                          className="h-full w-full object-contain"
+                          src={getCountryFlag(countryCode)}
+                        />
+                      )}
                     </span>
+                    {isGlobalStore(storeCode) ? (
+                      <input
+                        className="w-[60px] bg-[#FAFAFA] text-lg font-normal outline-none rtl:ml-2"
+                        dir="ltr"
+                        onBlur={() => {
+                          if (validateGlobalCountryCode(countryCode)) {
+                            setCountryCodeError("");
+                          } else {
+                            setCountryCodeError(
+                              tFormErrors("invalidCountryCode")
+                            );
+                          }
+                        }}
+                        onChange={(e) => {
+                          let value = e.target.value;
+                          // Ensure it starts with + and only contains numbers
+                          if (!value.startsWith("+")) {
+                            value = "+" + value.replace(/[^0-9]/g, "");
+                          } else {
+                            value = "+" + value.slice(1).replace(/[^0-9]/g, "");
+                          }
+                          // Limit country code: + plus 1-3 digits (total length 2-4)
+                          if (value.length >= 2 && value.length <= 4) {
+                            setCountryCode(value);
+                            setCountryCodeError("");
+                          } else if (value === "+") {
+                            setCountryCode(value); // Allow just "+" while typing
+                            setCountryCodeError("");
+                          }
+                        }}
+                        placeholder="+1"
+                        type="text"
+                        value={countryCode}
+                      />
+                    ) : (
+                      <span
+                        className="text-lg font-normal text-gray-700 rtl:ml-2"
+                        dir="ltr"
+                      >
+                        {countryCode}
+                      </span>
+                    )}
+                  </div>
+                  {countryCodeError && (
+                    <p className="text-xs font-normal text-orange-500">
+                      {countryCodeError}
+                    </p>
                   )}
                 </div>
 
@@ -786,6 +836,7 @@ export function LoginForm() {
                         setPhoneNumber(limitedValue);
                         setFormattedPhoneNumber(formattedValue);
                         setHasValidationError(false);
+                        if (limitedValue === "") setError("");
                       }}
                       onFocus={() => {
                         setHasBeenFocused(true);
@@ -825,6 +876,7 @@ export function LoginForm() {
                         setPhoneNumber(limitedValue);
                         setFormattedPhoneNumber(formattedValue);
                         setHasValidationError(false);
+                        if (limitedValue === "") setError("");
                       }}
                       placeholder={t("phoneStep.phonePlaceholder")}
                       style={{
@@ -928,227 +980,103 @@ export function LoginForm() {
 
                   <div className="mb-6">
                     <div className="flex items-center justify-center">
-                      <div className="flex gap-2 rtl:flex-row-reverse">
-                        {[0, 1, 2, 3, 4].map((index) => {
-                          const currentValue = otp[index] || "";
-                          const isEmpty = !currentValue;
-                          const isFilled = !!currentValue;
-
-                          let inputClass =
-                            "h-13 w-13 rounded-xl text-center text-lg font-semibold transition-all duration-200 focus:outline-none ";
-
-                          if (isVerifying) {
-                            inputClass +=
-                              "border-2 border-blue-500 bg-blue-50 text-blue-700 animate-pulse cursor-not-allowed";
-                          } else if (isLoading) {
-                            inputClass +=
-                              "border-2 border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed";
-                          } else if (verificationSuccess) {
-                            inputClass +=
-                              "border-2 border-green-500 bg-green-100 text-green-800 animate-pulse";
-                          } else if (error && isFilled) {
-                            inputClass +=
-                              "border-2 border-[#FE5000] bg-orange-50 text-[#FE5000] shadow-sm";
-                          } else if (isEmpty) {
-                            inputClass +=
-                              "border-2 border-gray-300 bg-white hover:border-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200";
-                          } else if (isFilled) {
-                            inputClass +=
-                              "border-2 border-green-400 bg-green-50 text-green-700 shadow-sm";
-                          }
-
-                          return (
-                            <input
-                              autoFocus={index === 0}
-                              className={inputClass}
-                              dir="ltr"
-                              disabled={isLoading}
-                              inputMode="numeric"
-                              key={index}
-                              maxLength={1}
-                              onBlur={() => {
-                                const newStates = [...inputStates];
-                                newStates[index] = currentValue
+                      <div className="relative" dir="ltr">
+                        <input
+                          aria-label="One-time verification code"
+                          autoComplete="one-time-code"
+                          autoFocus
+                          className="absolute inset-0 z-10 h-full w-full cursor-pointer appearance-none border-0 bg-transparent text-transparent caret-transparent focus:outline-none"
+                          dir="ltr"
+                          disabled={isLoading || verificationSuccess}
+                          inputMode="numeric"
+                          maxLength={5}
+                          onBlur={() => {
+                            setInputStates(
+                              Array.from({ length: 5 }, (_, index) =>
+                                otp[index] ? "filled" : "empty"
+                              )
+                            );
+                          }}
+                          onChange={(e) => {
+                            const code = e.target.value
+                              .replace(/\D/g, "")
+                              .slice(0, 5);
+                            setOtp(code);
+                            setInputStates(
+                              Array.from({ length: 5 }, (_, index) =>
+                                code[index]
                                   ? "filled"
-                                  : "empty";
-                                setInputStates(newStates);
-                              }}
-                              onChange={(e) => {
-                                // Only allow numeric characters
-                                const numericValue = e.target.value.replace(
-                                  /[^0-9]/g,
-                                  ""
-                                );
+                                  : index === code.length
+                                    ? "active"
+                                    : "empty"
+                              )
+                            );
 
-                                const newOtp = otp.split("");
-                                newOtp[index] = numericValue;
-                                const finalOtp = newOtp.join("");
-                                setOtp(finalOtp);
-                                const newStates = [...inputStates];
-                                newStates[index] = numericValue
+                            if (code.length === 5) {
+                              trackVerificationSmsDetected({
+                                phone: formatPhoneForAnalytics(
+                                  countryCode,
+                                  phoneNumber
+                                ),
+                              });
+                              handleVerifyOtp(code);
+                            }
+                          }}
+                          onFocus={() => {
+                            setInputStates(
+                              Array.from({ length: 5 }, (_, index) =>
+                                otp[index]
                                   ? "filled"
-                                  : "empty";
-                                setInputStates(newStates);
+                                  : index === otp.length
+                                    ? "active"
+                                    : "empty"
+                              )
+                            );
+                          }}
+                          pattern="[0-9]*"
+                          type="text"
+                          value={otp}
+                        />
 
-                                if (numericValue && index < 4) {
-                                  const nextInput = e.target.parentElement
-                                    ?.children[index + 1] as HTMLInputElement;
-                                  nextInput?.focus();
-                                }
+                        <div className="pointer-events-none flex gap-2 rtl:flex-row-reverse">
+                          {[0, 1, 2, 3, 4].map((index) => {
+                            const currentValue = otp[index] || "";
+                            const isEmpty = !currentValue;
+                            const isFilled = !!currentValue;
+                            const isActive = inputStates[index] === "active";
 
-                                if (finalOtp.length === 5) {
-                                  trackVerificationSmsDetected({
-                                    phone: formatPhoneForAnalytics(
-                                      countryCode,
-                                      phoneNumber
-                                    ),
-                                  });
-                                  handleVerifyOtp(finalOtp);
-                                }
-                              }}
-                              onFocus={() => {
-                                const newStates = [...inputStates];
-                                newStates[index] = currentValue
-                                  ? "filled"
-                                  : "active";
-                                setInputStates(newStates);
-                              }}
-                              onInput={(e) => {
-                                const input = e.target as HTMLInputElement;
-                                const value = input.value;
+                            let boxClass =
+                              "flex h-13 w-13 items-center justify-center rounded-xl text-center text-lg font-semibold transition-all duration-200 ";
 
-                                if (
-                                  value.length === 5 &&
-                                  /^\d{5}$/.test(value)
-                                ) {
-                                  e.preventDefault();
-                                  setOtp(value);
+                            if (isVerifying) {
+                              boxClass +=
+                                "border-2 border-blue-500 bg-blue-50 text-blue-700 animate-pulse cursor-not-allowed";
+                            } else if (isLoading) {
+                              boxClass +=
+                                "border-2 border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed";
+                            } else if (verificationSuccess) {
+                              boxClass +=
+                                "border-2 border-green-500 bg-green-100 text-green-800 animate-pulse";
+                            } else if (error && isFilled) {
+                              boxClass +=
+                                "border-2 border-[#FE5000] bg-orange-50 text-[#FE5000] shadow-sm";
+                            } else if (isActive) {
+                              boxClass +=
+                                "border-2 border-blue-500 bg-white ring-2 ring-blue-200";
+                            } else if (isEmpty) {
+                              boxClass += "border-2 border-gray-300 bg-white";
+                            } else if (isFilled) {
+                              boxClass +=
+                                "border-2 border-green-400 bg-green-50 text-green-700 shadow-sm";
+                            }
 
-                                  const newStates = Array(5).fill(
-                                    "filled" as const
-                                  );
-                                  setInputStates(newStates);
-
-                                  trackVerificationSmsDetected({
-                                    phone: formatPhoneForAnalytics(
-                                      countryCode,
-                                      phoneNumber
-                                    ),
-                                  });
-                                  setTimeout(() => {
-                                    handleVerifyOtp(value);
-                                  }, 100);
-
-                                  input.value = "";
-                                }
-                              }}
-                              onKeyDown={(e) => {
-                                if (
-                                  e.key === "Backspace" &&
-                                  !e.currentTarget.value &&
-                                  index > 0
-                                ) {
-                                  const prevInput = e.currentTarget
-                                    .parentElement?.children[
-                                    index - 1
-                                  ] as HTMLInputElement;
-                                  prevInput?.focus();
-                                }
-                              }}
-                              onKeyPress={(e) => {
-                                // Only allow numeric characters
-                                if (!/[0-9]/.test(e.key)) {
-                                  e.preventDefault();
-                                }
-                              }}
-                              onPaste={(e) => {
-                                e.preventDefault();
-
-                                // Try multiple methods to get clipboard data for Safari compatibility
-                                let pastedData = "";
-
-                                if (e.clipboardData) {
-                                  pastedData =
-                                    e.clipboardData.getData("text/plain") ||
-                                    e.clipboardData.getData("text") ||
-                                    e.clipboardData.getData("Text");
-                                }
-
-                                // Extract only numeric characters
-                                const numericData = pastedData.replace(
-                                  /\D/g,
-                                  ""
-                                );
-
-                                if (numericData.length >= 5) {
-                                  // Take only first 5 digits
-                                  const otpCode = numericData.slice(0, 5);
-                                  const otpArray = otpCode.split("");
-                                  setOtp(otpCode);
-
-                                  const newStates = otpArray.map(
-                                    () => "filled" as const
-                                  );
-                                  setInputStates(newStates);
-
-                                  // Clear error state
-                                  setError("");
-
-                                  trackVerificationSmsDetected({
-                                    phone: formatPhoneForAnalytics(
-                                      countryCode,
-                                      phoneNumber
-                                    ),
-                                  });
-                                  setTimeout(() => {
-                                    handleVerifyOtp(otpCode);
-                                  }, 100);
-                                } else if (numericData.length > 0) {
-                                  // Handle partial paste (less than 5 digits)
-                                  const currentOtpArray = otp.split("");
-                                  const pasteLength = Math.min(
-                                    numericData.length,
-                                    5 - index
-                                  );
-
-                                  for (let i = 0; i < pasteLength; i++) {
-                                    if (index + i < 5) {
-                                      currentOtpArray[index + i] =
-                                        numericData[i];
-                                    }
-                                  }
-
-                                  const newOtp = currentOtpArray.join("");
-                                  setOtp(newOtp);
-
-                                  const newStates = currentOtpArray.map(
-                                    (digit) =>
-                                      digit
-                                        ? ("filled" as const)
-                                        : ("empty" as const)
-                                  );
-                                  setInputStates(newStates);
-
-                                  // Focus next empty input
-                                  const nextEmptyIndex =
-                                    currentOtpArray.findIndex(
-                                      (digit, i) => !digit && i > index
-                                    );
-                                  if (nextEmptyIndex !== -1) {
-                                    const nextInput = e.currentTarget
-                                      .parentElement?.children[
-                                      nextEmptyIndex
-                                    ] as HTMLInputElement;
-                                    nextInput?.focus();
-                                  }
-                                }
-                              }}
-                              pattern="[0-9]*"
-                              type="text"
-                              value={currentValue}
-                            />
-                          );
-                        })}
+                            return (
+                              <div className={boxClass} key={index}>
+                                {currentValue}
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
                     {isVerifying ? (

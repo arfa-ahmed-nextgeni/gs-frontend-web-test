@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import { HomeTracker } from "@/components/analytics/home-tracker";
 import { BannerSliderSection } from "@/components/banner/banner-slider-section";
 import { WebsiteBannerComponent } from "@/components/banner/website-banner";
@@ -23,8 +25,33 @@ import { TopTrendsCategoryProducts } from "@/lib/models/top-trends-category-prod
 import { WebsiteBanner } from "@/lib/models/website-banner";
 import { WebsiteMultipleBanners } from "@/lib/models/website-multiple-banners";
 import { cn } from "@/lib/utils";
+import { getDisplayOnClassName } from "@/lib/utils/display-on";
 import { initializePageLocale } from "@/lib/utils/locale";
 import { generateWebsiteSchema } from "@/lib/utils/schema";
+import {
+  generateAbsoluteCanonicalUrl,
+  generateHreflangTags,
+} from "@/lib/utils/seo";
+
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]">): Promise<Metadata> {
+  const { locale } = await params;
+
+  const canonicalUrl = generateAbsoluteCanonicalUrl({
+    locale: locale as Locale,
+    pathname: "/",
+  });
+
+  const hreflangs = generateHreflangTags({ pathname: "/" });
+
+  return {
+    alternates: {
+      canonical: canonicalUrl,
+      languages: hreflangs,
+    },
+  };
+}
 
 export default async function Page({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
@@ -81,12 +108,12 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
             );
           case TabContentType.CategoryProducts:
             const categoryProducts = content as CategoryProducts;
-            if (categoryProducts.title === "FBT") return null;
             return (
               <Container
                 className={cn(
                   "lg:mt-7.5 mt-5",
-                  "[contain-intrinsic-size:0_540px] [content-visibility:auto] lg:[content-visibility:visible]"
+                  "[contain-intrinsic-size:0_540px] [content-visibility:auto] lg:[content-visibility:visible]",
+                  getDisplayOnClassName(categoryProducts.displayOn),
                 )}
                 key={`content-${index}`}
               >
@@ -97,37 +124,43 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
               </Container>
             );
           case TabContentType.DesktopCategories:
+            const desktopCategories = content as DesktopCategories;
             return (
-              <Container className="hidden lg:block" key={`content-${index}`}>
-                <HomeCategories
-                  data={content as DesktopCategories}
-                  lpRow={index + 1}
-                />
+              <Container
+                className={getDisplayOnClassName(desktopCategories.displayOn)}
+                key={`content-${index}`}
+              >
+                <HomeCategories data={desktopCategories} lpRow={index + 1} />
               </Container>
             );
           case TabContentType.FlashSale:
-            return (
-              <Container
-                className="[contain-intrinsic-size:0_640px] [content-visibility:auto] lg:[content-visibility:visible]"
-                key={`content-${index}`}
-              >
-                <FlashSaleSection
-                  {...(content as FlashSale)}
-                  lpRow={index + 1}
-                />
-              </Container>
-            );
-          case TabContentType.RecentlyViewedProducts:
+            const flashSale = content as FlashSale;
             return (
               <Container
                 className={cn(
                   "lg:mt-7.5 mt-5",
-                  "[contain-intrinsic-size:0_540px] [content-visibility:auto] lg:[content-visibility:visible]"
+                  "[contain-intrinsic-size:0_640px] [content-visibility:auto] lg:[content-visibility:visible]",
+                  getDisplayOnClassName(flashSale.displayOn),
+                )}
+                key={`content-${index}`}
+              >
+                <FlashSaleSection {...flashSale} lpRow={index + 1} />
+              </Container>
+            );
+          case TabContentType.RecentlyViewedProducts:
+            const recentlyViewedProducts =
+              content as RecentlyViewedProductsContent;
+            return (
+              <Container
+                className={cn(
+                  "lg:mt-7.5 mt-5",
+                  "[contain-intrinsic-size:0_540px] [content-visibility:auto] lg:[content-visibility:visible]",
+                  getDisplayOnClassName(recentlyViewedProducts.displayOn),
                 )}
                 key={`content-${index}`}
               >
                 <RecentlyViewedProducts
-                  data={content as RecentlyViewedProductsContent}
+                  data={recentlyViewedProducts}
                   lpRow={index + 1}
                 />
               </Container>
@@ -139,11 +172,13 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
               </Container>
             );
           case TabContentType.TopTrendsCategoryProducts:
+            const topTrends = content as TopTrendsCategoryProducts;
             return (
               <Container
                 className={cn(
                   "lg:mt-7.5 mt-5",
-                  "[contain-intrinsic-size:0_820px] [content-visibility:auto]"
+                  "[contain-intrinsic-size:0_820px] [content-visibility:auto]",
+                  getDisplayOnClassName(topTrends.displayOn),
                 )}
                 key={`content-${index}`}
               >
@@ -153,7 +188,7 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
                   bannerOrigin="lp"
                   bannerRow={index + 1}
                   lpRow={index + 1}
-                  {...(content as TopTrendsCategoryProducts)}
+                  {...topTrends}
                 />
               </Container>
             );

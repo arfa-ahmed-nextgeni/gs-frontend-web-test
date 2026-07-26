@@ -3,10 +3,13 @@ import type { Document } from "@contentful/rich-text-types";
 import { ProductCardVariant } from "@/lib/constants/product/product-card";
 import { TabContentType } from "@/lib/models/page-landing";
 import { ProductCardModel } from "@/lib/models/product-card-model";
-import { CategoryProductsData } from "@/lib/types/contentful/page-landing";
+
+import type { ContentDisplayOn } from "@/lib/types/contentful/display-on";
+import type { CategoryProductsData } from "@/lib/types/contentful/page-landing";
 
 export class CategoryProducts {
   public contentType: TabContentType;
+  public displayOn: ContentDisplayOn;
   public grid: boolean;
   public maximumProducts: number;
   public products?: ProductCardModel[] = [];
@@ -18,6 +21,7 @@ export class CategoryProducts {
   public variant: ProductCardVariant;
 
   constructor(data: CategoryProductsData, contentType: TabContentType) {
+    this.displayOn = data.displayOn ?? "all";
     this.title = data.title;
     this.showViewAll = data.showViewAll;
     this.productsCategoryId = data.productsCategoryId || "";

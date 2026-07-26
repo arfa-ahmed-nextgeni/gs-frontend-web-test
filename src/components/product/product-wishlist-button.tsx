@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useEffect, useRef, useTransition } from "react";
 
 import Image from "next/image";
 
@@ -21,6 +21,7 @@ import { useAddProductToWishlist } from "@/hooks/mutations/wishlist/use-add-prod
 import { useRemoveProductFromWishlist } from "@/hooks/mutations/wishlist/use-remove-product-from-wishlist";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useRouter } from "@/i18n/navigation";
+import { clickOriginTrackingManager } from "@/lib/analytics/click-origin-tracking-manager";
 import {
   trackAddToWishlist,
   trackRemoveFromWishlist,
@@ -54,6 +55,16 @@ export const ProductWishlistButton = () => {
   const { showWarning } = useToastContext();
 
   const [isAuthPending, startAuthTransition] = useTransition();
+  const pdpNavigationSourceRef = useRef<"cart" | null>(null);
+
+  useEffect(() => {
+    const source = clickOriginTrackingManager.consumePdpNavigationSource();
+
+    if (source) {
+      pdpNavigationSourceRef.current = source;
+    }
+  }, []);
+
   const isAddToCartPending = useIsMutating({
     mutationKey: MUTATION_KEYS.CART.ADD({
       locale,
@@ -136,7 +147,9 @@ export const ProductWishlistButton = () => {
         selectedProduct,
         product
       );
-      trackAddToWishlist(productProperties);
+      trackAddToWishlist(productProperties, {
+        navigatedFromCart: pdpNavigationSourceRef.current === "cart",
+      });
 
       const payload: {
         selectedOptionId?: string;

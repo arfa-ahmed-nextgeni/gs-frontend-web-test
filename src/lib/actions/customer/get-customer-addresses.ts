@@ -11,9 +11,10 @@ import { graphqlRequest } from "@/lib/clients/graphql";
 import { CUSTOMER_GRAPHQL_QUERIES } from "@/lib/constants/api/graphql/customer";
 import { Locale, LOCALE_TO_STORE } from "@/lib/constants/i18n";
 import { CustomerAddresses } from "@/lib/models/customer-addresses";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 import { failure, ok, unauthenticated } from "@/lib/utils/service-result";
 
-export const getCustomerAddresses = cache(async () => {
+export const getCustomerAddresses = cache(async (localeOverride?: Locale) => {
   await connection();
   try {
     const authToken = await getAuthToken();
@@ -22,11 +23,12 @@ export const getCustomerAddresses = cache(async () => {
       return unauthenticated();
     }
 
-    const locale = (await getLocale()) as Locale;
+    const locale = localeOverride ?? ((await getLocale()) as Locale);
     const storeCode = LOCALE_TO_STORE[locale];
 
     const response = await graphqlRequest({
       authToken,
+      forwardHeaders: await getForwardedRequestHeaders(),
       query: CUSTOMER_GRAPHQL_QUERIES.GET_CUSTOMER_ADDRESSES,
       storeCode,
     });

@@ -61,14 +61,18 @@ export async function generateMetadata({
   if (isOk(productDetailsResult)) {
     const product = productDetailsResult.data;
 
-    // Generate canonical URL for the product
-    const canonicalUrl = generateAbsoluteCanonicalUrl({
+    // Canonical URL strategy:
+    // - Child product   → parent_product_url is set in Magento → canonical points to parent
+    // - Parent product  → parent_product_url is not set        → canonical is its own URL
+    // - Simple product  → parent_product_url is not set        → canonical is its own URL
+    const canonicalUrl = resolveProductCanonicalUrl({
       locale: locale as Locale,
-      pathname: `/p/${urlKey}`,
+      parentProductUrl: product.parentProductUrl,
+      urlKey,
     });
 
-    // Generate hreflang tags for product page
-    // Product pages exist across all stores, so use the same pathname
+    // Hreflang always uses the current product's own URL (not the parent's),
+    // so crawlers can discover all locale variants of this specific page.
     const hreflangs = generateHreflangTags({
       pathname: `/p/${urlKey}`,
     });
@@ -224,4 +228,50 @@ export default async function ProductPage({
   }
 
   return notFound();
+}
+
+/**
+ * Resolve the canonical URL for a product page.
+ *
+ * Magento sets `parent_product_url` only on child (variant) products.
+ * Parent (configurable) and simple products do NOT have this attribute,
+ * so they always use their own URL as the canonical.
+ *
+ * | Product type   | parent_product_url | Canonical          |
+ * |----------------|--------------------|--------------------|
+ * | Child/variant  | set                | parent product URL |
+ * | Parent/config  | not set            | own URL            |
+ * | Simple         | not set            | own URL            |
+ */
+function resolveProductCanonicalUrl({
+  locale,
+  parentProductUrl,
+  urlKey,
+}: {
+  locale: Locale;
+  parentProductUrl: string | undefined;
+  urlKey: string;
+}): string {
+  // Parent / simple product — no parent_product_url attribute → own URL
+  if (!parentProductUrl) {
+    return generateAbsoluteCanonicalUrl({ locale, pathname: `/p/${urlKey}` });
+  }
+
+  // Child product — parent_product_url is an absolute URL → extract the path
+  // and rebuild with the correct domain to avoid hardcoded staging URLs
+  if (parentProductUrl.startsWith("http")) {
+    const pathname = new URL(parentProductUrl).pathname;
+    const normalizedKey = pathname.replace(/^\/[a-z]{2}\/p\//, "");
+    return generateAbsoluteCanonicalUrl({
+      locale,
+      pathname: `/p/${normalizedKey}`,
+    });
+  }
+
+  // Child product — parent_product_url is a URL key or relative path → normalise
+  const normalizedKey = parentProductUrl.replace(/^\/?(p\/)?/, "");
+  return generateAbsoluteCanonicalUrl({
+    locale,
+    pathname: `/p/${normalizedKey}`,
+  });
 }

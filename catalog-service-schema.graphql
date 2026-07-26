@@ -2004,6 +2004,10 @@ An implementation of ProductViewOptionValue that adds details about a simple pro
 """
 type ProductViewOptionValueProduct implements ProductViewOptionValue {
   """
+  Indicates if the quantity of the option value can be edited.
+  """
+  canEditQuantity: Boolean
+  """
   Indicates if the associated product is enabled.
   """
   enabled: Boolean
@@ -2409,6 +2413,10 @@ type RecommendationUnit {
   Name of the preconfigured unit
   """
   unitName: String
+  """
+  User error message if the unit could not be fully resolved (e.g. required currentSku was not provided)
+  """
+  userError: String
 }
 
 """
@@ -2815,7 +2823,7 @@ User view history
 """
 input ViewHistory {
   date: DateTime
-  sku: String!
+  sku: String
 }
 
 """

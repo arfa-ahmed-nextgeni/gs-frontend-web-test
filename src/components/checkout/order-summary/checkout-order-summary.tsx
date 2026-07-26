@@ -12,6 +12,7 @@ import {
   CardRailScrollSnapCarousel,
   CardRailScrollSnapCarouselItem,
 } from "@/components/ui/card-rail-scroll-snap-carousel";
+import { useStoreConfig } from "@/contexts/store-config-context";
 import { useCart } from "@/contexts/use-cart";
 import { useStoreCode } from "@/hooks/i18n/use-store-code";
 import { useIsMounted } from "@/hooks/use-is-mounted";
@@ -53,6 +54,7 @@ export function CheckoutOrderSummary({
   const t = useTranslations("CheckoutPage.orderSummary");
   const tDelivery = useTranslations("CheckoutPage.delivery");
   const { cart } = useCart();
+  const { storeConfig } = useStoreConfig();
   const { isGlobal } = useStoreCode();
   const isMounted = useIsMounted();
   const checkoutItemsCarouselApiRef = useRef<CarouselHandle>(null);
@@ -132,6 +134,13 @@ export function CheckoutOrderSummary({
   const hasItems = isMounted
     ? allItems.length > 0
     : (data?.itemCount || 0) > 0 || (data?.giftCount || 0) > 0;
+  const freeShippingThreshold = Number(storeConfig?.freeShippingThreshold);
+  const thresholdSubtotal = Math.max(
+    totals.subtotal - deductions.discount - deductions.wallet,
+    0
+  );
+  const remaining = Math.max(freeShippingThreshold - thresholdSubtotal, 0);
+  const freeShippingUnlocked = remaining === 0 && freeShippingThreshold > 0;
 
   return (
     <section className="shadow-xs rounded-2xl bg-white p-5">
@@ -283,21 +292,15 @@ export function CheckoutOrderSummary({
               {t("shippingFee")}
             </span>
             <span className="inline-flex items-center gap-2">
-              {totals.shippingFee > 0 ? (
-                <LocalizedPrice
-                  containerProps={{ className: "inline-flex items-center" }}
-                  price={formatPrice({
-                    amount: totals.shippingFee,
-                    currencyCode,
-                  })}
-                  valueProps={{ className: "text-[#5D5D5D]" }}
-                />
-              ) : (
+              {freeShippingUnlocked || totals.shippingFee === 0 ? (
                 <>
                   {totals.baseShippingFee > 0 && (
                     <LocalizedPrice
                       containerProps={{
                         className: "inline-flex items-center",
+                      }}
+                      currencySymbolProps={{
+                        className: "text-[#BDC2C5]",
                       }}
                       price={formatPrice({
                         amount: totals.baseShippingFee,
@@ -310,6 +313,15 @@ export function CheckoutOrderSummary({
                     {tDelivery("free")}
                   </span>
                 </>
+              ) : (
+                <LocalizedPrice
+                  containerProps={{ className: "inline-flex items-center" }}
+                  price={formatPrice({
+                    amount: totals.shippingFee,
+                    currencyCode,
+                  })}
+                  valueProps={{ className: "text-[#5D5D5D]" }}
+                />
               )}
             </span>
           </div>
@@ -396,6 +408,9 @@ export function CheckoutOrderSummary({
               {deductions.mokafaa > 0 ? t("youUsed") : t("youSaved")}{" "}
               <LocalizedPrice
                 containerProps={{ className: "inline-flex items-center" }}
+                currencySymbolProps={{
+                  className: "text-[1.3em] me-0.75",
+                }}
                 price={formatPrice({
                   amount: deductions.totalSavings,
                   currencyCode,

@@ -11,7 +11,8 @@ import { ApplyRewardPoints } from "@/components/cart/order/order-actions/apply-r
 import { MutualExclusiveDisclaimer } from "@/components/cart/order/order-actions/mutual-exclusive-disclaimer";
 import { Card, CardContent } from "@/components/ui/card";
 import { useCart } from "@/contexts/use-cart";
-import { Locale } from "@/lib/constants/i18n";
+import { useStoreCode } from "@/hooks/i18n/use-store-code";
+import { Locale, StoreCode } from "@/lib/constants/i18n";
 import { MUTATION_KEYS } from "@/lib/constants/mutation-keys";
 import { mutationPrefix } from "@/lib/utils/mutation-key";
 
@@ -23,6 +24,7 @@ interface OrderActionsProps {
 
 export function OrderActions({ currencyCode }: OrderActionsProps) {
   const { cart } = useCart();
+  const { storeCode } = useStoreCode();
 
   const locale = useLocale() as Locale;
 
@@ -37,7 +39,10 @@ export function OrderActions({ currencyCode }: OrderActionsProps) {
   const appliedCoupon = cart?.appliedCoupons?.[0];
   const isCouponApplied = Boolean(appliedCoupon);
   const isMokafaaApplied = Boolean(mokafaaDiscount);
-  const isMokafaaEnabled = isHydrated && (cart?.mokafaaEnabledForWeb || false);
+  const isKsaStore =
+    storeCode === StoreCode.ar_sa || storeCode === StoreCode.en_sa;
+  const isMokafaaEnabled =
+    isHydrated && isKsaStore && (cart?.mokafaaEnabledForWeb || false);
   const isRewardPointsApplied = cart?.appliedRewardPoints ?? false;
 
   const isRewardPointsMutating = useIsMutating({

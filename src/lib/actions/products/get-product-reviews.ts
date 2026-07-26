@@ -28,6 +28,33 @@ export const getProductReviews = async ({
   try {
     const locale = (await getLocale()) as Locale;
 
+    return getProductReviewsByLocale({
+      locale,
+      page,
+      pageSize,
+      productId,
+      sortBy,
+    });
+  } catch (error) {
+    console.error("Failed to get product reviews:", error);
+    return failure("Failed to get product reviews");
+  }
+};
+
+export const getProductReviewsByLocale = async ({
+  locale,
+  page,
+  pageSize,
+  productId,
+  sortBy,
+}: {
+  locale: Locale;
+  page: number;
+  pageSize: number;
+  productId: number;
+  sortBy?: string;
+}) => {
+  try {
     return getProductReviewsCached(locale, page, pageSize, productId, sortBy);
   } catch (error) {
     console.error("Failed to get product reviews:", error);

@@ -4,6 +4,7 @@ import { getLocale } from "next-intl/server";
 
 import { graphqlRequest } from "@/lib/clients/graphql";
 import { Locale, LOCALE_TO_STORE } from "@/lib/constants/i18n";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 import { ok } from "@/lib/utils/service-result";
 
 interface KsaAddressResponse {
@@ -112,6 +113,7 @@ export const getKsaAddress = async ({
     const response = await graphqlRequest<{
       getKsaAddress: KsaAddressResponse;
     }>({
+      forwardHeaders: await getForwardedRequestHeaders(),
       query: queryString as any,
       storeCode: LOCALE_TO_STORE[locale],
     });

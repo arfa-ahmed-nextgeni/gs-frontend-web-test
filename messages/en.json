@@ -395,6 +395,16 @@
     "rateOrder": "Rate the Order",
     "quantity": "QTY",
     "loading": "Loading order details...",
+    "cancelToast": {
+      "successTitle": "Order Cancelled",
+      "successMessage": "Your order has been successfully cancelled.",
+      "processingTitle": "Order Already Being Processed",
+      "processingMessage": "This order has moved to processing and can no longer be cancelled automatically. Please contact support if you need help.",
+      "unableTitle": "Unable to Cancel Order",
+      "unableMessage": "This order can no longer be cancelled. Please contact support if you need help.",
+      "failedTitle": "Cancellation Failed",
+      "failedMessage": "An unexpected error occurred. Please try again."
+    },
     "status": {
       "confirmed": "Confirmed",
       "processed": "Processed",
@@ -410,7 +420,7 @@
   "CustomerAddAddressPage": {
     "title": "Add New Address",
     "editTitle": "Edit Address",
-    "shopperInformation": "Shopper Information",
+    "shopperInformation": "Recipient's Information",
     "country": {
       "title": "Select your country",
       "shortTitle": "Country",
@@ -479,6 +489,7 @@
     "orderCard": {
       "orderDate": "Order Date",
       "total": "Total",
+      "viewOrder": "View Order #{orderNumber}",
       "orderNumber": "Order #",
       "actions": {
         "delete": "Delete",
@@ -488,6 +499,16 @@
         "invoice": "Invoice",
         "cancel": "Cancel"
       }
+    },
+    "cancelToast": {
+      "successTitle": "Order Cancelled",
+      "successMessage": "Your order has been successfully cancelled.",
+      "processingTitle": "Order Already Being Processed",
+      "processingMessage": "This order has moved to processing and can no longer be cancelled automatically. Please contact support if you need help.",
+      "unableTitle": "Unable to Cancel Order",
+      "unableMessage": "This order can no longer be cancelled. Please contact support if you need help.",
+      "failedTitle": "Cancellation Failed",
+      "failedMessage": "An unexpected error occurred. Please try again."
     },
     "pagination": {
       "previous": "Previous",
@@ -574,6 +595,7 @@
   },
   "productCard": {
     "bundleProductTitle": "<price></price> Saved 🎉",
+    "viewProduct": "View product",
     "cartAction": {
       "add": "Add",
       "added": "Added",
@@ -854,6 +876,7 @@
     "/search": "Search",
     "/track-order": "Track Your Order",
     "/c/brands": "Brands",
+    "/brands": "Brands",
     "/c/new-in": "New in",
     "/c/fragrances": "Fragrances",
     "/c/beauty-world": "Beauty world",
@@ -867,6 +890,10 @@
     "whatsAppUs": "WhatsApp us",
     "callUs": "Call us",
     "emailUs": "Email us",
+    "emailFallbackCopiedTitle": "Email copied",
+    "emailFallbackCopiedDescription": "If your email app did not open, paste it into your email app.",
+    "emailFallbackTitle": "Email app did not open?",
+    "emailFallbackDescription": "Please copy this email: {email}",
     "boulevard": "Boulevard"
   },
   "ContactForm": {
@@ -1017,7 +1044,8 @@
     },
     "giftItems": {
       "orderIncludesFreeGift": "🥳 Your order includes <strong>FREE GIFT</strong> items",
-      "freeGiftLabel": "{count, plural, one {# Free } other {# Free }}"
+      "freeGiftLabel": "Free",
+      "quantity": "Qty {count}"
     },
     "outOfStock": "Out of Stock",
     "removeOutOfStockToProceed": "Remove out-of-stock items to continue",
@@ -1332,6 +1360,7 @@
     "alphanumericAllowed": "Only letters and numbers are allowed",
     "specialCharsNotAllowed": "Special characters are not allowed",
     "invalidPostalCode": "Post code can only contain letters, numbers, spaces, and hyphens",
+    "invalidCountryCode": "Please enter a valid country code",
     "invalidPhoneNumber": "Please enter a valid phone number",
     "invalidCity": "This city is not supported"
   },
@@ -1478,7 +1507,6 @@
     "applePay": {
       "displayName": "Golden Scent",
       "notAvailable": "Apple Pay is not available on this device. Please use a different payment method.",
-      "ready": "Apple Pay is ready. Click the \"Pay\" button below to complete your purchase.",
       "errors": {
         "notAvailable": "Apple Pay is not available on this device",
         "paymentCanceled": "Payment canceled by Apple Pay",
@@ -1630,6 +1658,10 @@
       "timeoutError": "Request timed out. Please try again.",
       "bulletDeliveryMethodUnavailable": "{carrierTitle} is not available."
     },
+    "payfortErrors": {
+      "00005": "We couldn't process the payment for this order. Please try again or contact support.",
+      "10785": "This payment couldn't be completed. Please try a different card or payment method, or contact your bank."
+    },
     "messages": {
       "orderPlacedSuccess": "Order {orderNumber} placed successfully",
       "orderPlacedSuccessNoNumber": "Order placed successfully",
@@ -1766,6 +1798,7 @@
     "subtotal": "Subtotal",
     "serviceFee": "Service Fee",
     "codFee": "COD Fee",
+    "free": "FREE",
     "shippingFee": "Shipping Fee",
     "shippingFree": "FREE",
     "discount": "Discount",

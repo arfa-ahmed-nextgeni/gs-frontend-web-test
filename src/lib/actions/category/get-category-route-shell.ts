@@ -11,6 +11,7 @@ import { CATEGORIES_GRAPHQL_QUERIES } from "@/lib/constants/api/graphql/categori
 import { CacheTags } from "@/lib/constants/cache/tags";
 import { type Locale } from "@/lib/constants/i18n";
 import { CategoryRouteShellModel } from "@/lib/models/category-route-shell-model";
+import { retryNetworkRequest } from "@/lib/utils/network-error";
 import { failure, ok } from "@/lib/utils/service-result";
 
 export const getCategoryRouteShell = ({
@@ -38,14 +39,17 @@ const fetchRouteShell = async (locale: Locale, urlPath: string) => {
       return failure("Store config not available");
     }
 
-    const response = await graphqlRequest({
-      query: CATEGORIES_GRAPHQL_QUERIES.GET_CATEGORY_ROUTE_SHELL_BY_PATH,
-      skipUserAgentHeader: true,
-      storeCode: storeConfig.data.store.code,
-      variables: {
-        urlPath,
-      },
-    });
+    const response = await retryNetworkRequest(() =>
+      graphqlRequest({
+        httpMethod: "GET",
+        operationName: "GetCategoryRouteShellByPath",
+        query: CATEGORIES_GRAPHQL_QUERIES.GET_CATEGORY_ROUTE_SHELL_BY_PATH,
+        storeCode: storeConfig.data.store!.code,
+        variables: {
+          urlPath,
+        },
+      })
+    );
 
     const routeShell = new CategoryRouteShellModel({
       data: response.data,

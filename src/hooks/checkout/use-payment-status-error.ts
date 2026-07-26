@@ -36,7 +36,12 @@ export function usePaymentStatusError() {
   const t = useTranslations("CheckoutPage");
   const { cart, isLoading } = useCart();
   const { storeConfig } = useStoreConfig();
-  const { paymentStatus, setPaymentStatus } = usePaymentStatusParam();
+  const {
+    paymentReasonCode,
+    paymentStatus,
+    setPaymentReasonCode,
+    setPaymentStatus,
+  } = usePaymentStatusParam();
   const { hasUserPropertiesSet } = useAnalytics();
 
   useEffect(() => {
@@ -96,11 +101,21 @@ export function usePaymentStatusError() {
         );
       }
 
-      toast({ title: t("errors.paymentFailed"), type: "error" });
+      // Prefer a specific message mapped from the PayFort response code when
+      // one is configured; otherwise fall back to the generic failure text.
+
+      const reasonKey = `payfortErrors.${paymentReasonCode}` as any;
+      const title =
+        paymentReasonCode && t.has(reasonKey)
+          ? t(reasonKey)
+          : t("errors.paymentFailed");
+
+      toast({ title, type: "error" });
     }
 
     setTimeout(() => {
       setPaymentStatus(null);
+      setPaymentReasonCode(null);
     }, 2000);
     // Don't clear payment method info here - it's needed for cart refill restoration
     // It will be cleared after restoration in checkout-page.tsx
@@ -108,7 +123,9 @@ export function usePaymentStatusError() {
     cart,
     hasUserPropertiesSet,
     isLoading,
+    paymentReasonCode,
     paymentStatus,
+    setPaymentReasonCode,
     setPaymentStatus,
     storeConfig,
     t,

@@ -12,19 +12,23 @@ export const STORE_TO_COUNTRY_CODE: Record<StoreCode, string> = {
   [StoreCode.ar_ae]: "+971",
   [StoreCode.ar_bh]: "+973",
   [StoreCode.ar_boulevard]: "+966",
+  [StoreCode.ar_fabian]: "+966",
   [StoreCode.ar_global]: "+1",
   [StoreCode.ar_iq]: "+964",
   [StoreCode.ar_kw]: "+965",
   [StoreCode.ar_om]: "+968",
   [StoreCode.ar_sa]: "+966",
+  [StoreCode.ar_surrati]: "+966",
   [StoreCode.en_ae]: "+971",
   [StoreCode.en_bh]: "+973",
   [StoreCode.en_boulevard]: "+966",
+  [StoreCode.en_fabian]: "+966",
   [StoreCode.en_global]: "+1",
   [StoreCode.en_iq]: "+964",
   [StoreCode.en_kw]: "+965",
   [StoreCode.en_om]: "+968",
   [StoreCode.en_sa]: "+966",
+  [StoreCode.en_surrati]: "+966",
 };
 
 // Country flag mapping

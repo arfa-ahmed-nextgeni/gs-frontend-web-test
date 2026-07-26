@@ -1,5 +1,10 @@
 import { useEffect, useRef } from "react";
 
+import {
+  getScrollOffsetFromStart,
+  scrollToOffsetFromStart,
+} from "@/lib/utils/rtl-scroll";
+
 const getWheelDelta = (event: WheelEvent, containerWidth: number) => {
   if (event.deltaMode === 1) {
     return event.deltaY * 16;
@@ -11,6 +16,9 @@ const getWheelDelta = (event: WheelEvent, containerWidth: number) => {
 
   return event.deltaY;
 };
+
+const clampScrollOffset = (offset: number, maxOffset: number) =>
+  Math.max(0, Math.min(offset, maxOffset));
 
 export function useHorizontalScroll<T extends HTMLElement>() {
   const scrollRef = useRef<null | T>(null);
@@ -28,15 +36,19 @@ export function useHorizontalScroll<T extends HTMLElement>() {
         return;
       }
 
-      const previousScrollLeft = el.scrollLeft;
-      const direction = getComputedStyle(el).direction;
-      const directionMultiplier = direction === "rtl" ? -1 : 1;
+      const maxScrollOffset = el.scrollWidth - el.clientWidth;
+      const currentOffset = getScrollOffsetFromStart(el);
+      const nextOffset = clampScrollOffset(
+        currentOffset + getWheelDelta(e, el.clientWidth),
+        maxScrollOffset
+      );
 
-      el.scrollLeft += getWheelDelta(e, el.clientWidth) * directionMultiplier;
-
-      if (el.scrollLeft !== previousScrollLeft) {
-        e.preventDefault();
+      if (nextOffset === currentOffset) {
+        return;
       }
+
+      e.preventDefault();
+      scrollToOffsetFromStart(el, nextOffset, { behavior: "auto" });
     };
 
     el.addEventListener("wheel", onWheel, { passive: false });

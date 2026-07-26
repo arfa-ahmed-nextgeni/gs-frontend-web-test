@@ -47,12 +47,18 @@ interface CustomerData {
 
 interface InitialAddressSnapshot {
   city: string;
+  countryCode?: string;
+  countryLabel?: string;
   district: string;
   formattedAddress: string;
   isDefault: boolean;
+  middleName?: string;
   postalCode: string;
+  regionId?: null | number;
   shortCode: string;
+  stateLabel?: string;
   street: string;
+  streetLine2?: string;
 }
 
 interface InitialContactData {

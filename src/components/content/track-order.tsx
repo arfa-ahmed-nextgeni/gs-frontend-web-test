@@ -2,27 +2,22 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { useSearchParams } from "next/navigation";
-
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
 
 import Container from "@/components/shared/container";
+import { LocalizedPrice } from "@/components/shared/localized-price";
 import { FloatingLabelInput } from "@/components/ui/floating-label-input";
 import { FormSubmitButton } from "@/components/ui/form-submit-button";
 import { useShipmentTracking } from "@/hooks/order/use-shipment-tracking";
+import { useSearchParams } from "@/i18n/client-navigation";
+import { formatPrice } from "@/lib/utils/price";
+
+import type { TrackingUpdate } from "@/lib/actions/order/tracking";
 
 interface TrackFormData {
   orderNumber: string;
   trackingNumber: string;
-}
-
-interface TrackingUpdate {
-  comments?: string;
-  update_code: string;
-  update_date_time: string;
-  update_description: string;
-  update_location: string;
 }
 
 const getProgressPercentage = (trackingStatus: string): number => {
@@ -113,57 +108,39 @@ export function TrackOrderPage() {
   const lastTrackedParamsRef = useRef<null | string>(null);
 
   const queryParamsData = useMemo(() => {
-    const rawOrderNumber =
+    const orderNumber =
       searchParams.get("orderNumber") || searchParams.get("increment_id") || "";
     const trackingNumber = searchParams.get("trackingNumber") || "";
 
-    let decodedOrderNumber = rawOrderNumber;
-    if (rawOrderNumber) {
-      try {
-        decodedOrderNumber = atob(rawOrderNumber);
-      } catch {
-        decodedOrderNumber = rawOrderNumber;
-      }
-    }
-
-    return {
-      decodedOrderNumber,
-      trackingNumber,
-    };
+    return { orderNumber, trackingNumber };
   }, [searchParams]);
 
   useEffect(() => {
-    const { decodedOrderNumber, trackingNumber } = queryParamsData;
+    const { orderNumber, trackingNumber } = queryParamsData;
 
-    if (decodedOrderNumber || trackingNumber) {
+    // Sync form fields from URL params
+    if (orderNumber || trackingNumber) {
       setFormData((prev) => {
         if (
-          prev.orderNumber === decodedOrderNumber &&
+          prev.orderNumber === orderNumber &&
           prev.trackingNumber === trackingNumber
         ) {
           return prev;
         }
-
-        return {
-          orderNumber: decodedOrderNumber,
-          trackingNumber,
-        };
+        return { orderNumber, trackingNumber };
       });
     }
-  }, [queryParamsData]);
 
-  useEffect(() => {
-    const { decodedOrderNumber, trackingNumber } = queryParamsData;
-
-    if (!decodedOrderNumber || !trackingNumber) {
+    // Auto-trigger tracking only when both params are present
+    if (!orderNumber || !trackingNumber) {
       lastTrackedParamsRef.current = null;
       return;
     }
 
-    const trackingParamsKey = `${decodedOrderNumber}:${trackingNumber}`;
+    const trackingParamsKey = `${orderNumber}:${trackingNumber}`;
     if (lastTrackedParamsRef.current !== trackingParamsKey) {
       lastTrackedParamsRef.current = trackingParamsKey;
-      trackOrder(decodedOrderNumber, trackingNumber);
+      trackOrder(orderNumber, trackingNumber);
     }
   }, [queryParamsData, trackOrder]);
 
@@ -282,13 +259,13 @@ export function TrackOrderPage() {
                 <div className="relative">
                   <div className="h-2 w-full rounded-full bg-gray-200">
                     <div
-                      className={`h-2 rounded-full transition-all duration-500 ${getProgressColor((trackingData as any).tracking_status || trackingData.delivery_status)}`}
+                      className={`h-2 rounded-full transition-all duration-500 ${getProgressColor(trackingData.tracking_status || trackingData.delivery_status)}`}
                       style={{
-                        width: `${getProgressPercentage((trackingData as any).tracking_status || trackingData.delivery_status)}%`,
+                        width: `${getProgressPercentage(trackingData.tracking_status || trackingData.delivery_status)}%`,
                       }}
                     ></div>
                   </div>
-                  {(trackingData as any).tracking_status === "Returned" ? (
+                  {trackingData.tracking_status === "Returned" ? (
                     <div className="mt-2 flex justify-center text-xs text-gray-600">
                       <span className="font-semibold text-red-600" dir="auto">
                         {t("returned")}
@@ -301,18 +278,18 @@ export function TrackOrderPage() {
                     >
                       <span
                         className={
-                          (trackingData as any).tracking_status === "Processing"
+                          trackingData.tracking_status === "Processing"
                             ? "font-semibold text-blue-600"
                             : ""
                         }
                       >
-                        {(trackingData as any).tracking_status === "Processing"
+                        {trackingData.tracking_status === "Processing"
                           ? t("shipmentCreatedCaps")
                           : t("shipmentCreated")}
                       </span>
                       <span
                         className={
-                          (trackingData as any).tracking_status === "Shipped"
+                          trackingData.tracking_status === "Shipped"
                             ? "font-semibold text-orange-600"
                             : ""
                         }
@@ -321,7 +298,7 @@ export function TrackOrderPage() {
                       </span>
                       <span
                         className={
-                          (trackingData as any).tracking_status === "Delivered"
+                          trackingData.tracking_status === "Delivered"
                             ? "font-semibold text-green-600"
                             : ""
                         }
@@ -340,7 +317,12 @@ export function TrackOrderPage() {
                 <div className="space-y-2 text-sm text-gray-700">
                   <p>
                     <strong>{t("grandTotal")}:</strong>{" "}
-                    {parseFloat(trackingData.grand_total).toFixed(2)} SAR
+                    <LocalizedPrice
+                      price={formatPrice({
+                        amount: parseFloat(trackingData.grand_total) || 0,
+                        currencyCode: trackingData.currency ?? "SAR",
+                      })}
+                    />
                   </p>
                   <p>
                     <strong>{t("carrier")}:</strong> {trackingData.carrier}
@@ -351,7 +333,7 @@ export function TrackOrderPage() {
                   </p>
                   <p>
                     <strong>{t("deliveryStatus")}:</strong>{" "}
-                    {(trackingData as any).tracking_status ||
+                    {trackingData.tracking_status ||
                       trackingData.delivery_status}
                   </p>
                 </div>

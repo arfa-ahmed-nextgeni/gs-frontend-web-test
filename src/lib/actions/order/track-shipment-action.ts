@@ -13,7 +13,6 @@ import type { Locale } from "@/lib/constants/i18n";
 interface TrackShipmentActionPayload {
   orderId: string;
   trackingNumber: string;
-  trackingType?: "incrementId" | "orderId";
 }
 
 interface TrackShipmentActionResponse {
@@ -26,7 +25,6 @@ interface TrackShipmentActionResponse {
 export async function trackShipmentAction({
   orderId,
   trackingNumber,
-  trackingType,
 }: TrackShipmentActionPayload): Promise<TrackShipmentActionResponse> {
   try {
     const locale = (await getLocale()) as Locale;
@@ -35,7 +33,6 @@ export async function trackShipmentAction({
       orderId,
       storeCode: getStoreCode(locale),
       trackingNumber,
-      trackingType,
     });
   } catch (error) {
     console.error("Error tracking shipment:", error);

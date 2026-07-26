@@ -31,6 +31,7 @@ import { TopTrendsCategoryProducts } from "@/lib/models/top-trends-category-prod
 import { WebsiteBanner } from "@/lib/models/website-banner";
 import { WebsiteMultipleBanners } from "@/lib/models/website-multiple-banners";
 import { YoutubeVideo as YoutubeVideoModel } from "@/lib/models/youtube-video";
+import { getDisplayOnClassName } from "@/lib/utils/display-on";
 import { initializePageLocale } from "@/lib/utils/locale";
 import {
   generateAbsoluteCanonicalUrl,
@@ -215,7 +216,12 @@ export default async function StaticPage({
                 case TabContentType.CategoryProducts:
                   const categoryProducts = content as CategoryProducts;
                   return (
-                    <div key={`content-${index}`}>
+                    <div
+                      className={getDisplayOnClassName(
+                        categoryProducts.displayOn,
+                      )}
+                      key={`content-${index}`}
+                    >
                       <CategoryProductsCarousel
                         {...categoryProducts}
                         lpRow={index + 1}
@@ -224,18 +230,28 @@ export default async function StaticPage({
                   );
 
                 case TabContentType.DesktopCategories:
+                  const desktopCategories = content as DesktopCategories;
                   return (
-                    <div className="hidden lg:block" key={`content-${index}`}>
+                    <div
+                      className={getDisplayOnClassName(
+                        desktopCategories.displayOn,
+                      )}
+                      key={`content-${index}`}
+                    >
                       <HomeCategories
-                        data={content as DesktopCategories}
+                        data={desktopCategories}
                         lpRow={index + 1}
                       />
                     </div>
                   );
                 case TabContentType.FlashSale:
+                  const flashSale = content as FlashSale;
                   return (
-                    <div key={`content-${index}`}>
-                      <FlashSaleSection {...(content as FlashSale)} />
+                    <div
+                      className={getDisplayOnClassName(flashSale.displayOn)}
+                      key={`content-${index}`}
+                    >
+                      <FlashSaleSection {...flashSale} />
                     </div>
                   );
                 case TabContentType.TitleAndDescription:
@@ -254,15 +270,19 @@ export default async function StaticPage({
                     </div>
                   );
                 case TabContentType.TopTrendsCategoryProducts:
+                  const topTrends = content as TopTrendsCategoryProducts;
                   return (
-                    <div key={`content-${index}`}>
+                    <div
+                      className={getDisplayOnClassName(topTrends.displayOn)}
+                      key={`content-${index}`}
+                    >
                       <TopTrendsSection
                         bannerColumn={1}
                         bannerLpId={slug}
                         bannerOrigin="lp"
                         bannerRow={index + 1}
                         lpRow={index + 1}
-                        {...(content as TopTrendsCategoryProducts)}
+                        {...topTrends}
                       />
                     </div>
                   );
@@ -295,7 +315,10 @@ export default async function StaticPage({
                 case TabContentType.YoutubeVideo:
                   const youtubeVideo = content as YoutubeVideoModel;
                   return (
-                    <div key={`content-${index}`}>
+                    <div
+                      className={getDisplayOnClassName(youtubeVideo.displayOn)}
+                      key={`content-${index}`}
+                    >
                       <YoutubeVideo
                         data={{
                           contentType: youtubeVideo.contentType,

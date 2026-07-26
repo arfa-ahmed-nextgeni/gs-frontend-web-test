@@ -15,12 +15,10 @@ import { getLocaleInfo } from "@/lib/utils/locale";
 
 export const AddDeliveryAddressMapContent = ({
   currentLocation,
-  defaultCenter,
   isBottomWarningVisible,
   onLocateAction,
 }: {
   currentLocation: google.maps.LatLngLiteral | null;
-  defaultCenter: google.maps.LatLngLiteral;
   isBottomWarningVisible?: boolean;
   onLocateAction: () => void;
 }) => {
@@ -91,25 +89,6 @@ export const AddDeliveryAddressMapContent = ({
     ]
   );
 
-  // Handle draggable marker drag end
-  const handleMarkerDragEnd = useCallback(
-    (e: google.maps.MapMouseEvent) => {
-      if (e.latLng) {
-        const newPosition = {
-          lat: e.latLng.lat(),
-          lng: e.latLng.lng(),
-        };
-        // Let the selectedLocation effect perform the single reverse-geocode pass.
-        setSelectedLocation(newPosition);
-        // Center map on the new marker position
-        if (map) {
-          map.panTo(newPosition);
-        }
-      }
-    },
-    [map, setSelectedLocation]
-  );
-
   // const handleZoomIn = useCallback(() => {
   //   if (map) {
   //     const currentZoom = map.getZoom() || 13;
@@ -158,16 +137,30 @@ export const AddDeliveryAddressMapContent = ({
     }
   }, [map, selectedLocation]);
 
-  // Determine marker position - prioritize selected location, fallback to current location, then default center
-  const markerPosition = selectedLocation || currentLocation || defaultCenter;
-
+  // Keep the marker fixed and update the selected location when map movement ends.
   useEffect(() => {
-    console.info("[MapContent] selectedLocation changed:", {
-      currentLocation,
-      markerPosition,
-      selectedLocation,
+    if (!map) return;
+
+    const idleListener = map.addListener("idle", () => {
+      const center = map.getCenter();
+      if (!center) return;
+
+      const newPosition = {
+        lat: center.lat(),
+        lng: center.lng(),
+      };
+      const isSamePosition =
+        selectedLocation &&
+        Math.abs(selectedLocation.lat - newPosition.lat) < 0.0000001 &&
+        Math.abs(selectedLocation.lng - newPosition.lng) < 0.0000001;
+
+      if (!isSamePosition) {
+        setSelectedLocation(newPosition);
+      }
     });
-  }, [selectedLocation, markerPosition, currentLocation]);
+
+    return () => idleListener.remove();
+  }, [map, selectedLocation, setSelectedLocation]);
 
   return (
     <>
@@ -181,36 +174,17 @@ export const AddDeliveryAddressMapContent = ({
         </AdvancedMarker>
       )}
 
-      {/* Main draggable marker for selected location */}
-      <AdvancedMarker
-        draggable={true}
-        onDragEnd={handleMarkerDragEnd}
-        position={markerPosition}
-        title="Selected Location"
-      >
+      {/* Fixed marker; the map moves underneath it. */}
+      <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-full">
         <Image
           alt="Selected Location"
-          className="size-11 cursor-grab active:cursor-grabbing"
-          draggable={false} // Prevent image drag, let marker handle it
+          className="size-11"
+          draggable={false}
           height={44}
           src={LocationPinIcon}
           width={44}
         />
-      </AdvancedMarker>
-
-      {/* Fixed center crosshair for map-centered location selection - DISABLED */}
-      {/* <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <div className="relative">
-          {/* Crosshair indicator */}
-      {/* <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform">
-            <div className="h-4 w-4 rounded-full border-2 border-red-500 bg-white opacity-80 shadow-lg" />
-          </div> */}
-      {/* Instructional text */}
-      {/* <div className="absolute left-1/2 top-full mt-2 -translate-x-1/2 transform whitespace-nowrap rounded bg-black bg-opacity-75 px-2 py-1 text-xs text-white">
-            {t("moveMapInstructions")}
-          </div> */}
-      {/* </div> */}
-      {/* </div> */}
+      </div>
 
       <AddDeliveryAddressMapControls
         isBottomWarningVisible={isBottomWarningVisible}

@@ -71,7 +71,7 @@ export const WishlistProductsSection = () => {
   const hasBundleProducts = bundleProducts.length > 0;
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-2.5 lg:gap-5">
       <WishlistTracker wishlistProducts={wishlistProducts} />
 
       {hasSingleProducts && (
@@ -90,12 +90,12 @@ export const WishlistProductsSection = () => {
       {hasBundleProducts && (
         <section
           className={cn(
-            "flex flex-col gap-5 px-2.5 lg:px-0",
-            hasSingleProducts ? "mt-5" : "lg:mt-12.5 mt-2.5"
+            "flex flex-col gap-2 px-2.5 lg:gap-5 lg:px-0",
+            hasSingleProducts ? "mt-0 lg:mt-5" : "lg:mt-12.5 mt-2.5"
           )}
         >
           {hasSingleProducts && <div className="border-border-base border-t" />}
-          <h2 className="text-text-primary text-2xl font-semibold">
+          <h2 className="text-text-primary text-xl font-semibold lg:text-2xl">
             {t("bundlesWishlist")}
           </h2>
           <div className="grid grid-cols-2 justify-items-center gap-2.5 lg:grid-cols-[repeat(auto-fill,minmax(240px,1fr))]">

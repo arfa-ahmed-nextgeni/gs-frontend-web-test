@@ -54,16 +54,23 @@ const getProductsByCategoryCached = cache(
           currentPage: 1,
           filter: [
             {
-              attribute: "categories",
+              attribute: "categoryPath",
               eq: category,
             },
           ],
           pageSize,
           phrase: "",
+          // Match category browsing: order by relevance (desc) then catalog
+          // position (asc). With the empty phrase used here relevance is
+          // typically flat, so position is the effective tiebreaker.
           sort: [
             {
-              attribute: "inStock",
+              attribute: "relevance",
               direction: SortEnum.Desc,
+            },
+            {
+              attribute: "position",
+              direction: SortEnum.Asc,
             },
           ],
         },

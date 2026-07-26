@@ -156,7 +156,7 @@ export function CheckoutPaymentMethods({
   }, [availablePaymentMethods, tabbyDescription, tamaraDescription]);
 
   const shouldShowSkeleton =
-    isWaitingForMoreInfo || paymentMethods.length === 0;
+    isWaitingForMoreInfo || paymentMethods.length === 0 || !isDeliverySelected;
 
   // Find the currently selected payment method to check if it's Payfort
   const selectedPaymentMethod = paymentMethods.find(

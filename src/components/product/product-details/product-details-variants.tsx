@@ -90,7 +90,7 @@ export const ProductDetailsVariants = () => {
           <span className="text-text-placeholder text-sm font-medium leading-none">
             <LocalizedPrice
               currencySymbolProps={{
-                className: "font-normal",
+                className: "text-[1.4em]",
               }}
               price={price}
             />

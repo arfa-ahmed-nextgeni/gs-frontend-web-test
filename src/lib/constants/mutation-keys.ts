@@ -32,6 +32,11 @@ export const MUTATION_KEYS = {
       "remove-reward-points",
       locale,
     ],
+    SWAP_GIFT_WRAP: ({ locale }: { locale: string }) => [
+      "cart",
+      "swap-gift-wrap",
+      locale,
+    ],
     UPDATE: ({ locale, sku }: { locale: string; sku: string }) => [
       "cart",
       "update",

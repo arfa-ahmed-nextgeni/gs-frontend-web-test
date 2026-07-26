@@ -1,5 +1,3 @@
-"use client";
-
 export interface GoogleAddressData {
   city: string;
   district: string;
@@ -80,6 +78,19 @@ export const emptyGoogleAddressData = (): GoogleAddressData => ({
   shortCode: "",
   street: "",
 });
+
+export const normalizeShortNationalAddress = (value?: null | string) => {
+  const normalizedValue = (value || "").trim().toUpperCase();
+
+  if (normalizedValue.length !== 8 || !/^[A-Z0-9]{8}$/.test(normalizedValue)) {
+    return "";
+  }
+
+  const lettersCount = normalizedValue.replace(/[^A-Z]/g, "").length;
+  const digitsCount = normalizedValue.replace(/\D/g, "").length;
+
+  return lettersCount === 4 && digitsCount === 4 ? normalizedValue : "";
+};
 
 const escapeRegExp = (value: string) =>
   value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -219,17 +230,18 @@ export const extractGoogleAddressData = ({
     sources,
     typeGroups: [["postal_code"]],
   });
+  const shortCode = normalizeShortNationalAddress(premise);
 
   // Prefer a structured address built from components over formatted_address,
   // because formatted_address may be Arabic or incomplete for English stores.
   const streetParts = [streetNumber, route].filter(Boolean);
   const street = sanitizeStreetValue({
     district,
-    shortCode: premise,
+    shortCode,
     street: streetParts.join(" "),
   });
   const structuredAddress = uniqueAddressParts([
-    premise,
+    shortCode,
     street,
     district,
     city,
@@ -241,7 +253,7 @@ export const extractGoogleAddressData = ({
     district,
     formattedAddress: structuredAddress || safeFormattedAddress,
     postalCode,
-    shortCode: premise,
+    shortCode,
     street: street || safeFormattedAddress,
   };
 };

@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { getLocale } from "next-intl/server";
+import { hasLocale } from "next-intl";
 
+import { routing } from "@/i18n/routing";
 import { getCountries } from "@/lib/actions/config/get-countries";
 import { deleteCustomerAddress } from "@/lib/actions/customer/delete-customer-address";
 import { getCustomerAddresses } from "@/lib/actions/customer/get-customer-addresses";
-import { Locale } from "@/lib/constants/i18n";
+import { QueryParamsKey } from "@/lib/constants/query-params";
 import { isError, isOk, isUnauthenticated } from "@/lib/utils/service-result";
 
 export async function DELETE(request: NextRequest) {
@@ -38,8 +39,17 @@ export async function DELETE(request: NextRequest) {
   return NextResponse.json({ data: result.data, error: null }, { status: 200 });
 }
 
-export async function GET() {
-  const result = await getCustomerAddresses();
+export async function GET(request: NextRequest) {
+  const locale = request.nextUrl.searchParams.get(QueryParamsKey.Locale);
+
+  if (!locale || !hasLocale(routing.locales, locale)) {
+    return NextResponse.json(
+      { data: null, error: "Invalid locale" },
+      { status: 400 }
+    );
+  }
+
+  const result = await getCustomerAddresses(locale);
 
   if (isUnauthenticated(result)) {
     return NextResponse.json(
@@ -63,7 +73,6 @@ export async function GET() {
   }
 
   // Fetch countries to map country codes to country names
-  const locale = (await getLocale()) as Locale;
   const countriesResult = await getCountries({ locale });
   const countryMap = new Map<string, string>();
 
@@ -86,6 +95,7 @@ export async function GET() {
       formattedAddress: address.formattedAddress,
       id: address.id,
       isDefault: address.isDefault,
+      ksaShortAddress: address.ksaShortAddress,
       lastName: address.lastName,
       mobileNumber: address.mobileNumber,
       name: address.name,

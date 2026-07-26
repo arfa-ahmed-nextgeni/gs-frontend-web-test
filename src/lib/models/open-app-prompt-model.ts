@@ -2,6 +2,9 @@ import { TabContentType } from "@/lib/models/page-landing";
 import { OpenAppPromptData } from "@/lib/types/contentful/page-landing";
 
 export class OpenAppPromptModel {
+  public appIconHeight?: number;
+  public appIconUrl: string;
+  public appIconWidth?: number;
   public appRating?: number;
   public appStoreUrl?: string;
   public contentType: TabContentType;
@@ -20,5 +23,8 @@ export class OpenAppPromptModel {
     this.openAppButtonLabel = data.openAppButtonLabel;
     this.dismissButtonLabel = data.dismissButtonLabel;
     this.appRating = data.appRating;
+    this.appIconUrl = data.appIcon?.fields?.file?.url ?? "";
+    this.appIconWidth = data.appIcon?.fields?.file?.details?.image?.width;
+    this.appIconHeight = data.appIcon?.fields?.file?.details?.image?.height;
   }
 }

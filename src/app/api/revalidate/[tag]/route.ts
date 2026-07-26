@@ -8,15 +8,6 @@ import {
 import { CacheTags } from "@/lib/constants/cache/tags";
 
 const VALID_TAGS = Object.values(CacheTags) as string[];
-const PUBLIC_GET_REVALIDATABLE_TAGS = new Set<string>([
-  CacheTags.Brands,
-  CacheTags.Catalog,
-  CacheTags.CategoryProducts,
-  CacheTags.CategoryRouteShell,
-  CacheTags.Magento,
-  CacheTags.ProductDetails,
-  CacheTags.StoreConfig,
-]);
 
 export async function GET(
   request: NextRequest,
@@ -26,35 +17,6 @@ export async function GET(
 
   if (!VALID_TAGS.includes(tag)) {
     return NextResponse.json({ message: "Invalid tag" }, { status: 400 });
-  }
-
-  if (PUBLIC_GET_REVALIDATABLE_TAGS.has(tag)) {
-    try {
-      revalidateTag(tag, { expire: 0 });
-
-      console.info(`🔄 Cache revalidated via GET:`, {
-        method: "GET",
-        tag,
-        timestamp: new Date().toISOString(),
-      });
-
-      return NextResponse.json({
-        message: `Cache revalidated for tag: ${tag}`,
-        revalidated: true,
-        tag,
-        timestamp: new Date().toISOString(),
-      });
-    } catch (error) {
-      console.error("❌ GET revalidate error:", error);
-      return NextResponse.json(
-        {
-          error: "Revalidation failed",
-          tag,
-          timestamp: new Date().toISOString(),
-        },
-        { status: 500 }
-      );
-    }
   }
 
   if (process.env.NODE_ENV === "development") {

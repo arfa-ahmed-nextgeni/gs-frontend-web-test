@@ -36,6 +36,7 @@ export const ControlledPhoneNumberField = ({
   const {
     control,
     formState: { isSubmitted },
+    trigger,
   } = useFormContext();
 
   const countryCode = useWatch({
@@ -59,10 +60,10 @@ export const ControlledPhoneNumberField = ({
               : undefined;
 
           return (
-            <div className="flex flex-col gap-2">
+            <div className="w-29.25 flex flex-col gap-2">
               <div
                 className={cn(
-                  "bg-bg-surface h-12.5 w-29.25 gap-1.25 flex flex-row items-center rounded-xl px-5",
+                  "bg-bg-surface h-12.5 gap-1.25 flex w-full flex-row items-center rounded-xl px-5",
                   {
                     "border-border-danger border": hasError,
                   }
@@ -89,6 +90,12 @@ export const ControlledPhoneNumberField = ({
                     className="text-text-primary w-[60px] bg-white text-lg font-normal outline-none"
                     dir="ltr"
                     inputMode="numeric"
+                    onBlur={async () => {
+                      field.onBlur();
+                      if (isGlobal) {
+                        await trigger(name);
+                      }
+                    }}
                     onChange={(e) => {
                       let value = e.target.value;
                       // Ensure it starts with + and only contains numbers
@@ -117,7 +124,7 @@ export const ControlledPhoneNumberField = ({
                 )}
               </div>
               {errorMessage && (
-                <p className="text-text-danger text-end text-xs font-normal">
+                <p className="text-text-danger w-full text-end text-xs font-normal">
                   {errorMessage}
                 </p>
               )}
@@ -171,7 +178,15 @@ export const ControlledPhoneNumberField = ({
                 inputProps={{
                   ...field,
                   disabled: disabled,
+                  ...floatingLabelInputProps?.inputProps,
                   inputMode: "numeric",
+                  onBlur: async (e) => {
+                    field.onBlur();
+                    floatingLabelInputProps?.inputProps?.onBlur?.(e);
+                    if (isGlobal) {
+                      await trigger(name);
+                    }
+                  },
                   onChange: (e) => {
                     if (!field?.onChange) return;
                     const numericValue = e.target.value.replace(/[^0-9]/g, "");
@@ -200,7 +215,6 @@ export const ControlledPhoneNumberField = ({
                     field.onChange(limitedValue);
                   },
                   value: formattedNumber,
-                  ...floatingLabelInputProps?.inputProps,
                 }}
               />
               {isValid && showVerifyIcon && (

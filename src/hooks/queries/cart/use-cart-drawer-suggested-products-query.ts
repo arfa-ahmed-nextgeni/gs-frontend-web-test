@@ -16,8 +16,7 @@ export const useCartDrawerSuggestedProductsQuery = ({
 }) => {
   const locale = useLocale() as Locale;
   const emptyData: CartSuggestedProductsApiData = {
-    products: [],
-    title: "",
+    sections: [],
   };
 
   return useQuery({

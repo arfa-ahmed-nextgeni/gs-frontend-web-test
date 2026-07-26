@@ -17,7 +17,11 @@ import {
 import { QueryParamsKey } from "@/lib/constants/query-params";
 import { cn } from "@/lib/utils";
 
-export const ProductReviewsSortByFilter = () => {
+export const ProductReviewsSortByFilter = ({
+  clientPagination,
+}: {
+  clientPagination?: boolean;
+}) => {
   const t = useTranslations("ProductReviewsPage.sortByFilters");
 
   const { closeSortByFilter, showSortByFilter } = useProductReviews();
@@ -27,8 +31,9 @@ export const ProductReviewsSortByFilter = () => {
   const [sortBy, setSortBy] = useQueryState(
     QueryParamsKey.Sort,
     parseAsStringLiteral(PRODUCT_REVIEWS_SORT_OPTIONS).withOptions({
-      scroll: isMobile,
-      shallow: false,
+      ...(clientPagination && { history: "replace" as const }),
+      scroll: clientPagination ? false : isMobile,
+      shallow: clientPagination ? true : false,
     })
   );
 

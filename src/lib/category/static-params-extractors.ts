@@ -46,34 +46,34 @@ interface PageLandingExtractionSources {
 }
 
 const DEFAULT_PAGE_LANDING_EXTRACTION_SOURCES: PageLandingExtractionSources = {
-  bannerSlider: true,
-  categoryProducts: true,
-  desktopCategories: true,
-  flashSale: true,
-  promoBanner: true,
-  siteNavigation: true,
-  topTrendsBanners: true,
-  topTrendsCategoryId: true,
-  websiteBanner: true,
-  websiteMultipleBanner: true,
+  bannerSlider: false,
+  categoryProducts: false,
+  desktopCategories: false,
+  flashSale: false,
+  promoBanner: false,
+  siteNavigation: false,
+  topTrendsBanners: false,
+  topTrendsCategoryId: false,
+  websiteBanner: false,
+  websiteMultipleBanner: false,
 };
 
 export const DEFAULT_CATEGORY_STATIC_PARAMS_SOURCES: CategoryStaticParamsSources =
   {
     brands: false,
-    homePageLanding: true,
-    lpPageLanding: true,
+    homePageLanding: false,
+    lpPageLanding: false,
     pageLanding: DEFAULT_PAGE_LANDING_EXTRACTION_SOURCES,
-    shellChildren: true,
+    shellChildren: false,
   };
 
 /**
- * Single-segment slugs owned by dedicated literal routes under `/c/`
- * (e.g. `src/app/[locale]/c/brands/page.tsx`). The catch-all
- * `/c/[...slug]` must NOT prerender these — Next.js prefers the literal
- * route, so the catch-all entry would be wasted output. Multi-segment
- * descendants (e.g. `/c/brands/{brand-slug}`) still belong to the
- * catch-all and stay.
+ * Single-segment `/c/` slugs the catch-all `/c/[...slug]` must NOT
+ * prerender. `brands` is served by its own top-level page at
+ * `src/app/[locale]/brands/page.tsx` (URL `/brands`), so prerendering
+ * `/c/brands` here would only produce a duplicate of the brands landing.
+ * Multi-segment descendants (e.g. `/c/brands/{brand-slug}`) still belong
+ * to the catch-all and stay.
  */
 const RESERVED_LITERAL_C_SLUGS = new Set<string>(["brands"]);
 

@@ -76,6 +76,7 @@ type CartShippingAddress = {
 export class Cart extends Helper {
   appliedCoupons?: string[];
   appliedRewardPoints: boolean;
+  appliedRewardPointsValue?: number;
   availablePaymentMethods?: CartPaymentMethod[];
   baseShippingFee?: number;
   codFee?: number;
@@ -223,6 +224,8 @@ export class Cart extends Helper {
     this.rewardThreshold =
       cart?.reward_points_applied?.reward_threshold || undefined;
     this.appliedRewardPoints = Boolean(cart?.applied_reward_points);
+    this.appliedRewardPointsValue =
+      cart?.applied_reward_points?.money?.value || undefined;
 
     // Store shipping address if available
     // Type assertion needed because GraphQL types (CurrencyEnum) don't match our simplified type
@@ -274,7 +277,11 @@ export class CartItem extends ProductCardModel {
     let variantStockStatus: string | undefined = undefined;
     let variantImageUrl: string | undefined = undefined;
     const attributeSet = (item as any).attribute_set || undefined;
-    const productType = (product as any).product_type_new2 || undefined;
+
+    const productType =
+      (product as any).product_type_new2_label ||
+      (product as any).product_type_new2 ||
+      undefined;
 
     if ((item as any).__typename === "ConfigurableCartItem") {
       const confItem = item as ConfigurableCartItem;

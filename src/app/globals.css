@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Keep our palette when browsers support the standard auto-dark opt-out. */
+:root {
+  color-scheme: only light;
+}
+
 .rich-html
   :is(
     h1,
@@ -44,7 +49,7 @@ body.cursor-wait * {
 
   /* ─── Text Colors ───────────────────────────────────────────────────────── */
   --color-text-primary: #374957; /* Main text color */
-  --color-text-placeholder: #bdc2c5; /* Input placeholders */
+  --color-text-placeholder: #84888a; /* Input placeholders */
   --color-text-brand: #6543f5; /* Brand purple text */
   --color-text-danger: #fe5000; /* Error/warning text */
   --color-text-secondary: #85878a; /* Secondary text */
@@ -442,8 +447,9 @@ body.cursor-wait * {
 @layer components {
   .address-form-filled-ui input[data-slot="input"],
   .address-form-filled-ui textarea[data-slot="textarea"] {
-    background: #f3f3f3 !important;
+    background: #fff !important; /* #f3f3f3 !important; */
     border-color: transparent !important;
+    /* border-color: #d1d5db !important; /*uncomment this line to show the border on the all input fields */
   }
 
   .address-form-filled-ui input[data-slot="input"]:focus,
@@ -516,4 +522,41 @@ body.cursor-wait * {
     background-position: center;
     background-size: auto 60%;
   }
+}
+
+/*
+ * Brand theme overrides — intentionally outside @layer so they win over @layer base.
+ * All brands override the same 10 design tokens; goldenscent uses the @theme defaults.
+ */
+
+/* goldenscent: default — values live in @theme above */
+.brand-goldenscent {
+}
+
+/* Surrati brand theme overrides */
+.brand-surrati {
+  --color-text-brand: #1a1a2e;
+  --color-bg-brand: #1a1a2e;
+  --color-border-brand-soft: #1a1a2e1a;
+  --color-label-primary: #1a1a2e0d;
+  --color-svg-icon-brand: #1a1a2e;
+  --color-btn-bg-primary: #1a1a2e;
+  --color-bg-primary: #1a1a2e;
+  --color-border-primary: #1a1a2e;
+  --color-border-strong: #1a1a2e;
+  --color-text-primary: #1a1a2e;
+}
+
+/* Fabian brand theme overrides */
+.brand-fabian {
+  --color-text-brand: #010101;
+  --color-bg-brand: #010101;
+  --color-border-brand-soft: #0101011a;
+  --color-label-primary: #0101010d;
+  --color-svg-icon-brand: #010101;
+  --color-btn-bg-primary: #010101;
+  --color-bg-primary: #010101;
+  --color-border-primary: #010101;
+  --color-border-strong: #010101;
+  --color-text-primary: #010101;
 }

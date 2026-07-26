@@ -4,60 +4,79 @@ import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
 import { getProductsByCategory } from "@/lib/actions/products/get-products-by-category";
 import { Locale } from "@/lib/constants/i18n";
 import { ProductCardVariant } from "@/lib/constants/product/product-card";
+import { getDisplayOnClassName } from "@/lib/utils/display-on";
 
 interface SuggestedProductsProps {
   locale: string;
 }
 
 export const SuggestedProducts = async ({ locale }: SuggestedProductsProps) => {
+  const normalizedLocale = locale as Locale;
   const { data: cart } = await getCartDetails({
-    locale: locale as Locale,
+    locale: normalizedLocale,
     page: 1,
     pageSize: 50,
   });
-
   const cartItemsCount = cart?.items.length || 0;
-  const pageLandingData = await getPageLandingData({
-    locale,
-  });
-  const suggestedProducts = pageLandingData.cartSuggestedProducts;
+  const pageLandingData = await getPageLandingData({ locale });
+  const sections = await Promise.all(
+    pageLandingData.cartSuggestedProducts.map(async (suggestedProducts) => {
+      if (!suggestedProducts.enabled) {
+        return null;
+      }
 
-  if (!suggestedProducts?.enabled) {
-    return null;
-  }
+      const useFallback =
+        cartItemsCount === 0 && !!suggestedProducts.emptyCartFallbackCategoryId;
+      const categoryId = useFallback
+        ? (suggestedProducts.emptyCartFallbackCategoryId ??
+          suggestedProducts.suggestedProductsCategoryId)
+        : suggestedProducts.suggestedProductsCategoryId;
+      const richTitle = useFallback
+        ? (suggestedProducts.emptyCartFallbackRichTitle ??
+          suggestedProducts.richTitle)
+        : suggestedProducts.richTitle;
 
-  const useFallback =
-    cartItemsCount === 0 && !!suggestedProducts.emptyCartFallbackCategoryId;
-  const categoryId = useFallback
-    ? (suggestedProducts.emptyCartFallbackCategoryId ??
-      suggestedProducts.suggestedProductsCategoryId)
-    : suggestedProducts.suggestedProductsCategoryId;
-  const richTitle = useFallback
-    ? (suggestedProducts.emptyCartFallbackRichTitle ??
-      suggestedProducts.richTitle)
-    : suggestedProducts.richTitle;
+      if (!categoryId) {
+        return null;
+      }
 
-  if (!categoryId) {
-    return null;
-  }
+      const response = await getProductsByCategory({
+        category: categoryId,
+        locale: normalizedLocale,
+        pageSize: suggestedProducts.maximumProducts,
+        variant: ProductCardVariant.Single,
+      });
+      const products = response.data?.products ?? [];
 
-  const response = await getProductsByCategory({
-    category: categoryId,
-    locale: locale as Locale,
-    pageSize: suggestedProducts.maximumProducts,
-    variant: ProductCardVariant.Single,
-  });
+      if (products.length === 0) {
+        return null;
+      }
 
-  if (!response?.data?.products || response.data.products.length === 0) {
-    return null;
-  }
-
-  const categoryProducts = response.data.products || [];
+      return {
+        displayOn: suggestedProducts.displayOn,
+        id: suggestedProducts.entryId,
+        products,
+        richTitle,
+      };
+    })
+  );
 
   return (
-    <BeforeYouGoSection
-      products={structuredClone(categoryProducts)}
-      richTitle={richTitle}
-    />
+    <>
+      {sections.map(
+        (section) =>
+          section && (
+            <div
+              className={getDisplayOnClassName(section.displayOn)}
+              key={section.id}
+            >
+              <BeforeYouGoSection
+                products={structuredClone(section.products)}
+                richTitle={section.richTitle}
+              />
+            </div>
+          )
+      )}
+    </>
   );
 };

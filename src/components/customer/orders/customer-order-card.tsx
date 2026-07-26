@@ -21,7 +21,10 @@ import { useReorderCartActions } from "@/hooks/use-reorder-cart-actions";
 import { Link, useRouter } from "@/i18n/navigation";
 import { trackCancelOrder, trackQuickAction } from "@/lib/analytics/events";
 import { Order } from "@/lib/models/customer-orders";
+import { formatOrderDate } from "@/lib/utils/date";
 import { formatPrice } from "@/lib/utils/price";
+
+import type { Locale } from "@/lib/constants/i18n";
 
 interface OrderCardProps {
   onCancel?: () => void;
@@ -43,7 +46,7 @@ export const CustomerOrderCard = ({
   const t = useTranslations("CustomerOrdersPage");
   const locale = useLocale();
   const { cancelOrder, reorderOrder } = useOrdersContext();
-  const { showError, showSuccess } = useToastContext();
+  const { showError, showInfo, showSuccess } = useToastContext();
   const isMobile = useIsMobile();
   const router = useRouter();
   const { handleSuccessfulReorder } = useReorderCartActions();
@@ -52,27 +55,9 @@ export const CustomerOrderCard = ({
   const [isTrackPending, startTrackTransition] = useTransition();
   const [isCancelPending, startCancelTransition] = useTransition();
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    if (locale.includes("ar")) {
-      const day = date.getDate();
-      const month = date.toLocaleDateString("ar-SA-u-ca-gregory", {
-        month: "long",
-      });
-      const year = date.getFullYear();
-      const hour = date.getHours();
-      const minute = date.getMinutes().toString().padStart(2, "0");
-      const period = hour >= 12 ? "مساءً" : "صباحاً";
-      const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
-
-      return `${day} ${month} ${year}, الساعة ${displayHour}:${minute} ${period}`;
-    }
-    return date.toLocaleDateString("en-US", {
-      day: "numeric",
-      hour: "numeric",
-      hour12: true,
-      minute: "2-digit",
-      month: "short",
-      year: "numeric",
+    return formatOrderDate(dateString, locale as Locale, {
+      formatLocale: locale.includes("ar") ? "ar-SA-u-ca-gregory" : "en-US",
+      month: locale.includes("ar") ? "long" : "short",
     });
   };
 
@@ -188,21 +173,27 @@ export const CustomerOrderCard = ({
       const result = await cancelOrder(order.increment_id || order.id || "");
       if (result.success) {
         showSuccess(
-          "Order Cancelled",
-          "Your order has been successfully cancelled.",
+          t("cancelToast.successTitle"),
+          t("cancelToast.successMessage"),
+          toastPosition
+        );
+      } else if (order.status?.toLowerCase() === "processing") {
+        showInfo(
+          t("cancelToast.processingTitle"),
+          t("cancelToast.processingMessage"),
           toastPosition
         );
       } else {
-        showError(
-          "Cancellation Failed",
-          result.message || "Failed to cancel order. Please try again.",
+        showInfo(
+          t("cancelToast.unableTitle"),
+          result.message || t("cancelToast.unableMessage"),
           toastPosition
         );
       }
     } catch {
       showError(
-        "Cancellation Failed",
-        "An unexpected error occurred. Please try again.",
+        t("cancelToast.failedTitle"),
+        t("cancelToast.failedMessage"),
         toastPosition
       );
     }
@@ -255,7 +246,7 @@ export const CustomerOrderCard = ({
     <div className="bg-bg-default border-border-base w-full max-w-[394px] rounded-xl border lg:mx-0">
       <Link
         href={`/customer/orders/view/${order.id}`}
-        title={`View order #${order.id}`}
+        title={t("orderCard.viewOrder", { orderNumber: order.number })}
       >
         <div className="flex h-[114px] cursor-pointer items-start justify-between p-3 transition-colors hover:bg-gray-50 lg:cursor-pointer lg:p-5">
           <div className="flex flex-col space-y-2 lg:space-y-3.5">
@@ -404,7 +395,7 @@ export const CustomerOrderCard = ({
               )}
             </button>
           )}
-          {/* 
+          {/*
           {availableActions.includes("edit") && (
             <button
               className="flex items-center gap-1 py-1 text-[10px] lg:text-xs lg:py-1.5"

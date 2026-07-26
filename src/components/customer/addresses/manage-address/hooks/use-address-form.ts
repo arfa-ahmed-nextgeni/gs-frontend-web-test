@@ -23,7 +23,10 @@ import {
   addressFormSchema,
 } from "@/lib/forms/manage-address";
 import { getDefaultCountryCode } from "@/lib/utils/country";
-import { sanitizeStreetValue } from "@/lib/utils/google-address";
+import {
+  normalizeShortNationalAddress,
+  sanitizeStreetValue,
+} from "@/lib/utils/google-address";
 import { getPhoneDetails } from "@/lib/utils/phone-utils";
 import { isError, isOk } from "@/lib/utils/service-result";
 
@@ -84,13 +87,26 @@ export const useAddressForm = ({
   const isNewGiftAddress =
     isNewAddress && addressLabelValue?.toLowerCase() === "gift";
 
+  const getValidPhoneNumber = (...values: Array<null | string | undefined>) =>
+    values.find((value) => {
+      if (!value) {
+        return false;
+      }
+
+      const trimmedValue = value.trim();
+      return trimmedValue !== "" && trimmedValue !== "+";
+    });
+
   const phoneNumber = isNewGiftAddress
     ? undefined
-    : (customerAddress as any)?.raw?.telephone ||
-      customerData?.phoneNumber ||
-      customerAddress?.mobileNumber;
-  const ksaShortAddress =
-    ((customerAddress as any)?.raw?.ksa_short_address as string) || "";
+    : getValidPhoneNumber(
+        (customerAddress as any)?.raw?.telephone,
+        customerData?.phoneNumber,
+        customerAddress?.mobileNumber
+      );
+  const ksaShortAddress = normalizeShortNationalAddress(
+    ((customerAddress as any)?.raw?.ksa_short_address as string) || ""
+  );
   const ksaAdditionalNumber =
     ((customerAddress as any)?.raw?.ksa_additional_number as string) || "";
   const ksaBuildingNumber =
@@ -256,7 +272,7 @@ export const useAddressForm = ({
     );
     addressForm.setValue(
       AddressFormField.KsaShortAddress,
-      queriedKsaAddress.short_address ||
+      normalizeShortNationalAddress(queriedKsaAddress.short_address) ||
         addressForm.getValues(AddressFormField.KsaShortAddress),
       {
         shouldDirty: false,

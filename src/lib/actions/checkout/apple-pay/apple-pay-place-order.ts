@@ -25,6 +25,7 @@ import { ROUTES } from "@/lib/constants/routes";
 import { CheckoutTokenDto } from "@/lib/types/api/payment-card";
 import { PayFortApplePayPayResponse } from "@/lib/types/payment";
 import { getCommonErrorMessage } from "@/lib/utils/common-error-message";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 import { isPayfortApplePayPaymentMethod } from "@/lib/utils/payment-method";
 import { failure, isOk } from "@/lib/utils/service-result";
 
@@ -54,6 +55,7 @@ export async function applePayPlaceOrderAction({
   const t = await getTranslations("CheckoutPage.applePay.errors");
   const tCommonErrors = await getTranslations("CommonErrors");
   const failureRedirectUrl = `${baseUrl}${ROUTES.CHECKOUT.REFILL_CART_API(PaymentStatus.Failed)}`;
+  const forwardHeaders = await getForwardedRequestHeaders();
 
   if (!cartId) {
     return failure(t("noActiveCart"));
@@ -68,6 +70,7 @@ export async function applePayPlaceOrderAction({
   try {
     const placeOrderResponse = await graphqlRequest({
       authToken,
+      forwardHeaders,
       query: CART_GRAPHQL_MUTATIONS.PLACE_ORDER,
       storeCode: storeConfig.data?.store?.code,
       variables: {
@@ -110,6 +113,7 @@ export async function applePayPlaceOrderAction({
     if (isPayfortApplePayPaymentMethod(paymentMethodType)) {
       // Step 1: Get PayFort order details
       const payfortDetailsResult = await getPayfortOrderDetailsAction({
+        forwardHeaders,
         locale,
         orderId,
       });
@@ -154,6 +158,7 @@ export async function applePayPlaceOrderAction({
         await paymentsServiceRequest<PayFortApplePayPayResponse>({
           authToken: authToken ?? undefined,
           endpoint: PAYMENT_ENDPOINTS.PAYFORT_APPLE_PAY_PAY,
+          forwardHeaders,
           options: {
             body: JSON.stringify(payfortPayload),
             method: "POST",
@@ -173,6 +178,7 @@ export async function applePayPlaceOrderAction({
       const paymentResult = await applePayMakePaymentAction({
         baseUrl,
         data: payfortResponse.data,
+        forwardHeaders,
         locale,
         orderId,
         paymentMethodType: "payfortapplepay",
@@ -183,6 +189,7 @@ export async function applePayPlaceOrderAction({
       // Handle Checkout Apple Pay flow (existing)
       const checkoutTokenResponse = await checkoutRequest<CheckoutTokenDto>({
         endpoint: CHECKOUT_API_ENDPOINTS.TOKENS,
+        forwardHeaders,
         options: {
           body: JSON.stringify({
             store_view: storeConfig.data?.store?.code,
@@ -200,6 +207,7 @@ export async function applePayPlaceOrderAction({
 
       const paymentResult = await applePayMakePaymentAction({
         baseUrl,
+        forwardHeaders,
         locale,
         orderId,
         paymentMethodType: "checkoutapplepay",

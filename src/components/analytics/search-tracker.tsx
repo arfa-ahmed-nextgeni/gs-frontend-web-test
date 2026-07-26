@@ -9,7 +9,13 @@ import { trackSearchInit } from "@/lib/analytics/events";
  * Placed in search page to track when search screen is presented
  * Only tracks once per page load
  */
-export function SearchTracker({ trackInit }: { trackInit: boolean }) {
+export function SearchTracker({
+  asCatalogView,
+  trackInit,
+}: {
+  asCatalogView?: boolean;
+  trackInit: boolean;
+}) {
   const hasTracked = useRef(false);
 
   useEffect(() => {
@@ -18,13 +24,13 @@ export function SearchTracker({ trackInit }: { trackInit: boolean }) {
       return;
     }
 
-    trackSearchInit();
+    trackSearchInit({ asCatalogView });
     hasTracked.current = true;
 
     return () => {
       hasTracked.current = false;
     };
-  }, [trackInit]);
+  }, [asCatalogView, trackInit]);
 
   return null;
 }

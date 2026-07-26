@@ -31,7 +31,7 @@ export function OrderPerks({ currencyCode, grandTotal }: OrderPerksProps) {
   const cashbackPercent = storeConfig?.cashbackPercent || 0.05;
   const tamaraInstallments = storeConfig?.tamaraInstallments?.installments || 4;
 
-  const cashbackAmount = grandTotal * cashbackPercent;
+  const cashbackAmount = Math.round(grandTotal * cashbackPercent);
   const installmentAmount = grandTotal / tamaraInstallments;
 
   return (

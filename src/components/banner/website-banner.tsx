@@ -3,6 +3,7 @@ import React from "react";
 import { BannerTrackerLink } from "@/components/analytics/banner-tracker";
 import { ContentfulImage } from "@/components/shared/contentful-image";
 import { WebsiteBanner } from "@/lib/models/website-banner";
+import { getDisplayOnClassName } from "@/lib/utils/display-on";
 import { getShimmerPlaceholder } from "@/lib/utils/image";
 
 function cssSpacing(spacing?: number | Record<string, any> | string) {
@@ -13,12 +14,6 @@ function cssSpacing(spacing?: number | Record<string, any> | string) {
     .map((v) => (typeof v === "number" ? `${v}px` : v))
     .join(" ");
 }
-
-const displayOnClasses: Record<WebsiteBanner["displayOn"], string> = {
-  all: "",
-  desktop: "hidden sm:block",
-  mobile: "block sm:hidden",
-};
 
 export const WebsiteBannerComponent = ({
   banner,
@@ -43,14 +38,14 @@ export const WebsiteBannerComponent = ({
 
   return (
     <div
-      className={displayOnClasses[banner.displayOn]}
+      className={getDisplayOnClassName(banner.displayOn)}
       style={{
         margin: cssSpacing(banner.margin),
         padding: cssSpacing(banner.padding),
       }}
     >
       {banner.desktopImageUrl && (
-        <div className="hidden sm:block">
+        <div className="hidden lg:block">
           <BannerTrackerLink
             bannerColumn={bannerColumn}
             bannerInnerPosition={1}
@@ -73,6 +68,7 @@ export const WebsiteBannerComponent = ({
                   ? "eager"
                   : undefined
               }
+              maxWidth={(banner.width || 600) * 2}
               placeholder={isLcpCandidate ? "empty" : getShimmerPlaceholder()}
               src={banner.desktopImageUrl}
               style={
@@ -89,7 +85,7 @@ export const WebsiteBannerComponent = ({
         </div>
       )}
       {banner.mobileImageUrl && (
-        <div className="block sm:hidden">
+        <div className="block lg:hidden">
           <BannerTrackerLink
             bannerColumn={bannerColumn}
             bannerInnerPosition={1}

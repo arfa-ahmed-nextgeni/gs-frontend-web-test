@@ -11,6 +11,8 @@ import VerifiedIcon from "@/assets/icons/verified-icon.svg";
 import HomeIcon from "@/components/icons/home-icon";
 import { Spinner } from "@/components/ui/spinner";
 import { useCheckoutContext } from "@/contexts/checkout-context";
+import { useStoreCode } from "@/hooks/i18n/use-store-code";
+import { StoreCode } from "@/lib/constants/i18n";
 
 import { CheckoutShippingAddressButton } from "./checkout-shipping-address-button";
 
@@ -52,6 +54,9 @@ export function CheckoutShippingAddressSection({
   selectedAddress,
 }: CheckoutShippingAddressSectionProps) {
   const t = useTranslations("CheckoutPage");
+  const { storeCode } = useStoreCode();
+  const isSaudiStore =
+    storeCode === StoreCode.ar_sa || storeCode === StoreCode.en_sa;
 
   const { selectedLockerAddressType } = useCheckoutContext();
 
@@ -81,9 +86,13 @@ export function CheckoutShippingAddressSection({
       selectedAddress.customerAddress?.countryCode ??
       "";
 
+    const streetValue = Array.isArray(street)
+      ? street.filter(Boolean).join(", ")
+      : street;
+
     const addressParts = [
       shortCode,
-      Array.isArray(street) ? street.filter(Boolean).join(", ") : street,
+      streetValue === "N/A" ? undefined : streetValue,
       district,
       city,
       countryName,
@@ -108,7 +117,7 @@ export function CheckoutShippingAddressSection({
   const displayPhoneNumber = (() => {
     if (!selectedAddress) return "";
 
-    let phoneNumber = "";
+    let phoneNumber: number | string = "";
 
     // Check if address is a gift address by looking at raw.address_label
     const rawData = (selectedAddress.customerAddress as any)?.raw;
@@ -122,8 +131,12 @@ export function CheckoutShippingAddressSection({
       phoneNumber = selectedAddress.phoneNumber;
     }
 
+    const normalizedPhoneNumber = String(phoneNumber);
+
     // Remove '+' if present at the beginning
-    return phoneNumber.startsWith("+") ? phoneNumber.slice(1) : phoneNumber;
+    return normalizedPhoneNumber.startsWith("+")
+      ? normalizedPhoneNumber.slice(1)
+      : normalizedPhoneNumber;
   })();
 
   const verificationValue =
@@ -189,7 +202,8 @@ export function CheckoutShippingAddressSection({
                   >
                     +{displayPhoneNumber}
                   </span>
-                  {hasVerificationStatus &&
+                  {isSaudiStore &&
+                    hasVerificationStatus &&
                     (isKsaVerified ? (
                       <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#2563EB]">
                         <Image

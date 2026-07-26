@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 
 import { CategorySortByFilter } from "@/components/category/filters/category-sort-by-filter";
 import { DynamicCategoryFilterSection } from "@/components/category/filters/dynamic-category-filter-section";
+import { FilterSectionHeader } from "@/components/category/filters/filter-section-header";
 import { MobileStickyFiltersWrapper } from "@/components/category/mobile-sticky-filters-wrapper";
 import { CategoryProductsSection } from "@/components/category/products/category-products-section";
 import { StickyResultsCounter } from "@/components/search/sticky-results-counter";
@@ -52,12 +53,15 @@ export async function SearchPageDataSection({
       />
 
       <Container className="mt-5 flex flex-col gap-2.5 lg:flex-row">
-        <DynamicCategoryFilterSection
-          filters={listingData.dynamicFilters}
-          priceBounds={listingData.priceBounds}
-        />
+        <div className="gap-1.25 lg:mt-15 lg:w-47.75 flex w-full flex-col">
+          <FilterSectionHeader />
+          <DynamicCategoryFilterSection
+            filters={listingData.dynamicFilters}
+            priceBounds={listingData.priceBounds}
+          />
+        </div>
 
-        <div className="flex-1">
+        <div className="min-w-0 flex-1">
           <div className="mb-2 ml-2 flex flex-col items-start justify-between lg:mb-5 lg:ml-0 lg:flex-row lg:items-center">
             <div className="flex flex-col lg:flex-row lg:items-center">
               <h1 className="text-text-primary whitespace-nowrap text-lg font-normal lg:text-[25px]">

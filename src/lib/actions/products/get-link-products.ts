@@ -65,20 +65,40 @@ const getLinkProductsCached = cache(
 
       const { store } = storeConfig.data;
 
-      const response = await catalogServiceGraphqlRequest({
-        catalogStoreCode: store.storeCode,
-        catalogWebsiteCode: store.websiteCode,
-        query:
-          linkType === ProductLinkType.AlsoLike
-            ? CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES.GET_YOU_MIGHT_ALSO_LIKE_PRODUCTS
-            : CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES.GET_SIMILAR_PRODUCTS,
-        storeCode: store.code,
-        variables: {
-          brand,
-          gender,
-          productType,
-        },
-      });
+      const productTypes = productType
+        .split(",")
+        .map((type) => type.trim())
+        .filter(Boolean);
+      const typeFilter =
+        productTypes.length > 1
+          ? { attribute: "product_type_new2", in: productTypes }
+          : { attribute: "product_type_new2", eq: productTypes[0] ?? "" };
+
+      const response =
+        linkType === ProductLinkType.AlsoLike
+          ? await catalogServiceGraphqlRequest({
+              catalogStoreCode: store.storeCode,
+              catalogWebsiteCode: store.websiteCode,
+              query:
+                CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES.GET_YOU_MIGHT_ALSO_LIKE_PRODUCTS,
+              storeCode: store.code,
+              variables: {
+                gender,
+                typeFilter,
+              },
+            })
+          : await catalogServiceGraphqlRequest({
+              catalogStoreCode: store.storeCode,
+              catalogWebsiteCode: store.websiteCode,
+              query:
+                CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES.GET_SIMILAR_PRODUCTS,
+              storeCode: store.code,
+              variables: {
+                brand,
+                gender,
+                typeFilter,
+              },
+            });
 
       if (!response.data?.productSearch.items?.length) {
         return failure("Failed to get link products");

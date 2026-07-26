@@ -2,48 +2,49 @@
 
 import { startTransition, useEffect } from "react";
 
+import { useQueryClient } from "@tanstack/react-query";
+import { useLocale } from "next-intl";
+
 import { syncDeviceIdCookie } from "@/lib/actions/cookies/device-id";
 import { saveViewedProduct } from "@/lib/actions/products/save-viewed-product";
+import { type Locale } from "@/lib/constants/i18n";
+import { QUERY_KEYS } from "@/lib/constants/query-keys";
 import { getClientDeviceId } from "@/lib/utils/device-id";
 
 export function ViewedProductTracker({ productSku }: { productSku: string }) {
+  const locale = useLocale() as Locale;
+  const queryClient = useQueryClient();
+
   useEffect(() => {
-    let isCancelled = false;
-
     startTransition(async () => {
-      if (isCancelled) {
-        return;
-      }
-
-      const saveResult = await saveViewedProduct({
+      let saveResult = await saveViewedProduct({
         productSku,
       });
 
-      if (isCancelled || !saveResult.data.requiresDeviceSync) {
-        return;
+      if (saveResult.data.requiresDeviceSync) {
+        const deviceId = await getClientDeviceId();
+        if (!deviceId) {
+          return;
+        }
+
+        await syncDeviceIdCookie({
+          deviceId,
+          shouldRefresh: false,
+        });
+
+        saveResult = await saveViewedProduct({
+          productSku,
+        });
       }
 
-      const deviceId = await getClientDeviceId();
-      if (!deviceId || isCancelled) {
-        return;
+      if (saveResult.data.saved) {
+        await queryClient.invalidateQueries({
+          queryKey: [...QUERY_KEYS.PRODUCTS.RECENTLY_VIEWED, locale],
+          refetchType: "all",
+        });
       }
-
-      await syncDeviceIdCookie({
-        deviceId,
-      });
-      if (isCancelled) {
-        return;
-      }
-
-      await saveViewedProduct({
-        productSku,
-      });
     });
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [productSku]);
+  }, [locale, productSku, queryClient]);
 
   return null;
 }

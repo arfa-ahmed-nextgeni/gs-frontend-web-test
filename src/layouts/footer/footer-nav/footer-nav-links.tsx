@@ -25,24 +25,37 @@ const NavLinks = ({
     <>
       {links && (
         <ul className="mt-2 flex flex-col gap-2.5">
-          {links.map((link, idx) => (
-            <li key={idx}>
-              <a
-                className="transition-default text-text-secondary hover:text-text-brand focus:text-text-brand active:text-text-brand text-[13px] font-medium hover:font-semibold hover:underline focus:font-semibold focus:underline focus:outline-none focus:ring-0 active:font-semibold active:underline"
-                {...(isFaqLink(link)
-                  ? {
+          {links.map((link, idx) => {
+            const linkClass =
+              "transition-default text-text-secondary hover:text-text-brand focus:text-text-brand active:text-text-brand text-[13px] font-medium hover:font-semibold hover:underline focus:font-semibold focus:underline focus:outline-none focus:ring-0 active:font-semibold active:underline";
+
+            if (isFaqLink(link)) {
+              return (
+                <li key={idx}>
+                  <a
+                    className={linkClass}
+                    {...{
                       [FAQ_TRACKING_DATA_ATTRIBUTE]: link.label,
-                    }
-                  : {})}
-                href={link.url}
-                rel={isFaqLink(link) ? "noopener noreferrer" : undefined}
-                target={isFaqLink(link) ? "_blank" : undefined}
-                title={link.label}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
+                    }}
+                    href={link.url}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    title={link.label}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              );
+            }
+
+            return (
+              <li key={idx}>
+                <Link className={linkClass} href={link.url} title={link.label}>
+                  {link.label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       )}
       {text && (

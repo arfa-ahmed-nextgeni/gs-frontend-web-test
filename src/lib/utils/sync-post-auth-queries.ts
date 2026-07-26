@@ -16,6 +16,9 @@ export async function syncPostAuthQueries({
   queryClient.invalidateQueries({
     queryKey: QUERY_KEYS.CART.ROOT(locale),
   });
+  queryClient.removeQueries({
+    queryKey: QUERY_KEYS.PRODUCTS.RECENTLY_VIEWED,
+  });
 
   const [customer, wishlist] = await Promise.all([
     queryClient.fetchQuery(getCustomerQueryConfig(locale)),

@@ -1,10 +1,7 @@
-import type { ComponentProps } from "react";
-
 import { getLocale, getTranslations } from "next-intl/server";
 
-import { DeviceOnlyCategoryProductsContent } from "@/components/product/device-only-category-products-content";
 import { FlashSaleCarousel } from "@/components/product/flash-sale-section/flash-sale-carousel";
-import { FlashSaleResponsiveCountdown } from "@/components/product/flash-sale-section/flash-sale-responsive-countdown";
+import { FlashSaleCountdown } from "@/components/product/flash-sale-section/flash-sale-countdown";
 import { ContentfulImage } from "@/components/shared/contentful-image";
 import { Link } from "@/i18n/navigation";
 import { getBulletDeliveryEnabled } from "@/lib/actions/config/get-bullet-delivery-enabled";
@@ -12,7 +9,6 @@ import { getProductsByCategory } from "@/lib/actions/products/get-products-by-ca
 import { Locale } from "@/lib/constants/i18n";
 import { ROUTES } from "@/lib/constants/routes";
 import { FlashSale } from "@/lib/models/flash-sale";
-import { cn } from "@/lib/utils";
 import { isOk } from "@/lib/utils/service-result";
 
 import type { ProductCardModel } from "@/lib/models/product-card-model";
@@ -20,21 +16,16 @@ import type { ProductCardModel } from "@/lib/models/product-card-model";
 export const FlashSaleContent = async ({
   autoSlideDelay,
   autoSliding,
-  countdownContainerProps,
-  desktopCarouselContainerProps,
   endTime,
   lpRow,
   maximumProducts,
   productsCategoryId,
   saleIcon,
-  saleProductCategoryId,
   showViewAll,
   subtitle,
   title,
   variant,
 }: {
-  countdownContainerProps?: ComponentProps<"div">;
-  desktopCarouselContainerProps?: ComponentProps<"div">;
   lpRow?: number;
 } & FlashSale) => {
   const locale = (await getLocale()) as Locale;
@@ -60,14 +51,12 @@ export const FlashSaleContent = async ({
   if (!products?.length) return null;
 
   return (
-    <div className="relative mb-8 lg:mb-28">
+    <div className="relative lg:mb-28">
       <div
-        {...countdownContainerProps}
-        className={cn(
-          "bg-bg-success lg:w-274.75 relative my-4 h-[510px] w-full rounded-[15px] px-4 py-6 lg:my-8 lg:h-[300px] lg:px-6 lg:pb-32 lg:pt-6",
-          countdownContainerProps?.className
-        )}
-      >
+        aria-hidden
+        className="bg-bg-success absolute inset-0 rounded-[15px] lg:hidden"
+      />
+      <div className="bg-bg-success lg:w-274.75 relative w-full rounded-[15px] px-5 pb-0 pt-5 lg:my-8 lg:h-[300px] lg:px-6 lg:pb-32 lg:pt-6">
         {showViewAll && (
           <Link
             className="text-text-tertiary absolute end-4 top-4 hidden text-base font-normal lg:end-8 lg:top-7 lg:block"
@@ -77,52 +66,13 @@ export const FlashSaleContent = async ({
           </Link>
         )}
 
-        {/* Desktop Layout */}
-        <div className="hidden lg:block">
-          <div className="flex flex-col">
-            {/* Title and Subtitle */}
-            <div className="flex-col">
-              <div className="flex items-center gap-2.5">
-                {saleIcon && (
-                  <ContentfulImage
-                    alt="Flash Sale"
-                    height={36}
-                    src={
-                      saleIcon.startsWith("http")
-                        ? saleIcon
-                        : `https:${saleIcon}`
-                    }
-                    width={24}
-                  />
-                )}
-                <span className="text-text-brand text-[51px] font-bold rtl:text-[45px]">
-                  {title}
-                </span>
-              </div>
-              <div className="text-text-primary w-[320px] text-[28px] font-normal">
-                {subtitle}
-              </div>
-            </div>
-            {/* Countdown Timer */}
-            <div className="inset-s-6 absolute bottom-6">
-              {endTime && (
-                <FlashSaleResponsiveCountdown
-                  endTime={endTime}
-                  visibleOn="desktop"
-                />
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Layout */}
-        <div className="block lg:hidden">
-          {/* Title and Subtitle */}
-          <div className="mb-4">
-            <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex flex-col">
+          <div className="flex-col">
+            <div className="flex items-center gap-2.5">
               {saleIcon && (
                 <ContentfulImage
                   alt="Flash Sale"
+                  className="h-6 w-4 lg:h-9 lg:w-6"
                   height={36}
                   src={
                     saleIcon.startsWith("http") ? saleIcon : `https:${saleIcon}`
@@ -130,99 +80,40 @@ export const FlashSaleContent = async ({
                   width={24}
                 />
               )}
-              <span className="text-[51.2px] font-bold leading-[32px] text-[#6543F5] rtl:text-4xl">
+              <span className="text-text-brand text-[25px] font-bold lg:text-[51px] lg:rtl:text-[45px]">
                 {title}
               </span>
             </div>
-            <div className="max-w-[280px] text-[20px] font-normal leading-[24px] text-[#415443]">
+            <div className="text-text-primary text-[18px] font-normal lg:w-[320px] lg:text-[28px]">
               {subtitle}
             </div>
           </div>
-
-          {/* Timer and Products Side by Side */}
-          <div className="relative flex items-end gap-6">
-            {/* Countdown Timer */}
-            <div className="w-[50px] flex-shrink-0">
-              {endTime && (
-                <FlashSaleResponsiveCountdown
-                  endTime={endTime}
-                  visibleOn="mobile"
-                />
-              )}
-            </div>
-
-            {/* Products */}
-            <div className="relative min-w-0 flex-1">
-              {Array.isArray(products) && products.length > 0 ? (
-                <DeviceOnlyCategoryProductsContent
-                  device="mobile"
-                  maximumProducts={4}
-                  variant={variant}
-                >
-                  <FlashSaleCarousel
-                    autoSlideDelay={autoSlideDelay ?? 5000}
-                    autoSliding={autoSliding ?? true}
-                    isBulletDeliveryEnabled={isBulletDeliveryEnabled}
-                    lpRow={lpRow}
-                    mode="mobile"
-                    products={products}
-                  />
-                </DeviceOnlyCategoryProductsContent>
-              ) : (
-                <div className="p-4 text-center text-[#5D5D5D]">
-                  No products available
-                </div>
-              )}
-
-              {/* See All - Bottom Right (Mobile Only) */}
-              {showViewAll && (
-                <div className="absolute -bottom-10 end-2">
-                  <Link
-                    className="text-text-tertiary rounded px-2 py-1 text-base font-normal"
-                    href={ROUTES.CATEGORY.BY_SLUG(productsCategoryId)}
-                  >
-                    {t("seeAll")}
-                  </Link>
-                </div>
-              )}
-            </div>
+          <div className="lg:inset-s-6 mt-3 lg:absolute lg:bottom-6 lg:mt-0">
+            {endTime && <FlashSaleCountdown endTime={endTime} />}
           </div>
         </div>
       </div>
 
-      {/* Product Cards - Only for Desktop (Overlapping) */}
-      <div
-        {...desktopCarouselContainerProps}
-        className={cn(
-          "-bottom-22.5 absolute end-0 z-10 hidden w-[700px] lg:block xl:w-[800px]",
-          desktopCarouselContainerProps?.className
-        )}
-      >
+      <div className="lg:-bottom-22.5 relative -me-2.5 mt-4 min-w-0 lg:absolute lg:end-0 lg:z-10 lg:me-0 lg:mt-0 lg:w-[700px] xl:w-[800px]">
         <div className="w-full">
-          {Array.isArray(products) && products.length > 0 ? (
-            <DeviceOnlyCategoryProductsContent
-              device="desktop"
-              maximumProducts={4}
-              variant={variant}
-            >
-              <FlashSaleCarousel
-                autoSlideDelay={autoSlideDelay ?? 5000}
-                autoSliding={autoSliding ?? true}
-                isBulletDeliveryEnabled={isBulletDeliveryEnabled}
-                lpRow={lpRow}
-                mode="desktop"
-                products={products}
-              />
-            </DeviceOnlyCategoryProductsContent>
-          ) : (
-            <div className="w-full rounded-2xl bg-white/20 p-8 text-center text-gray-600">
-              {!saleProductCategoryId
-                ? "No products or category ID configured in Contentful"
-                : "No products found for this flash sale"}
-            </div>
-          )}
+          <FlashSaleCarousel
+            autoSlideDelay={autoSlideDelay ?? 5000}
+            autoSliding={autoSliding ?? true}
+            isBulletDeliveryEnabled={isBulletDeliveryEnabled}
+            lpRow={lpRow}
+            products={products}
+          />
         </div>
       </div>
+
+      {showViewAll && (
+        <Link
+          className="text-text-tertiary relative flex justify-end py-4 pe-5 text-[15px] font-normal lg:hidden"
+          href={ROUTES.CATEGORY.BY_SLUG(productsCategoryId)}
+        >
+          {t("seeAll")}
+        </Link>
+      )}
     </div>
   );
 };

@@ -27,6 +27,7 @@ import {
   isProfileRootPath,
   isRegionPath,
   isSearchPath,
+  isTrackOrderPath,
   isWalletPath,
   isWishlistPath,
 } from "@/lib/utils/routes";
@@ -79,6 +80,7 @@ export const useRouteMatch = () => {
       isProfileRoot: isProfileRootPath(effectivePathname),
       isRegion: isRegionPath(effectivePathname),
       isSearch: isSearchPath(effectivePathname),
+      isTrackOrder: isTrackOrderPath(effectivePathname),
       isWallet: isWalletPath(effectivePathname),
       isWishlist: isWishlistPath(effectivePathname),
       pathname,

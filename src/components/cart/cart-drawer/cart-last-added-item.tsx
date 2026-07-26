@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 
+import { useTranslations } from "next-intl";
+
 import { CartQuantityControl } from "@/components/cart/cart-quantity-control";
 import { ProductCardBulletDelivery } from "@/components/product/product-card/product-card-bullet-delivery";
 import { ProductCardDiscount } from "@/components/product/product-card/product-card-discount";
@@ -23,6 +25,7 @@ import { getProductDetailsHref } from "@/lib/utils/get-product-details-href";
 
 export const CartLastAddedItem = () => {
   const { cart } = useCart();
+  const t = useTranslations("CartPage");
 
   const lastAddedItem = cart?.items[0];
   const prevQuantityRef = useRef(lastAddedItem?.quantity || 0);
@@ -76,6 +79,7 @@ export const CartLastAddedItem = () => {
     Boolean(lastAddedItem.bulletDelivery) && isBulletDeliveryEnabled;
   const selectedOptionLabel = lastAddedItem.options?.choices?.[0]?.label;
   const itemQuantity = lastAddedItem.quantity;
+  const isOutOfStock = lastAddedItem.isOutOfStock;
   const productHref = getProductDetailsHref({
     sku: lastAddedItem.sku,
     urlKey: lastAddedItem.urlKey,
@@ -98,11 +102,19 @@ export const CartLastAddedItem = () => {
             sizes="(max-width: 430px) 23.25vw, 100px"
             src={lastAddedItem.imageUrl}
           />
+          {isOutOfStock && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="h-6.25 flex items-center justify-center gap-2.5 rounded-lg bg-black/50 px-2.5 py-2 text-[11px] font-medium leading-none text-white">
+                {t("outOfStock")}
+              </span>
+            </div>
+          )}
         </ProductDetailsLink>
         <CartQuantityControl
           containerProps={{
             className: "hidden lg:flex",
           }}
+          disableIncrement={isOutOfStock || lastAddedItem.isWrap}
           isLoading={isLoadingQuantityControl}
           onRemoveItemAction={handleRemoveItem}
           onUpdateQuantityAction={handleUpdateItemQuantity}
@@ -166,6 +178,7 @@ export const CartLastAddedItem = () => {
             containerProps={{
               className: "flex max-w-30 w-[28vw] lg:hidden",
             }}
+            disableIncrement={isOutOfStock || lastAddedItem.isWrap}
             isLoading={isLoadingQuantityControl}
             onRemoveItemAction={handleRemoveItem}
             onUpdateQuantityAction={handleUpdateItemQuantity}

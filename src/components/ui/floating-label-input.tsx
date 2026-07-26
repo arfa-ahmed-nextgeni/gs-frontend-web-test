@@ -65,7 +65,7 @@ export const FloatingLabelInput = ({
           <Label
             {...labelProps}
             className={cn(
-              "bg-bg-surface text-text-secondary transition-default pointer-events-none absolute start-3.5 top-2 z-10 origin-[0] -translate-y-4 transform px-1.5 text-xs font-normal",
+              "text-text-secondary transition-default pointer-events-none absolute start-3.5 top-2 z-10 origin-[0] -translate-y-4 transform bg-transparent px-1.5 text-xs font-normal",
               alwaysShowLabel ? "opacity-100" : "opacity-0",
               hasCustomPlaceholder
                 ? "peer-focus:[&>span]:bg-bg-body peer-focus:bg-transparent peer-focus:opacity-100 peer-focus:[&>span]:opacity-100"
@@ -76,9 +76,9 @@ export const FloatingLabelInput = ({
                   ],
               !alwaysShowLabel && "peer-disabled:opacity-0",
               {
-                "text-text-accent peer-focus:[&>span]:bg-bg-body [&>span]:bg-bg-surface bg-transparent opacity-100 peer-focus:opacity-100 [&>span]:opacity-100 peer-focus:[&>span]:opacity-100":
+                "text-text-accent peer-focus:[&>span]:bg-bg-body bg-transparent opacity-100 peer-focus:opacity-100 [&>span]:bg-white [&>span]:opacity-100 peer-focus:[&>span]:opacity-100":
                   success,
-                "text-text-danger peer-focus:[&>span]:bg-bg-body [&>span]:bg-bg-surface bg-transparent opacity-100 peer-focus:opacity-100 [&>span]:opacity-100 peer-focus:[&>span]:opacity-100":
+                "text-text-danger peer-focus:[&>span]:bg-bg-body bg-transparent opacity-100 peer-focus:opacity-100 [&>span]:bg-white [&>span]:opacity-100 peer-focus:[&>span]:opacity-100":
                   error,
               },
               labelProps?.className

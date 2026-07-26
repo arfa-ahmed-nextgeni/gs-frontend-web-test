@@ -71,6 +71,8 @@ export function PurchaseTracker({
       return;
     }
 
+    hasTracked.current = true;
+
     // Determine shipping type from order
     const shippingType =
       order.deliveryLabel?.toLowerCase().includes("click collect") ||
@@ -83,6 +85,13 @@ export function PurchaseTracker({
       order,
       shippingType
     );
+
+    const resolvedOrderId =
+      purchaseProperties.order_id || orderId || String(order.id || "");
+
+    purchaseProperties.order_id = resolvedOrderId;
+    purchaseProperties["order.id"] = resolvedOrderId;
+
     trackPurchase(purchaseProperties);
     // Track GA4 ecommerce purchase event with nested ecommerce + customer_details
     trackGA4Purchase(order, customer ?? null);

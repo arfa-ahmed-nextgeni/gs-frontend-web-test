@@ -7,6 +7,7 @@ import { APP_API_ENDPOINTS } from "@/lib/constants/api/endpoints";
 import { type Locale } from "@/lib/constants/i18n";
 import { SEARCH_MIN_QUERY_LENGTH } from "@/lib/constants/search";
 import { type ProductCardModel } from "@/lib/models/product-card-model";
+import { isAbortError } from "@/lib/utils/network-error";
 import { isError, isUnauthenticated } from "@/lib/utils/service-result";
 
 interface SearchOptions {
@@ -59,6 +60,10 @@ export function useSearchAutocomplete(
           totalCount: response.totalCount || 0,
         };
       } catch (error) {
+        if (signal.aborted || isAbortError(error)) {
+          throw error;
+        }
+
         console.error("Search error:", error);
         return {
           facets: [],
@@ -110,6 +115,10 @@ async function searchProductsClient(params: {
 
     return response.data;
   } catch (error) {
+    if (params.signal?.aborted || isAbortError(error)) {
+      throw error;
+    }
+
     console.error("Search request failed:", error);
     return {
       facets: [],

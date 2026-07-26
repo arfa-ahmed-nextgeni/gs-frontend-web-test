@@ -17,6 +17,7 @@ import { CUSTOMER_GRAPHQL_MUTATIONS } from "@/lib/constants/api/graphql/customer
 import { Locale } from "@/lib/constants/i18n";
 import { ROUTES } from "@/lib/constants/routes";
 import { getStoreCode, isGlobalStore } from "@/lib/utils/country";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 import { getLocaleInfo } from "@/lib/utils/locale";
 import { failure, ok } from "@/lib/utils/service-result";
 
@@ -75,6 +76,7 @@ export const makeDefaultCustomerAddress = async ({
       UpdateCustomerAddressMutationVariables
     >({
       authToken,
+      forwardHeaders: await getForwardedRequestHeaders(),
       query: CUSTOMER_GRAPHQL_MUTATIONS.UPDATE_CUSTOMER_ADDRESS,
       storeCode,
       variables: {

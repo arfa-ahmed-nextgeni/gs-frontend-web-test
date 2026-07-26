@@ -4,9 +4,9 @@ import { getTranslations } from "next-intl/server";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 
+import { CustomerServiceEmailLink } from "./customer-service-email-link";
 import {
   CustomerServiceCallLink,
-  CustomerServiceEmailLink,
   CustomerServiceWhatsappLink,
 } from "./customer-service-tracked-link";
 
@@ -106,7 +106,10 @@ export async function CustomerServiceContent({
         </p>
         <div className="flex flex-col gap-2.5">
           {contactSection.contacts
-            .filter(({ type }) => type === "email")
+            .filter(
+              ({ address, type }) =>
+                type === "email" && Boolean(address?.trim())
+            )
             .map(({ address, iconUrl, type }, index) => (
               <CustomerServiceEmailLink
                 className="h-12.5 bg-bg-surface flex flex-row items-center justify-between rounded-xl px-5"

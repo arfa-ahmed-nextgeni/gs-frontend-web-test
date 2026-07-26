@@ -1,3 +1,4 @@
+import { formatPrice } from "@/lib/utils/price";
 import { parseProductTagAttributes } from "@/lib/utils/product-tags";
 
 export type FlagValue = boolean | null | number | undefined;
@@ -15,8 +16,16 @@ export class Helper {
     return converted % 1 === 0 ? converted : Math.round(converted * 10) / 10;
   }
 
-  formatPhoneNumber(num: string): string {
-    return num && !num.startsWith("+") ? "+" + num : num;
+  formatPhoneNumber(num: null | number | string | undefined): string {
+    if (num == null) {
+      return "";
+    }
+
+    const phoneNumber = `${num}`.trim();
+
+    return phoneNumber && !phoneNumber.startsWith("+")
+      ? `+${phoneNumber}`
+      : phoneNumber;
   }
 
   formatPrice({
@@ -28,14 +37,12 @@ export class Helper {
     currencyCode: string;
     locale?: string;
   }): string {
-    const formatCurrency = new Intl.NumberFormat(locale, {
-      currency: currencyCode,
-      maximumFractionDigits: 0,
-      style: "currency",
-      useGrouping: false,
+    return formatPrice({
+      amount,
+      currencyCode,
+      locale,
+      options: { useGrouping: false },
     });
-
-    return formatCurrency.format(amount);
   }
 
   getAttribute<T>(

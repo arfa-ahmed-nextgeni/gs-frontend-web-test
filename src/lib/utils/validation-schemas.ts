@@ -1,9 +1,10 @@
 import dayjs from "dayjs";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 import * as z from "zod";
 
 import { StoreCode } from "@/lib/constants/i18n";
 import { REGEX } from "@/lib/constants/regex";
-import { isValidPhoneNumber } from "@/lib/utils/country";
+import { isGlobalStore, isValidPhoneNumber } from "@/lib/utils/country";
 
 export const booleanSchema = z.coerce.boolean() as z.ZodBoolean;
 
@@ -98,6 +99,25 @@ export const phoneNumberSchema = (storeCode: StoreCode) =>
     })
     .superRefine((data, ctx) => {
       const cleanCountryCode = data.countryCode.replace(/^\+/, "");
+
+      if (isGlobalStore(storeCode) && cleanCountryCode.length > 0) {
+        const cleanNumber = data.number.replace(/\s+/g, "");
+        const validationNumber = cleanNumber || "11111111";
+        const parsedPhoneNumber = parsePhoneNumberFromString(
+          `${data.countryCode}${validationNumber}`
+        );
+
+        if (
+          !parsedPhoneNumber ||
+          parsedPhoneNumber.countryCallingCode !== cleanCountryCode
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: "invalidCountryCode",
+            path: ["countryCode"],
+          });
+        }
+      }
 
       if (
         data.number &&

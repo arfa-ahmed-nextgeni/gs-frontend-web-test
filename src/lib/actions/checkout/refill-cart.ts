@@ -9,6 +9,7 @@ import { graphqlRequest } from "@/lib/clients/graphql";
 import { CUSTOMER_GRAPHQL_MUTATIONS } from "@/lib/constants/api/graphql/customer";
 import { Locale } from "@/lib/constants/i18n";
 import { getCommonErrorMessage } from "@/lib/utils/common-error-message";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 import { failure, ok, unauthenticated } from "@/lib/utils/service-result";
 
 export async function refillCartAction(orderId: string, locale: Locale) {
@@ -24,6 +25,7 @@ export async function refillCartAction(orderId: string, locale: Locale) {
 
     const response = await graphqlRequest({
       authToken,
+      forwardHeaders: await getForwardedRequestHeaders(),
       query: CUSTOMER_GRAPHQL_MUTATIONS.REORDER_CUSTOMER_ORDER,
       storeCode: storeConfigResult.data?.store?.code,
       variables: {

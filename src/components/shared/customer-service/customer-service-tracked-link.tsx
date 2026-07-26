@@ -7,10 +7,6 @@ type CustomerServiceLinkProps = PropsWithChildren<
   Omit<ComponentProps<typeof Link>, "children" | "href">
 >;
 
-type EmailLinkProps = {
-  email: string;
-} & CustomerServiceLinkProps;
-
 type PhoneLinkProps = {
   phoneNumber: string;
 } & CustomerServiceLinkProps;
@@ -30,24 +26,6 @@ export function CustomerServiceCallLink({
       href={`tel:${phoneNumber}`}
       {...{
         [CUSTOMER_SERVICE_TRACKING_DATA_ATTRIBUTE]: "call",
-      }}
-    >
-      {children}
-    </Link>
-  );
-}
-
-export function CustomerServiceEmailLink({
-  children,
-  email,
-  ...linkProps
-}: EmailLinkProps) {
-  return (
-    <Link
-      {...linkProps}
-      href={`mailto:${email}`}
-      {...{
-        [CUSTOMER_SERVICE_TRACKING_DATA_ATTRIBUTE]: "email",
       }}
     >
       {children}

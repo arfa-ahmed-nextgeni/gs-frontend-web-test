@@ -19,7 +19,21 @@ const initialAccessFormState = {
   errorMessage: null,
 };
 
-export function ApiActivityAccessForm() {
+type ApiActivityAccessFormProps = {
+  description?: string;
+  passwordInputId?: string;
+  pendingLabel?: string;
+  redirectTo?: string;
+  submitLabel?: string;
+};
+
+export function ApiActivityAccessForm({
+  description = "Enter the tool password to view recent server-side API activity.",
+  passwordInputId = "api-activity-password",
+  pendingLabel = "Checking...",
+  redirectTo,
+  submitLabel = "Open activity viewer",
+}: ApiActivityAccessFormProps) {
   const [state, formAction, isPending] = useActionState(
     submitApiActivityAccess,
     initialAccessFormState
@@ -30,22 +44,26 @@ export function ApiActivityAccessForm() {
       <CardHeader className="gap-3">
         <CardTitle className="text-2xl">Access Required</CardTitle>
         <CardDescription className="text-text-secondary text-sm leading-6">
-          Enter the tool password to view recent server-side API activity.
+          {description}
         </CardDescription>
       </CardHeader>
 
       <CardContent>
         <Form action={formAction} className="space-y-4">
+          {redirectTo ? (
+            <input name="redirectTo" type="hidden" value={redirectTo} />
+          ) : null}
+
           <div className="space-y-2">
             <label
               className="text-text-primary text-sm font-medium"
-              htmlFor="api-activity-password"
+              htmlFor={passwordInputId}
             >
               Password
             </label>
             <Input
               autoComplete="current-password"
-              id="api-activity-password"
+              id={passwordInputId}
               name="password"
               placeholder="Enter password"
               type="password"
@@ -57,7 +75,7 @@ export function ApiActivityAccessForm() {
           ) : null}
 
           <Button className="w-full" disabled={isPending} type="submit">
-            {isPending ? "Checking..." : "Open activity viewer"}
+            {isPending ? pendingLabel : submitLabel}
           </Button>
         </Form>
       </CardContent>

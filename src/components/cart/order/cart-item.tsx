@@ -15,6 +15,7 @@ import { ProductDetailsLink } from "@/components/shared/product-details-link";
 import { useCart } from "@/contexts/use-cart";
 import { useRemoveProductFromCart } from "@/hooks/mutations/cart/use-remove-product-from-cart";
 import { useUpdateCartItemQuantity } from "@/hooks/mutations/cart/use-update-cart-item-quantity";
+import { clickOriginTrackingManager } from "@/lib/analytics/click-origin-tracking-manager";
 import { trackCartLessQty, trackCartMoreQty } from "@/lib/analytics/events";
 import {
   buildCartProperties,
@@ -76,6 +77,10 @@ export function CartItem({ item }: { item: CartItemData }) {
     removeProductFromCart({ itemUid: item.uidInCart });
   };
 
+  const handleProductDetailsClick = () => {
+    clickOriginTrackingManager.setPdpNavigationSource("cart");
+  };
+
   const isOutOfStock = item.isOutOfStock;
   const isLoading = isPending || isRemovingItem;
   const selectedOptionLabel = item.options?.choices?.[0]?.label;
@@ -101,6 +106,7 @@ export function CartItem({ item }: { item: CartItemData }) {
         <ProductDetailsLink
           className="relative aspect-square w-full overflow-hidden rounded-xl"
           href={productHref || "#"}
+          onNavigate={handleProductDetailsClick}
           title={item.name}
         >
           <ProductImageWithFallback
@@ -135,6 +141,7 @@ export function CartItem({ item }: { item: CartItemData }) {
             <ProductDetailsLink
               className="block"
               href={productHref || "#"}
+              onNavigate={handleProductDetailsClick}
               title={item.name}
             >
               <p className="text-text-primary pt-8.5 line-clamp-1 text-xs font-semibold lg:pt-2.5">

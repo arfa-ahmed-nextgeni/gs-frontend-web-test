@@ -139,6 +139,17 @@ export function transformProductViewToCardModel(
   let options: ProductOption | undefined = undefined;
   let externalId = productView.externalId || "";
 
+  const rawAvailableStock = getAttributeValue<number | string | undefined>(
+    productView?.attributes || [],
+    "available_stock",
+    undefined
+  );
+
+  let availableStock =
+    rawAvailableStock != null && !isNaN(+rawAvailableStock)
+      ? Math.floor(+rawAvailableStock)
+      : undefined;
+
   if (productView.__typename === "ComplexProductView") {
     const associatedProducts = parseAttributeValue<AssociatedProducts>(
       productView?.attributes || [],
@@ -147,6 +158,14 @@ export function transformProductViewToCardModel(
     );
 
     externalId = Object.values(associatedProducts)?.[0]?.externalId || "";
+
+    const variantAvailableStock =
+      Object.values(associatedProducts)?.[0]?.available_stock;
+
+    availableStock =
+      variantAvailableStock != null && !isNaN(+variantAvailableStock)
+        ? Math.floor(+variantAvailableStock)
+        : undefined;
 
     options = {
       choices:
@@ -223,6 +242,7 @@ export function transformProductViewToCardModel(
   }
 
   return new ProductCardModel({
+    availableStock,
     badges: badges.length > 0 ? badges : undefined,
     brand,
     bulletDelivery,

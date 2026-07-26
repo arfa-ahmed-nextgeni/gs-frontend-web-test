@@ -1,7 +1,5 @@
 import "server-only";
 
-import { headers } from "next/headers";
-
 import {
   ApiActivityFeatures,
   ApiActivityServices,
@@ -12,14 +10,17 @@ import {
   PAYMENTS_SERVICE_BASE_URL,
 } from "@/lib/config/server-env";
 import { API_CONSTANTS, HEADERS } from "@/lib/constants/api";
+import { applyForwardHeaders } from "@/lib/utils/forwarded-headers";
 
 export async function paymentsServiceRequest<T>({
   authToken,
   endpoint,
+  forwardHeaders,
   options,
 }: {
   authToken?: string;
   endpoint: string;
+  forwardHeaders?: HeadersInit;
   options?: RequestInit;
 }): Promise<{ data: T; status: number }> {
   const url = `${PAYMENTS_SERVICE_BASE_URL}${endpoint}`;
@@ -29,16 +30,7 @@ export async function paymentsServiceRequest<T>({
   requestHeaders.set(HEADERS.CONTENT_TYPE, "application/json");
   requestHeaders.set(HEADERS.X_PLATFORM, "web");
 
-  // Forward browser User-Agent when available on the server
-  try {
-    const nextHeaders = await headers();
-    const userAgent = nextHeaders.get("user-agent");
-    if (userAgent) {
-      requestHeaders.set(HEADERS.USER_AGENT, userAgent);
-    }
-  } catch {
-    // Ignore if not in a server context
-  }
+  applyForwardHeaders(requestHeaders, forwardHeaders);
 
   if (!PAYMENTS_API_KEY) {
     console.error(

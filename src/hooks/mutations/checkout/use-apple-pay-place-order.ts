@@ -58,6 +58,7 @@ export const useApplePayPlaceOrder = ({
 
       const formattedAmount = amount.toFixed(2);
       const countryCodeUpper = countryCode.toUpperCase();
+      const supportsMadaVersion = ApplePaySession.supportsVersion(5);
       const networks: string[] = ["visa", "masterCard"];
 
       if (
@@ -67,7 +68,9 @@ export const useApplePayPlaceOrder = ({
         countryCodeUpper === "KW" ||
         countryCodeUpper === "IQ"
       ) {
-        networks.push("mada");
+        if (supportsMadaVersion) {
+          networks.push("mada");
+        }
       } else {
         networks.push("amex");
       }
@@ -81,7 +84,6 @@ export const useApplePayPlaceOrder = ({
           "supports3DS",
           "supportsCredit",
           "supportsDebit",
-          "supportsEMV",
         ],
         supportedNetworks: networks,
         total: {
@@ -91,7 +93,10 @@ export const useApplePayPlaceOrder = ({
         },
       };
 
-      const session = new ApplePaySession(3, paymentRequest);
+      const session = new ApplePaySession(
+        supportsMadaVersion ? 5 : 3,
+        paymentRequest
+      );
 
       session.onvalidatemerchant = async (event) => {
         const merchantSession = await applePayValidateMerchantAction({
@@ -122,15 +127,18 @@ export const useApplePayPlaceOrder = ({
             return reject(applePayPlaceOrderResult);
           }
         } catch (error) {
-          console.error(
-            "[useApplePayPlaceOrder] applePayPlaceOrderAction error: ",
-            error
-          );
+          // A successful place-order ends by calling next/navigation redirect(),
+          // which throws a NEXT_REDIRECT "error". That is the success path, not
+          // a failure — treat it as such and don't log it as an error.
           if (isRedirectError(error)) {
             session.completePayment({ status: ApplePaySession.STATUS_SUCCESS });
             return resolve(ok({}));
           }
 
+          console.error(
+            "[useApplePayPlaceOrder] applePayPlaceOrderAction error: ",
+            error
+          );
           session.completePayment({ status: ApplePaySession.STATUS_FAILURE });
           return reject(error);
         }

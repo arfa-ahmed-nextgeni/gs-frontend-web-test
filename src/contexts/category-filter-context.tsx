@@ -19,6 +19,11 @@ import {
   useSearchParams,
 } from "@/i18n/client-navigation";
 import { trackFilterApply } from "@/lib/analytics/events";
+import {
+  getFilterAttributeFromQueryKey,
+  getFilterQueryKey,
+  serializeListingSearchParams,
+} from "@/lib/category/query";
 import { PRICE_RANGE_BOUNDS } from "@/lib/constants/category/category-filters";
 import {
   CategorySortKey,
@@ -67,12 +72,6 @@ const ATTRIBUTE_TO_FILTER_IDS = Object.entries(FILTER_ID_TO_ATTRIBUTE).reduce(
   {} as Record<string, string[]>
 );
 
-const RESERVED_QUERY_KEYS = new Set([
-  QueryParamsKey.Page,
-  QueryParamsKey.Price,
-  QueryParamsKey.Search,
-  QueryParamsKey.Sort,
-]);
 const PRICE_QUERY_DEBOUNCE = debounce(800);
 
 type CategoryFilterContextValue = {
@@ -127,11 +126,12 @@ function parseCheckboxesFromSearchParams(
   const checkboxes: Record<string, string[]> = {};
 
   searchParams.forEach((value, key) => {
-    if (RESERVED_QUERY_KEYS.has(key as QueryParamsKey)) {
+    const attribute = getFilterAttributeFromQueryKey(key);
+    if (!attribute) {
       return;
     }
 
-    const uiFilterIds = getFilterIdsFromAttribute(key);
+    const uiFilterIds = getFilterIdsFromAttribute(attribute);
     uiFilterIds.forEach((uiFilterId) => {
       if (!checkboxes[uiFilterId]) {
         checkboxes[uiFilterId] = [];
@@ -254,7 +254,7 @@ export function CategoryFilterProvider({
   const navigateWithParams = useCallback(
     (nextParams: URLSearchParams) => {
       nextParams.delete(QueryParamsKey.Page);
-      const nextQuery = nextParams.toString();
+      const nextQuery = serializeListingSearchParams(nextParams);
       latestSearchParamsRef.current = nextQuery;
       trackFilterApply();
 
@@ -288,6 +288,7 @@ export function CategoryFilterProvider({
   const setCheckboxesForSection = useCallback(
     (section: string, values: string[]) => {
       const attribute = getAttributeFromFilterId(section);
+      const queryKey = getFilterQueryKey(attribute);
       // Preserve raw values (including any leading/trailing whitespace) so
       // they round-trip exactly between checkbox value, URL, and server query.
       // Upstream attribute values like "Eucerin " carry trailing whitespace and
@@ -298,9 +299,9 @@ export function CategoryFilterProvider({
       );
 
       updateParams((params) => {
-        params.delete(attribute);
+        params.delete(queryKey);
         normalizedValues.forEach((value) => {
-          params.append(attribute, value);
+          params.append(queryKey, value);
         });
       });
     },
@@ -311,7 +312,7 @@ export function CategoryFilterProvider({
     (section: string) => {
       const attribute = getAttributeFromFilterId(section);
       updateParams((params) => {
-        params.delete(attribute);
+        params.delete(getFilterQueryKey(attribute));
       });
     },
     [updateParams]
@@ -321,13 +322,14 @@ export function CategoryFilterProvider({
     (map: Record<string, string[]>) => {
       updateParams((params) => {
         getSelectedAttributes(state.checkboxes).forEach((attribute) => {
-          params.delete(attribute);
+          params.delete(getFilterQueryKey(attribute));
         });
 
         Object.entries(map).forEach(([section, values]) => {
           const attribute = getAttributeFromFilterId(section);
+          const queryKey = getFilterQueryKey(attribute);
           values.forEach((value) => {
-            params.append(attribute, value);
+            params.append(queryKey, value);
           });
         });
       });
@@ -390,7 +392,7 @@ export function CategoryFilterProvider({
   const clearAllFiltersExceptSearch = useCallback(() => {
     updateParams((params) => {
       getSelectedAttributes(state.checkboxes).forEach((attribute) => {
-        params.delete(attribute);
+        params.delete(getFilterQueryKey(attribute));
       });
 
       params.delete(QueryParamsKey.Price);

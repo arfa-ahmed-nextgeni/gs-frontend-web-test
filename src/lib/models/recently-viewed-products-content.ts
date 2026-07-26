@@ -1,10 +1,13 @@
 import type { Document } from "@contentful/rich-text-types";
 
 import { TabContentType } from "@/lib/models/page-landing";
-import { RecentlyViewedProductsData } from "@/lib/types/contentful/page-landing";
+
+import type { ContentDisplayOn } from "@/lib/types/contentful/display-on";
+import type { RecentlyViewedProductsData } from "@/lib/types/contentful/page-landing";
 
 export class RecentlyViewedProductsContent {
   public contentType: TabContentType;
+  public displayOn: ContentDisplayOn;
   public maximumProducts: number;
   public productsCategoryId?: string;
   public richTitle?: Document;
@@ -14,6 +17,7 @@ export class RecentlyViewedProductsContent {
 
   constructor(data: RecentlyViewedProductsData, contentType: TabContentType) {
     this.contentType = contentType;
+    this.displayOn = data.displayOn ?? "all";
     this.viewAllUrl = data.viewAllUrl;
     this.maximumProducts = data.maximumProducts ?? 6;
     this.productsCategoryId = data.productsCategoryId;

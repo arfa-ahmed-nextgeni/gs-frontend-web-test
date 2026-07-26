@@ -1,3 +1,4 @@
+import { appendFiltersToParams } from "@/lib/category/query";
 import { Locale } from "@/lib/constants/i18n";
 import { QueryParamsKey } from "@/lib/constants/query-params";
 
@@ -17,6 +18,8 @@ export const API_ENDPOINTS = {
     STATES: (countryCode: string) =>
       `/address/states?country_id=${countryCode}`,
     STORES_CONFIG: "/store-config",
+    STORES_CONFIG_BY_WEBSITE: (websiteId: number) =>
+      `/store-config?websiteId=${websiteId}`,
   },
   CUSTOMER: {
     DELETE_ACCOUNT: "/customer/account/delete",
@@ -71,16 +74,14 @@ export const APP_API_ENDPOINTS = {
         searchParams.set(QueryParamsKey.Sort, sortBy);
       }
 
-      Object.entries(filters).forEach(([key, values]) => {
-        values.forEach((value) => {
-          searchParams.append(key, value);
-        });
-      });
+      appendFiltersToParams(searchParams, filters);
 
       return `/category-products?${searchParams.toString()}`;
     },
   },
   CUSTOMER: {
+    ADDRESSES: (locale: Locale) =>
+      `/api/customer/addresses?${QueryParamsKey.Locale}=${locale}`,
     ME: "/customer/me",
     ORDER_BY_NUMBER: (locale: Locale, orderNumber: string) =>
       `/api/customer/orders/${orderNumber}?${QueryParamsKey.Locale}=${locale}`,
@@ -90,6 +91,33 @@ export const APP_API_ENDPOINTS = {
   LOCKER_LOCATIONS: {
     FODEL: "/locker-locations/fodel",
     REDBOX: "/locker-locations/redbox",
+  },
+  PRODUCTS: {
+    REVIEWS: ({
+      locale,
+      page,
+      pageSize,
+      productId,
+      sortBy,
+    }: {
+      locale: Locale;
+      page: number;
+      pageSize: number;
+      productId: number;
+      sortBy?: string;
+    }) => {
+      const searchParams = new URLSearchParams();
+      searchParams.set(QueryParamsKey.Locale, locale);
+      searchParams.set("productId", String(productId));
+      searchParams.set(QueryParamsKey.Page, String(page));
+      searchParams.set(QueryParamsKey.PageSize, String(pageSize));
+
+      if (sortBy) {
+        searchParams.set(QueryParamsKey.Sort, sortBy);
+      }
+
+      return `/product-reviews?${searchParams.toString()}`;
+    },
   },
   SEARCH: {
     AUTOCOMPLETE: ({
@@ -143,11 +171,7 @@ export const APP_API_ENDPOINTS = {
       }
 
       if (filters) {
-        Object.entries(filters).forEach(([key, values]) => {
-          values.forEach((value) => {
-            searchParams.append(key, value);
-          });
-        });
+        appendFiltersToParams(searchParams, filters);
       }
 
       return `/search/products?${searchParams.toString()}`;

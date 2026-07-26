@@ -8,6 +8,7 @@ import { getAuthToken } from "@/lib/actions/auth/get-auth-token";
 import { restRequest } from "@/lib/clients/rest";
 import { API_ENDPOINTS } from "@/lib/constants/api/endpoints";
 import { Locale, LOCALE_TO_STORE } from "@/lib/constants/i18n";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 
 export const makeDefaultPaymentCard = async ({ id }: { id: string }) => {
   const t = await getTranslations("CustomerCardsPage.messages");
@@ -27,6 +28,7 @@ export const makeDefaultPaymentCard = async ({ id }: { id: string }) => {
     }>({
       authToken,
       endpoint: API_ENDPOINTS.CUSTOMER.UPDATE_CARD_WITH_PAYMENT_ID,
+      forwardHeaders: await getForwardedRequestHeaders(),
       options: {
         body: JSON.stringify({
           cardData: {

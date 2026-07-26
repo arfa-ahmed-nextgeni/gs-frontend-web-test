@@ -34,6 +34,7 @@ import { cn } from "@/lib/utils";
 import { isValidPhoneNumber } from "@/lib/utils/country";
 import {
   emptyGoogleAddressData,
+  normalizeShortNationalAddress,
   sanitizeStreetValue,
 } from "@/lib/utils/google-address";
 import { isError, isOk } from "@/lib/utils/service-result";
@@ -187,9 +188,16 @@ export const AddDeliveryAddressSaveForm = () => {
     setKsaAddress(queriedKsaAddress ?? null);
   }, [queriedKsaAddress, setKsaAddress]);
 
-  const fallbackAddressData = googleAddressData || emptyGoogleAddressData();
-  // Prefer the cached KSA validation data, then fall back to Google-derived fields.
   const ksaAddress = queriedKsaAddress ?? null;
+  const savedShortNationalAddress = normalizeShortNationalAddress(
+    initialAddressSnapshot?.shortCode
+  );
+  const shouldUseGeocodeFallback =
+    !shouldUseSavedAddress &&
+    (!shouldVerifyCoordinates || (!isLoadingKsa && !ksaAddress));
+  const fallbackAddressData = shouldUseGeocodeFallback
+    ? googleAddressData || emptyGoogleAddressData()
+    : emptyGoogleAddressData();
 
   // Build address data: prefer KSA data, fallback to Google reverse geocoding
   const addressData = useMemo(
@@ -208,14 +216,14 @@ export const AddDeliveryAddressSaveForm = () => {
           : ksaAddress?.postCode || fallbackAddressData.postalCode) || "",
       shortCode:
         (shouldUseSavedAddress
-          ? initialAddressSnapshot?.shortCode
+          ? savedShortNationalAddress
           : ksaAddress?.short_address || fallbackAddressData.shortCode) || "",
       street: sanitizeStreetValue({
         district: shouldUseSavedAddress
           ? initialAddressSnapshot?.district || ""
           : ksaAddress?.district || fallbackAddressData.district,
         shortCode: shouldUseSavedAddress
-          ? initialAddressSnapshot?.shortCode || ""
+          ? savedShortNationalAddress
           : ksaAddress?.short_address || fallbackAddressData.shortCode,
         street:
           (shouldUseSavedAddress
@@ -230,6 +238,7 @@ export const AddDeliveryAddressSaveForm = () => {
       fallbackAddressData,
       initialAddressSnapshot,
       ksaAddress,
+      savedShortNationalAddress,
       selectedAddress,
       shouldUseSavedAddress,
     ]

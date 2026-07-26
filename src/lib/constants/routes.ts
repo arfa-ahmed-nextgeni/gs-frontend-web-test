@@ -77,10 +77,12 @@ export const ROUTES = {
   ROOT: "/",
   SAVELISTS: "/account-savelists",
   SEARCH: `/search`,
-  TERMS: "/terms-conditions",
+  TERMS: "/terms-and-conditions",
   TOOLS: {
     API_ACTIVITY: "/tools/api-activity",
+    CACHE_REVALIDATE: "/tools/cache-revalidate",
   },
+  TRACK_ORDER: "/track-order",
 } as const;
 
 export const ROUTE_PLACEHOLDER = "__placeholder__" as const;

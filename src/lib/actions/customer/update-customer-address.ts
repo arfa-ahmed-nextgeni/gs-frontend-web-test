@@ -14,7 +14,12 @@ import {
 import { getAuthToken } from "@/lib/actions/auth/get-auth-token";
 import { graphqlRequest } from "@/lib/clients/graphql";
 import { CUSTOMER_GRAPHQL_MUTATIONS } from "@/lib/constants/api/graphql/customer";
-import { Locale, LOCALE_TO_STORE, StoreCode } from "@/lib/constants/i18n";
+import {
+  BRAND_LOCALE_TO_BASE_LOCALE,
+  Locale,
+  LOCALE_TO_STORE,
+  StoreCode,
+} from "@/lib/constants/i18n";
 import { ROUTES } from "@/lib/constants/routes";
 import {
   AddressFormField,
@@ -22,6 +27,7 @@ import {
   AddressFormSchemaType,
 } from "@/lib/forms/manage-address";
 import { isGlobalStore } from "@/lib/utils/country";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 import { getLocaleInfo } from "@/lib/utils/locale";
 import { failure, ok } from "@/lib/utils/service-result";
 
@@ -48,11 +54,14 @@ export const updateCustomerAddress = async ({
 
     const locale = (await getLocale()) as Locale;
 
-    const { region } = getLocaleInfo(locale);
+    const baseLocale = BRAND_LOCALE_TO_BASE_LOCALE[locale] ?? locale;
+    const { region } = getLocaleInfo(baseLocale);
 
     const storeCode = LOCALE_TO_STORE[locale];
     const isSaudiStore =
-      storeCode === StoreCode.ar_sa || storeCode === StoreCode.en_sa;
+      storeCode === StoreCode.ar_sa ||
+      storeCode === StoreCode.en_sa ||
+      region === "SA";
 
     const globalStore = isGlobalStore(storeCode);
 
@@ -130,6 +139,7 @@ export const updateCustomerAddress = async ({
       UpdateCustomerAddressMutationVariables
     >({
       authToken,
+      forwardHeaders: await getForwardedRequestHeaders(),
       query: CUSTOMER_GRAPHQL_MUTATIONS.UPDATE_CUSTOMER_ADDRESS,
       storeCode: LOCALE_TO_STORE[locale],
       variables: {

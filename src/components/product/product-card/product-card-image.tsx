@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import { useTranslations } from "next-intl";
+
 import EyeViewIcon from "@/assets/icons/eye-view-icon.svg";
 import { ProductCardImageLink } from "@/components/product/product-card/product-card-image-link";
 import { productCardSizeClasses } from "@/components/product/product-card/utils/product-card-utils";
@@ -33,6 +35,7 @@ export const ProductCardImage = ({
   urlKey?: string;
   variant: ProductCardVariant;
 } & ProductCardClickOriginProps) => {
+  const t = useTranslations("productCard");
   const { className, style } = productCardSizeClasses(variant);
   const isBundlesGrid = variant === ProductCardVariant.Bundles && !isInCarousel;
   const productHref = urlKey?.trim()
@@ -81,7 +84,7 @@ export const ProductCardImage = ({
           position={position}
           prefetch={false}
           searchTerm={searchTerm}
-          title="View product details"
+          title={t("viewProduct")}
         >
           <Image
             alt="view product icon"

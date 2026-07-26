@@ -55,16 +55,13 @@ export const WalletBalanceCard = async ({
           <LocalizedPrice
             containerProps={{
               className: cn(
-                "font-gilroy inline-flex items-center font-medium text-text-primary"
+                "font-gilroy inline-flex items-center text-[75px] font-medium text-text-primary"
               ),
             }}
             currencySymbolProps={{
-              className: "text-[40px]",
+              className: "me-3 text-[1.1em]",
             }}
             price={`${balance?.value || 0} ${balance?.currency || CurrencyEnum.Sar}`}
-            valueProps={{
-              className: "text-[75px]",
-            }}
           />
         </div>
       </div>

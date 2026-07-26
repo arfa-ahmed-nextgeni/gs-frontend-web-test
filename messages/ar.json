@@ -345,7 +345,7 @@
     "items": "قطعة",
     "paymentSummary": "ملخص الدفع",
     "subtotal": "المجموع",
-    "loyalityPoints": "نقاط الولاء",
+    "loyalityPoints": "رصيد المحفظة",
     "discount": "خصم",
     "shippingFee": "رسوم الشحن",
     "codFee": "رسوم الدفع عند الاستلام",
@@ -370,6 +370,16 @@
     "rateOrder": "قيم الطلب",
     "quantity": "الكمية",
     "loading": "جاري تحميل تفاصيل الطلب...",
+    "cancelToast": {
+      "successTitle": "تم إلغاء الطلب",
+      "successMessage": "تم إلغاء طلبك بنجاح.",
+      "processingTitle": "الطلب قيد التجهيز",
+      "processingMessage": "انتقل هذا الطلب إلى مرحلة التجهيز ولم يعد بالإمكان إلغاؤه تلقائيًا. يرجى التواصل مع الدعم إذا كنت بحاجة إلى مساعدة.",
+      "unableTitle": "تعذّر إلغاء الطلب",
+      "unableMessage": "لم يعد بالإمكان إلغاء هذا الطلب. يرجى التواصل مع الدعم إذا كنت بحاجة إلى مساعدة.",
+      "failedTitle": "فشل الإلغاء",
+      "failedMessage": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
+    },
     "status": {
       "confirmed": "تأكد طلبك",
       "processed": "تم التجهيز",
@@ -454,6 +464,7 @@
     "orderCard": {
       "orderDate": "تاريخ الطلب",
       "total": "المجموع",
+      "viewOrder": "عرض الطلب #{orderNumber}",
       "orderNumber": "رقم الطلب #",
       "actions": {
         "delete": "احذف",
@@ -463,6 +474,16 @@
         "invoice": "الفاتورة",
         "cancel": "إلغاء"
       }
+    },
+    "cancelToast": {
+      "successTitle": "تم إلغاء الطلب",
+      "successMessage": "تم إلغاء طلبك بنجاح.",
+      "processingTitle": "الطلب قيد التجهيز",
+      "processingMessage": "انتقل هذا الطلب إلى مرحلة التجهيز ولم يعد بالإمكان إلغاؤه تلقائيًا. يرجى التواصل مع الدعم إذا كنت بحاجة إلى مساعدة.",
+      "unableTitle": "تعذّر إلغاء الطلب",
+      "unableMessage": "لم يعد بالإمكان إلغاء هذا الطلب. يرجى التواصل مع الدعم إذا كنت بحاجة إلى مساعدة.",
+      "failedTitle": "فشل الإلغاء",
+      "failedMessage": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
     },
     "pagination": {
       "previous": "السابق",
@@ -598,6 +619,7 @@
   },
   "productCard": {
     "bundleProductTitle": "ستوفر <price></price> 🎉",
+    "viewProduct": "عرض المنتج",
     "cartAction": {
       "add": "أضف",
       "added": "تمت الإضافة",
@@ -618,7 +640,7 @@
       "hot_seller": "الأكثر مبيعًا",
       "influencers_picks": "اختيارات المشاهير",
       "max_saving": "الأكثر توفيراً",
-      "new_arrival": "وصل حديثاً",
+      "new_arrival": "جديد",
       "sale": "تخفيض",
       "sale_ends_in": "{hasTitle, select, yes {{title} {countdown}} other {ينتهي بعد {countdown}}}",
       "hour_delivery": "توصيل بـ {hours} سـ",
@@ -879,6 +901,7 @@
     "/search": "بحث",
     "/track-order": "تتبع طلبك",
     "/c/brands": "الماركات",
+    "/brands": "الماركات",
     "/c/new-in": "جديدنا",
     "/c/fragrances": "عطور عالمية",
     "/c/beauty-world": "عالم الجمال",
@@ -892,6 +915,10 @@
     "whatsAppUs": "واتسابنا",
     "callUs": "اتصل فينا",
     "emailUs": "راسلنا بالإيميل",
+    "emailFallbackCopiedTitle": "تم نسخ الإيميل",
+    "emailFallbackCopiedDescription": "إذا لم يفتح تطبيق الإيميل، الصق الإيميل في تطبيقك.",
+    "emailFallbackTitle": "لم يفتح تطبيق الإيميل؟",
+    "emailFallbackDescription": "يرجى نسخ هذا الإيميل: {email}",
     "boulevard": "البوليفارد"
   },
   "ContactForm": {
@@ -1042,7 +1069,8 @@
     },
     "giftItems": {
       "orderIncludesFreeGift": "🥳 طلبك يحتوي على <strong>هدية مجانية</strong>",
-      "freeGiftLabel": "{count, plural, one {# مجاناً} two {# مجاناً} few {# مجاناً} many {# مجاناً} other {# مجاناً}}"
+      "freeGiftLabel": "مجانًا",
+      "quantity": "الكمية {count}"
     },
     "shoppingBag": "حقيبة التسوق",
     "itemCount": "{count, plural, one {# منتج في حقيبتك} two {# منتجان في حقيبتك} few {# منتجات في حقيبتك} many {# منتجًا في حقيبتك} other {# منتج في حقيبتك}}",
@@ -1357,6 +1385,7 @@
     "alphanumericAllowed": "مسموح فقط باستخدام الحروف والأرقام",
     "specialCharsNotAllowed": "الأحرف الخاصة غير مسموح بها",
     "invalidPostalCode": "الرمز البريدي يمكن أن يحتوي فقط على حروف وأرقام ومسافات وشرطات",
+    "invalidCountryCode": "الرجاء إدخال رمز دولة صحيح",
     "invalidPhoneNumber": "يرجى إدخال رقم هاتف صالح",
     "invalidCity": "هذه المدينة غير مدعومة"
   },
@@ -1504,7 +1533,6 @@
     "applePay": {
       "displayName": "قولدن سنت",
       "notAvailable": "Apple Pay غير متاح على هذا الجهاز. يرجى استخدام طريقة دفع أخرى.",
-      "ready": "Apple Pay جاهز. انقر على زر \"دفع\" أدناه لإتمام عملية الشراء.",
       "errors": {
         "notAvailable": "Apple Pay غير متاح",
         "paymentCanceled": "تم إلغاء الدفع بواسطة Apple Pay",
@@ -1553,7 +1581,7 @@
       "delete": "حذف",
       "empty": "لا توجد بطاقات محفوظة",
       "cvvLabel": "رمز الأمان",
-      "cvvPlaceholder": "رمز الأمان",
+      "cvvPlaceholder": "CVV",
       "cancelButton": "إلغاء",
       "selectButton": "استخدم هذه البطاقة",
       "processing": "جاري المعالجة...",
@@ -1655,6 +1683,10 @@
       "networkError": "خطأ في الاتصال. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.",
       "timeoutError": "انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.",
       "bulletDeliveryMethodUnavailable": "{carrierTitle} غير متاح."
+    },
+    "payfortErrors": {
+      "00005": "تعذّر إتمام الدفع لهذا الطلب. يرجى المحاولة مرة أخرى أو التواصل مع الدعم.",
+      "10785": "تعذّر إتمام هذه الدفعة. يرجى استخدام بطاقة أو وسيلة دفع أخرى، أو التواصل مع البنك."
     },
     "messages": {
       "orderPlacedSuccess": "تم تأكيد الطلب رقم {orderNumber} بنجاح",
@@ -1792,10 +1824,11 @@
     "subtotal": "المجموع الفرعي",
     "serviceFee": "رسوم الخدمة",
     "codFee": "رسوم الدفع عند الاستلام",
+    "free": "مجانًا",
     "shippingFee": "رسوم الشحن",
     "shippingFree": "مجانًا",
     "discount": "خصم",
-    "loyalityPoints": "نقاط الولاء",
+    "loyalityPoints": "رصيد المحفظة",
     "rajhiMokafaa": "مكافأة الراجحي",
     "grandTotal": "المجموع الكلي",
     "cashback": "كاش باك",

@@ -48,7 +48,7 @@ export const FloatingLabelTextArea = ({
           <Label
             {...labelProps}
             className={cn(
-              "bg-bg-surface text-text-secondary transition-default pointer-events-none absolute start-3.5 top-2 z-10 origin-[0] -translate-y-4 transform px-1.5 text-xs font-normal opacity-0 hover:cursor-text",
+              "text-text-secondary transition-default pointer-events-none absolute start-3.5 top-2 z-10 origin-[0] -translate-y-4 transform bg-transparent px-1.5 text-xs font-normal opacity-0 hover:cursor-text",
               "peer-hover:text-text-secondary",
               "peer-focus:bg-bg-body peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:text-xs peer-focus:opacity-100",
               "peer-placeholder-shown:text-text-placeholder peer-placeholder-shown:top-3 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-lg peer-placeholder-shown:opacity-100",

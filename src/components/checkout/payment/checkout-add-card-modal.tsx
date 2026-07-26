@@ -19,14 +19,13 @@ import {
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { addCustomerPaymentCard } from "@/lib/actions/customer/add-customer-payment-card";
 import { trackAddCard } from "@/lib/analytics/events";
+import { PaymentCardNetwork } from "@/lib/constants/payment-card";
 import { PaymentCard } from "@/lib/models/payment-card";
 import { cn } from "@/lib/utils";
-import {
-  detectPaymentCardNetwork,
-  paymentCardExpiryToMonthYear,
-} from "@/lib/utils/payment-card";
+import { detectPaymentCardNetwork } from "@/lib/utils/payment-card";
 
 import type { PaymentCardData } from "@/components/checkout/checkout-page";
+import type { CheckoutComCardFieldsResult } from "@/components/checkout/payment/checkout-com-card-fields";
 
 interface CheckoutAddCardModalProps {
   hideSaveCardCheckbox?: boolean;
@@ -55,102 +54,63 @@ export const CheckoutAddCardModal = ({
   const isMobile = useIsMobile();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (data: {
+  const handlePayfortSubmit = async (data: {
     cardExpiry: string;
     cardNumber: string;
     cvv: string;
     saveAsDefault?: boolean;
   }) => {
     setIsSubmitting(true);
-
     try {
-      // Extract card number (remove spaces) and CVV from form data
       const cardNumber = data.cardNumber.replace(/\s/g, "");
-      const cvv = data.cvv;
-
-      // For PayFort, skip tokenization - just create a temporary card object and pass raw data
-      if (isPayfort) {
-        const last4 = cardNumber.slice(-4);
-
-        // Determine card network using the same utility as checkout (for consistent icon matching)
-        const detectedNetwork = detectPaymentCardNetwork(cardNumber);
-        const cardNetwork = detectedNetwork || "unknown";
-
-        const tempCard: PaymentCardData = {
-          cardNetwork,
-          expiry: data.cardExpiry,
-          id: `temp-payfort-${Date.now()}`,
-          isDefault: false,
-          isExpired: false,
-          last4,
-          sourceId: "",
-        };
-
-        // For PayFort, pass empty token (not needed), card data, and raw card number + CVV
-        onCardAdded("", tempCard, cardNumber, cvv);
-        onClose();
-        return;
-      }
-
-      const { month: expiryMonth, year: expiryYear } =
-        paymentCardExpiryToMonthYear(data.cardExpiry);
-
-      // Call our API route which proxies to Checkout.com
-      const tokenResponse = await fetch("/api/checkout/create-token", {
-        body: JSON.stringify({
-          cvv: cvv,
-          expiry_month: expiryMonth,
-          expiry_year: expiryYear,
-          number: cardNumber,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-      });
-
-      let tokenData;
-      try {
-        tokenData = await tokenResponse.json();
-      } catch {
-        // If response is not valid JSON, create a meaningful error
-        const responseText = await tokenResponse.text().catch(() => "");
-        throw new Error(
-          `Failed to create payment token: ${tokenResponse.status} ${tokenResponse.statusText}${responseText ? ` - ${responseText}` : ""}`
-        );
-      }
-
-      if (!tokenResponse.ok) {
-        const errorMessage =
-          tokenData?.error ||
-          tokenData?.error_type ||
-          tokenData?.message ||
-          `Failed to create payment token: ${tokenResponse.status} ${tokenResponse.statusText}`;
-        throw new Error(errorMessage);
-      }
-
-      if (!tokenData.token) {
-        throw new Error("Failed to create payment token: No token in response");
-      }
-
-      const token = tokenData.token;
       const last4 = cardNumber.slice(-4);
       const detectedNetwork = detectPaymentCardNetwork(cardNumber);
       const cardNetwork = detectedNetwork || "unknown";
 
-      // Create temp card object from token data and form data
+      const tempCard: PaymentCardData = {
+        cardNetwork,
+        expiry: data.cardExpiry,
+        id: `temp-payfort-${Date.now()}`,
+        isDefault: false,
+        isExpired: false,
+        last4,
+        sourceId: "",
+      };
+
+      onCardAdded("", tempCard, cardNumber, data.cvv);
+      onClose();
+    } catch (error) {
+      console.error("Error adding PayFort card:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleTokenSubmit = async (
+    result: CheckoutComCardFieldsResult,
+    saveAsDefault: boolean
+  ) => {
+    setIsSubmitting(true);
+
+    try {
+      const { bin, expiryMonth, expiryYear, last4, scheme, token } = result;
+      const detectedNetwork = bin
+        ? detectPaymentCardNetwork(bin)
+        : PaymentCardNetwork.Unknown;
+      const cardNetwork = detectedNetwork || scheme || "unknown";
+
       const tempCardDto = {
-        bin: tokenData.bin || cardNumber.substring(0, 6) || "",
+        bin: bin || "",
         checkout_payment_id: "",
         expiry_month: String(expiryMonth),
         expiry_year: String(expiryYear),
         fingerprint: "",
         id: `temp-${token.slice(-8)}`,
         is_default: 0,
-        issuer: tokenData.issuer || "",
-        issuer_country: tokenData.issuer_country || "",
-        last4: tokenData.last4 || last4,
-        type: tokenData.type || cardNetwork,
+        issuer: "",
+        issuer_country: "",
+        last4,
+        type: cardNetwork,
       };
       const tempCard = new PaymentCard(tempCardDto);
       const savedCard: PaymentCardData = {
@@ -165,14 +125,17 @@ export const CheckoutAddCardModal = ({
         sourceId: "",
       };
 
-      // Always save the card (whether default or not) so it can be restored after cart refill
+      // Verification item (see design doc): confirm whether Checkout.com
+      // allows reusing this same `token` for both the immediate payment
+      // (below, via onCardAdded) and this save-for-later call, or whether
+      // a second Frames.submitCard() is required to mint a fresh token.
+      // Defaulting to reusing the same token until confirmed otherwise.
       let cardWasSaved = false;
       const saveFormData = new FormData();
-      saveFormData.append("card-number", data.cardNumber);
-      saveFormData.append("card-expiry", data.cardExpiry);
+      saveFormData.append("checkout-com-token", token);
       saveFormData.append(
         "save-as-default-card",
-        data.saveAsDefault ? "true" : "false"
+        saveAsDefault ? "true" : "false"
       );
 
       const saveResult = await addCustomerPaymentCard(saveFormData);
@@ -182,7 +145,7 @@ export const CheckoutAddCardModal = ({
         trackAddCard("checkout", cardListSize);
       }
 
-      onCardAdded(token, savedCard, cardNumber, undefined, cardWasSaved);
+      onCardAdded(token, savedCard, undefined, undefined, cardWasSaved);
       onClose();
     } catch (error) {
       console.error("Error adding card:", error);
@@ -326,9 +289,11 @@ export const CheckoutAddCardModal = ({
                 className: "px-5 pb-6 shrink-0",
               }}
               hideSaveCardCheckbox={hideSaveCardCheckbox}
+              isPayfort={isPayfort}
               isSubmitting={isSubmitting}
               onCancel={onClose}
-              onSubmit={handleSubmit}
+              onPayfortSubmit={handlePayfortSubmit}
+              onTokenSubmit={handleTokenSubmit}
             />
           </div>
         </DialogContent>
@@ -349,9 +314,11 @@ export const CheckoutAddCardModal = ({
         </DialogHeader>
         <CheckoutAddCardForm
           hideSaveCardCheckbox={hideSaveCardCheckbox}
+          isPayfort={isPayfort}
           isSubmitting={isSubmitting}
           onCancel={onClose}
-          onSubmit={handleSubmit}
+          onPayfortSubmit={handlePayfortSubmit}
+          onTokenSubmit={handleTokenSubmit}
         />
       </DialogContent>
     </Dialog>

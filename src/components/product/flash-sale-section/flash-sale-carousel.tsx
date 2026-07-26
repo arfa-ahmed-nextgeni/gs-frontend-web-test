@@ -11,14 +11,12 @@ export const FlashSaleCarousel = ({
   autoSliding,
   isBulletDeliveryEnabled,
   lpRow,
-  mode,
   products,
 }: {
   autoSlideDelay: number;
   autoSliding: boolean;
   isBulletDeliveryEnabled: boolean;
   lpRow?: number;
-  mode: "desktop" | "mobile";
   products: ProductCardModel[];
 }) => {
   return (
@@ -28,60 +26,31 @@ export const FlashSaleCarousel = ({
           delay: autoSlideDelay,
           enabled: autoSliding,
         },
+        className:
+          "[&>[data-slot=scroll-snap-carousel-viewport]]:[scroll-padding-inline-end:0px] [&>[data-slot=scroll-snap-carousel-viewport]]:[scroll-padding-inline-start:1.25rem] lg:[&>[data-slot=scroll-snap-carousel-viewport]]:[scroll-padding-inline:0px]",
         deferUntilInView: true,
       }}
-      contentProps={
-        mode === "mobile"
-          ? {
-              className: "gap-3",
-            }
-          : undefined
-      }
-      nextButtonProps={
-        mode === "mobile"
-          ? {
-              className: "hidden",
-            }
-          : {
-              className:
-                "absolute xl:translate-x-15 xl:rtl:-translate-x-15 top-1/2 -translate-y-1/2 z-10 text-[#374957]",
-            }
-      }
-      nextIconProps={
-        mode === "mobile"
-          ? undefined
-          : {
-              fill: "#374957",
-            }
-      }
-      previousButtonProps={
-        mode === "mobile"
-          ? {
-              className: "hidden",
-            }
-          : {
-              className:
-                "absolute -start-8 top-1/2 -translate-y-1/2 z-10 text-[#374957]",
-            }
-      }
-      previousIconProps={
-        mode === "mobile"
-          ? undefined
-          : {
-              fill: "#ffffff",
-              opacity: 1,
-            }
-      }
+      contentProps={{
+        className: "ps-5 pe-0 gap-2.5 lg:ps-0 lg:pe-0",
+      }}
+      nextButtonProps={{
+        className:
+          "absolute top-1/2 z-10 hidden -translate-y-1/2 lg:flex xl:translate-x-15 xl:rtl:-translate-x-15",
+      }}
+      nextIconProps={{
+        fill: "#374957",
+      }}
+      previousButtonProps={{
+        className:
+          "absolute -start-8 top-1/2 z-10 hidden -translate-y-1/2 lg:flex",
+      }}
+      previousIconProps={{
+        fill: "#ffffff",
+        opacity: 1,
+      }}
     >
       {products.map((product, index) => (
-        <CardRailScrollSnapCarouselItem
-          className={
-            mode === "mobile"
-              ? "w-[190px] flex-shrink-0"
-              : "max-w-[280px] flex-shrink-0"
-          }
-          key={product.id}
-        >
+        <CardRailScrollSnapCarouselItem key={product.id}>
           <ProductCard
             isBulletDeliveryEnabled={isBulletDeliveryEnabled}
             isInCarousel

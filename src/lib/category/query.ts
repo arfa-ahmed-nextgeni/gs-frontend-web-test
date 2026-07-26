@@ -2,23 +2,8 @@ import { PRICE_UPPER_BOUND_INCLUSIVE_STEP } from "@/lib/constants/category/categ
 import { CategorySortKey } from "@/lib/constants/category/category-sort";
 import { QueryParamsKey } from "@/lib/constants/query-params";
 
-const RESERVED_FILTER_KEYS = new Set([
-  "currentPage",
-  "filters",
-  "locale",
-  "pageSize",
-  QueryParamsKey.CategoryPath,
-  QueryParamsKey.CategoryUid,
-  QueryParamsKey.Page,
-  QueryParamsKey.PageSize,
-  QueryParamsKey.Price,
-  QueryParamsKey.Search,
-  QueryParamsKey.Sort,
-  "sort",
-  "sortBy",
-]);
-
-const FILTER_KEY_PATTERN = /^[A-Za-z0-9_]+$/;
+const FILTER_ATTRIBUTE_PATTERN = /^[A-Za-z0-9_]+$/;
+const FILTER_QUERY_KEY_PATTERN = /^filter\[([A-Za-z0-9_]+)\]$/;
 const PRICE_RANGE_PATTERN = /^(\d+(\.\d+)?)?-(\d+(\.\d+)?)?$/;
 
 export function appendFiltersToParams(
@@ -26,10 +11,27 @@ export function appendFiltersToParams(
   filters: Record<string, string[]>
 ) {
   Object.entries(filters).forEach(([key, values]) => {
+    if (!isValidFilterAttribute(key)) {
+      return;
+    }
+
+    const queryKey =
+      key === QueryParamsKey.Price ? key : getFilterQueryKey(key);
+
     values.forEach((value) => {
-      params.append(key, value);
+      params.append(queryKey, value);
     });
   });
+}
+
+export function getFilterAttributeFromQueryKey(
+  queryKey: string
+): string | undefined {
+  return FILTER_QUERY_KEY_PATTERN.exec(queryKey)?.[1];
+}
+
+export function getFilterQueryKey(attribute: string): string {
+  return `filter[${attribute}]`;
 }
 
 export function parseFiltersFromSearchParamsRecord(searchParams: {
@@ -58,11 +60,12 @@ export function parseFiltersFromSearchParamsRecord(searchParams: {
       return;
     }
 
-    if (!isValidFilterKey(key)) {
+    const attribute = getFilterAttributeFromQueryKey(key);
+    if (!attribute) {
       return;
     }
 
-    filters[key] = normalizedValues;
+    filters[attribute] = normalizedValues;
   });
 
   return filters;
@@ -92,11 +95,12 @@ export function parseFiltersFromUrlSearchParams(
       return;
     }
 
-    if (!isValidFilterKey(key)) {
+    const attribute = getFilterAttributeFromQueryKey(key);
+    if (!attribute) {
       return;
     }
 
-    filters[key] = normalizedValues;
+    filters[attribute] = normalizedValues;
   });
 
   return filters;
@@ -159,8 +163,14 @@ export function parseSortParam(
   return candidate as CategorySortKey;
 }
 
-function isValidFilterKey(key: string): boolean {
-  return FILTER_KEY_PATTERN.test(key) && !RESERVED_FILTER_KEYS.has(key);
+export function serializeListingSearchParams(params: URLSearchParams): string {
+  return params
+    .toString()
+    .replace(/(^|&)filter%5B([A-Za-z0-9_]+)%5D=/gi, "$1filter[$2]=");
+}
+
+function isValidFilterAttribute(attribute: string): boolean {
+  return FILTER_ATTRIBUTE_PATTERN.test(attribute);
 }
 
 function isValidPriceRange(value: string): boolean {

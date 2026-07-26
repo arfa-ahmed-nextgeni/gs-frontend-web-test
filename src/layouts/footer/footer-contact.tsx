@@ -1,8 +1,8 @@
 import Container from "@/components/shared/container";
 import { ContentfulImage } from "@/components/shared/contentful-image";
+import { CustomerServiceEmailLink } from "@/components/shared/customer-service/customer-service-email-link";
 import {
   CustomerServiceCallLink,
-  CustomerServiceEmailLink,
   CustomerServiceWhatsappLink,
 } from "@/components/shared/customer-service/customer-service-tracked-link";
 import { Link } from "@/i18n/navigation";

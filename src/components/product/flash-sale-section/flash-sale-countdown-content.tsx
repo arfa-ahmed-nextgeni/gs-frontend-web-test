@@ -7,12 +7,7 @@ import { useTranslations } from "next-intl";
 
 import { useThrottledNow } from "@/hooks/use-throttled-now";
 
-export const FlashSaleCountdownContent = ({
-  endTime,
-}: {
-  endTime: string;
-  layout?: "desktop" | "mobile";
-}) => {
+export const FlashSaleCountdownContent = ({ endTime }: { endTime: string }) => {
   const now = useThrottledNow(1000);
 
   const t = useTranslations("HomePage.categoryProducts");
@@ -44,7 +39,7 @@ export const FlashSaleCountdownContent = ({
   if (fields.every((field) => field.value === 0)) return null;
 
   return (
-    <div className="mt-12 flex flex-col gap-2.5 lg:mb-0 lg:mt-0 lg:flex-row">
+    <div className="flex gap-2.5 lg:mb-0 lg:mt-0">
       {fields.map((item, idx) => (
         <div
           className="bg-bg-brand h-12.5 w-15 flex flex-col items-center justify-center rounded-xl py-5"

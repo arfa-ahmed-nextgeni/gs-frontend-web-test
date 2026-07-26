@@ -16,16 +16,25 @@ export const CartDrawerContainer = ({ children }: PropsWithChildren) => {
   const previousPathnameRef = useRef(pathname);
 
   const { cart } = useCart();
+  const previousItemCountRef = useRef<number>(cart?.items.length ?? 0);
 
   const isMobile = useIsMobile();
 
   const { closeCartDrawer, isCartDrawerOpen } = useCartDrawer();
 
+  const itemCount = cart?.items.length ?? 0;
+
   useEffect(() => {
-    if (cart?.items.length === 0) {
+    if (
+      isCartDrawerOpen &&
+      previousItemCountRef.current > 0 &&
+      itemCount === 0
+    ) {
       closeCartDrawer();
     }
-  }, [cart?.items.length, closeCartDrawer]);
+
+    previousItemCountRef.current = itemCount;
+  }, [itemCount, isCartDrawerOpen, closeCartDrawer]);
 
   useEffect(() => {
     if (previousPathnameRef.current !== pathname && isCartDrawerOpen) {

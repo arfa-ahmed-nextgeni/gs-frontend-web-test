@@ -6,13 +6,5 @@ export enum CacheTags {
   Contentful = "contentful",
   Magento = "magento",
   ProductDetails = "product-details",
-  RecentlyViewedProducts = "recently-viewed-products",
   StoreConfig = "store-config",
 }
-
-export const getRecentlyViewedProductsTagByDeviceId = (deviceId: string) =>
-  `${CacheTags.RecentlyViewedProducts}:device:${deviceId}`;
-
-export const getRecentlyViewedProductsTagByMobileNumber = (
-  mobileNumber: string
-) => `${CacheTags.RecentlyViewedProducts}:mobile:${mobileNumber}`;

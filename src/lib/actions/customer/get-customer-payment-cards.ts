@@ -12,6 +12,7 @@ import { API_ENDPOINTS } from "@/lib/constants/api/endpoints";
 import { Locale, LOCALE_TO_STORE } from "@/lib/constants/i18n";
 import { PaymentCardCollection } from "@/lib/models/payment-card";
 import { CustomerPaymentCardDto } from "@/lib/types/api/payment-card";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 import { failure, ok, unauthenticated } from "@/lib/utils/service-result";
 
 export const getCustomerPaymentCards = cache(async () => {
@@ -28,6 +29,7 @@ export const getCustomerPaymentCards = cache(async () => {
     const response = await restRequest<CustomerPaymentCardDto[]>({
       authToken,
       endpoint: API_ENDPOINTS.CUSTOMER.PAYMENT_CARDS,
+      forwardHeaders: await getForwardedRequestHeaders(),
       storeCode: LOCALE_TO_STORE[locale],
     });
 

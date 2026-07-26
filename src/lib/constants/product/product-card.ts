@@ -42,11 +42,6 @@ export const enum StockStatus {
   OutOfStock = "OUT_OF_STOCK",
 }
 
-export const enum WishlistState {
-  None = "none",
-  Wishlisted = "wishlisted",
-}
-
 export const PRODUCT_BADGE_TO_BG_CLASS_NAME = {
   [ProductBadgeType.B1G1]: "bg-label-highlight",
   [ProductBadgeType.BestSellers]: "bg-label-action",

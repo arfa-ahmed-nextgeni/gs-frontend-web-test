@@ -123,8 +123,9 @@ const getBrandsCached = cache(async (locale: Locale) => {
 
   try {
     const response = await graphqlRequest({
+      httpMethod: "GET",
+      operationName: "GetBrands",
       query: CATEGORIES_GRAPHQL_QUERIES.GET_BRANDS,
-      skipUserAgentHeader: true,
       storeCode: getStoreCode(locale),
     });
 

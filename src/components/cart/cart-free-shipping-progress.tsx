@@ -18,7 +18,12 @@ export const CartFreeShippingProgress = () => {
 
   if (!cartHasItems || !isFinite(freeShippingThreshold)) return null;
 
-  const cartTotal = cart?.subTotalPrice ?? 0;
+  const cartTotal = Math.max(
+    (cart?.subTotalPrice ?? 0) -
+      (cart?.discount ?? 0) -
+      (cart?.appliedRewardPointsValue ?? 0),
+    0
+  );
 
   const remaining = Math.max(freeShippingThreshold - cartTotal, 0);
   const freeShippingSuccess = remaining === 0;

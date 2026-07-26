@@ -6,20 +6,13 @@ import { resolveProductImageUrl } from "@/lib/utils/image";
 
 export interface Address {
   city: string;
-  company?: string;
   country_code: string;
-  fax?: string;
   firstname: string;
   lastname: string;
-  middlename?: string;
   postcode: string;
-  prefix?: string;
   region: string;
-  region_id?: number;
   street: string[];
-  suffix?: string;
   telephone: string;
-  vat_id?: string;
 }
 
 export interface MoneyAmount {
@@ -28,6 +21,7 @@ export interface MoneyAmount {
 }
 
 export interface Order {
+  appliedCoupons?: string[];
   billing_address?: Address;
   grand_total?: number; // some schemas expose this as a scalar too
   id: string;
@@ -41,15 +35,15 @@ export interface Order {
   points_to_spend?: number;
   shipments?: Shipment[];
   shipping_address?: Address;
-  shipping_method?: string;
   status: string;
   total: OrderTotal;
-  tracking_status?: string;
+  tracking_number?: string;
   user_actions?: UserAction[];
 }
 
 export interface OrderItem {
   id: string;
+  is_gwp?: boolean;
   // New optional product details
   product?: OrderItemProduct;
   product_name: string;
@@ -73,7 +67,6 @@ export interface OrderItemProduct {
   size?: string;
   sku?: string;
   stock_status?: string;
-  type_id?: string;
   url_key?: string;
 }
 
@@ -83,7 +76,7 @@ export interface OrderItemProductImage {
 
 export interface OrderTotal {
   cod_fee?: MoneyAmount;
-  discounts?: { amount: MoneyAmount; label: string }[];
+  discounts?: { amount: MoneyAmount }[];
   grand_total: MoneyAmount;
   mokafaa_discount?: MoneyAmount;
   shipping_handling?: ShippingHandling;
@@ -92,14 +85,8 @@ export interface OrderTotal {
 }
 
 export interface PaymentMethod {
-  additional_data?: PaymentMethodAdditionalData[];
   name: string;
   type: string;
-}
-
-export interface PaymentMethodAdditionalData {
-  name: string;
-  value: string;
 }
 
 export interface Shipment {
@@ -121,19 +108,14 @@ export interface ShipmentTracking {
   number: string;
   title: string;
 }
+
 export interface ShippingHandling {
   amount_including_tax?: MoneyAmount;
-  taxes?: ShippingHandlingTax[];
   total_amount?: MoneyAmount;
-}
-
-export interface ShippingHandlingTax {
-  amount: MoneyAmount;
 }
 
 export interface UserAction {
   action: string;
-  label: string;
 }
 
 export class CustomerOrders {
@@ -150,22 +132,20 @@ export class CustomerOrders {
 
     this.orders = items.map(
       (order: any): Order => ({
+        appliedCoupons: Array.isArray(order?.applied_coupons)
+          ? (order.applied_coupons as any[])
+              .map((coupon) => coupon?.code || "")
+              .filter(Boolean)
+          : undefined,
         billing_address: order?.billing_address && {
           city: order?.billing_address?.city || "",
-          company: order?.billing_address?.company,
           country_code: order?.billing_address?.country_code || "",
-          fax: order?.billing_address?.fax,
           firstname: order?.billing_address?.firstname || "",
           lastname: order?.billing_address?.lastname || "",
-          middlename: order?.billing_address?.middlename,
           postcode: order?.billing_address?.postcode || "",
-          prefix: order?.billing_address?.prefix,
           region: order?.billing_address?.region || "",
-          region_id: order?.billing_address?.region_id,
           street: order?.billing_address?.street || [],
-          suffix: order?.billing_address?.suffix,
           telephone: order?.billing_address?.telephone || "",
-          vat_id: order?.billing_address?.vat_id,
         },
         grand_total:
           typeof order?.grand_total === "number"
@@ -176,10 +156,6 @@ export class CustomerOrders {
         items: Array.isArray(order?.items)
           ? (order.items as any[]).map((item: any): OrderItem => {
               const matchedVariant = this.findProductVariant(item);
-
-              const brand =
-                item?.product?.brand_new_label ||
-                this.findProductCustomAttribute(item, "brand_new");
 
               const priceRange =
                 matchedVariant?.product?.price_range ||
@@ -198,8 +174,9 @@ export class CustomerOrders {
 
               return {
                 id: item?.id?.toString?.() || "",
+                is_gwp: Boolean(item?.is_gwp),
                 product: item?.product && {
-                  brand,
+                  brand: item?.product?.brand_new_label,
                   child_id: matchedVariant?.product?.id || item?.product?.id,
                   color: this.findProductAttributes(matchedVariant, "color"),
                   id: item?.product?.id,
@@ -207,7 +184,9 @@ export class CustomerOrders {
                     ? { url: resolvedImageUrl }
                     : undefined,
                   name: item?.product?.name,
-                  product_type: item?.product?.product_type_new2,
+                  product_type:
+                    item?.product?.product_type_new2_label ||
+                    item?.product?.product_type_new2,
                   short_name: item?.product?.short_name,
                   size:
                     item?.selected_options?.[0]?.value ??
@@ -215,7 +194,6 @@ export class CustomerOrders {
                     this.findProductAttributes(matchedVariant, "size"),
                   sku: item?.product?.sku,
                   stock_status: item?.product?.stock_status,
-                  type_id: item?.product?.type_id,
                   url_key: item?.product?.url_key,
                 },
                 product_name: item?.product_name || "",
@@ -238,12 +216,6 @@ export class CustomerOrders {
         order_invoice_url: order?.order_invoice_url,
         payment_methods: Array.isArray(order?.payment_methods)
           ? (order.payment_methods as any[]).map((pm) => ({
-              additional_data: Array.isArray(pm?.additional_data)
-                ? (pm.additional_data as any[]).map((ad) => ({
-                    name: ad?.name || "",
-                    value: ad?.value || "",
-                  }))
-                : undefined,
               name: pm?.name || "",
               type: pm?.type || "",
             }))
@@ -261,31 +233,24 @@ export class CustomerOrders {
                   }))
                 : [],
               number: sh?.number || "",
+              // GraphQL returns tracking as an array — take the first entry
               tracking: {
-                carrier: sh?.tracking?.carrier || "",
-                number: sh?.tracking?.number || "",
-                title: sh?.tracking?.title || "",
+                carrier: sh?.tracking?.[0]?.carrier || "",
+                number: sh?.tracking?.[0]?.number || "",
+                title: sh?.tracking?.[0]?.title || "",
               },
             }))
           : undefined,
         shipping_address: order?.shipping_address && {
           city: order?.shipping_address?.city || "",
-          company: order?.shipping_address?.company,
           country_code: order?.shipping_address?.country_code || "",
-          fax: order?.shipping_address?.fax,
           firstname: order?.shipping_address?.firstname || "",
           lastname: order?.shipping_address?.lastname || "",
-          middlename: order?.shipping_address?.middlename,
           postcode: order?.shipping_address?.postcode || "",
-          prefix: order?.shipping_address?.prefix,
           region: order?.shipping_address?.region || "",
-          region_id: order?.shipping_address?.region_id,
           street: order?.shipping_address?.street || [],
-          suffix: order?.shipping_address?.suffix,
           telephone: order?.shipping_address?.telephone || "",
-          vat_id: order?.shipping_address?.vat_id,
         },
-        shipping_method: order?.shipping_method,
         status: order?.status || "",
         total: {
           cod_fee: order?.total?.cod_fee && {
@@ -298,7 +263,6 @@ export class CustomerOrders {
                   currency: d?.amount?.currency ?? "SAR",
                   value: d?.amount?.value ?? 0,
                 },
-                label: d?.label || "",
               }))
             : undefined,
           grand_total: {
@@ -319,14 +283,6 @@ export class CustomerOrders {
                 order?.total?.shipping_handling?.amount_including_tax?.value ??
                 0,
             },
-            taxes: Array.isArray(order?.total?.shipping_handling?.taxes)
-              ? (order.total.shipping_handling.taxes as any[]).map((t) => ({
-                  amount: {
-                    currency: t?.amount?.currency ?? "SAR",
-                    value: t?.amount?.value ?? 0,
-                  },
-                }))
-              : undefined,
             total_amount: order?.total?.shipping_handling?.total_amount && {
               currency:
                 order?.total?.shipping_handling?.total_amount?.currency ??
@@ -343,11 +299,10 @@ export class CustomerOrders {
             value: order?.total?.total_tax?.value ?? 0,
           },
         },
-        tracking_status: order?.tracking_status,
+        tracking_number: this.findTrackingNumber(order),
         user_actions: Array.isArray(order?.user_actions)
           ? (order.user_actions as any[]).map((ua) => ({
               action: ua?.action || "",
-              label: ua?.label || "",
             }))
           : undefined,
       })
@@ -385,17 +340,27 @@ export class CustomerOrders {
     return item?.attributes?.find((a: any) => a?.code === code)?.label;
   }
 
-  private findProductCustomAttribute(item: any, code: string) {
-    return item?.product?.custom_attributesV2?.items?.find(
-      (attr: any) => attr?.code === code
-    )?.selected_options?.[0]?.label;
-  }
-
   private findProductVariant(item: any) {
     if (Array.isArray(item?.product?.variants))
       return item.product.variants.find(
         (v: any) => v?.product?.sku === item?.product_sku
       );
+
+    return undefined;
+  }
+
+  private findTrackingNumber(order: any) {
+    if (!Array.isArray(order?.shipments)) return undefined;
+
+    for (const shipment of order.shipments) {
+      if (!Array.isArray(shipment?.tracking)) continue;
+
+      const trackingNumber = shipment.tracking.find(
+        (tracking: any) => tracking?.number
+      )?.number;
+
+      if (trackingNumber) return trackingNumber;
+    }
 
     return undefined;
   }

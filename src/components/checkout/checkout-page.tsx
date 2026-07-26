@@ -60,6 +60,7 @@ import {
   trackPurchaseError,
 } from "@/lib/analytics/events";
 import { buildCartProperties } from "@/lib/analytics/utils/build-properties";
+import { APP_API_ENDPOINTS } from "@/lib/constants/api/endpoints";
 import { CheckoutError } from "@/lib/constants/checkout-error";
 import {
   CHECKOUT_ADDRESS_SAVED_EVENT,
@@ -323,6 +324,7 @@ function CheckoutPage({
     setDeliveryAddressFlowState,
     setIsAddressDrawerOpen,
     setIsShippingOptionDrawerOpen,
+    updateDeliveryAddressEntryKey,
   } = useCheckoutContext();
   const { isAddDeliveryAddress } = useRouteMatch();
   const [pendingAddressToMapNav, setPendingAddressToMapNav] = useState(false);
@@ -349,7 +351,35 @@ function CheckoutPage({
   const previousCartItemsRef = useRef<number>(0);
   const previousShippingCartSignatureRef = useRef<null | string>(null);
   const lastSetShippingMethodRef = useRef<null | string>(null);
-  const lastTrackedShippingMethodRef = useRef<null | string>(null);
+  const lastTrackedShippingInfoRef = useRef<{
+    addressKey: string;
+    methodId?: string;
+  } | null>(null);
+  const trackAddShippingInfoOnce = useCallback(
+    (addressKey: string, methodId?: string) => {
+      if (!cart) {
+        return;
+      }
+
+      const lastTracked = lastTrackedShippingInfoRef.current;
+      if (lastTracked?.addressKey === addressKey) {
+        if (
+          !methodId ||
+          !lastTracked.methodId ||
+          lastTracked.methodId === methodId
+        ) {
+          if (methodId && !lastTracked.methodId) {
+            lastTracked.methodId = methodId;
+          }
+          return;
+        }
+      }
+
+      lastTrackedShippingInfoRef.current = { addressKey, methodId };
+      trackAddShippingInfo(cart);
+    },
+    [cart]
+  );
   const [isSettingShippingAddress, setIsSettingShippingAddress] =
     useState(false);
   const [isSettingBillingAddress, setIsSettingBillingAddress] = useState(false);
@@ -1519,6 +1549,7 @@ function CheckoutPage({
             | "free"
             | number,
         };
+        const lockerInfo = getLockerInfo();
 
         setShippingMethods([lockerShippingMethod]);
         // Auto-select the locker shipping method only if cart ID hasn't changed (not a new cart after order)
@@ -1528,6 +1559,10 @@ function CheckoutPage({
         ) {
           setSelectedDelivery(lockerShippingMethod.id);
         }
+        trackAddShippingInfoOnce(
+          `locker:${selectedLockerAddressType}:${lockerInfo?.lockerId ?? lockerShippingMethod.id}`,
+          lockerShippingMethod.id
+        );
       } else {
         // If selectedMethod is not available yet, don't set empty methods
         // The effect will run again when cart updates after invalidateQueries
@@ -1884,6 +1919,10 @@ function CheckoutPage({
           queryKey: QUERY_KEYS.CART.ROOT(locale),
         });
 
+        if (normalizedMethods.length > 0) {
+          trackAddShippingInfoOnce(`address:${selectedAddressId}`);
+        }
+
         // Update previousSelectedAddressIdRef AFTER successful API call
         // This ensures that if the effect runs again before this completes,
         // it will see addressChanged as true and proceed
@@ -1950,6 +1989,7 @@ function CheckoutPage({
     t,
     pathname,
     cartItemsSignature,
+    trackAddShippingInfoOnce,
     // Note: selectedDelivery is intentionally not in dependencies
     // We only want to validate it when shipping methods change, not rerun the effect when it changes
   ]);
@@ -2011,11 +2051,8 @@ function CheckoutPage({
     // Skip if the cart already has the correct shipping method set
     if (cartMethodId === targetMethodId) {
       lastSetShippingMethodRef.current = targetMethodId;
-      // Still fire add_shipping_info once per method selection even when no API call is needed
-      if (cart && lastTrackedShippingMethodRef.current !== targetMethodId) {
-        lastTrackedShippingMethodRef.current = targetMethodId;
-        trackAddShippingInfo(cart);
-      }
+      // Address selection already emits once. Keep later method changes trackable.
+      trackAddShippingInfoOnce(`address:${selectedAddressId}`, targetMethodId);
       return;
     }
 
@@ -2075,11 +2112,8 @@ function CheckoutPage({
         queryKey: QUERY_KEYS.CART.ROOT(locale),
       });
 
-      // Track add_shipping_info GA4 ecommerce event when shipping method is confirmed
-      if (cart && lastTrackedShippingMethodRef.current !== targetMethodId) {
-        lastTrackedShippingMethodRef.current = targetMethodId;
-        trackAddShippingInfo(cart);
-      }
+      // Address selection already emits once. Keep later method changes trackable.
+      trackAddShippingInfoOnce(`address:${selectedAddressId}`, targetMethodId);
 
       setIsSettingShippingMethod(false);
       // Keep the ref set until timeout to prevent re-runs during cart update
@@ -2120,6 +2154,7 @@ function CheckoutPage({
     showError,
     storeConfig?.estimatedDeliveryDays,
     t,
+    trackAddShippingInfoOnce,
   ]);
 
   // Watch for mokafaa discount and coupon changes and refresh payment methods
@@ -2510,6 +2545,10 @@ function CheckoutPage({
         }
         setSelectedPayment(frontendPaymentMethodId);
 
+        if (cart) {
+          trackAddPaymentInfo(cart, frontendPaymentMethodId);
+        }
+
         // Clear flag after a short delay (same as non-card payments)
         setTimeout(() => {
           isSelectingPaymentMethodRef.current = false;
@@ -2672,9 +2711,12 @@ function CheckoutPage({
       }
       setPaymentCardToken(token);
       if (card) {
-        // CRITICAL: Don't override a non-default card with a default card
-        // This protects restored cards (which are usually non-default) from being overridden
+        // Only block background refreshes from replacing a manually/restored
+        // non-default card with the default card.
+        const isBackgroundCardRefresh =
+          !token && cardNumber === undefined && cvv === undefined;
         if (
+          isBackgroundCardRefresh &&
           card.isDefault &&
           selectedPaymentCard &&
           !selectedPaymentCard.isDefault &&
@@ -2810,11 +2852,6 @@ function CheckoutPage({
 
           showError(result.error ?? t("errors.failedToSetPaymentMethod"), " ");
           return;
-        }
-
-        // Track add_payment_info for card payment methods
-        if (cart) {
-          trackAddPaymentInfo(cart, cardPaymentMethod.code);
         }
 
         // Validate BIN after payment method is successfully set
@@ -3034,12 +3071,24 @@ function CheckoutPage({
         editingAddressId: address.id,
         initialAddressSnapshot: {
           city: address.customerAddress?.city || "",
+          countryCode: address.customerAddress?.countryCode || "",
+          countryLabel:
+            (address.customerAddress as any)?.countryLabel ??
+            address.customerAddress?.countryCode ??
+            "",
           district: address.customerAddress?.regionName || "",
           formattedAddress: address.formattedAddress || "",
           isDefault: !!address.customerAddress?.isDefault,
+          middleName: address.customerAddress?.middleName || "",
           postalCode: address.customerAddress?.postcode || "",
+          regionId: address.customerAddress?.regionId ?? null,
           shortCode: address.customerAddress?.ksaShortAddress || "",
+          stateLabel:
+            (address.customerAddress as any)?.stateLabel ??
+            address.customerAddress?.regionName ??
+            "",
           street: address.customerAddress?.street?.[0] || "",
+          streetLine2: address.customerAddress?.street?.[1] || "",
         },
         initialContactData: {
           firstName: address.customerAddress?.firstName || "",
@@ -3062,6 +3111,7 @@ function CheckoutPage({
       // or from the checkout shipping section (back → just close).
       setCameFromAddressDrawer(origin === "addressDrawer");
       setCameFromShippingOptionDrawer(false);
+      updateDeliveryAddressEntryKey();
       router.push(
         `${ROUTES.CHECKOUT.ADD_DELIVERY_ADDRESS}?${params.toString()}`
       );
@@ -3072,6 +3122,7 @@ function CheckoutPage({
       router,
       setCameFromAddressDrawer,
       setCameFromShippingOptionDrawer,
+      updateDeliveryAddressEntryKey,
       setDeliveryAddressFlowState,
       setEditingAddress,
       setPendingAddressToMapNav,
@@ -3252,9 +3303,12 @@ function CheckoutPage({
       createdAddressId?: null | string
     ): Promise<CheckoutAddress | null> => {
       try {
-        const response = await fetch("/api/customer/addresses", {
-          cache: "no-store",
-        });
+        const response = await fetch(
+          APP_API_ENDPOINTS.CUSTOMER.ADDRESSES(locale),
+          {
+            cache: "no-store",
+          }
+        );
 
         if (response.status === 401) {
           setAddresses([]);
@@ -3432,6 +3486,7 @@ function CheckoutPage({
       }
     },
     [
+      locale,
       selectedLockerAddressType,
       selectedShippingOption,
       setSelectedLockerAddressType,
@@ -3726,11 +3781,11 @@ function CheckoutPage({
         });
         // Focus on CVV input after scrolling
         setTimeout(() => {
-          const cvvInput = cardPaymentSection.querySelector(
-            'input[data-input="cvv"]'
-          ) as HTMLInputElement;
-          if (cvvInput) {
-            cvvInput.focus();
+          const cvvFrame = cardPaymentSection.querySelector(
+            ".cvv-frame iframe"
+          ) as HTMLIFrameElement;
+          if (cvvFrame) {
+            cvvFrame.focus();
           }
         }, 400);
       } else {
@@ -3852,11 +3907,11 @@ function CheckoutPage({
               });
               // Focus on CVV input after scrolling
               setTimeout(() => {
-                const cvvInput = cardPaymentSection.querySelector(
-                  'input[data-input="cvv"]'
-                ) as HTMLInputElement;
-                if (cvvInput) {
-                  cvvInput.focus();
+                const cvvFrame = cardPaymentSection.querySelector(
+                  ".cvv-frame iframe"
+                ) as HTMLIFrameElement;
+                if (cvvFrame) {
+                  cvvFrame.focus();
                 }
               }, 400);
             } else {
@@ -4258,8 +4313,6 @@ function CheckoutPage({
         currencyCode,
         locale,
         options: {
-          maximumFractionDigits: 0,
-          minimumFractionDigits: 0,
           useGrouping: true,
         },
       });
@@ -4279,8 +4332,6 @@ function CheckoutPage({
           currencyCode,
           locale,
           options: {
-            maximumFractionDigits: 0,
-            minimumFractionDigits: 0,
             useGrouping: true,
           },
         });

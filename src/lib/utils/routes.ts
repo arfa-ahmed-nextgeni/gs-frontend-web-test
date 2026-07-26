@@ -79,6 +79,9 @@ export const isOrderDetailsPath = (pathname: string) =>
 export const isSearchPath = (pathname: string) =>
   isPathPrefix(pathname, ROUTES.SEARCH);
 
+export const isTrackOrderPath = (pathname: string) =>
+  isPathPrefix(pathname, ROUTES.TRACK_ORDER);
+
 export const isCartPath = (pathname: string) =>
   isPathPrefix(pathname, ROUTES.CART.ROOT);
 

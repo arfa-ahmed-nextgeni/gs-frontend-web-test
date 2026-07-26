@@ -164,6 +164,7 @@ graphql(`
           }
           stock_status
           product_type_new2
+          product_type_new2_label
           price_range {
             minimum_price {
               discount {

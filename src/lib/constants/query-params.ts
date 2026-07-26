@@ -11,6 +11,7 @@ export const enum QueryParamsKey {
   OrderId = "order-id",
   Page = "page",
   PageSize = "page-size",
+  PaymentReasonCode = "payment-reason-code",
   PaymentStatus = "payment-status",
   Price = "price",
   PriceRange = "price-range",

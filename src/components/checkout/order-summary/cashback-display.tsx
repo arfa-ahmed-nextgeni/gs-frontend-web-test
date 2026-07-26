@@ -16,7 +16,7 @@ export function CashbackDisplay({
   const t = useTranslations("CheckoutPage.orderSummary");
   const { storeConfig } = useStoreConfig();
   const cashbackPercent = storeConfig?.cashbackPercent || 0.05;
-  const cashbackAmount = grandTotal * cashbackPercent;
+  const cashbackAmount = Math.round(grandTotal * cashbackPercent);
 
   if (cashbackAmount <= 0) return null;
 

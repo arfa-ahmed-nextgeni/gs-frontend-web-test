@@ -10,9 +10,14 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { invalidateSession } from "@/lib/actions/auth/invalidate-session";
 import { trackChangeStore, trackLanguagePick } from "@/lib/analytics/events";
 import { PROTOCOL } from "@/lib/constants/environment";
-import { COUNTRY_CODE_TO_NAME, LanguageCode } from "@/lib/constants/i18n";
+import {
+  COUNTRY_CODE_TO_NAME,
+  LanguageCode,
+  STORE_TO_LOCALE,
+} from "@/lib/constants/i18n";
 import { LocaleSwitchOption } from "@/lib/types/store-config";
 import { cn } from "@/lib/utils";
+import { getCrossDomainLocalePrefix } from "@/lib/utils/cross-domain-locale";
 
 export const LanguageSwitcherLinks = ({
   currentLocaleDomain,
@@ -51,8 +56,19 @@ export const LanguageSwitcherLinks = ({
 
   const enHref = `${pathname}${searchParamsString ? `?${searchParamsString}` : ""}`;
   const arHref = `${pathname}${searchParamsString ? `?${searchParamsString}` : ""}`;
-  const enFullUrl = `${PROTOCOL}://${localeSwitchOption.domain}/${localeSwitchOption.enLocale}${pathname}${searchParamsString ? `?${searchParamsString}` : ""}`;
-  const arFullUrl = `${PROTOCOL}://${localeSwitchOption.domain}/${localeSwitchOption.arLocale}${pathname}${searchParamsString ? `?${searchParamsString}` : ""}`;
+  // Prefix comes from the target domain's default locale (next-intl `as-needed`),
+  // so the default language stays prefix-less (e.g. Arabic -> `/`, not `/ar`)
+  // instead of 301-redirecting.
+  const enPrefix = getCrossDomainLocalePrefix(
+    localeSwitchOption.domain,
+    LanguageCode.EN
+  );
+  const arPrefix = getCrossDomainLocalePrefix(
+    localeSwitchOption.domain,
+    LanguageCode.AR
+  );
+  const enFullUrl = `${PROTOCOL}://${localeSwitchOption.domain}${enPrefix}${pathname}${searchParamsString ? `?${searchParamsString}` : ""}`;
+  const arFullUrl = `${PROTOCOL}://${localeSwitchOption.domain}${arPrefix}${pathname}${searchParamsString ? `?${searchParamsString}` : ""}`;
 
   return (
     <>
@@ -63,7 +79,7 @@ export const LanguageSwitcherLinks = ({
             { "bg-label-muted-bg rounded-md": language === "en" }
           )}
           href={enHref}
-          locale={localeSwitchOption.enLocale}
+          locale={STORE_TO_LOCALE[localeSwitchOption.enStoreCode]}
           onClick={() => handleLanguageClick(LanguageCode.EN)}
           title={`Switch to English - ${COUNTRY_CODE_TO_NAME[localeSwitchOption.code]}`}
         >
@@ -89,7 +105,7 @@ export const LanguageSwitcherLinks = ({
             { "bg-label-muted-bg rounded-md": language === "ar" }
           )}
           href={arHref}
-          locale={localeSwitchOption.arLocale}
+          locale={STORE_TO_LOCALE[localeSwitchOption.arStoreCode]}
           onClick={() => handleLanguageClick(LanguageCode.AR)}
           title={`التبديل إلى العربية - ${COUNTRY_CODE_TO_NAME[localeSwitchOption.code]}`}
         >

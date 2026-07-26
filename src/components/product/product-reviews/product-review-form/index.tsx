@@ -63,8 +63,11 @@ export const ProductReviewForm = ({
 
   return (
     <FormProvider {...productReviewForm}>
-      <form className="flex h-full flex-col" onSubmit={handleSubmitForm}>
-        <div className="gap-7.5 flex flex-1 flex-col overflow-y-auto px-5 pb-5 pt-2.5">
+      <form
+        className="flex h-full flex-col lg:min-h-0 lg:flex-1"
+        onSubmit={handleSubmitForm}
+      >
+        <div className="gap-7.5 flex min-h-0 flex-1 flex-col overflow-y-auto px-5 pb-5 pt-2.5">
           {children}
 
           <div className="flex flex-col gap-5">
@@ -157,7 +160,7 @@ export const ProductReviewForm = ({
           </div>
         </div>
 
-        <div className="bg-bg-default border-border-base gap-7.5 flex flex-col border-t px-5 pb-5 pt-2.5 lg:pt-5">
+        <div className="bg-bg-default border-border-base gap-7.5 flex shrink-0 flex-col border-t px-5 pb-5 pt-2.5 lg:pt-5">
           <Controller
             control={control}
             name={AddProductReviewFormField.NameAllowed}

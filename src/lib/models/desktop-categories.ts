@@ -1,13 +1,17 @@
 import { TabContentType } from "@/lib/models/page-landing";
-import { DesktopCategoriesData } from "@/lib/types/contentful/page-landing";
+
+import type { ContentDisplayOn } from "@/lib/types/contentful/display-on";
+import type { DesktopCategoriesData } from "@/lib/types/contentful/page-landing";
 
 export class DesktopCategories {
   public categories: DesktopCategory[] = [];
   public contentType: TabContentType;
+  public displayOn: ContentDisplayOn;
   public title?: string;
 
   constructor(data: DesktopCategoriesData, contentType: TabContentType) {
     this.contentType = contentType;
+    this.displayOn = data.displayOn ?? "all";
     this.title = data.title;
     this.categories = data.categories.map(
       ({ fields, sys }) =>

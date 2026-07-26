@@ -13,11 +13,22 @@ import { QueryParamsKey } from "@/lib/constants/query-params";
 import { ROUTES } from "@/lib/constants/routes";
 import { createRedirectHtml } from "@/lib/utils/html-templates";
 import { getLocaleInfo } from "@/lib/utils/locale";
-import { getBaseUrlFromRequest } from "@/lib/utils/request";
+import {
+  getBaseUrlFromRequest,
+  isNextRouterBackgroundRequest,
+} from "@/lib/utils/request";
 
 export async function GET(request: NextRequest) {
+  if (isNextRouterBackgroundRequest(request)) {
+    return new Response(null, {
+      headers: { "Cache-Control": "no-store" },
+      status: 204,
+    });
+  }
+
   const searchParams = request.nextUrl.searchParams;
   const paymentStatus = searchParams.get(QueryParamsKey.PaymentStatus);
+  const paymentReasonCode = searchParams.get(QueryParamsKey.PaymentReasonCode);
   const returnTo = searchParams.get(QueryParamsKey.To);
   const baseUrl = getBaseUrlFromRequest(request);
 
@@ -107,6 +118,15 @@ export async function GET(request: NextRequest) {
   // Add payment status to query params if present
   if (paymentStatus) {
     checkoutUrl.searchParams.set(QueryParamsKey.PaymentStatus, paymentStatus);
+  }
+
+  // Forward the PayFort response code so checkout can show a specific
+  // failure message instead of a generic one.
+  if (paymentReasonCode) {
+    checkoutUrl.searchParams.set(
+      QueryParamsKey.PaymentReasonCode,
+      paymentReasonCode
+    );
   }
 
   const checkoutUrlString = checkoutUrl.toString();

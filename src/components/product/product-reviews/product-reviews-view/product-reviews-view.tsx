@@ -15,9 +15,11 @@ import { QueryParamsKey } from "@/lib/constants/query-params";
 import { cn } from "@/lib/utils";
 
 export const ProductReviewsView = async ({
+  clientPagination,
   params,
   searchParams,
 }: {
+  clientPagination?: boolean;
   params: Promise<{
     locale: string;
     productId: string;
@@ -45,7 +47,7 @@ export const ProductReviewsView = async ({
       <AsyncBoundary fallback={null}>
         <ProductReviewTracker productDetailsPromise={productDetailsPromise} />
       </AsyncBoundary>
-      <ProductReviewsSortByFilter />
+      <ProductReviewsSortByFilter clientPagination={clientPagination} />
       <div className="flex h-full flex-col">
         <ProductReviewsListContainer>
           <AsyncBoundary fallback={<ProductReviewsSummarySkeleton />}>
@@ -57,6 +59,7 @@ export const ProductReviewsView = async ({
             key={`${currentPage}-${sortBy}`}
           >
             <ProductReviewsList
+              clientPagination={clientPagination}
               currentPage={currentPage}
               productId={+productId}
               sortBy={sortBy}

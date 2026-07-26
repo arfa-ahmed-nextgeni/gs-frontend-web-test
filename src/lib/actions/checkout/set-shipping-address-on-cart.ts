@@ -9,6 +9,7 @@ import { CART_GRAPHQL_MUTATIONS } from "@/lib/constants/api/graphql/cart";
 import { Locale } from "@/lib/constants/i18n";
 import { getCommonErrorMessage } from "@/lib/utils/common-error-message";
 import { getStoreCode } from "@/lib/utils/country";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 import { failure, ok } from "@/lib/utils/service-result";
 
 type ShippingAddressOnCartResult = {
@@ -54,6 +55,7 @@ export async function setShippingAddressOnCartAction({
 
     const shippingResponse: any = await graphqlRequest<any, any>({
       authToken,
+      forwardHeaders: await getForwardedRequestHeaders(),
       query: CART_GRAPHQL_MUTATIONS.SET_SHIPPING_ADDRESSES_ON_CART,
       storeCode: getStoreCode(locale),
       variables: {

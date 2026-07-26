@@ -22,13 +22,7 @@ export function CheckoutApplePayButton() {
     );
   }
 
-  // Show ready message when Apple Pay is available
-  return (
-    <div className="rounded-lg border border-green-200 bg-green-50 p-4">
-      <div className="flex items-center justify-center gap-2">
-        <span className="text-green-600">✓</span>
-        <p className="text-sm font-medium text-green-800">{t("ready")}</p>
-      </div>
-    </div>
-  );
+  // Apple Pay is available — the Pay button itself is rendered elsewhere,
+  // so no status message is needed here.
+  return null;
 }

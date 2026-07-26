@@ -2,6 +2,8 @@ import { useMemo } from "react";
 
 import { useLocale } from "next-intl";
 
+import { formatPrice as formatSharedPrice } from "@/lib/utils/price";
+
 export function formatPrice({
   amount,
   currencyCode,
@@ -11,13 +13,7 @@ export function formatPrice({
   currencyCode: string;
   locale: string;
 }): string {
-  const formatCurrency = new Intl.NumberFormat(locale, {
-    currency: currencyCode,
-    maximumFractionDigits: 0,
-    style: "currency",
-  });
-
-  return formatCurrency.format(amount);
+  return formatSharedPrice({ amount, currencyCode, locale });
 }
 
 export function formatVariantPrice({

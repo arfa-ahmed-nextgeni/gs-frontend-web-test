@@ -38,6 +38,9 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
   async initialize(locale?: string): Promise<void> {
     if (this.isInitialized || typeof window === "undefined") return;
 
+    // Insider is not used for brand-specific domains (Surrati, Fabian)
+    if (locale && !(locale in INSIDER_STORE_CONFIG)) return;
+
     if (locale) this.currentLocale = locale;
 
     window.InsiderQueue = [];
@@ -302,6 +305,8 @@ class InsiderAnalyticsProvider implements AnalyticsProvider {
         language: formattedLocale,
       },
     });
+
+    if (!store) return;
 
     window.InsiderQueue.push({ type: "currency", value: store.currency });
     window.InsiderQueue.push({ type: "language", value: formattedLocale });

@@ -43,7 +43,7 @@ export function useOrderSummary() {
     const mokafaa = cart.mokafaaDiscount || 0;
     const discount = cart.discount || 0;
     const wallet = cart.appliedRewardPoints
-      ? cart.rewardPointsBaseValue || 0
+      ? cart.appliedRewardPointsValue || 0
       : 0;
     const totalSavings = discount + mokafaa + wallet;
 

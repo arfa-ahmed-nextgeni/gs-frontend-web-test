@@ -35,7 +35,7 @@ export const ProductMediaOverlay = () => {
           {isExclusive && (
             <ProductCardBadge
               badge={{
-                backgroundColor: "#E5D4F5",
+                backgroundColor: "#fbe5c4",
                 type: ProductBadgeType.Exclusive,
               }}
             />
@@ -43,7 +43,7 @@ export const ProductMediaOverlay = () => {
           {isNew && (
             <ProductCardBadge
               badge={{
-                backgroundColor: "#C5E0F5",
+                backgroundColor: "#cdede8",
                 type: ProductBadgeType.NewArrival,
               }}
             />

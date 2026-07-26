@@ -16,10 +16,7 @@ import { useLocale } from "next-intl";
 
 import { useCookieConsent } from "@/contexts/cookie-consent-context";
 import { useUserProperties } from "@/hooks/analytics/use-user-properties";
-import {
-  analyticsManager,
-  type TrackOptions,
-} from "@/lib/analytics/analytics-manager";
+import { analyticsManager } from "@/lib/analytics/analytics-manager";
 import { getAnalyticsManagerToolsEnabledByCookieConsent } from "@/lib/analytics/utils/analytics-cookie-consent";
 import { SessionStorageKey } from "@/lib/constants/session-storage";
 import { removeSessionStorage } from "@/lib/utils/session-storage";
@@ -29,10 +26,7 @@ interface AnalyticsContextValue {
   identify: (userId: string, traits?: Record<string, unknown>) => void;
   isReady: boolean;
   page: (name: string, properties?: Record<string, unknown>) => void;
-  track: (
-    eventName: string,
-    optionsOrProperties?: Record<string, unknown> | TrackOptions
-  ) => void;
+  track: (eventName: string, properties?: Record<string, unknown>) => void;
 }
 
 const AnalyticsContext = createContext<AnalyticsContextValue | null>(null);

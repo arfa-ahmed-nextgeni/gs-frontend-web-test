@@ -90,6 +90,13 @@ export const ApplyMokafaaPointsOtpForm = ({
 
   const countdown = Math.max(0, Math.ceil((otpExpiresAt - nowTs) / 1000));
   const canRetry = countdown <= 0;
+  const redemptionAmount = Number.parseFloat(amount);
+  const isOtpValid = otp.trim().length === 4 && !otpError;
+  const isAmountValid =
+    Number.isFinite(redemptionAmount) &&
+    redemptionAmount > 0 &&
+    redemptionAmount <= (cart?.grandTotalPrice || 0) &&
+    !amountError;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -224,6 +231,7 @@ export const ApplyMokafaaPointsOtpForm = ({
           labelProps={{
             dir,
           }}
+          success={isOtpValid}
         />
 
         {/* Timer / Retry link */}
@@ -306,7 +314,7 @@ export const ApplyMokafaaPointsOtpForm = ({
                 {">"}
               </span>
             ),
-            className: "start-5",
+            className: "start-5 end-auto",
           }}
           inputProps={{
             className: cn(language === "ar" ? "pe-10 text-right" : "ps-10"),
@@ -327,6 +335,7 @@ export const ApplyMokafaaPointsOtpForm = ({
           labelProps={{
             dir,
           }}
+          success={isAmountValid}
         />
       </div>
 

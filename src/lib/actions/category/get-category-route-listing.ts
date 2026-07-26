@@ -190,7 +190,7 @@ function buildCategorySearchClauses(
 ): SearchClauseInput[] {
   const clauses: SearchClauseInput[] = [
     {
-      attribute: "categories",
+      attribute: "categoryPath",
       eq: categoryPath.toLowerCase(),
     },
   ];

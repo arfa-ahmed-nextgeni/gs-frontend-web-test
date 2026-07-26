@@ -11,7 +11,7 @@ export const enum CheckoutPaymentCardFormField {
   SaveAsDefault = "save-as-default-card",
 }
 
-export const checkoutPaymentCardFormSchema = z.object({
+export const payfortPaymentCardFormSchema = z.object({
   [CheckoutPaymentCardFormField.CardExpiry]: z
     .string()
     .min(1, "messages.requiredField")
@@ -72,6 +72,6 @@ export const checkoutPaymentCardFormSchema = z.object({
   [CheckoutPaymentCardFormField.SaveAsDefault]: z.coerce.boolean().optional(),
 });
 
-export type CheckoutPaymentCardFormSchemaType = z.infer<
-  typeof checkoutPaymentCardFormSchema
+export type PayfortPaymentCardFormSchemaType = z.infer<
+  typeof payfortPaymentCardFormSchema
 >;

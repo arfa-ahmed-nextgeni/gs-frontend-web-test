@@ -1,9 +1,8 @@
 import { TabContentType } from "@/lib/models/page-landing";
+import { cleanUrl } from "@/lib/utils/clean-url";
 
-import type {
-  BannerDisplayOn,
-  WebsiteMultipleBannersData,
-} from "@/lib/types/contentful/page-landing";
+import type { ContentDisplayOn } from "@/lib/types/contentful/display-on";
+import type { WebsiteMultipleBannersData } from "@/lib/types/contentful/page-landing";
 
 export class WebsiteMultipleBanner {
   public contentType: TabContentType;
@@ -40,7 +39,7 @@ export class WebsiteMultipleBanner {
     this.imagesWidth = imagesWidth;
     this.imageUrl = imageUrl;
     this.label = label;
-    this.url = url;
+    this.url = cleanUrl(url);
     this.contentType = contentType;
   }
 }
@@ -48,7 +47,7 @@ export class WebsiteMultipleBanner {
 export class WebsiteMultipleBanners {
   public banners: WebsiteMultipleBanner[] = [];
   public contentType: TabContentType;
-  public displayOn: BannerDisplayOn;
+  public displayOn: ContentDisplayOn;
   public imagesHeight?: number;
   public imagesHeightMobile?: number;
   public imagesWidth?: number;

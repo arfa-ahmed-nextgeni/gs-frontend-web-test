@@ -27,6 +27,7 @@ import { TopTrendsCategoryProducts } from "@/lib/models/top-trends-category-prod
 import { WebsiteBanner } from "@/lib/models/website-banner";
 import { WebsiteMultipleBanners } from "@/lib/models/website-multiple-banners";
 import { cn } from "@/lib/utils";
+import { getDisplayOnClassName } from "@/lib/utils/display-on";
 import { initializePageLocale } from "@/lib/utils/locale";
 import {
   generateAbsoluteCanonicalUrl,
@@ -208,7 +209,8 @@ export default async function LandingPage({
               <Container
                 className={cn(
                   "lg:mt-7.5 mt-5",
-                  "[contain-intrinsic-size:0_540px] [content-visibility:auto] lg:[content-visibility:visible]"
+                  "[contain-intrinsic-size:0_540px] [content-visibility:auto] lg:[content-visibility:visible]",
+                  getDisplayOnClassName(categoryProducts.displayOn),
                 )}
                 key={`content-${index}`}
               >
@@ -219,36 +221,44 @@ export default async function LandingPage({
               </Container>
             );
           case TabContentType.DesktopCategories:
+            const desktopCategories = content as DesktopCategories;
             return (
-              <div className="hidden lg:block" key={`content-${index}`}>
+              <div
+                className={getDisplayOnClassName(desktopCategories.displayOn)}
+                key={`content-${index}`}
+              >
                 <Container>
-                  <HomeCategories
-                    data={content as DesktopCategories}
-                    lpRow={index + 1}
-                  />
+                  <HomeCategories data={desktopCategories} lpRow={index + 1} />
                 </Container>
               </div>
             );
           case TabContentType.FlashSale:
+            const flashSale = content as FlashSale;
             return (
               <Container
-                className="[contain-intrinsic-size:0_640px] [content-visibility:auto] lg:[content-visibility:visible]"
+                className={cn(
+                  "[contain-intrinsic-size:0_640px] [content-visibility:auto] lg:[content-visibility:visible]",
+                  getDisplayOnClassName(flashSale.displayOn),
+                )}
                 key={`content-${index}`}
               >
-                <FlashSaleSection {...(content as FlashSale)} />
+                <FlashSaleSection {...flashSale} />
               </Container>
             );
           case TabContentType.RecentlyViewedProducts:
+            const recentlyViewedProducts =
+              content as RecentlyViewedProductsContent;
             return (
               <Container
                 className={cn(
                   "lg:mt-7.5 mt-5",
-                  "[contain-intrinsic-size:0_540px] [content-visibility:auto] lg:[content-visibility:visible]"
+                  "[contain-intrinsic-size:0_540px] [content-visibility:auto] lg:[content-visibility:visible]",
+                  getDisplayOnClassName(recentlyViewedProducts.displayOn),
                 )}
                 key={`content-${index}`}
               >
                 <RecentlyViewedProducts
-                  data={content as RecentlyViewedProductsContent}
+                  data={recentlyViewedProducts}
                   lpRow={index + 1}
                 />
               </Container>
@@ -261,11 +271,13 @@ export default async function LandingPage({
               </Container>
             );
           case TabContentType.TopTrendsCategoryProducts:
+            const topTrends = content as TopTrendsCategoryProducts;
             return (
               <Container
                 className={cn(
                   "lg:mt-7.5 mt-5",
-                  "[contain-intrinsic-size:0_820px] [content-visibility:auto]"
+                  "[contain-intrinsic-size:0_820px] [content-visibility:auto]",
+                  getDisplayOnClassName(topTrends.displayOn),
                 )}
                 key={`content-${index}`}
               >
@@ -275,7 +287,7 @@ export default async function LandingPage({
                   bannerOrigin="lp"
                   bannerRow={index + 1}
                   lpRow={index + 1}
-                  {...(content as TopTrendsCategoryProducts)}
+                  {...topTrends}
                 />
               </Container>
             );
@@ -310,7 +322,7 @@ export default async function LandingPage({
 }
 
 function collectLpSlugsFromHomeContent(
-  pageLandingData: Awaited<ReturnType<typeof getPageLandingData>>
+  pageLandingData: Awaited<ReturnType<typeof getPageLandingData>>,
 ) {
   const slugs = new Set<string>();
   const addSlug = (url?: string) => {
@@ -371,7 +383,7 @@ function collectNavigationLpSlugs(
         }[];
       }[]
     | undefined,
-  addSlug: (url?: string) => void
+  addSlug: (url?: string) => void,
 ) {
   if (!items?.length) return;
 
@@ -396,7 +408,7 @@ function extractLpSlugFromUrl(url?: string) {
     .map((segment) => segment.trim())
     .filter(Boolean);
   const lpSegmentIndex = segments.findIndex(
-    (segment) => segment.toLowerCase() === "lp"
+    (segment) => segment.toLowerCase() === "lp",
   );
 
   if (lpSegmentIndex === -1) return null;

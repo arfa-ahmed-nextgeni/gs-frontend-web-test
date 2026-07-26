@@ -6,6 +6,8 @@ import { PromotionalBanner } from "@/layouts/header/promotional-banner";
 import { ZIndexLevel } from "@/lib/constants/ui";
 import { PromoBanner } from "@/lib/models/promo-banner";
 import { HeaderNavigationType } from "@/lib/types/ui-types";
+import { cn } from "@/lib/utils";
+import { getDisplayOnClassName } from "@/lib/utils/display-on";
 
 export const HeaderBody = ({
   headerNavigation,
@@ -26,7 +28,11 @@ export const HeaderBody = ({
     <>
       {promoBanner && !isSticky && (
         <Container
-          className={`relative ${upperZIndexLevel}`}
+          className={cn(
+            "relative",
+            upperZIndexLevel,
+            getDisplayOnClassName(promoBanner.displayOn)
+          )}
           variant="FullWidth"
         >
           <PromotionalBanner data={promoBanner} />

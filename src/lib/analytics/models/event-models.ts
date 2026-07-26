@@ -32,6 +32,7 @@ export interface CartInsiderProperties {
 
 // Cart model
 export interface CartProperties {
+  "cart.discount"?: string;
   "cart.discounts"?: number;
   "cart.fees_COD"?: number;
   "cart.fees_shipping"?: string;
@@ -42,6 +43,7 @@ export interface CartProperties {
   "cart.gift_wrap.price"?: number;
   "cart.grandTotal"?: number;
   "cart.promo_code"?: string;
+  "cart.redeemPoints"?: string;
   "cart.subtotal"?: string;
   "cart.total"?: number;
   express_delivery_available?: boolean;
@@ -224,6 +226,7 @@ export interface PurchaseProperties {
   "order.grandTotal"?: number;
   "order.id"?: string;
   "order.payment_method"?: string;
+  "order.promo_code"?: string;
   "order.subtotal"?: number;
   products: OrderItem[];
   shipping_type?: "Click Collect" | "Home Delivery";

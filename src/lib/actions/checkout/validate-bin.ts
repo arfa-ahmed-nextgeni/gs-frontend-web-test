@@ -9,6 +9,7 @@ import { graphqlRequest } from "@/lib/clients/graphql";
 import { CART_GRAPHQL_MUTATIONS } from "@/lib/constants/api/graphql/cart";
 import { Locale } from "@/lib/constants/i18n";
 import { getCommonErrorMessage } from "@/lib/utils/common-error-message";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 import { failure, ok } from "@/lib/utils/service-result";
 
 export async function validateBinAction({ binNumber }: { binNumber: string }) {
@@ -30,6 +31,7 @@ export async function validateBinAction({ binNumber }: { binNumber: string }) {
 
     const response = await graphqlRequest({
       authToken,
+      forwardHeaders: await getForwardedRequestHeaders(),
       query: CART_GRAPHQL_MUTATIONS.VALIDATE_BIN,
       storeCode: storeConfig.data.store?.code,
       variables: {

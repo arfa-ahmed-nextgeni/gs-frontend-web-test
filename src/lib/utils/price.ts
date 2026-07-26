@@ -6,6 +6,7 @@ type FormatPriceOpts = {
 };
 
 const formatterCache = new Map<string, Intl.NumberFormat>();
+const currencyFractionDigitsCache = new Map<string, number>();
 const currencyConfig = {
   AED: {
     match: [/AED/i, /\u062f\.\u0625\.?/],
@@ -50,7 +51,9 @@ export function formatPrice({
   options?: FormatPriceOpts;
 }): string {
   const min = options?.minimumFractionDigits ?? 0;
-  const max = options?.maximumFractionDigits ?? 0;
+  const max =
+    options?.maximumFractionDigits ??
+    Math.max(getCurrencyMaximumFractionDigits(locale, currencyCode), min);
   const currencyDisplay = options?.useCurrencyDisplayCode ? "code" : "symbol";
   const useGrouping = options?.useGrouping ?? true;
 
@@ -91,6 +94,27 @@ export function getCurrencySymbol(currencyCode?: string, locale = "en-US") {
   } catch {
     return null;
   }
+}
+
+function getCurrencyMaximumFractionDigits(
+  locale: string,
+  currency: string
+): number {
+  const key = `${locale}:${currency}`;
+  const cachedFractionDigits = currencyFractionDigitsCache.get(key);
+
+  if (cachedFractionDigits === undefined) {
+    const fractionDigits =
+      new Intl.NumberFormat(locale, {
+        currency,
+        style: "currency",
+      }).resolvedOptions().maximumFractionDigits ?? 0;
+    currencyFractionDigitsCache.set(key, fractionDigits);
+
+    return fractionDigits;
+  }
+
+  return cachedFractionDigits;
 }
 
 function getFormatter(

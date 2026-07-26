@@ -12,6 +12,7 @@ import { graphqlRequest } from "@/lib/clients/graphql";
 import { CART_GRAPHQL_MUTATIONS } from "@/lib/constants/api/graphql/cart";
 import { LockerType } from "@/lib/constants/checkout/locker-locations";
 import { Locale, StoreCode } from "@/lib/constants/i18n";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 import { failure, ok } from "@/lib/utils/service-result";
 
 export const addLockerAddressOnCart = async (
@@ -35,6 +36,7 @@ export const addLockerAddressOnCart = async (
 
     const setShippingAddressResponse = await graphqlRequest({
       authToken,
+      forwardHeaders: await getForwardedRequestHeaders(),
       query: CART_GRAPHQL_MUTATIONS.SET_SHIPPING_ADDRESSES_ON_CART,
       storeCode: storeConfig.data?.store?.code as StoreCode,
       variables: {
@@ -57,6 +59,7 @@ export const addLockerAddressOnCart = async (
 
     const setBillingAddressResponse = await graphqlRequest({
       authToken,
+      forwardHeaders: await getForwardedRequestHeaders(),
       query: CART_GRAPHQL_MUTATIONS.SET_BILLING_ADDRESS_ON_CART,
       storeCode: storeConfig.data?.store?.code as StoreCode,
       variables: {
@@ -99,6 +102,7 @@ export const addLockerAddressOnCart = async (
 
     const setShippingMethodsResponse = await graphqlRequest({
       authToken,
+      forwardHeaders: await getForwardedRequestHeaders(),
       query: CART_GRAPHQL_MUTATIONS.SET_SHIPPING_METHODS_ON_CART,
       storeCode: storeConfig.data?.store?.code as StoreCode,
       variables: {

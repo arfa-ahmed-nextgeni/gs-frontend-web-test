@@ -1361,6 +1361,8 @@ export type ProductViewOptionValueConfiguration = ProductViewOptionValue & {
 /** An implementation of ProductViewOptionValue that adds details about a simple product. */
 export type ProductViewOptionValueProduct = ProductViewOptionValue & {
   __typename?: "ProductViewOptionValueProduct";
+  /** Indicates if the quantity of the option value can be edited. */
+  canEditQuantity?: Maybe<Scalars["Boolean"]["output"]>;
   /** Indicates if the associated product is enabled. */
   enabled?: Maybe<Scalars["Boolean"]["output"]>;
   /** The ID of an option value. */
@@ -1583,6 +1585,8 @@ export type RecommendationUnit = {
   unitId?: Maybe<Scalars["String"]["output"]>;
   /** Name of the preconfigured unit */
   unitName?: Maybe<Scalars["String"]["output"]>;
+  /** User error message if the unit could not be fully resolved (e.g. required currentSku was not provided) */
+  userError?: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Recommendations response */
@@ -1830,7 +1834,7 @@ export enum SwatchType {
 /** User view history */
 export type ViewHistory = {
   date?: InputMaybe<Scalars["DateTime"]["input"]>;
-  sku: Scalars["String"]["input"];
+  sku?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** User view history */
@@ -1899,359 +1903,57 @@ export type VirtualProduct = ProductInterface & {
   updated_at?: Maybe<Scalars["String"]["output"]>;
 };
 
-export type GetLinkProductsQueryVariables = Exact<{
-  sku: Scalars["String"]["input"];
-  linkType: Scalars["String"]["input"];
-}>;
-
-export type GetLinkProductsQuery = {
-  __typename?: "Query";
-  products?: Array<
-    | {
-        __typename?: "ComplexProductView";
-        links?: Array<{
-          __typename?: "ProductViewLink";
-          product:
-            | {
-                __typename: "ComplexProductView";
-                id: string;
-                externalId?: string | null;
-                name?: string | null;
-                shortDescription?: string | null;
-                sku?: string | null;
-                inStock?: boolean | null;
-                urlKey?: string | null;
-                options?: Array<{
-                  __typename?: "ProductViewOption";
-                  id?: string | null;
-                  values?: Array<
-                    | {
-                        __typename: "ProductViewOptionValueConfiguration";
-                        id?: string | null;
-                        title?: string | null;
-                        inStock?: boolean | null;
-                      }
-                    | {
-                        __typename: "ProductViewOptionValueProduct";
-                        id?: string | null;
-                        title?: string | null;
-                        inStock?: boolean | null;
-                      }
-                    | {
-                        __typename: "ProductViewOptionValueSwatch";
-                        type?: SwatchType | null;
-                        value?: string | null;
-                        id?: string | null;
-                        title?: string | null;
-                        inStock?: boolean | null;
-                      }
-                  > | null;
-                } | null> | null;
-                priceRange?: {
-                  __typename?: "ProductViewPriceRange";
-                  minimum?: {
-                    __typename?: "ProductViewPrice";
-                    final?: {
-                      __typename?: "Price";
-                      amount?: {
-                        __typename?: "ProductViewMoney";
-                        currency?: ProductViewCurrency | null;
-                        value?: number | null;
-                      } | null;
-                    } | null;
-                    regular?: {
-                      __typename?: "Price";
-                      amount?: {
-                        __typename?: "ProductViewMoney";
-                        currency?: ProductViewCurrency | null;
-                        value?: number | null;
-                      } | null;
-                    } | null;
-                  } | null;
-                } | null;
-                images?: Array<{
-                  __typename?: "ProductViewImage";
-                  url: string;
-                } | null> | null;
-                attributes?: Array<{
-                  __typename?: "ProductViewAttribute";
-                  label?: string | null;
-                  name: string;
-                  roles?: Array<string | null> | null;
-                  value?: any | null;
-                } | null> | null;
-              }
-            | {
-                __typename: "SimpleProductView";
-                id: string;
-                externalId?: string | null;
-                name?: string | null;
-                shortDescription?: string | null;
-                sku?: string | null;
-                inStock?: boolean | null;
-                urlKey?: string | null;
-                price?: {
-                  __typename?: "ProductViewPrice";
-                  final?: {
-                    __typename?: "Price";
-                    amount?: {
-                      __typename?: "ProductViewMoney";
-                      currency?: ProductViewCurrency | null;
-                      value?: number | null;
-                    } | null;
-                  } | null;
-                  regular?: {
-                    __typename?: "Price";
-                    amount?: {
-                      __typename?: "ProductViewMoney";
-                      currency?: ProductViewCurrency | null;
-                      value?: number | null;
-                    } | null;
-                  } | null;
-                } | null;
-                images?: Array<{
-                  __typename?: "ProductViewImage";
-                  url: string;
-                } | null> | null;
-                attributes?: Array<{
-                  __typename?: "ProductViewAttribute";
-                  label?: string | null;
-                  name: string;
-                  roles?: Array<string | null> | null;
-                  value?: any | null;
-                } | null> | null;
-              };
-        } | null> | null;
-      }
-    | {
-        __typename?: "SimpleProductView";
-        links?: Array<{
-          __typename?: "ProductViewLink";
-          product:
-            | {
-                __typename: "ComplexProductView";
-                id: string;
-                externalId?: string | null;
-                name?: string | null;
-                shortDescription?: string | null;
-                sku?: string | null;
-                inStock?: boolean | null;
-                urlKey?: string | null;
-                options?: Array<{
-                  __typename?: "ProductViewOption";
-                  id?: string | null;
-                  values?: Array<
-                    | {
-                        __typename: "ProductViewOptionValueConfiguration";
-                        id?: string | null;
-                        title?: string | null;
-                        inStock?: boolean | null;
-                      }
-                    | {
-                        __typename: "ProductViewOptionValueProduct";
-                        id?: string | null;
-                        title?: string | null;
-                        inStock?: boolean | null;
-                      }
-                    | {
-                        __typename: "ProductViewOptionValueSwatch";
-                        type?: SwatchType | null;
-                        value?: string | null;
-                        id?: string | null;
-                        title?: string | null;
-                        inStock?: boolean | null;
-                      }
-                  > | null;
-                } | null> | null;
-                priceRange?: {
-                  __typename?: "ProductViewPriceRange";
-                  minimum?: {
-                    __typename?: "ProductViewPrice";
-                    final?: {
-                      __typename?: "Price";
-                      amount?: {
-                        __typename?: "ProductViewMoney";
-                        currency?: ProductViewCurrency | null;
-                        value?: number | null;
-                      } | null;
-                    } | null;
-                    regular?: {
-                      __typename?: "Price";
-                      amount?: {
-                        __typename?: "ProductViewMoney";
-                        currency?: ProductViewCurrency | null;
-                        value?: number | null;
-                      } | null;
-                    } | null;
-                  } | null;
-                } | null;
-                images?: Array<{
-                  __typename?: "ProductViewImage";
-                  url: string;
-                } | null> | null;
-                attributes?: Array<{
-                  __typename?: "ProductViewAttribute";
-                  label?: string | null;
-                  name: string;
-                  roles?: Array<string | null> | null;
-                  value?: any | null;
-                } | null> | null;
-              }
-            | {
-                __typename: "SimpleProductView";
-                id: string;
-                externalId?: string | null;
-                name?: string | null;
-                shortDescription?: string | null;
-                sku?: string | null;
-                inStock?: boolean | null;
-                urlKey?: string | null;
-                price?: {
-                  __typename?: "ProductViewPrice";
-                  final?: {
-                    __typename?: "Price";
-                    amount?: {
-                      __typename?: "ProductViewMoney";
-                      currency?: ProductViewCurrency | null;
-                      value?: number | null;
-                    } | null;
-                  } | null;
-                  regular?: {
-                    __typename?: "Price";
-                    amount?: {
-                      __typename?: "ProductViewMoney";
-                      currency?: ProductViewCurrency | null;
-                      value?: number | null;
-                    } | null;
-                  } | null;
-                } | null;
-                images?: Array<{
-                  __typename?: "ProductViewImage";
-                  url: string;
-                } | null> | null;
-                attributes?: Array<{
-                  __typename?: "ProductViewAttribute";
-                  label?: string | null;
-                  name: string;
-                  roles?: Array<string | null> | null;
-                  value?: any | null;
-                } | null> | null;
-              };
-        } | null> | null;
-      }
-    | null
-  > | null;
+type PdpAttributes_ComplexProductView_Fragment = {
+  __typename?: "ComplexProductView";
+  attributes?: Array<{
+    __typename?: "ProductViewAttribute";
+    label?: string | null;
+    name: string;
+    roles?: Array<string | null> | null;
+    value?: any | null;
+  } | null> | null;
 };
 
-export type GetProductDetailsQueryVariables = Exact<{
-  sku: Scalars["String"]["input"];
-}>;
-
-export type GetProductDetailsQuery = {
-  __typename?: "Query";
-  products?: Array<
-    | {
-        __typename: "ComplexProductView";
-        externalId?: string | null;
-        name?: string | null;
-        description?: string | null;
-        sku?: string | null;
-        options?: Array<{
-          __typename?: "ProductViewOption";
-          id?: string | null;
-          multi?: boolean | null;
-          required?: boolean | null;
-          title?: string | null;
-          values?: Array<
-            | {
-                __typename: "ProductViewOptionValueConfiguration";
-                id?: string | null;
-                title?: string | null;
-                inStock?: boolean | null;
-              }
-            | {
-                __typename: "ProductViewOptionValueProduct";
-                id?: string | null;
-                title?: string | null;
-                inStock?: boolean | null;
-                product?: {
-                  __typename?: "SimpleProductView";
-                  id: string;
-                } | null;
-              }
-            | {
-                __typename: "ProductViewOptionValueSwatch";
-                title?: string | null;
-                type?: SwatchType | null;
-                value?: string | null;
-                id?: string | null;
-                inStock?: boolean | null;
-              }
-          > | null;
-        } | null> | null;
-        videos?: Array<{
-          __typename?: "ProductViewVideo";
-          url: string;
-          preview?: { __typename?: "ProductViewImage"; url: string } | null;
-        } | null> | null;
-        images?: Array<{
-          __typename?: "ProductViewImage";
-          url: string;
-        } | null> | null;
-        attributes?: Array<{
-          __typename?: "ProductViewAttribute";
-          label?: string | null;
-          name: string;
-          roles?: Array<string | null> | null;
-          value?: any | null;
-        } | null> | null;
-      }
-    | {
-        __typename: "SimpleProductView";
-        name?: string | null;
-        sku?: string | null;
-        inStock?: boolean | null;
-        externalId?: string | null;
-        description?: string | null;
-        price?: {
-          __typename?: "ProductViewPrice";
-          regular?: {
-            __typename?: "Price";
-            amount?: {
-              __typename?: "ProductViewMoney";
-              currency?: ProductViewCurrency | null;
-              value?: number | null;
-            } | null;
-          } | null;
-          final?: {
-            __typename?: "Price";
-            amount?: {
-              __typename?: "ProductViewMoney";
-              currency?: ProductViewCurrency | null;
-              value?: number | null;
-            } | null;
-          } | null;
-        } | null;
-        videos?: Array<{
-          __typename?: "ProductViewVideo";
-          url: string;
-          preview?: { __typename?: "ProductViewImage"; url: string } | null;
-        } | null> | null;
-        images?: Array<{
-          __typename?: "ProductViewImage";
-          url: string;
-        } | null> | null;
-        attributes?: Array<{
-          __typename?: "ProductViewAttribute";
-          label?: string | null;
-          name: string;
-          roles?: Array<string | null> | null;
-          value?: any | null;
-        } | null> | null;
-      }
-    | null
-  > | null;
+type PdpAttributes_SimpleProductView_Fragment = {
+  __typename?: "SimpleProductView";
+  attributes?: Array<{
+    __typename?: "ProductViewAttribute";
+    label?: string | null;
+    name: string;
+    roles?: Array<string | null> | null;
+    value?: any | null;
+  } | null> | null;
 };
+
+export type PdpAttributesFragment =
+  | PdpAttributes_ComplexProductView_Fragment
+  | PdpAttributes_SimpleProductView_Fragment;
+
+type CardAttributes_ComplexProductView_Fragment = {
+  __typename?: "ComplexProductView";
+  attributes?: Array<{
+    __typename?: "ProductViewAttribute";
+    label?: string | null;
+    name: string;
+    roles?: Array<string | null> | null;
+    value?: any | null;
+  } | null> | null;
+};
+
+type CardAttributes_SimpleProductView_Fragment = {
+  __typename?: "SimpleProductView";
+  attributes?: Array<{
+    __typename?: "ProductViewAttribute";
+    label?: string | null;
+    name: string;
+    roles?: Array<string | null> | null;
+    value?: any | null;
+  } | null> | null;
+};
+
+export type CardAttributesFragment =
+  | CardAttributes_ComplexProductView_Fragment
+  | CardAttributes_SimpleProductView_Fragment;
 
 export type GetProductDetailsBySkuQueryVariables = Exact<{
   sku: Scalars["String"]["input"];
@@ -2690,93 +2392,6 @@ export type GetProductDetailsByUrlKeyQuery = {
   };
 };
 
-export type GetProductVariantsQueryVariables = Exact<{
-  sku: Scalars["String"]["input"];
-}>;
-
-export type GetProductVariantsQuery = {
-  __typename?: "Query";
-  variants?: {
-    __typename?: "ProductViewVariantResults";
-    variants: Array<{
-      __typename?: "ProductViewVariant";
-      selections?: Array<string> | null;
-      product?:
-        | {
-            __typename: "ComplexProductView";
-            addToCartAllowed?: boolean | null;
-            inStock?: boolean | null;
-            lowStock?: boolean | null;
-            id: string;
-            sku?: string | null;
-            urlKey?: string | null;
-            images?: Array<{
-              __typename?: "ProductViewImage";
-              url: string;
-            } | null> | null;
-            videos?: Array<{
-              __typename?: "ProductViewVideo";
-              url: string;
-              preview?: { __typename?: "ProductViewImage"; url: string } | null;
-            } | null> | null;
-            attributes?: Array<{
-              __typename?: "ProductViewAttribute";
-              label?: string | null;
-              name: string;
-              roles?: Array<string | null> | null;
-              value?: any | null;
-            } | null> | null;
-          }
-        | {
-            __typename: "SimpleProductView";
-            addToCartAllowed?: boolean | null;
-            inStock?: boolean | null;
-            lowStock?: boolean | null;
-            id: string;
-            sku?: string | null;
-            urlKey?: string | null;
-            price?: {
-              __typename?: "ProductViewPrice";
-              roles?: Array<string | null> | null;
-              final?: {
-                __typename?: "Price";
-                amount?: {
-                  __typename?: "ProductViewMoney";
-                  currency?: ProductViewCurrency | null;
-                  value?: number | null;
-                } | null;
-              } | null;
-              regular?: {
-                __typename?: "Price";
-                amount?: {
-                  __typename?: "ProductViewMoney";
-                  currency?: ProductViewCurrency | null;
-                  value?: number | null;
-                } | null;
-              } | null;
-            } | null;
-            images?: Array<{
-              __typename?: "ProductViewImage";
-              url: string;
-            } | null> | null;
-            videos?: Array<{
-              __typename?: "ProductViewVideo";
-              url: string;
-              preview?: { __typename?: "ProductViewImage"; url: string } | null;
-            } | null> | null;
-            attributes?: Array<{
-              __typename?: "ProductViewAttribute";
-              label?: string | null;
-              name: string;
-              roles?: Array<string | null> | null;
-              value?: any | null;
-            } | null> | null;
-          }
-        | null;
-    } | null>;
-  } | null;
-};
-
 export type GetProductsBySkusQueryVariables = Exact<{
   skus: Array<Scalars["String"]["input"]> | Scalars["String"]["input"];
 }>;
@@ -2899,7 +2514,7 @@ export type GetProductsBySkusQuery = {
 
 export type GetSimilarProductsQueryVariables = Exact<{
   brand: Scalars["String"]["input"];
-  productType: Scalars["String"]["input"];
+  typeFilter: SearchClauseInput;
   gender: Scalars["String"]["input"];
 }>;
 
@@ -3026,7 +2641,7 @@ export type GetSimilarProductsQuery = {
 };
 
 export type GetYouMightAlsoLikeProductsQueryVariables = Exact<{
-  productType: Scalars["String"]["input"];
+  typeFilter: SearchClauseInput;
   gender: Scalars["String"]["input"];
 }>;
 
@@ -3290,10 +2905,10 @@ export type ProductSearchQuery = {
             } | null> | null;
             attributes?: Array<{
               __typename?: "ProductViewAttribute";
-              name: string;
               label?: string | null;
-              value?: any | null;
+              name: string;
               roles?: Array<string | null> | null;
+              value?: any | null;
             } | null> | null;
           }
         | {
@@ -3334,10 +2949,10 @@ export type ProductSearchQuery = {
             } | null> | null;
             attributes?: Array<{
               __typename?: "ProductViewAttribute";
-              name: string;
               label?: string | null;
-              value?: any | null;
+              name: string;
               roles?: Array<string | null> | null;
+              value?: any | null;
             } | null> | null;
           }
         | null;
@@ -3371,156 +2986,36 @@ export class TypedDocumentString<TResult, TVariables>
     return this.value;
   }
 }
-
-export const GetLinkProductsDocument = new TypedDocumentString(`
-    query GetLinkProducts($sku: String!, $linkType: String!) {
-  products(skus: [$sku]) {
-    links(linkTypes: [$linkType]) {
-      product {
-        __typename
-        id
-        externalId
-        name
-        shortDescription
-        sku
-        inStock
-        urlKey
-        images {
-          url
-        }
-        attributes {
-          label
-          name
-          roles
-          value
-        }
-        ... on SimpleProductView {
-          price {
-            final {
-              amount {
-                currency
-                value
-              }
-            }
-            regular {
-              amount {
-                currency
-                value
-              }
-            }
-          }
-        }
-        ... on ComplexProductView {
-          options {
-            id
-            values {
-              __typename
-              id
-              title
-              inStock
-              ... on ProductViewOptionValueSwatch {
-                type
-                value
-              }
-            }
-          }
-          priceRange {
-            minimum {
-              final {
-                amount {
-                  currency
-                  value
-                }
-              }
-              regular {
-                amount {
-                  currency
-                  value
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-    `) as unknown as TypedDocumentString<
-  GetLinkProductsQuery,
-  GetLinkProductsQueryVariables
->;
-export const GetProductDetailsDocument = new TypedDocumentString(`
-    query GetProductDetails($sku: String!) {
-  products(skus: [$sku]) {
-    __typename
-    externalId
+export const PdpAttributesFragmentDoc = new TypedDocumentString(
+  `
+    fragment PdpAttributes on ProductView {
+  attributes(
+    names: ["associated_products", "attribute_set", "product_type", "product_type_new2", "exclusive", "is_new", "product_tags", "review_rating", "value_off", "express_delivery_available", "low_stock_qty", "countdown_timer_enabled", "countdown_timer_start_date", "countdown_timer_end_date", "countdown_timer_title", "brand_new", "color", "gender", "character", "fragrance_notes", "top_notes", "middle_notes", "base_notes", "concentration", "year_of_launch", "size_new", "categories", "ingredients", "makeup_color", "area_of_apply", "texture", "product_color", "item_category", "skin_type", "finish", "coverage", "parent_product_url", "available_stock"]
+  ) {
+    label
     name
-    description
-    sku
-    videos {
-      preview {
-        url
-      }
-      url
-    }
-    images {
-      url
-    }
-    ... on ComplexProductView {
-      options {
-        id
-        multi
-        required
-        title
-        values {
-          __typename
-          id
-          title
-          inStock
-          ... on ProductViewOptionValueSwatch {
-            title
-            type
-            value
-          }
-          ... on ProductViewOptionValueProduct {
-            product {
-              id
-            }
-          }
-        }
-      }
-    }
-    ... on SimpleProductView {
-      name
-      sku
-      inStock
-      price {
-        regular {
-          amount {
-            currency
-            value
-          }
-        }
-        final {
-          amount {
-            currency
-            value
-          }
-        }
-      }
-    }
-    attributes {
-      label
-      name
-      roles
-      value
-    }
+    roles
+    value
   }
 }
-    `) as unknown as TypedDocumentString<
-  GetProductDetailsQuery,
-  GetProductDetailsQueryVariables
->;
+    `,
+  { fragmentName: "PdpAttributes" }
+) as unknown as TypedDocumentString<PdpAttributesFragment, unknown>;
+export const CardAttributesFragmentDoc = new TypedDocumentString(
+  `
+    fragment CardAttributes on ProductView {
+  attributes(
+    names: ["associated_products", "brand", "brand_new", "product_type", "product_type_new2", "exclusive", "is_new", "product_tags", "review_rating", "value_off", "express_delivery_available", "countdown_timer_enabled", "countdown_timer_start_date", "countdown_timer_end_date", "countdown_timer_title", "product_meta_type", "giftcard_amount_values", "attribute_set", "available_stock"]
+  ) {
+    label
+    name
+    roles
+    value
+  }
+}
+    `,
+  { fragmentName: "CardAttributes" }
+) as unknown as TypedDocumentString<CardAttributesFragment, unknown>;
 export const GetProductDetailsBySkuDocument = new TypedDocumentString(`
     query GetProductDetailsBySku($sku: String!) {
   productSearch(filter: [{attribute: "sku", eq: $sku}], phrase: "") {
@@ -3587,12 +3082,7 @@ export const GetProductDetailsBySkuDocument = new TypedDocumentString(`
             }
           }
         }
-        attributes {
-          label
-          name
-          roles
-          value
-        }
+        ...PdpAttributes
       }
       product {
         price_range {
@@ -3606,7 +3096,16 @@ export const GetProductDetailsBySkuDocument = new TypedDocumentString(`
     }
   }
 }
-    `) as unknown as TypedDocumentString<
+    fragment PdpAttributes on ProductView {
+  attributes(
+    names: ["associated_products", "attribute_set", "product_type", "product_type_new2", "exclusive", "is_new", "product_tags", "review_rating", "value_off", "express_delivery_available", "low_stock_qty", "countdown_timer_enabled", "countdown_timer_start_date", "countdown_timer_end_date", "countdown_timer_title", "brand_new", "color", "gender", "character", "fragrance_notes", "top_notes", "middle_notes", "base_notes", "concentration", "year_of_launch", "size_new", "categories", "ingredients", "makeup_color", "area_of_apply", "texture", "product_color", "item_category", "skin_type", "finish", "coverage", "parent_product_url", "available_stock"]
+  ) {
+    label
+    name
+    roles
+    value
+  }
+}`) as unknown as TypedDocumentString<
   GetProductDetailsBySkuQuery,
   GetProductDetailsBySkuQueryVariables
 >;
@@ -3676,12 +3175,7 @@ export const GetProductDetailsByUrlKeyDocument = new TypedDocumentString(`
             }
           }
         }
-        attributes {
-          label
-          name
-          roles
-          value
-        }
+        ...PdpAttributes
       }
       product {
         price_range {
@@ -3696,62 +3190,18 @@ export const GetProductDetailsByUrlKeyDocument = new TypedDocumentString(`
     }
   }
 }
-    `) as unknown as TypedDocumentString<
+    fragment PdpAttributes on ProductView {
+  attributes(
+    names: ["associated_products", "attribute_set", "product_type", "product_type_new2", "exclusive", "is_new", "product_tags", "review_rating", "value_off", "express_delivery_available", "low_stock_qty", "countdown_timer_enabled", "countdown_timer_start_date", "countdown_timer_end_date", "countdown_timer_title", "brand_new", "color", "gender", "character", "fragrance_notes", "top_notes", "middle_notes", "base_notes", "concentration", "year_of_launch", "size_new", "categories", "ingredients", "makeup_color", "area_of_apply", "texture", "product_color", "item_category", "skin_type", "finish", "coverage", "parent_product_url", "available_stock"]
+  ) {
+    label
+    name
+    roles
+    value
+  }
+}`) as unknown as TypedDocumentString<
   GetProductDetailsByUrlKeyQuery,
   GetProductDetailsByUrlKeyQueryVariables
->;
-export const GetProductVariantsDocument = new TypedDocumentString(`
-    query GetProductVariants($sku: String!) {
-  variants(sku: $sku) {
-    variants {
-      selections
-      product {
-        __typename
-        images(roles: []) {
-          url
-        }
-        videos {
-          preview {
-            url
-          }
-          url
-        }
-        addToCartAllowed
-        inStock
-        lowStock
-        id
-        sku
-        urlKey
-        attributes {
-          label
-          name
-          roles
-          value
-        }
-        ... on SimpleProductView {
-          price {
-            roles
-            final {
-              amount {
-                currency
-                value
-              }
-            }
-            regular {
-              amount {
-                currency
-                value
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-    `) as unknown as TypedDocumentString<
-  GetProductVariantsQuery,
-  GetProductVariantsQueryVariables
 >;
 export const GetProductsBySkusDocument = new TypedDocumentString(`
     query GetProductsBySkus($skus: [String!]!) {
@@ -3767,12 +3217,7 @@ export const GetProductsBySkusDocument = new TypedDocumentString(`
     images {
       url
     }
-    attributes {
-      label
-      name
-      roles
-      value
-    }
+    ...CardAttributes
     ... on SimpleProductView {
       price {
         final {
@@ -3822,14 +3267,24 @@ export const GetProductsBySkusDocument = new TypedDocumentString(`
     }
   }
 }
-    `) as unknown as TypedDocumentString<
+    fragment CardAttributes on ProductView {
+  attributes(
+    names: ["associated_products", "brand", "brand_new", "product_type", "product_type_new2", "exclusive", "is_new", "product_tags", "review_rating", "value_off", "express_delivery_available", "countdown_timer_enabled", "countdown_timer_start_date", "countdown_timer_end_date", "countdown_timer_title", "product_meta_type", "giftcard_amount_values", "attribute_set", "available_stock"]
+  ) {
+    label
+    name
+    roles
+    value
+  }
+}`) as unknown as TypedDocumentString<
   GetProductsBySkusQuery,
   GetProductsBySkusQueryVariables
 >;
 export const GetSimilarProductsDocument = new TypedDocumentString(`
-    query GetSimilarProducts($brand: String!, $productType: String!, $gender: String!) {
+    query GetSimilarProducts($brand: String!, $typeFilter: SearchClauseInput!, $gender: String!) {
   productSearch(
-    filter: [{attribute: "brand_new", eq: $brand}, {attribute: "product_type_new2", eq: $productType}, {attribute: "gender", eq: $gender}]
+    filter: [{attribute: "brand_new", eq: $brand}, $typeFilter, {attribute: "gender", eq: $gender}]
+    sort: [{attribute: "inStock", direction: DESC}]
     phrase: ""
     page_size: 10
   ) {
@@ -3847,12 +3302,7 @@ export const GetSimilarProductsDocument = new TypedDocumentString(`
         images {
           url
         }
-        attributes {
-          label
-          name
-          roles
-          value
-        }
+        ...CardAttributes
         ... on SimpleProductView {
           price {
             final {
@@ -3904,15 +3354,24 @@ export const GetSimilarProductsDocument = new TypedDocumentString(`
     }
   }
 }
-    `) as unknown as TypedDocumentString<
+    fragment CardAttributes on ProductView {
+  attributes(
+    names: ["associated_products", "brand", "brand_new", "product_type", "product_type_new2", "exclusive", "is_new", "product_tags", "review_rating", "value_off", "express_delivery_available", "countdown_timer_enabled", "countdown_timer_start_date", "countdown_timer_end_date", "countdown_timer_title", "product_meta_type", "giftcard_amount_values", "attribute_set", "available_stock"]
+  ) {
+    label
+    name
+    roles
+    value
+  }
+}`) as unknown as TypedDocumentString<
   GetSimilarProductsQuery,
   GetSimilarProductsQueryVariables
 >;
 export const GetYouMightAlsoLikeProductsDocument = new TypedDocumentString(`
-    query GetYouMightAlsoLikeProducts($productType: String!, $gender: String!) {
+    query GetYouMightAlsoLikeProducts($typeFilter: SearchClauseInput!, $gender: String!) {
   productSearch(
-    filter: [{attribute: "categoryPath", eq: "you-might-also-like"}, {attribute: "product_type_new2", eq: $productType}, {attribute: "gender", eq: $gender}, {attribute: "inStock", eq: "true"}]
-    sort: [{attribute: "position", direction: ASC}]
+    filter: [{attribute: "categoryPath", eq: "you-might-also-like"}, $typeFilter, {attribute: "gender", eq: $gender}, {attribute: "inStock", eq: "true"}]
+    sort: [{attribute: "position", direction: ASC}, {attribute: "inStock", direction: DESC}]
     phrase: ""
     page_size: 10
   ) {
@@ -3930,12 +3389,7 @@ export const GetYouMightAlsoLikeProductsDocument = new TypedDocumentString(`
         images {
           url
         }
-        attributes {
-          label
-          name
-          roles
-          value
-        }
+        ...CardAttributes
         ... on SimpleProductView {
           price {
             final {
@@ -3987,7 +3441,16 @@ export const GetYouMightAlsoLikeProductsDocument = new TypedDocumentString(`
     }
   }
 }
-    `) as unknown as TypedDocumentString<
+    fragment CardAttributes on ProductView {
+  attributes(
+    names: ["associated_products", "brand", "brand_new", "product_type", "product_type_new2", "exclusive", "is_new", "product_tags", "review_rating", "value_off", "express_delivery_available", "countdown_timer_enabled", "countdown_timer_start_date", "countdown_timer_end_date", "countdown_timer_title", "product_meta_type", "giftcard_amount_values", "attribute_set", "available_stock"]
+  ) {
+    label
+    name
+    roles
+    value
+  }
+}`) as unknown as TypedDocumentString<
   GetYouMightAlsoLikeProductsQuery,
   GetYouMightAlsoLikeProductsQueryVariables
 >;
@@ -4040,12 +3503,7 @@ export const ProductSearchDocument = new TypedDocumentString(`
           label
           roles
         }
-        attributes {
-          name
-          label
-          value
-          roles
-        }
+        ...CardAttributes
         ... on SimpleProductView {
           price {
             final {
@@ -4122,7 +3580,16 @@ export const ProductSearchDocument = new TypedDocumentString(`
     related_terms
   }
 }
-    `) as unknown as TypedDocumentString<
+    fragment CardAttributes on ProductView {
+  attributes(
+    names: ["associated_products", "brand", "brand_new", "product_type", "product_type_new2", "exclusive", "is_new", "product_tags", "review_rating", "value_off", "express_delivery_available", "countdown_timer_enabled", "countdown_timer_start_date", "countdown_timer_end_date", "countdown_timer_title", "product_meta_type", "giftcard_amount_values", "attribute_set", "available_stock"]
+  ) {
+    label
+    name
+    roles
+    value
+  }
+}`) as unknown as TypedDocumentString<
   ProductSearchQuery,
   ProductSearchQueryVariables
 >;

@@ -54,6 +54,7 @@ export async function makePaymentAction({
   cardId,
   checkoutPaymentId,
   cvv,
+  forwardHeaders,
   locale,
   orderId,
   paymentMethodType,
@@ -63,6 +64,7 @@ export async function makePaymentAction({
   cardId?: string;
   checkoutPaymentId?: string;
   cvv?: string;
+  forwardHeaders?: HeadersInit;
   locale: Locale;
   orderId: string;
   paymentMethodType: PaymentMethodType;
@@ -102,7 +104,9 @@ export async function makePaymentAction({
     };
 
     const response = await restRequest<MakePaymentResponse>({
+      authToken,
       endpoint: ORDER_ENDPOINTS.MAKE_PAYMENT,
+      forwardHeaders,
       options: {
         body: JSON.stringify(requestPayload),
         method: "POST",
@@ -349,6 +353,12 @@ function buildPaymentPayload(
             enabled: true,
           },
           card_id: normalizedCardId,
+          // `normalizedCvv` may now be a Frames.js CVV token (see
+          // checkout-card-payment-section.tsx) rather than a raw digit
+          // string. Checkout.com's own Payments API accepts a tokenized CVV
+          // in this same field, so this is expected to work, but has not yet
+          // been confirmed against a live Magento sandbox — verify with a
+          // real saved-card + CVV-re-entry payment before relying on this.
           cvv: normalizedCvv,
           failure_url: failureUrl,
           success_url: successUrl,

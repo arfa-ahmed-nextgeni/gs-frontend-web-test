@@ -140,10 +140,10 @@ export function CheckoutGiftWrapping({
                   </p>
                   <LocalizedPrice
                     containerProps={{
-                      className:
-                        "text-text-secondary text-xs font-light line-through",
+                      className: "text-text-secondary text-xs font-light",
                     }}
                     price={priceLabel}
+                    valueProps={{ className: "line-through" }}
                   />
                 </div>
               ) : (

@@ -14,6 +14,7 @@ import { cairo } from "@/app/fonts/cairo";
 import { gilroy } from "@/app/fonts/gilroy";
 import { NewRelicBrowserAgent } from "@/components/analytics/new-relic-browser-agent";
 import { JsonLdScript } from "@/components/seo/json-ld-script";
+import { ChunkReloadGuard } from "@/components/shared/chunk-reload-guard";
 import { CriticalAssetsPreloader } from "@/components/ui/critical-assets-preloader";
 import { routing } from "@/i18n/routing";
 import { getStoresConfig } from "@/lib/actions/config/get-stores-config";
@@ -21,6 +22,7 @@ import { getPageLandingData } from "@/lib/actions/contentful/page-landing";
 import { PROTOCOL } from "@/lib/constants/environment";
 import { LOCALE_TO_DOMAIN } from "@/lib/constants/i18n";
 import { Stores } from "@/lib/models/stores";
+import { getBrandFromLocale } from "@/lib/utils/brand";
 import { getLocaleInfo, initializePageLocale } from "@/lib/utils/locale";
 import { generateOrganizationSchema } from "@/lib/utils/schema";
 import { isOk } from "@/lib/utils/service-result";
@@ -45,6 +47,14 @@ export async function generateMetadata(): Promise<Metadata> {
   const pageLandingData = await getPageLandingData({
     locale,
   });
+
+  const brand = getBrandFromLocale(locale);
+
+  const BRAND_SITE_NAMES: Record<string, string> = {
+    fabian: "Fabian",
+    goldenscent: "Golden Scent",
+    surrati: "Surrati",
+  };
 
   const seo = pageLandingData?.seo;
   const title = seo?.pageTitle?.trim() || t("title");
@@ -102,7 +112,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       images: shareImages,
       locale: locale,
-      siteName: "Golden Scent",
+      siteName: BRAND_SITE_NAMES[brand] ?? "Golden Scent",
       title,
       type: "website",
     },
@@ -121,6 +131,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const viewport: Viewport = {
+  // Emit the document-level auto-dark opt-out before the browser paints.
+  colorScheme: "only light",
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
@@ -161,6 +173,7 @@ export default async function RootLayout({
   initializePageLocale(locale);
 
   const { language } = getLocaleInfo(locale);
+  const brand = getBrandFromLocale(locale);
 
   const direction = getLangDir(locale);
 
@@ -169,13 +182,15 @@ export default async function RootLayout({
 
   return (
     <html
-      className={`${gilroy.variable} ${cairo.variable} antialiased`}
+      className={`${gilroy.variable} ${cairo.variable} antialiased brand-${brand}`}
+      data-brand={brand}
       data-locale={language}
       dir={direction}
       lang={language}
       suppressHydrationWarning
     >
       <body className="bg-bg-body">
+        <ChunkReloadGuard />
         <NewRelicBrowserAgent />
         {/* Organization Schema - appears on every page */}
         <JsonLdScript data={organizationSchema} id="organization-schema" />

@@ -14,7 +14,6 @@ import { resolveProductImageUrl } from "@/lib/utils/image";
 import { initializePageLocale } from "@/lib/utils/locale";
 import {
   generateAbsoluteCanonicalUrl,
-  generateHreflangLinks,
   generateRobotsDirective,
 } from "@/lib/utils/seo";
 
@@ -57,11 +56,8 @@ export async function generateMetadata({
 
   return {
     alternates: {
+      // Rule: do not add hreflang to search result pages
       canonical: canonicalUrl,
-      languages: generateHreflangLinks({
-        baseUrl: `${ROUTES.SEARCH}?q=${encodeURIComponent(searchTerm)}`,
-        currentPage,
-      }),
     },
     description,
     openGraph: {
@@ -120,7 +116,7 @@ export default async function SearchPage({
 
   return (
     <SearchPageClientWrapper>
-      <SearchTracker trackInit />
+      <SearchTracker asCatalogView trackInit />
 
       <DesktopBreadcrumb
         items={breadcrumbs.slice(0, -1)}

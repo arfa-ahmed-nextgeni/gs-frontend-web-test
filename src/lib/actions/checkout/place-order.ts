@@ -23,6 +23,7 @@ import {
 } from "@/lib/utils/checkout/shipping-type";
 import { getCommonErrorMessage } from "@/lib/utils/common-error-message";
 import { getStoreCode } from "@/lib/utils/country";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 import { failure, isOk } from "@/lib/utils/service-result";
 
 import type { PlaceOrderOutput } from "@/graphql/graphql";
@@ -155,8 +156,11 @@ export async function placeOrderAction({
       }
     }
 
+    const forwardHeaders = await getForwardedRequestHeaders();
+
     const response = await graphqlRequest({
       authToken,
+      forwardHeaders,
       query: CART_GRAPHQL_MUTATIONS.PLACE_ORDER,
       storeCode: getStoreCode(locale),
       variables: {
@@ -235,6 +239,7 @@ export async function placeOrderAction({
         const payfortPaymentResult = await payfortPaymentAction({
           baseUrl,
           customerEmail,
+          forwardHeaders,
           locale,
           orderId: orderV2.number,
           payfortCardNumber,
@@ -260,6 +265,7 @@ export async function placeOrderAction({
         cardId,
         checkoutPaymentId,
         cvv,
+        forwardHeaders,
         locale,
         orderId: orderV2.number,
         paymentMethodType: paymentMethodType as

@@ -198,7 +198,6 @@ export const CUSTOMER_GRAPHQL_QUERIES = {
             increment_id
             user_actions {
               action
-              label
             }
             number
             order_date
@@ -223,12 +222,10 @@ export const CUSTOMER_GRAPHQL_QUERIES = {
                 url_key
                 thumbnail {
                   url
-                  label
                 }
-                type_id
-                url_key
                 stock_status
                 product_type_new2
+                product_type_new2_label
                 price_range {
                   minimum_price {
                     regular_price {
@@ -242,20 +239,6 @@ export const CUSTOMER_GRAPHQL_QUERIES = {
                   }
                 }
 
-                custom_attributesV2(filters: { is_filterable: true }) {
-                  items {
-                    code
-                    ... on AttributeValue {
-                      value
-                    }
-                    ... on AttributeSelectedOptions {
-                      selected_options {
-                        label
-                        value
-                      }
-                    }
-                  }
-                }
                 ... on ConfigurableProduct {
                   variants {
                     attributes {
@@ -266,7 +249,6 @@ export const CUSTOMER_GRAPHQL_QUERIES = {
                       id
                       sku
                       thumbnail {
-                        label
                         url
                       }
                       price_range {
@@ -286,39 +268,26 @@ export const CUSTOMER_GRAPHQL_QUERIES = {
                 }
               }
               selected_options {
-                label
                 value
               }
+              is_gwp
             }
             payment_methods {
               name
               type
-              additional_data {
-                name
-                value
-              }
             }
             shipping_address {
               city
-              company
               country_code
-              fax
               firstname
               lastname
-              middlename
               postcode
-              prefix
               region
-              region_id
               street
-              suffix
               telephone
-              vat_id
             }
-            shipping_method
             total {
               discounts {
-                label
                 amount {
                   currency
                   value
@@ -337,12 +306,6 @@ export const CUSTOMER_GRAPHQL_QUERIES = {
                 value
               }
               shipping_handling {
-                taxes {
-                  amount {
-                    currency
-                    value
-                  }
-                }
                 total_amount {
                   currency
                   value
@@ -361,21 +324,13 @@ export const CUSTOMER_GRAPHQL_QUERIES = {
                 value
               }
             }
-            tracking_status
             points_to_spend
+            applied_coupons {
+              code
+            }
             shipments {
               tracking {
-                carrier
                 number
-                title
-              }
-              number
-              id
-              items {
-                id
-                product_name
-                product_sku
-                quantity_shipped
               }
             }
           }

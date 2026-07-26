@@ -10,6 +10,7 @@ import { graphqlRequest } from "@/lib/clients/graphql";
 import { CUSTOMER_GRAPHQL_MUTATIONS } from "@/lib/constants/api/graphql/customer";
 import { Locale, LOCALE_TO_STORE } from "@/lib/constants/i18n";
 import { ROUTES } from "@/lib/constants/routes";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 import { getLocaleInfo } from "@/lib/utils/locale";
 import { getLocalePrefix } from "@/lib/utils/seo";
 import { failure, ok } from "@/lib/utils/service-result";
@@ -103,6 +104,7 @@ export const addDeliveryAddress = async (
       CreateCustomerAddressMutationVariables
     >({
       authToken,
+      forwardHeaders: await getForwardedRequestHeaders(),
       query: CUSTOMER_GRAPHQL_MUTATIONS.CREATE_CUSTOMER_ADDRESS as any,
       storeCode,
       variables: {

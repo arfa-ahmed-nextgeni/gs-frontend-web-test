@@ -4,7 +4,10 @@ import { sendGAEvent } from "@next/third-parties/google";
 
 import { clickOriginTrackingManager } from "@/lib/analytics/click-origin-tracking-manager";
 import { ANALYTICS_TOOL } from "@/lib/analytics/constants/analytics-tool";
-import { AnalyticsProvider } from "@/lib/analytics/providers/base-provider";
+import {
+  AnalyticsProvider,
+  type AnalyticsTrackContext,
+} from "@/lib/analytics/providers/base-provider";
 import { buildMetaProperties } from "@/lib/analytics/utils/build-meta-properties";
 import { flattenGAProperties } from "@/lib/analytics/utils/flatten-ga-properties";
 import { groupPropertiesByPrefix } from "@/lib/analytics/utils/group-properties-by-prefix";
@@ -171,7 +174,11 @@ class GoogleAnalyticsProvider implements AnalyticsProvider {
     this.snapCapiUserData = { firstName, lastName };
   }
 
-  track(eventName: string, properties?: Record<string, unknown>): void {
+  track(
+    eventName: string,
+    properties?: Record<string, unknown>,
+    context?: AnalyticsTrackContext
+  ): void {
     if (!this.isAvailable()) return;
 
     try {
@@ -215,7 +222,8 @@ class GoogleAnalyticsProvider implements AnalyticsProvider {
       void this.sendTrackWithSnapParams(
         eventName,
         propertiesToSend,
-        sharedCdid
+        sharedCdid,
+        context?.canonicalEventName
       ).catch((error) => {
         console.error("Google Analytics track error (Snap CAPI):", error);
       });
@@ -272,10 +280,11 @@ class GoogleAnalyticsProvider implements AnalyticsProvider {
   private async sendTrackWithSnapParams(
     eventName: string,
     propertiesToSend: Record<string, unknown>,
-    sharedCdid?: string
+    sharedCdid?: string,
+    canonicalEventName = eventName
   ): Promise<void> {
     const snapParams = await buildSnapCapiParams(
-      eventName,
+      canonicalEventName,
       this.snapCapiUserData,
       sharedCdid
     );

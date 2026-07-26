@@ -52,14 +52,15 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
   const items: DisplayOrderItem[] = useMemo(
     () =>
       (order?.products as DisplayOrderItem[] | undefined)?.map((item) => {
+        const originalPrice = item.originalPrice ?? item.regularPrice;
         const hasRealOriginalPrice =
-          typeof item.originalPrice === "number" &&
-          item.originalPrice > (item.price || 0);
+          typeof originalPrice === "number" &&
+          originalPrice > (item.price || 0);
 
         return {
           ...item,
           description: item.description,
-          originalPrice: hasRealOriginalPrice ? item.originalPrice : undefined,
+          originalPrice: hasRealOriginalPrice ? originalPrice : undefined,
           size: item.size,
         };
       }) || [],
@@ -87,10 +88,6 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
       amount,
       currencyCode,
       locale,
-      options: {
-        maximumFractionDigits: 0,
-        minimumFractionDigits: 0,
-      },
     });
 
   const effectiveOrderId = orderId || order?.tracking_number || "—";
@@ -109,16 +106,18 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
   const formattedAddressLines = useMemo(() => {
     if (!addressLine) return [];
 
+    const filterPart = (s: string) => s !== "N/A" && s !== "0000";
+
     let parts = addressLine
       .split(/\r?\n/)
       .map((s) => s.trim())
-      .filter(Boolean);
+      .filter((s) => Boolean(s) && filterPart(s));
 
     if (parts.length === 1) {
       const commaParts = addressLine
         .split(",")
         .map((s) => s.trim())
-        .filter(Boolean);
+        .filter((s) => Boolean(s) && filterPart(s));
       if (commaParts.length > 1) parts = commaParts;
     }
 
@@ -157,18 +156,27 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
 
     return (
       <div className="flex flex-col items-end justify-center gap-2.5 text-right">
-        <LocalizedPrice
-          containerProps={{
-            className: "text-[16px] font-semibold text-[#FE5000]",
-          }}
-          price={price}
-        />
+        {item.isGwp ? (
+          <span className="text-[16px] font-semibold text-[#FE5000]">
+            {t("free")}
+          </span>
+        ) : (
+          <LocalizedPrice
+            containerProps={{
+              className: "text-[16px] font-semibold text-[#FE5000]",
+            }}
+            price={price}
+          />
+        )}
         {original && (
           <LocalizedPrice
             containerProps={{
-              className: "text-[12px] text-[#85878A] line-through",
+              className: "text-[12px] text-[#85878A]",
             }}
             price={original}
+            valueProps={{
+              className: "line-through",
+            }}
           />
         )}
       </div>
@@ -287,6 +295,9 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                         sku: product.sku,
                         urlKey: product.urlKey,
                       });
+                      const productLinkHref = product.isGwp
+                        ? ""
+                        : productHref || "#";
 
                       return (
                         <div
@@ -299,7 +310,7 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                             </div>
                             <ProductDetailsLink
                               className="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl"
-                              href={productHref || "#"}
+                              href={productLinkHref}
                               title={product.name}
                             >
                               <ProductImageWithFallback
@@ -313,7 +324,7 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                             </ProductDetailsLink>
                             <ProductDetailsLink
                               className="flex w-[260px] flex-col gap-2.5"
-                              href={productHref || "#"}
+                              href={productLinkHref}
                               title={product.name}
                             >
                               <p
@@ -406,7 +417,7 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                 <span>{t("subtotal")}</span>
                 <LocalizedPrice
                   currencySymbolProps={{
-                    className: "font-normal",
+                    className: "text-[1.4em]",
                   }}
                   price={formatAmount(subtotal)}
                 />
@@ -419,7 +430,7 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                   <span className="text-text-danger">
                     <LocalizedPrice
                       currencySymbolProps={{
-                        className: "font-normal",
+                        className: "text-[1.4em]",
                       }}
                       price={`-${formatAmount(order?.pointsToSpend ?? 0)}`}
                     />
@@ -432,7 +443,7 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                   <span className="text-text-danger">
                     <LocalizedPrice
                       currencySymbolProps={{
-                        className: "font-normal",
+                        className: "text-[1.4em]",
                       }}
                       price={`-${formatAmount(order.discount)}`}
                     />
@@ -447,7 +458,7 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                   ) : (
                     <LocalizedPrice
                       currencySymbolProps={{
-                        className: "font-normal",
+                        className: "text-[1.4em]",
                       }}
                       price={formatAmount(shippingFee)}
                     />
@@ -459,7 +470,7 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                   <span>{t("codFee")}</span>
                   <LocalizedPrice
                     currencySymbolProps={{
-                      className: "font-normal",
+                      className: "text-[1.4em]",
                     }}
                     price={formatAmount(codFee)}
                   />
@@ -472,7 +483,7 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                   </span>
                   <LocalizedPrice
                     currencySymbolProps={{
-                      className: "font-normal",
+                      className: "text-[1.4em]",
                     }}
                     price={formatAmount(mokafaaDiscount)}
                   />
@@ -488,12 +499,7 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                     </span>
                   )}
                 </div>
-                <LocalizedPrice
-                  currencySymbolProps={{
-                    className: "font-normal",
-                  }}
-                  price={formatAmount(grandTotal)}
-                />
+                <LocalizedPrice price={formatAmount(grandTotal)} />
               </div>
               {(storeConfig?.cashbackPercent ?? 0) > 0 && (
                 <div className="flex items-center justify-between">
@@ -505,10 +511,12 @@ export function OrderInformation({ order, orderId }: OrderInformationProps) {
                       className: "text-text-teal",
                     }}
                     currencySymbolProps={{
-                      className: "font-normal",
+                      className: "text-[1.4em]",
                     }}
                     price={formatAmount(
-                      grandTotal * (storeConfig?.cashbackPercent ?? 0)
+                      Math.round(
+                        grandTotal * (storeConfig?.cashbackPercent ?? 0)
+                      )
                     )}
                   />
                 </div>

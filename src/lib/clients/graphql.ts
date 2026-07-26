@@ -1,6 +1,6 @@
 import "server-only";
 
-import { headers } from "next/headers";
+import { stripIgnoredCharacters } from "graphql";
 
 import { TypedDocumentString } from "@/graphql/graphql";
 import {
@@ -8,9 +8,11 @@ import {
   ApiActivityServices,
 } from "@/lib/api-activity/api-activity-meta";
 import { loggedFetch } from "@/lib/api-activity/fetch/logged-fetch";
+import { getStorefrontTlsOptions } from "@/lib/clients/storefront-tls";
 import { GRAPHQL_BASE_URL } from "@/lib/config/server-env";
 import { API_CONSTANTS, HEADERS } from "@/lib/constants/api";
 import { StoreCode } from "@/lib/constants/i18n";
+import { applyForwardHeaders } from "@/lib/utils/forwarded-headers";
 import { createTimeoutError, isTimeoutError } from "@/lib/utils/network-error";
 
 interface GraphQLError {
@@ -31,9 +33,11 @@ interface GraphQLError {
 
 type GraphqlRequestParams<TResult, TVariables> = {
   authToken?: null | string;
+  forwardHeaders?: HeadersInit;
+  httpMethod?: "GET" | "POST";
+  operationName?: string;
   query: TypedDocumentString<TResult, TVariables>;
   requestInit?: RequestInit;
-  skipUserAgentHeader?: boolean;
   storeCode?: StoreCode;
   variables?: TVariables;
 };
@@ -71,14 +75,18 @@ const AUTH_ERROR_MESSAGE_FRAGMENTS = [
   "customer is not logged in",
 ];
 
+const serializeQueryForGet = (query: string) => stripIgnoredCharacters(query);
+
 export async function graphqlRequest<
   TResult,
   TVariables = Record<string, never>,
 >({
   authToken,
+  forwardHeaders,
+  httpMethod = "POST",
+  operationName,
   query,
   requestInit,
-  skipUserAgentHeader,
   storeCode,
   variables,
 }: GraphqlRequestParams<TResult, TVariables>): Promise<
@@ -97,13 +105,7 @@ export async function graphqlRequest<
   requestHeaders.set(HEADERS.CONTENT_TYPE, "application/json");
   requestHeaders.set(HEADERS.X_PLATFORM, "web");
 
-  if (!skipUserAgentHeader) {
-    const nextHeaders = await headers();
-    const userAgent = nextHeaders.get("user-agent");
-    if (userAgent) {
-      requestHeaders.set(HEADERS.USER_AGENT, userAgent);
-    }
-  }
+  applyForwardHeaders(requestHeaders, forwardHeaders);
 
   if (storeCode) {
     requestHeaders.set(HEADERS.STORE, storeCode);
@@ -113,17 +115,37 @@ export async function graphqlRequest<
   }
 
   try {
+    const requestUrl = new URL(GRAPHQL_BASE_URL);
+    const requestMethod = httpMethod;
+    const body =
+      requestMethod === "POST"
+        ? JSON.stringify({
+            query: serializedQuery,
+            ...(variables ? { variables } : {}),
+          })
+        : undefined;
+
+    if (requestMethod === "GET") {
+      requestUrl.searchParams.set(
+        "query",
+        serializeQueryForGet(serializedQuery)
+      );
+      requestUrl.searchParams.set("variables", JSON.stringify(variables ?? {}));
+
+      if (operationName) {
+        requestUrl.searchParams.set("operationName", operationName);
+      }
+    }
+
     const response = await loggedFetch(
-      GRAPHQL_BASE_URL,
+      requestUrl,
       {
-        body: JSON.stringify({
-          query: serializedQuery,
-          ...(variables ? { variables } : {}),
-        }),
         headers: requestHeaders,
-        method: "POST",
         signal: AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT),
         ...requestInit,
+        body,
+        method: requestMethod,
+        ...getStorefrontTlsOptions(),
       },
       {
         feature: ApiActivityFeatures.Storefront,

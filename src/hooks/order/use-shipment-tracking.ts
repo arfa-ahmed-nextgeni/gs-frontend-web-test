@@ -29,7 +29,7 @@ export const useShipmentTracking = () => {
 
       try {
         const result = await mutateAsync({
-          orderId,
+          orderId: btoa(orderId), // Encode order ID to base64
           trackingNumber,
         });
 

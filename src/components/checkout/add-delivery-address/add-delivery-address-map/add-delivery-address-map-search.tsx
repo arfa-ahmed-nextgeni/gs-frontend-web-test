@@ -48,40 +48,45 @@ export const AddDeliveryAddressMapSearch = () => {
   const placesService = useRef<google.maps.places.PlacesService | null>(null);
   const searchTimeoutRef = useRef<null | ReturnType<typeof setTimeout>>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.info("[AddressSearch] Places library status:", {
-      autocompleteServiceReady: !!autocompleteService.current,
-      isServiceReady,
-      placesLib: !!placesLib,
-      placesLibKeys: placesLib ? Object.keys(placesLib) : [],
-      placesLibType: typeof placesLib,
-    });
+    // Keep results open while interacting with or scrolling the dropdown.
+    // Close only when the pointer starts outside the search container.
+    const handlePointerDown = (event: PointerEvent) => {
+      if (searchContainerRef.current?.contains(event.target as Node)) {
+        return;
+      }
 
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+        searchTimeoutRef.current = null;
+      }
+
+      setIsSearchFocused(false);
+      setShowSuggestions(false);
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+
+    // Remove the global listener when the map search component unmounts.
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!placesLib) {
-      console.warn(
-        "[AddressSearch] Places library not loaded. This could mean:",
-        "1. API key is invalid or doesn't have Places API enabled",
-        "2. Google Maps loading is still in progress",
-        "3. Network error while loading Places library"
-      );
       setIsServiceReady(false);
       return;
     }
 
     if (autocompleteService.current && placesService.current) {
-      console.info("[AddressSearch] Services already initialized");
       setIsServiceReady(true);
       return;
     }
 
     try {
-      console.info("[AddressSearch] Creating new Places API services...");
-      console.info("[AddressSearch] Available in placesLib:", {
-        hasAutoCompleteService: !!placesLib.AutocompleteService,
-        hasPlacesService: !!placesLib.PlacesService,
-      });
-
       if (!placesLib.AutocompleteService) {
         throw new Error(
           "AutocompleteService not available in places library. Check if Places API is enabled in Google Cloud Console."
@@ -92,46 +97,21 @@ export const AddDeliveryAddressMapSearch = () => {
       // Create a dummy div for PlacesService (required by the API)
       const dummyDiv = document.createElement("div");
       placesService.current = new placesLib.PlacesService(dummyDiv);
-      console.info(
-        "[AddressSearch] Places API services initialized successfully"
-      );
       setIsServiceReady(true);
-    } catch (error) {
-      console.error("[AddressSearch] Error initializing Places services:", {
-        error,
-        errorMessage: error instanceof Error ? error.message : String(error),
-        placesLibKeys: placesLib ? Object.keys(placesLib) : [],
-      });
+    } catch {
       setIsServiceReady(false);
     }
   }, [placesLib, isServiceReady]);
 
   const fetchSuggestions = useCallback(
     (query: string) => {
-      console.info(
-        "[AddressSearch] fetchSuggestions called with query:",
-        query,
-        {
-          hasAutocompleteService: !!autocompleteService.current,
-          isServiceReady,
-        }
-      );
-
       if (!isServiceReady || !autocompleteService.current) {
-        console.warn(
-          "[AddressSearch] AutocompleteService not initialized.",
-          "isServiceReady:",
-          isServiceReady,
-          "service exists:",
-          !!autocompleteService.current
-        );
         setSuggestions([]);
         setShowSuggestions(false);
         return;
       }
 
       if (query.length < 2) {
-        console.info("[AddressSearch] Query too short, skipping fetch");
         setSuggestions([]);
         setShowSuggestions(false);
         return;
@@ -145,42 +125,16 @@ export const AddDeliveryAddressMapSearch = () => {
         region: "SA",
       };
 
-      console.info("[AddressSearch] Making Places API request:", request);
-
       autocompleteService.current.getPlacePredictions(
         request,
         (predictions, status) => {
-          console.info("[AddressSearch] Places API response:", {
-            predictions: predictions,
-            predictionsCount: predictions?.length || 0,
-            status: status,
-            statusName: Object.keys(
-              google.maps.places.PlacesServiceStatus
-            ).find(
-              (key) =>
-                google.maps.places.PlacesServiceStatus[
-                  key as keyof typeof google.maps.places.PlacesServiceStatus
-                ] === status
-            ),
-          });
-
           if (
             status === google.maps.places.PlacesServiceStatus.OK &&
             predictions
           ) {
-            console.info(
-              `[AddressSearch] Successfully got ${predictions.length} predictions`
-            );
             setSuggestions(predictions);
             setShowSuggestions(true);
-          } else if (
-            status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS
-          ) {
-            console.info("[AddressSearch] No results found for query");
-            setSuggestions([]);
-            setShowSuggestions(false);
           } else {
-            console.error("[AddressSearch] Places API error:", status);
             setSuggestions([]);
             setShowSuggestions(false);
           }
@@ -192,17 +146,11 @@ export const AddDeliveryAddressMapSearch = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    console.info("[AddressSearch] Input changed:", value);
     setSearchQuery(value);
   };
 
   const handleSuggestionClick = useCallback(
     (prediction: google.maps.places.AutocompletePrediction) => {
-      console.info(
-        "[AddressSearch] Suggestion clicked:",
-        prediction.description
-      );
-
       // Immediately close suggestions and defocus so the searchQuery change
       // triggered by the async getDetails callback does not re-fire the fetch.
       setShowSuggestions(false);
@@ -211,7 +159,6 @@ export const AddDeliveryAddressMapSearch = () => {
       inputRef.current?.blur();
 
       if (!placesService.current) {
-        console.error("[AddressSearch] PlacesService not available");
         return;
       }
 
@@ -222,24 +169,7 @@ export const AddDeliveryAddressMapSearch = () => {
         region: "SA",
       };
 
-      console.info(
-        "[AddressSearch] Getting place details for placeId:",
-        request
-      );
-
       placesService.current.getDetails(request, (place, status) => {
-        console.info("[AddressSearch] Place details response:", {
-          hasPlace: !!place,
-          place: place,
-          status: status,
-          statusName: Object.keys(google.maps.places.PlacesServiceStatus).find(
-            (key) =>
-              google.maps.places.PlacesServiceStatus[
-                key as keyof typeof google.maps.places.PlacesServiceStatus
-              ] === status
-          ),
-        });
-
         if (
           status === google.maps.places.PlacesServiceStatus.OK &&
           place &&
@@ -265,12 +195,6 @@ export const AddDeliveryAddressMapSearch = () => {
             place.name || prediction.structured_formatting?.main_text;
           const displayName = placeName ? `${placeName}, ${address}` : address;
 
-          console.info("[AddressSearch] Setting address and location:", {
-            address,
-            displayName,
-            location,
-          });
-
           setSearchQuery(displayName);
           setSuggestions([]);
           setShowSuggestions(false);
@@ -286,8 +210,6 @@ export const AddDeliveryAddressMapSearch = () => {
           );
           setSelectedAddress(address);
           setSelectedLocation(location);
-        } else {
-          console.error("[AddressSearch] Error getting place details:", status);
         }
       });
     },
@@ -311,20 +233,26 @@ export const AddDeliveryAddressMapSearch = () => {
   };
 
   const handleFocus = () => {
-    console.info("[AddressSearch] Input focused, searchQuery:", searchQuery);
     setIsSearchFocused(true);
   };
 
-  const handleBlur = () => {
+  const handleBlur = (event: React.FocusEvent<HTMLDivElement>) => {
+    const nextFocusedElement = event.relatedTarget;
+
+    if (
+      !nextFocusedElement ||
+      searchContainerRef.current?.contains(nextFocusedElement)
+    ) {
+      return;
+    }
+
     if (searchTimeoutRef.current) {
       clearTimeout(searchTimeoutRef.current);
       searchTimeoutRef.current = null;
     }
-    // Delay hiding suggestions to allow clicking on them
-    setTimeout(() => {
-      setIsSearchFocused(false);
-      setShowSuggestions(false);
-    }, 200);
+
+    setIsSearchFocused(false);
+    setShowSuggestions(false);
   };
 
   useEffect(() => {
@@ -366,7 +294,11 @@ export const AddDeliveryAddressMapSearch = () => {
 
   return (
     <div className="pointer-events-none absolute top-2.5 z-10 flex w-full justify-center">
-      <div className="w-9/10 pointer-events-auto relative">
+      <div
+        className="w-9/10 pointer-events-auto relative"
+        onBlur={handleBlur}
+        ref={searchContainerRef}
+      >
         <span className="pointer-events-none absolute inset-y-0 start-0 z-10 flex items-center ps-3 sm:ps-5">
           <Image
             alt="search"
@@ -378,7 +310,6 @@ export const AddDeliveryAddressMapSearch = () => {
         </span>
         <input
           className="bg-bg-default text-text-primary placeholder:text-text-placeholder sm:ps-15 py-2.25 block w-full rounded-3xl border-none pe-5 ps-11 text-base font-normal shadow-sm focus:outline-none"
-          onBlur={handleBlur}
           onChange={handleInputChange}
           onFocus={handleFocus}
           onKeyDown={handleKeyDown}

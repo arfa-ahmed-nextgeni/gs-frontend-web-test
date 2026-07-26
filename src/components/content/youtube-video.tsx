@@ -36,6 +36,7 @@ export default function YoutubeVideo({ data }: YoutubeVideoProps) {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             className="h-full w-full"
+            loading="lazy"
             src={`https://www.youtube.com/embed/${videoId}`}
             title={data.internalName || "YouTube video"}
           />

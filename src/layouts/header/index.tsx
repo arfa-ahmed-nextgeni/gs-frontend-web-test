@@ -1,20 +1,29 @@
+import { getLocale } from "next-intl/server";
+
 import { DeferredStickyHeader } from "@/layouts/header/deferred-sticky-header";
 import { HeaderBody } from "@/layouts/header/header-body";
 import { HeaderContainer } from "@/layouts/header/header-container";
+import { getCatalogServiceBrands } from "@/lib/actions/category/get-catalog-service-brands";
+import { type Locale } from "@/lib/constants/i18n";
 import { ZIndexLevel } from "@/lib/constants/ui";
 import { PromoBanner } from "@/lib/models/promo-banner";
 import { HeaderNavigationType } from "@/lib/types/ui-types";
 import { cn } from "@/lib/utils";
+import { isOk } from "@/lib/utils/service-result";
 
-export const Header = ({
+export const Header = async ({
   headerNavigation,
   promoBanner,
 }: {
   headerNavigation: HeaderNavigationType;
   promoBanner?: PromoBanner;
 }) => {
+  const locale = (await getLocale()) as Locale;
+  const brandsResult = await getCatalogServiceBrands({ locale });
+  const allBrands = isOk(brandsResult) ? brandsResult.data : [];
+
   return (
-    <HeaderContainer>
+    <HeaderContainer allBrands={allBrands}>
       <DeferredStickyHeader>
         <div
           className={cn(

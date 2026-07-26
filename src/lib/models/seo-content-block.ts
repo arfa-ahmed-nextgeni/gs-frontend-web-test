@@ -7,10 +7,12 @@ export class SeoContentBlock {
   public content?: Document;
   public contentType: TabContentType;
   public internalName?: string;
+  public title?: string;
 
   constructor(data: SeoContentBlockData, contentType: TabContentType) {
     this.contentType = contentType;
     this.content = data.content;
     this.internalName = data.internalName;
+    this.title = data.title;
   }
 }

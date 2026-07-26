@@ -2,14 +2,15 @@ import type { ImageLoaderProps } from "next/image";
 
 import { isContentfulSrc } from "@/lib/utils/image";
 
-const CONTENTFUL_MAX_WIDTH = 1200;
-const DEFAULT_CONTENTFUL_QUALITY = 75;
+const DEFAULT_CONTENTFUL_MAX_WIDTH = 1200;
+const DEFAULT_CONTENTFUL_QUALITY = 62;
 
 export function contentfulImageLoader({
+  maxWidth = DEFAULT_CONTENTFUL_MAX_WIDTH,
   quality,
   src,
   width,
-}: ImageLoaderProps) {
+}: { maxWidth?: number } & ImageLoaderProps) {
   const normalizedSrc = normalizeContentfulSrc(src);
 
   if (!isContentfulSrc(normalizedSrc)) return normalizedSrc;
@@ -17,7 +18,7 @@ export function contentfulImageLoader({
   const url = new URL(normalizedSrc);
   url.searchParams.set("fm", "avif");
   url.searchParams.set("q", (quality || DEFAULT_CONTENTFUL_QUALITY).toString());
-  url.searchParams.set("w", Math.min(width, CONTENTFUL_MAX_WIDTH).toString());
+  url.searchParams.set("w", Math.min(width, maxWidth).toString());
 
   return url.toString();
 }

@@ -110,6 +110,7 @@ export interface Option {
 }
 
 export type Order = {
+  appliedCoupons?: string[];
   cod_fee?: number;
   contactPhone?: string;
   customer: {
@@ -129,7 +130,7 @@ export type Order = {
   shipping_fee: number;
   tax?: number;
   total: number;
-  tracking_number: string;
+  tracking_number?: string;
 };
 
 export type OrderItem = {
@@ -137,6 +138,7 @@ export type OrderItem = {
   color?: string;
   id: number | string;
   image: Attachment;
+  isGwp?: boolean;
   name: string;
   price: number;
   productId?: number | string;

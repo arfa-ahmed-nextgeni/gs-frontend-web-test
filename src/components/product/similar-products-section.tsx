@@ -20,6 +20,13 @@ export const SimilarProductsSection = ({
     fallback={
       <Container className="mb-7.5 px-0!">
         <CategoryProductsCarouselItemsSkeleton
+          carouselProps={{
+            className:
+              "[&>[data-slot=scroll-snap-carousel-viewport]]:[scroll-padding-inline:0.625rem] lg:[&>[data-slot=scroll-snap-carousel-viewport]]:[scroll-padding-inline:0px]",
+          }}
+          contentProps={{
+            className: "w-max ps-2.5 pe-2.5 lg:ps-0 lg:pe-0",
+          }}
           maximumProducts={8}
           variant={ProductCardVariant.Single}
         />

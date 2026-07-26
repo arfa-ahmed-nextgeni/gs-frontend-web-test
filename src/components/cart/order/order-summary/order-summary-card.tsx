@@ -20,9 +20,7 @@ export const OrderSummaryCard = () => {
   const codFee = cart?.codFee ?? 0;
   const shippingFee = cart?.shippingFee ?? 0;
   const baseShippingFee = cart?.baseShippingFee ?? 0;
-  const rewardPointsValue = cart?.appliedRewardPoints
-    ? cart?.rewardPointsBaseValue
-    : undefined;
+  const rewardPointsValue = cart?.appliedRewardPointsValue;
   const mokafaaDiscount = cart?.mokafaaDiscount ?? 0;
   const discount = cart?.discount ?? 0;
 

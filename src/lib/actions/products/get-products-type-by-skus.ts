@@ -12,10 +12,10 @@ import { ProductType } from "@/lib/constants/product/product-details";
 import { determineProductType } from "@/lib/utils/product-type";
 import { failure, ok } from "@/lib/utils/service-result";
 
-import type { GetProductDetailsQuery } from "@/catalog-service-graphql/graphql";
+import type { GetProductsBySkusQuery } from "@/catalog-service-graphql/graphql";
 
 type ProductData = NonNullable<
-  NonNullable<GetProductDetailsQuery["products"]>[number]
+  NonNullable<GetProductsBySkusQuery["products"]>[number]
 >;
 
 /**

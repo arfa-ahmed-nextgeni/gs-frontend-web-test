@@ -45,14 +45,18 @@ export const ProductCardButton = ({
   const { cart, isLoading: isCartLoading } = useCart();
   const { setNotifyMeData } = useNotifyMe();
 
+  const productProperties = buildProductPropertiesFromCard(product);
+
   const { mutate: addProductToCart } = useAddProductToCart({
-    product: buildProductPropertiesFromCard(product),
+    product: productProperties,
     sku: product.sku || "",
   });
   const { mutate: addWishlistItemToCart } = useAddWishlistItemToCart({
+    product: productProperties,
     sku: product.sku || "",
   });
   const { mutate: removeProductFromCart } = useRemoveProductFromCart({
+    product: productProperties,
     sku: product.sku || "",
   });
 

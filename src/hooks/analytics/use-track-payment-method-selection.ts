@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import { useStoreConfig } from "@/contexts/store-config-context";
 import { useCart } from "@/contexts/use-cart";
 import {
+  trackCheckoutPaymentApplepay,
   trackCheckoutPaymentCc,
   trackCheckoutPaymentCod,
   trackCheckoutPaymentTabbyInstallments,
@@ -10,6 +11,7 @@ import {
 } from "@/lib/analytics/events";
 import { buildCartProperties } from "@/lib/analytics/utils/build-properties";
 import {
+  isApplePayPaymentMethod,
   isCodPaymentMethod,
   isCreditCardPaymentMethod,
   isTabbyPaymentMethod,
@@ -36,6 +38,8 @@ export function useTrackPaymentMethodSelection() {
 
       if (isCodPaymentMethod(methodId)) {
         trackCheckoutPaymentCod(eventProperties);
+      } else if (isApplePayPaymentMethod(methodId)) {
+        trackCheckoutPaymentApplepay(eventProperties);
       } else if (isTabbyPaymentMethod(methodId)) {
         trackCheckoutPaymentTabbyInstallments(eventProperties);
       } else if (isTamaraPaymentMethod(methodId)) {

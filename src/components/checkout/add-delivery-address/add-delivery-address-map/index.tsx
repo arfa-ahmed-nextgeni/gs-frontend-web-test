@@ -57,13 +57,6 @@ export const AddDeliveryAddressMap = () => {
     enabled: shouldRequestCurrentLocation,
   });
 
-  useEffect(() => {
-    console.info("[AddDeliveryAddressMap] Component mounted", {
-      apiKey: GOOGLE_MAPS_API_KEY ? `${GOOGLE_MAPS_API_KEY}` : "NOT SET",
-      mapId: GOOGLE_MAPS_MAP_ID,
-    });
-  }, []);
-
   // Wrapper for refetchLocation that resets dismissed state
   const handleRefetchLocation = useCallback(() => {
     setIsDismissed(false);
@@ -171,13 +164,12 @@ export const AddDeliveryAddressMap = () => {
             defaultCenter={RIYADH_CENTER}
             defaultZoom={13}
             disableDefaultUI
-            gestureHandling="auto"
+            gestureHandling="greedy"
             mapId={GOOGLE_MAPS_MAP_ID}
             style={{ height: "100%", width: "100%" }}
           >
             <AddDeliveryAddressMapContent
               currentLocation={currentLocation}
-              defaultCenter={RIYADH_CENTER}
               isBottomWarningVisible={false}
               onLocateAction={handleRefetchLocation}
             />
@@ -227,13 +219,12 @@ export const AddDeliveryAddressMap = () => {
           defaultCenter={defaultCenter}
           defaultZoom={13}
           disableDefaultUI
-          gestureHandling="auto"
+          gestureHandling="greedy"
           mapId={GOOGLE_MAPS_MAP_ID}
           style={{ height: "100%", width: "100%" }}
         >
           <AddDeliveryAddressMapContent
             currentLocation={currentLocation}
-            defaultCenter={defaultCenter}
             isBottomWarningVisible={
               selectedLocation && isSelectedLocationInSaudiArabia === false
                 ? true

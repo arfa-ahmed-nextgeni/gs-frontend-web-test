@@ -110,10 +110,12 @@ export const CustomerAddressCard = ({
               {t("address")}
             </span>
             <span className="text-text-primary min-w-0 flex-1 break-words text-start text-xs font-normal">
-              {`${customerAddress.ksaShortAddress ? customerAddress.ksaShortAddress + ", " : ""}${countryLabel}, ${stateLabel ? stateLabel + "," : ""} ${formattedAddress}`.replace(
-                /,\s*0+$/,
-                ""
-              )}
+              {`${customerAddress.ksaShortAddress ? customerAddress.ksaShortAddress + ", " : ""}${countryLabel}, ${stateLabel ? stateLabel + "," : ""} ${formattedAddress}`
+                .replace(/,\s*0+$/, "")
+                .split(",")
+                .map((part) => part.trim())
+                .filter((part) => part !== "N/A")
+                .join(", ")}
             </span>
           </div>
           <div className="flex flex-row">

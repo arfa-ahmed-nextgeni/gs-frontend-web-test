@@ -97,6 +97,31 @@ export const QUERY_KEYS = {
     type?: LockerType;
   }) => ["locker-locations", latitude, longitude, language, type],
 
+  PRODUCTS: {
+    RECENTLY_VIEWED: ["products", "recently-viewed"],
+    REVIEWS: ({
+      locale,
+      page,
+      pageSize,
+      productId,
+      sortBy,
+    }: {
+      locale: string;
+      page: number;
+      pageSize: number;
+      productId: number;
+      sortBy?: string;
+    }) => [
+      "products",
+      "reviews",
+      locale,
+      productId,
+      page,
+      pageSize,
+      sortBy ?? "",
+    ],
+  },
+
   STORE_CONFIG: (locale: string) => ["store-config", locale],
 
   WISHLIST: {

@@ -1,26 +1,52 @@
 import { ProductReviewCard } from "@/components/product/product-reviews/product-review-card";
+import { ProductReviewsClientList } from "@/components/product/product-reviews/product-reviews-view/product-reviews-client-list";
 import { PaginationWithSearchParams } from "@/components/shared/pagination-with-search-params";
 import { getProductReviews } from "@/lib/actions/products/get-product-reviews";
 import { isOk } from "@/lib/utils/service-result";
 
+const PRODUCT_REVIEWS_PAGE_SIZE = 10;
+
 export const ProductReviewsList = async ({
+  clientPagination,
   currentPage,
   productId,
   sortBy,
 }: {
+  clientPagination?: boolean;
   currentPage: number;
   productId: number;
   sortBy?: string;
 }) => {
   const productReviewsResponse = await getProductReviews({
     page: currentPage,
-    pageSize: 10,
+    pageSize: PRODUCT_REVIEWS_PAGE_SIZE,
     productId,
     sortBy,
   });
 
   if (isOk(productReviewsResponse)) {
     const { reviews, totalPages } = productReviewsResponse.data;
+
+    if (clientPagination) {
+      return (
+        <ProductReviewsClientList
+          initialData={{
+            reviews: reviews.map((review) => ({
+              author: review.author,
+              date: review.date,
+              id: review.id,
+              message: review.message,
+              rating: review.rating,
+            })),
+            totalPages,
+          }}
+          initialPage={currentPage}
+          initialSortBy={sortBy}
+          pageSize={PRODUCT_REVIEWS_PAGE_SIZE}
+          productId={productId}
+        />
+      );
+    }
 
     return (
       <>

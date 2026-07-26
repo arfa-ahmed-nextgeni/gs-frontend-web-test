@@ -30,10 +30,10 @@ interface ProductStaticParamsSources {
 }
 
 const DEFAULT_PRODUCT_STATIC_PARAMS_SOURCES: ProductStaticParamsSources = {
-  categoryFirstPage: true,
-  landingCategoryProducts: true,
-  landingFlashSale: true,
-  landingTopTrends: true,
+  categoryFirstPage: false,
+  landingCategoryProducts: false,
+  landingFlashSale: false,
+  landingTopTrends: false,
 };
 
 interface PageLandingContent {

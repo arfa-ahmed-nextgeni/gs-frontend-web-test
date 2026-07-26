@@ -22,32 +22,11 @@ import {
 } from "@/components/search/utils/search-storage";
 import { Spinner } from "@/components/ui/spinner";
 import { useSearchAutocomplete } from "@/hooks/product/use-search-client";
+import { useBrandFuzzySearch } from "@/hooks/use-brand-fuzzy-search";
 import { Link } from "@/i18n/navigation";
 import { type Locale } from "@/lib/constants/i18n";
 import { ROUTES } from "@/lib/constants/routes";
 import { SEARCH_MIN_QUERY_LENGTH } from "@/lib/constants/search";
-import { cn } from "@/lib/utils";
-
-const extractBrandsFromFacets = (facets: any[]): BrandSuggestion[] => {
-  const brandFacet = facets.find(
-    (facet: any) => facet.attribute === "brand_new"
-  );
-
-  if (!brandFacet || !brandFacet.buckets) {
-    return [];
-  }
-
-  // urlPath is injected server-side in /api/search/route.ts by matching
-  // brand names against the full cached getBrands() list, covering all
-  // brands regardless of what appears in the categories facet.
-  return brandFacet.buckets
-    .filter((bucket: any) => bucket.title && bucket.title.trim())
-    .map((bucket: any) => ({
-      title: bucket.title,
-      urlPath: bucket.urlPath,
-    }))
-    .slice(0, 6);
-};
 
 export const SearchResults = ({
   inputFocus,
@@ -63,7 +42,7 @@ export const SearchResults = ({
     handleSuggestionClick,
     setHasDropdownContent,
   } = useSearchActions();
-  const { hasDropdownContent, queryText } = useSearchUiState();
+  const { allBrands, hasDropdownContent, queryText } = useSearchUiState();
   const locale = useLocale() as Locale;
   const [recentSearches, setRecentSearches] = useState<string[]>(() =>
     getStoredRecentSearches()
@@ -81,14 +60,14 @@ export const SearchResults = ({
   const searchResults = canSearch ? searchData?.products || [] : [];
   const suggestions = canSearch ? searchData?.suggestions || [] : [];
   const totalCount = canSearch ? searchData?.totalCount || 0 : 0;
-  const brands = useMemo<BrandSuggestion[]>(() => {
-    if (!canSearch) {
-      return [];
-    }
-
-    const facets = searchData?.facets || [];
-    return facets.length > 0 ? extractBrandsFromFacets(facets) : [];
-  }, [canSearch, searchData?.facets]);
+  const fuzzyBrands = useBrandFuzzySearch(allBrands, queryText);
+  const brands = useMemo<BrandSuggestion[]>(
+    () =>
+      canSearch
+        ? fuzzyBrands.map((b) => ({ title: b.name, urlPath: b.urlPath }))
+        : [],
+    [canSearch, fuzzyBrands]
+  );
 
   const hasResults = searchResults.length > 0;
   const showSearchSpinner = canSearch && isPending && !hasResults;
@@ -119,14 +98,16 @@ export const SearchResults = ({
     setRecentSearches([]);
   };
 
-  return (
-    <div
-      className={cn("flex-1 overflow-y-auto", {
-        "absolute left-0 right-0 top-10 z-50 max-h-[80vh] rounded-b-xl border border-gray-200 bg-white shadow-xl":
-          !isMobile,
-        "max-h-[80dvh] rounded-b-3xl ltr:left-0 rtl:right-0": !isMobile,
-      })}
-    >
+  const handleProductResultClick = () => {
+    if (trimmedQuery) {
+      setRecentSearches(saveRecentSearch(trimmedQuery));
+    }
+
+    clear();
+  };
+
+  const content = (
+    <>
       {showSearchSpinner ? (
         <div
           aria-busy="true"
@@ -150,7 +131,7 @@ export const SearchResults = ({
                     }
                   >
                     <SearchResultItem
-                      onClick={clear}
+                      onClick={handleProductResultClick}
                       position={index + 1}
                       product={product}
                       searchTerm={queryText}
@@ -178,18 +159,21 @@ export const SearchResults = ({
             </div>
           )}
 
-          {suggestions.length > 0 && (
+          {brands.length > 0 && (
             <div className="pb-4">
-              <SearchSuggestion
-                list={suggestions}
-                onSuggestionClick={handleSuggestionClick}
-                title={t("suggestions")}
+              <SearchBrandPills
+                brands={brands}
+                onBrandClick={handleBrandClick}
               />
             </div>
           )}
 
-          {brands.length > 0 && (
-            <SearchBrandPills brands={brands} onBrandClick={handleBrandClick} />
+          {suggestions.length > 0 && (
+            <SearchSuggestion
+              list={suggestions}
+              onSuggestionClick={handleSuggestionClick}
+              title={t("suggestions")}
+            />
           )}
         </div>
       ) : (
@@ -201,6 +185,20 @@ export const SearchResults = ({
           />
         </div>
       )}
+    </>
+  );
+
+  if (isMobile) {
+    return (
+      <div className="flex-1 overflow-y-auto overscroll-contain">{content}</div>
+    );
+  }
+
+  return (
+    <div className="absolute left-0 right-0 top-10 z-50 rounded-b-2xl border border-gray-200 bg-white pb-3 shadow-xl ltr:left-0 rtl:right-0">
+      <div className="search-dropdown-scroll max-h-[80dvh] overflow-y-auto overscroll-contain">
+        {content}
+      </div>
     </div>
   );
 };

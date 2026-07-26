@@ -31,6 +31,9 @@ const config: CodegenConfig = {
         maybeValue: "T | null | undefined",
       },
       preset: "client",
+      presetConfig: {
+        fragmentMasking: false,
+      },
     },
   },
   ignoreNoDocuments: true,

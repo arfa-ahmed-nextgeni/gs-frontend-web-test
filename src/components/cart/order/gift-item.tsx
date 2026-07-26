@@ -6,6 +6,7 @@ import { ProductImageWithFallback } from "@/components/product/product-image-wit
 import { LocalizedPrice } from "@/components/shared/localized-price";
 import { ProductDetailsLink } from "@/components/shared/product-details-link";
 import { CartItem } from "@/lib/models/cart";
+import { cn } from "@/lib/utils";
 import { getProductDetailsHref } from "@/lib/utils/get-product-details-href";
 
 interface GiftItemProps {
@@ -19,6 +20,12 @@ export const GiftItem = ({ index, item }: GiftItemProps) => {
     sku: item.sku,
     urlKey: item.urlKey,
   });
+  const freeGiftLabel = t("giftItems.freeGiftLabel");
+  const quantityLabel = t("giftItems.quantity", {
+    count: String(item.quantity),
+  });
+  const shouldShowCurrentPrice =
+    item.priceValue > 0 && item.currentPrice.trim().length > 0;
 
   return (
     <div className="lg:h-25 lg:w-199.25 flex flex-col p-2.5 lg:flex-row lg:items-center lg:justify-between lg:p-2.5 lg:pl-5 lg:rtl:pr-5">
@@ -61,7 +68,7 @@ export const GiftItem = ({ index, item }: GiftItemProps) => {
               <p className="text-text-primary truncate text-xs font-semibold">
                 {item.name}
                 <span className="text-text-danger ms-1 text-sm font-bold">
-                  x{item.quantity}
+                  {quantityLabel}
                 </span>
               </p>
               {item.description && (
@@ -73,13 +80,24 @@ export const GiftItem = ({ index, item }: GiftItemProps) => {
 
             {/* Price section - shown inline on mobile */}
             <div className="me-2.5 flex shrink-0 flex-col items-end lg:hidden rtl:items-start">
-              {item.currentPrice && (
+              <p
+                className={cn(
+                  "text-text-danger whitespace-nowrap text-[16px] font-semibold",
+                  { "text-text-primary": !shouldShowCurrentPrice }
+                )}
+              >
+                {freeGiftLabel}
+              </p>
+              {shouldShowCurrentPrice && (
                 <LocalizedPrice
                   containerProps={{
                     className:
-                      "text-text-secondary whitespace-nowrap text-xs font-light line-through",
+                      "text-text-secondary whitespace-nowrap text-xs font-light",
                   }}
                   price={item.currentPrice}
+                  valueProps={{
+                    className: "line-through",
+                  }}
                 />
               )}
             </div>
@@ -88,14 +106,21 @@ export const GiftItem = ({ index, item }: GiftItemProps) => {
       </div>
 
       {/* Desktop Price section */}
-      <div className="hidden items-center gap-2 lg:flex rtl:gap-3">
-        {item.currentPrice && (
+      <div className="pe-7.5 hidden items-center gap-3 lg:flex">
+        <p
+          className={cn("text-text-danger text-[16px] font-semibold", {
+            "text-text-primary": !shouldShowCurrentPrice,
+          })}
+        >
+          {freeGiftLabel}
+        </p>
+        {shouldShowCurrentPrice && (
           <LocalizedPrice
             containerProps={{
-              className:
-                "text-text-secondary text-xs font-light line-through pe-7.5 rtl:text-xs",
+              className: "text-text-secondary text-xs font-light rtl:text-xs",
             }}
             price={item.currentPrice}
+            valueProps={{ className: "line-through" }}
           />
         )}
       </div>

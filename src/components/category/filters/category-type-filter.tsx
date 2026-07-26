@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link } from "@/i18n/navigation";
+import { categoryUrlPathToRoutePath } from "@/lib/category/category-route-path";
 import { cn } from "@/lib/utils";
 
 import type {
@@ -34,7 +35,7 @@ export async function CategoryTypeFilter({
   const parentChips = deriveParentChips(breadcrumbs, t("previous"));
   const childChips =
     category.children?.map<CategoryChip>((child) => ({
-      href: `/c/${child.url_path || child.url_key}`,
+      href: categoryUrlPathToRoutePath(child.url_path || child.url_key),
       name: child.name,
       uid: child.uid,
     })) ?? [];
@@ -93,18 +94,21 @@ function deriveParentChips(
     return [];
   }
 
+  // The breadcrumb href is already resolved to the correct route prefix
+  // (/c/* or /brands/*) by the breadcrumb model, so use it directly rather
+  // than stripping and re-prepending /c/ (which would force brand parents
+  // back under /c/).
   const parentHref = breadcrumbs.at(-2)?.href || "";
-  const parentPath = parentHref.replace(/^\/c\//, "").replace(/^\/+|\/+$/g, "");
 
-  if (!parentPath) {
+  if (!parentHref) {
     return [];
   }
 
   return [
     {
-      href: `/c/${parentPath}`,
+      href: parentHref,
       name: previousLabel,
-      uid: `parent-${parentPath}`,
+      uid: `parent-${parentHref}`,
     },
   ];
 }

@@ -7,7 +7,7 @@ import { ProductCardVariant } from "@/lib/constants/product/product-card";
  */
 export function MobileCategoryProductsSkeleton() {
   return (
-    <div className="grid grid-cols-2 gap-3 px-2.5">
+    <div className="grid grid-cols-2 gap-2.5 md:grid-cols-3 lg:grid-cols-5">
       {Array.from({ length: 10 }).map((_, idx) => (
         <ProductCardSkeleton
           key={`mobile-skeleton-${idx}`}

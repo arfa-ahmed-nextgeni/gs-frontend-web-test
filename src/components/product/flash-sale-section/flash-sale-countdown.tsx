@@ -6,7 +6,6 @@ import { FlashSaleCountdownSkeleton } from "@/components/product/flash-sale-sect
 export const FlashSaleCountdown = withVisibilityLoad<
   {
     endTime: string;
-    layout: "desktop" | "mobile";
   },
   HTMLDivElement
 >({
@@ -17,11 +16,8 @@ export const FlashSaleCountdown = withVisibilityLoad<
         default: module.FlashSaleCountdownContent,
       })
     ),
-  renderFallback: ({ props, sentinelRef }) => (
-    <FlashSaleCountdownSkeleton
-      layout={props.layout}
-      sentinelRef={sentinelRef}
-    />
+  renderFallback: ({ sentinelRef }) => (
+    <FlashSaleCountdownSkeleton sentinelRef={sentinelRef} />
   ),
   rootMargin: "200px 0px",
 });

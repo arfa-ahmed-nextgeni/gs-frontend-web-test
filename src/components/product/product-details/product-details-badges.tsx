@@ -41,7 +41,7 @@ export const ProductDetailsBadges = ({
                 price: () => (
                   <LocalizedPrice
                     currencySymbolProps={{
-                      className: "font-normal",
+                      className: "text-[1.3em] me-0.75",
                     }}
                     price={savedPrice}
                   />

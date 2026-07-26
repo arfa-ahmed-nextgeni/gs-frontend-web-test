@@ -18,11 +18,11 @@ export class Customer extends Helper {
   get isProfileComplete() {
     return Boolean(
       this.firstName &&
-        this.lastName &&
-        this.email &&
-        this.dateOfBirth &&
-        this.gender &&
-        this.phoneNumber
+      this.lastName &&
+      this.email &&
+      this.dateOfBirth &&
+      this.gender &&
+      this.phoneNumber
     );
   }
 

@@ -11,30 +11,36 @@ import {
   NEXT_PUBLIC_DOMAIN_AE,
   NEXT_PUBLIC_DOMAIN_BH,
   NEXT_PUBLIC_DOMAIN_BOULEVARD,
+  NEXT_PUBLIC_DOMAIN_FABIAN,
   NEXT_PUBLIC_DOMAIN_GLOBAL,
   NEXT_PUBLIC_DOMAIN_IQ,
   NEXT_PUBLIC_DOMAIN_KW,
   NEXT_PUBLIC_DOMAIN_OM,
   NEXT_PUBLIC_DOMAIN_SA,
+  NEXT_PUBLIC_DOMAIN_SURRATI,
 } from "@/lib/config/client-env";
 
 export const enum Locale {
   ar_AE = "ar-AE",
   ar_BH = "ar-BH",
   ar_boulevard = "ar-BLVD",
+  ar_fabian = "ar-FABIAN",
   ar_GLOBAL = "ar-GLOBAL",
   ar_IQ = "ar-IQ",
   ar_KW = "ar-KW",
   ar_OM = "ar-OM",
   ar_SA = "ar-SA",
+  ar_surrati = "ar-SURRATI",
   en_AE = "en-AE",
   en_BH = "en-BH",
   en_boulevard = "en-BLVD",
+  en_fabian = "en-FABIAN",
   en_GLOBAL = "en-GLOBAL",
   en_IQ = "en-IQ",
   en_KW = "en-KW",
   en_OM = "en-OM",
   en_SA = "en-SA",
+  en_surrati = "en-SURRATI",
 }
 
 export const enum LocalePathPrefix {
@@ -42,7 +48,7 @@ export const enum LocalePathPrefix {
   EN = "/en",
 }
 
-export const DEFAULT_LOCALE = Locale.en_SA;
+export const DEFAULT_LOCALE = Locale.ar_SA;
 
 export const SUPPORTED_LOCALES = [
   Locale.ar_AE,
@@ -61,6 +67,10 @@ export const SUPPORTED_LOCALES = [
   Locale.en_IQ,
   Locale.en_BH,
   Locale.ar_BH,
+  Locale.ar_surrati,
+  Locale.en_surrati,
+  Locale.ar_fabian,
+  Locale.en_fabian,
 ] as const;
 
 export const enum CountryCode {
@@ -82,19 +92,23 @@ export const enum StoreCode {
   ar_ae = "ar_ae",
   ar_bh = "ar_bh",
   ar_boulevard = "ar_boulevard",
+  ar_fabian = "ar_fabian",
   ar_global = "ar_global",
   ar_iq = "ar_iq",
   ar_kw = "ar_kw",
   ar_om = "ar_om",
   ar_sa = "ar_sa",
+  ar_surrati = "ar_surrati",
   en_ae = "en_ae",
   en_bh = "en_bh",
   en_boulevard = "en_boulevard",
+  en_fabian = "en_fabian",
   en_global = "en_global",
   en_iq = "en_iq",
   en_kw = "en_kw",
   en_om = "en_om",
   en_sa = "en_sa",
+  en_surrati = "en_surrati",
 }
 
 export const GLOBAL_STORES = [StoreCode.en_global, StoreCode.ar_global];
@@ -103,38 +117,57 @@ export const STORE_TO_LOCALE = {
   [StoreCode.ar_ae]: Locale.ar_AE,
   [StoreCode.ar_bh]: Locale.ar_BH,
   [StoreCode.ar_boulevard]: Locale.ar_boulevard,
+  [StoreCode.ar_fabian]: Locale.ar_fabian,
   [StoreCode.ar_global]: Locale.ar_GLOBAL,
   [StoreCode.ar_iq]: Locale.ar_IQ,
   [StoreCode.ar_kw]: Locale.ar_KW,
   [StoreCode.ar_om]: Locale.ar_OM,
   [StoreCode.ar_sa]: Locale.ar_SA,
+  [StoreCode.ar_surrati]: Locale.ar_surrati,
   [StoreCode.en_ae]: Locale.en_AE,
   [StoreCode.en_bh]: Locale.en_BH,
   [StoreCode.en_boulevard]: Locale.en_boulevard,
+  [StoreCode.en_fabian]: Locale.en_fabian,
   [StoreCode.en_global]: Locale.en_GLOBAL,
   [StoreCode.en_iq]: Locale.en_IQ,
   [StoreCode.en_kw]: Locale.en_KW,
   [StoreCode.en_om]: Locale.en_OM,
   [StoreCode.en_sa]: Locale.en_SA,
+  [StoreCode.en_surrati]: Locale.en_surrati,
 } as const;
+
+// Brand locales are KSA-based stores. They don't have their own country/city
+// data in the backend — cities and areas APIs must use the base SA locale instead.
+export const BRAND_LOCALE_TO_BASE_LOCALE: Partial<Record<Locale, Locale>> = {
+  [Locale.ar_boulevard]: Locale.ar_SA,
+  [Locale.ar_fabian]: Locale.ar_SA,
+  [Locale.ar_surrati]: Locale.ar_SA,
+  [Locale.en_boulevard]: Locale.en_SA,
+  [Locale.en_fabian]: Locale.en_SA,
+  [Locale.en_surrati]: Locale.en_SA,
+};
 
 export const LOCALE_TO_STORE = {
   [Locale.ar_AE]: StoreCode.ar_ae,
   [Locale.ar_BH]: StoreCode.ar_bh,
   [Locale.ar_boulevard]: StoreCode.ar_boulevard,
+  [Locale.ar_fabian]: StoreCode.ar_fabian,
   [Locale.ar_GLOBAL]: StoreCode.ar_global,
   [Locale.ar_IQ]: StoreCode.ar_iq,
   [Locale.ar_KW]: StoreCode.ar_kw,
   [Locale.ar_OM]: StoreCode.ar_om,
   [Locale.ar_SA]: StoreCode.ar_sa,
+  [Locale.ar_surrati]: StoreCode.ar_surrati,
   [Locale.en_AE]: StoreCode.en_ae,
   [Locale.en_BH]: StoreCode.en_bh,
   [Locale.en_boulevard]: StoreCode.en_boulevard,
+  [Locale.en_fabian]: StoreCode.en_fabian,
   [Locale.en_GLOBAL]: StoreCode.en_global,
   [Locale.en_IQ]: StoreCode.en_iq,
   [Locale.en_KW]: StoreCode.en_kw,
   [Locale.en_OM]: StoreCode.en_om,
   [Locale.en_SA]: StoreCode.en_sa,
+  [Locale.en_surrati]: StoreCode.en_surrati,
 } as const;
 
 export const COUNTRY_CODE_TO_DOMAIN = {
@@ -151,30 +184,36 @@ export const LOCALE_TO_DOMAIN = {
   [Locale.ar_AE]: NEXT_PUBLIC_DOMAIN_AE,
   [Locale.ar_BH]: NEXT_PUBLIC_DOMAIN_BH,
   [Locale.ar_boulevard]: NEXT_PUBLIC_DOMAIN_BOULEVARD,
+  [Locale.ar_fabian]: NEXT_PUBLIC_DOMAIN_FABIAN,
   [Locale.ar_GLOBAL]: NEXT_PUBLIC_DOMAIN_GLOBAL,
   [Locale.ar_IQ]: NEXT_PUBLIC_DOMAIN_IQ,
   [Locale.ar_KW]: NEXT_PUBLIC_DOMAIN_KW,
   [Locale.ar_OM]: NEXT_PUBLIC_DOMAIN_OM,
   [Locale.ar_SA]: NEXT_PUBLIC_DOMAIN_SA,
+  [Locale.ar_surrati]: NEXT_PUBLIC_DOMAIN_SURRATI,
   [Locale.en_AE]: NEXT_PUBLIC_DOMAIN_AE,
   [Locale.en_BH]: NEXT_PUBLIC_DOMAIN_BH,
   [Locale.en_boulevard]: NEXT_PUBLIC_DOMAIN_BOULEVARD,
+  [Locale.en_fabian]: NEXT_PUBLIC_DOMAIN_FABIAN,
   [Locale.en_GLOBAL]: NEXT_PUBLIC_DOMAIN_GLOBAL,
   [Locale.en_IQ]: NEXT_PUBLIC_DOMAIN_IQ,
   [Locale.en_KW]: NEXT_PUBLIC_DOMAIN_KW,
   [Locale.en_OM]: NEXT_PUBLIC_DOMAIN_OM,
   [Locale.en_SA]: NEXT_PUBLIC_DOMAIN_SA,
+  [Locale.en_surrati]: NEXT_PUBLIC_DOMAIN_SURRATI,
 } as const;
 
 export const DOMAIN_TO_COUNTRY_CODE = {
   [NEXT_PUBLIC_DOMAIN_AE]: CountryCode.Emirates,
   [NEXT_PUBLIC_DOMAIN_BH]: CountryCode.Bahrain,
   [NEXT_PUBLIC_DOMAIN_BOULEVARD]: CountryCode.Saudi,
+  [NEXT_PUBLIC_DOMAIN_FABIAN]: CountryCode.Saudi,
   [NEXT_PUBLIC_DOMAIN_GLOBAL]: CountryCode.Global,
   [NEXT_PUBLIC_DOMAIN_IQ]: CountryCode.Iraq,
   [NEXT_PUBLIC_DOMAIN_KW]: CountryCode.Kuwait,
   [NEXT_PUBLIC_DOMAIN_OM]: CountryCode.Oman,
   [NEXT_PUBLIC_DOMAIN_SA]: CountryCode.Saudi,
+  [NEXT_PUBLIC_DOMAIN_SURRATI]: CountryCode.Saudi,
 } as const;
 
 export const COUNTRY_CODE_TO_FLAG = {
@@ -254,19 +293,23 @@ export const LOCALE_TO_TIMEZONE = {
   [Locale.ar_AE]: "Asia/Dubai",
   [Locale.ar_BH]: "Asia/Bahrain",
   [Locale.ar_boulevard]: "Asia/Riyadh",
+  [Locale.ar_fabian]: "Asia/Riyadh",
   [Locale.ar_GLOBAL]: "Asia/Riyadh",
   [Locale.ar_IQ]: "Asia/Baghdad",
   [Locale.ar_KW]: "Asia/Kuwait",
   [Locale.ar_OM]: "Asia/Muscat",
   [Locale.ar_SA]: "Asia/Riyadh",
+  [Locale.ar_surrati]: "Asia/Riyadh",
   [Locale.en_AE]: "Asia/Dubai",
   [Locale.en_BH]: "Asia/Bahrain",
   [Locale.en_boulevard]: "Asia/Riyadh",
+  [Locale.en_fabian]: "Asia/Riyadh",
   [Locale.en_GLOBAL]: "Asia/Riyadh",
   [Locale.en_IQ]: "Asia/Baghdad",
   [Locale.en_KW]: "Asia/Kuwait",
   [Locale.en_OM]: "Asia/Muscat",
   [Locale.en_SA]: "Asia/Riyadh",
+  [Locale.en_surrati]: "Asia/Riyadh",
 } as const;
 
 export const ARABIC_ALPHABETS = [

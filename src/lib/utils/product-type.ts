@@ -1,6 +1,6 @@
 import { ProductType } from "@/lib/constants/product/product-details";
 
-import type { GetProductDetailsQuery } from "@/catalog-service-graphql/graphql";
+import type { GetProductsBySkusQuery } from "@/catalog-service-graphql/graphql";
 
 const PERFUME_ATTRIBUTE_KEYWORDS = ["perfume", "fragrance"];
 
@@ -11,7 +11,7 @@ export const isBundlesProductType = (
 ): boolean => !!value && BUNDLES_PRODUCT_TYPE_LABELS.includes(value);
 
 type ProductData = NonNullable<
-  NonNullable<GetProductDetailsQuery["products"]>[number]
+  NonNullable<GetProductsBySkusQuery["products"]>[number]
 >;
 
 export const isPerfumeAttributeSet = (attributeSet: string) => {

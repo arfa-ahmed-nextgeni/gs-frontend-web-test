@@ -29,6 +29,7 @@ export interface ProductOption {
 
 export class ProductCardModel extends Helper {
   attributeSet?: string;
+  availableStock?: number;
   badges?: ProductBadge[];
   brand: string;
   bulletDelivery?: boolean;
@@ -61,6 +62,7 @@ export class ProductCardModel extends Helper {
 
   constructor({
     attributeSet,
+    availableStock,
     badges,
     brand,
     bulletDelivery,
@@ -91,6 +93,7 @@ export class ProductCardModel extends Helper {
     variant,
   }: {
     attributeSet?: string;
+    availableStock?: number;
     badges?: {
       backgroundColor?: string;
       color?: string;
@@ -130,6 +133,7 @@ export class ProductCardModel extends Helper {
   }) {
     super();
     this.attributeSet = attributeSet;
+    this.availableStock = availableStock;
     this.sku = sku;
     this.skuParent = skuParent;
     this.parentId = parentId;

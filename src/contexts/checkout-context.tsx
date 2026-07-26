@@ -15,6 +15,7 @@ import { CHECKOUT_STORAGE_KEYS } from "@/lib/constants/checkout/storage-keys";
 type CheckoutContextType = {
   cameFromAddressDrawer: boolean;
   cameFromShippingOptionDrawer: boolean;
+  deliveryAddressEntryKey: number;
   deliveryAddressFlowState: DeliveryAddressFlowState | null;
   isAddressDrawerOpen: boolean;
   isShippingOptionDrawerOpen: boolean;
@@ -27,6 +28,7 @@ type CheckoutContextType = {
   setIsShippingOptionDrawerOpen: (value: boolean) => void;
   setSelectedLockerAddressType: (type: LockerType | null) => void;
   setSelectedPayment: Dispatch<SetStateAction<string>>;
+  updateDeliveryAddressEntryKey: () => void;
 };
 
 type DeliveryAddressFlowContactData = {
@@ -37,12 +39,18 @@ type DeliveryAddressFlowContactData = {
 
 type DeliveryAddressFlowSnapshot = {
   city: string;
+  countryCode?: string;
+  countryLabel?: string;
   district: string;
   formattedAddress: string;
   isDefault: boolean;
+  middleName?: string;
   postalCode: string;
+  regionId?: null | number;
   shortCode: string;
+  stateLabel?: string;
   street: string;
+  streetLine2?: string;
 };
 
 type DeliveryAddressFlowState = {
@@ -77,6 +85,7 @@ export const CheckoutProvider = ({
   const [cameFromAddressDrawer, setCameFromAddressDrawer] = useState(false);
   const [cameFromShippingOptionDrawer, setCameFromShippingOptionDrawer] =
     useState(false);
+  const [deliveryAddressEntryKey, setDeliveryAddressEntryKey] = useState(0);
   const [deliveryAddressFlowState, setDeliveryAddressFlowState] =
     useState<DeliveryAddressFlowState | null>(null);
   const [isAddressDrawerOpen, setIsAddressDrawerOpen] = useState(false);
@@ -94,6 +103,7 @@ export const CheckoutProvider = ({
       value={{
         cameFromAddressDrawer,
         cameFromShippingOptionDrawer,
+        deliveryAddressEntryKey,
         deliveryAddressFlowState,
         isAddressDrawerOpen,
         isShippingOptionDrawerOpen,
@@ -106,6 +116,8 @@ export const CheckoutProvider = ({
         setIsShippingOptionDrawerOpen,
         setSelectedLockerAddressType,
         setSelectedPayment,
+        updateDeliveryAddressEntryKey: () =>
+          setDeliveryAddressEntryKey((prev) => prev + 1),
       }}
     >
       {children}

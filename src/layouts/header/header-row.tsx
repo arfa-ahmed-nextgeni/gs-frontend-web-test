@@ -5,6 +5,7 @@ import { ProfileIcon } from "@/components/icons/profile-icon";
 import { SearchBar } from "@/components/search/search-bar";
 import Container from "@/components/shared/container";
 import { SiteLogo } from "@/components/shared/site-logo";
+import { SiteLogoSkeleton } from "@/components/shared/site-logo-skeleton";
 import { Link } from "@/i18n/navigation";
 import { DeferredDesktopHeaderActions } from "@/layouts/header/deferred-desktop-header-actions";
 import { DeferredMobileTopBar } from "@/layouts/header/deferred-mobile-top-bar";
@@ -28,7 +29,9 @@ export const HeaderRow = ({
   const defaultHeaderContent = (
     <>
       <Link aria-label="Home" href={ROUTES.ROOT} title="Go to homepage">
-        <SiteLogo />
+        <AsyncBoundary fallback={<SiteLogoSkeleton />}>
+          <SiteLogo />
+        </AsyncBoundary>
       </Link>
       <SearchBar isSticky={isSticky} />
     </>

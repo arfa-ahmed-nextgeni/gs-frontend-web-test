@@ -48,9 +48,10 @@ export const CartContent = ({
       {/* Title + Count */}
       {itemCount > 0 && (
         <header className="mb-4 mt-4 pl-4 lg:mt-10 lg:px-0 rtl:pr-4">
-          <h1 className="text-(--color-text-primary) text-[25px] font-semibold leading-tight">
+          {/* SEO: h2 because cart can render as a drawer/overlay alongside pages that already have an h1 */}
+          <h2 className="text-(--color-text-primary) text-[25px] font-semibold leading-tight">
             {t("shoppingBag")}
-          </h1>
+          </h2>
 
           <div className="mt-1 flex flex-row items-center gap-5">
             {itemCount > 0 && (
@@ -67,7 +68,7 @@ export const CartContent = ({
 
       {/* Content */}
       {isLoading ? (
-        <CartPageSkeletonContent />
+        <CartPageSkeletonContent showHeader={false} />
       ) : itemCount === 0 ? (
         <CartEmptyState />
       ) : (

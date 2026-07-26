@@ -32,7 +32,7 @@ export const CartDrawerSubtotal = () => {
       >
         <LocalizedPrice
           containerProps={{ className: "text-xl" }}
-          currencySymbolProps={{ className: "mr-[4px] text-2xl" }}
+          currencySymbolProps={{ className: "text-[1.3em] me-1.5" }}
           price={cart?.subTotalFormattedPrice}
         />
       </div>

@@ -16,6 +16,7 @@ export class FlashSale extends CategoryProducts {
 
   constructor(data: FlashSaleData, contentType: TabContentType) {
     const categoryProductsData = {
+      displayOn: data.displayOn,
       maximumProducts: data.maximumProducts || 10,
       productsCategoryId: data.productsCategoryId || "",
       richTitle: undefined,

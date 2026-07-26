@@ -1,5 +1,5 @@
-import { CartPageSkeletonContent } from "@/components/cart/order/skeletons";
+import { CartPageSkeleton } from "@/components/cart/order/skeletons";
 
 export default function CartLoading() {
-  return <CartPageSkeletonContent />;
+  return <CartPageSkeleton />;
 }

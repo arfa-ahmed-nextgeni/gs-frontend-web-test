@@ -1,6 +1,6 @@
 "use client";
 
-import type { RefObject } from "react";
+import { memo, type RefObject } from "react";
 
 import { VideoPlayerDialog } from "@/components/dialogs/video-player-dialog";
 import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
@@ -77,17 +77,7 @@ export const ProductMediaCarousel = ({
                 />
               )
             ) : (
-              <ProductImageWithFallback
-                alt="Product image"
-                className="transition-default object-contain group-focus-within:scale-105 group-hover:scale-105"
-                decoding={index === 0 ? "sync" : "async"}
-                fetchPriority={index === 0 ? "high" : undefined}
-                fill
-                loading={index === 0 ? "eager" : "lazy"}
-                priority={index === 0}
-                sizes="(max-width: 1024px) 100vw, 78vw"
-                src={media.url}
-              />
+              <ProductMediaCarouselImage index={index} url={media.url} />
             )}
           </CarouselItem>
         );
@@ -95,3 +85,25 @@ export const ProductMediaCarousel = ({
     </CarouselContainer>
   );
 };
+
+const ProductMediaCarouselImage = memo(function ProductMediaCarouselImage({
+  index,
+  url,
+}: {
+  index: number;
+  url: string;
+}) {
+  return (
+    <ProductImageWithFallback
+      alt="Product image"
+      className="transition-default object-contain group-focus-within:scale-105 group-hover:scale-105"
+      decoding={index === 0 ? "sync" : "async"}
+      fetchPriority={index === 0 ? "high" : undefined}
+      fill
+      loading={index === 0 ? "eager" : "lazy"}
+      priority={index === 0}
+      sizes="(max-width: 1024px) 100vw, 78vw"
+      src={url}
+    />
+  );
+});

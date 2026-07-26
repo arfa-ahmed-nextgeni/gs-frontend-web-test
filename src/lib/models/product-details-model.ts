@@ -41,6 +41,7 @@ type ReviewRating = {
 
 export class ProductDetailsModel extends Helper {
   attributeSet?: string;
+  availableStock?: number;
   averageRating?: number;
   brand: string;
   bulletDelivery = false;
@@ -61,6 +62,7 @@ export class ProductDetailsModel extends Helper {
   metaTitle?: string;
   name: string;
   oldPrice?: string;
+  parentProductUrl?: string;
   price?: string;
   priceValue?: number;
   productInfo: ProductInfo = {};
@@ -114,6 +116,12 @@ export class ProductDetailsModel extends Helper {
     this.metaTitle = productData?.metaTitle || undefined;
     this.metaDescription = productData?.metaDescription || undefined;
     this.metaKeywords = productData?.metaKeyword || undefined;
+    this.parentProductUrl =
+      this.getAttributeValue<string>(
+        productData?.attributes || [],
+        "parent_product_url",
+        ""
+      ) || undefined;
     this.mediaGallery =
       productData?.images
         ?.map((image) => ({
@@ -192,8 +200,13 @@ export class ProductDetailsModel extends Helper {
         const value = Array.isArray(a.value) ? a.value.join(", ") : a.value;
         return { key, label: a.label, value };
       }
-      const a = this.getAttribute<ProductAttribute>(attrs, key, emptyAttr);
-      return { key, label: a.label, value: a.value };
+      const a = this.getAttribute<{ label: string; value: string | string[] }>(
+        attrs,
+        key,
+        emptyAttr
+      );
+      const value = Array.isArray(a.value) ? a.value.join(", ") : a.value;
+      return { key, label: a.label, value };
     });
     const byKey = Object.fromEntries(resolved.map((r) => [r.key, r])) as Record<
       (typeof PRODUCT_INFO_KEYS)[number],
@@ -300,6 +313,13 @@ export class ProductDetailsModel extends Helper {
       }
 
       this.inStock = productData.inStock || false;
+      this.availableStock = this.toInteger(
+        this.getAttributeValue<number | string | undefined>(
+          productData?.attributes || [],
+          "available_stock",
+          undefined
+        )
+      );
       this.price = this.formatPrice({
         amount: finalPrice,
         currencyCode: currency,
@@ -380,6 +400,7 @@ export class ProductDetailsModel extends Helper {
           (option) =>
             new ProductVariant({
               amountOff: option.value_off?.amount_off,
+              availableStock: option.available_stock,
               color:
                 option.__typename === "ProductViewOptionValueSwatch" &&
                 option?.value
@@ -422,6 +443,7 @@ export class ProductDetailsModel extends Helper {
 }
 
 export class ProductVariant extends Helper {
+  availableStock?: number;
   bulletDelivery = false;
   color?: string;
   countdownTimer: CountdownTimer | null = null;
@@ -444,6 +466,7 @@ export class ProductVariant extends Helper {
 
   constructor({
     amountOff,
+    availableStock,
     color,
     countdownTimerEnabled,
     countdownTimerEndDate,
@@ -468,6 +491,7 @@ export class ProductVariant extends Helper {
     urlKey,
   }: {
     amountOff?: null | number;
+    availableStock?: null | number;
     color?: string;
     countdownTimerEnabled?: boolean;
     countdownTimerEndDate?: null | string;
@@ -499,6 +523,7 @@ export class ProductVariant extends Helper {
     this.type = type;
     this.id = id;
     this.inStock = inStock;
+    this.availableStock = this.toInteger(availableStock ?? undefined);
     this.label = label;
     this.color = color;
 

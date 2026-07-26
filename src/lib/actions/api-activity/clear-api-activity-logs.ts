@@ -20,8 +20,13 @@ export async function clearApiActivityLogs() {
     return unauthenticated();
   }
 
-  clearApiActivityEntries();
-  refresh();
+  try {
+    await clearApiActivityEntries();
+    refresh();
+  } catch (error) {
+    console.error("[api-activity] Failed to clear activity logs.", error);
+    return failure("Failed to clear activity logs.");
+  }
 
   return ok({ cleared: true });
 }

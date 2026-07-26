@@ -1,25 +1,43 @@
 "use client";
 
 import Image from "next/image";
-import type { ImageProps } from "next/image";
+import type { ImageLoaderProps, ImageProps } from "next/image";
 
 import {
   contentfulImageLoader,
   normalizeContentfulSrc,
 } from "@/lib/utils/contentful-image-loader";
-import { isContentfulSrc } from "@/lib/utils/image";
+import { isContentfulSrc, isSvgSrc } from "@/lib/utils/image";
+
+type ContentfulImageProps = {
+  maxWidth?: number;
+} & Omit<ImageProps, "loader">;
 
 export const ContentfulImage = ({
   alt,
+  maxWidth,
   src,
+  unoptimized,
   ...props
-}: Omit<ImageProps, "loader">) => {
+}: ContentfulImageProps) => {
   const normalizedSrc =
     typeof src === "string" ? normalizeContentfulSrc(src) : src;
+  const isSvg = typeof normalizedSrc === "string" && isSvgSrc(normalizedSrc);
   const loader =
-    typeof normalizedSrc === "string" && isContentfulSrc(normalizedSrc)
-      ? contentfulImageLoader
+    !isSvg &&
+    typeof normalizedSrc === "string" &&
+    isContentfulSrc(normalizedSrc)
+      ? (loaderProps: ImageLoaderProps) =>
+          contentfulImageLoader({ ...loaderProps, maxWidth })
       : undefined;
 
-  return <Image {...props} alt={alt} loader={loader} src={normalizedSrc} />;
+  return (
+    <Image
+      {...props}
+      alt={alt}
+      loader={loader}
+      src={normalizedSrc}
+      unoptimized={isSvg || unoptimized}
+    />
+  );
 };

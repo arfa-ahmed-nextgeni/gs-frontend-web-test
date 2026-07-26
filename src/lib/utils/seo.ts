@@ -1,3 +1,4 @@
+import { routing } from "@/i18n/routing";
 import { PROTOCOL } from "@/lib/constants/environment";
 import { LOCALE_TO_DOMAIN } from "@/lib/constants/i18n";
 import { ProductCardModel } from "@/lib/models/product-card-model";
@@ -18,14 +19,24 @@ export function generateAbsoluteCanonicalUrl({
   searchParams?: Record<string, number | string | undefined>;
 }): string {
   const domain = getDomainForLocale(locale);
-  const localePrefix = getLocalePrefix(locale);
+  // Honor next-intl `as-needed`: the domain's default locale is served without
+  // a prefix, so its canonical must be prefix-less (empty string here).
+  const localePrefix = getCanonicalLocalePrefix(locale);
 
-  // Ensure pathname starts with locale prefix (/en or /ar, not /en-SA)
-  let normalizedPathname = pathname.startsWith(localePrefix)
-    ? pathname
-    : `${localePrefix}${pathname.startsWith("/") ? "" : "/"}${pathname}`;
-  // Strip trailing slash so canonical matches the actual URL (e.g. /en not /en/)
-  normalizedPathname = normalizedPathname.replace(/\/+$/, "") || localePrefix;
+  // Reduce the incoming pathname to a prefix-less base path, stripping any
+  // stale /en or /ar so we never emit e.g. /ar for a default-locale page or
+  // double-prefix an already-prefixed path.
+  let basePath = pathname.startsWith("/") ? pathname : `/${pathname}`;
+  if (basePath === "/en" || basePath === "/ar") {
+    basePath = "/";
+  } else if (basePath.startsWith("/en/") || basePath.startsWith("/ar/")) {
+    basePath = basePath.replace(/^\/[a-z]{2}/, "");
+  }
+
+  // Apply the correct prefix for this locale, then strip trailing slash so the
+  // canonical matches the actual URL (e.g. /en not /en/, / for the root).
+  let normalizedPathname = `${localePrefix}${basePath}`;
+  normalizedPathname = normalizedPathname.replace(/\/+$/, "") || "/";
 
   // Build query string from searchParams
   const queryString = searchParams
@@ -221,9 +232,9 @@ export function generateHreflangTags({
   supportedHreflangs.forEach(({ hreflang, locale }) => {
     const domain = LOCALE_TO_DOMAIN[locale];
     if (domain) {
-      const isEnglish = locale.startsWith("en-");
-      // Arabic pages: no language prefix, English pages: /en/ prefix
-      const localePath = isEnglish ? "/en" : "";
+      // Prefix comes from the domain's default locale (as-needed), so this is
+      // correct even where the default is inverted (e.g. Global = English).
+      const localePath = getCanonicalLocalePrefix(locale);
       const joinedPath = `${localePath}${basePath}`;
       const normalizedPath = joinedPath.replace(/\/+$/, "") || "/";
       const url = `${PROTOCOL}://${domain}${normalizedPath}${queryString}`;
@@ -231,15 +242,16 @@ export function generateHreflangTags({
     }
   });
 
-  // x-default always points to Global equivalent URL
-  // Use globalPathname if provided, otherwise use basePath.
-  // Per Goldenscent structure, x-default should point to Global English (/en) equivalent.
+  // x-default always points to Global equivalent URL — no language prefix.
+  // Per Goldenscent rules the global domain uses no /en prefix:
+  //   Homepage:  https://global.goldenscent.com/
+  //   Product:   https://global.goldenscent.com/p/product-name
+  //   Category:  https://global.goldenscent.com/c/perfumes
   const globalDomain = LOCALE_TO_DOMAIN["en-GLOBAL" as Locale];
   if (globalDomain) {
     const globalBasePath =
       globalPathname !== undefined ? globalPathname || "/" : basePath;
-    const joinedPath = `/en${globalBasePath}`;
-    const normalizedPath = joinedPath.replace(/\/+$/, "") || "/en";
+    const normalizedPath = globalBasePath.replace(/\/+$/, "") || "/";
     const xDefaultUrl = `${PROTOCOL}://${globalDomain}${normalizedPath}${queryString}`;
     hreflangs["x-default"] = xDefaultUrl;
   }
@@ -350,4 +362,27 @@ export function getLocalePrefix(locale: Locale): string {
   // Extract language code from locale (e.g., "en-SA" -> "en", "ar-AE" -> "ar")
   const language = locale.split("-")[0];
   return `/${language}`;
+}
+
+/**
+ * Get the path prefix a locale actually resolves to under next-intl's
+ * `as-needed` mode. Each domain serves its `defaultLocale` WITHOUT a prefix
+ * (e.g. Arabic on goldenscent.com, English on global.goldenscent.com), so a
+ * canonical/hreflang URL for that locale must be prefix-less too. Every other
+ * locale on the domain keeps its /en or /ar prefix.
+ *
+ * This is why we can't hardcode "Arabic => no prefix": the GLOBAL domain is
+ * inverted (English is the default, Arabic gets /ar), so the default locale
+ * must be read from the routing config per domain.
+ */
+export function getCanonicalLocalePrefix(locale: Locale): string {
+  const domainConfig = routing.domains?.find((domain) =>
+    (domain.locales as readonly Locale[]).includes(locale)
+  );
+
+  if (domainConfig?.defaultLocale === locale) {
+    return "";
+  }
+
+  return getLocalePrefix(locale);
 }

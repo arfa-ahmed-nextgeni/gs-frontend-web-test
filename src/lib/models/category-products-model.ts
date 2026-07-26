@@ -39,6 +39,14 @@ export class CategoryProductsModel extends Helper {
         let countdownTimer: CountdownTimer | null = null;
         let externalId = product?.externalId || "";
 
+        let availableStock = this.toInteger(
+          this.getAttributeValue<number | string | undefined>(
+            product?.attributes || [],
+            "available_stock",
+            undefined
+          )
+        );
+
         const avgRating: number | undefined = this.parseAttributeValue<{
           avg_rating?: number;
         }>(product?.attributes || [], "review_rating", {})?.avg_rating;
@@ -102,6 +110,10 @@ export class CategoryProductsModel extends Helper {
             Object.values(associatedProducts)?.[0]?.externalId ||
             product?.externalId ||
             "";
+
+          availableStock = this.toInteger(
+            Object.values(associatedProducts)?.[0]?.available_stock ?? undefined
+          );
 
           const complexProduct = product as ComplexProductView;
 
@@ -197,6 +209,7 @@ export class CategoryProductsModel extends Helper {
         }
 
         return new ProductCardModel({
+          availableStock,
           badges,
           brand: brand.value || "",
           bulletDelivery: bulletDeliveryAvailable,

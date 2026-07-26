@@ -19,6 +19,8 @@ import { useWindowScrollThreshold } from "@/hooks/use-window-scroll-threshold";
 import { ZIndexLevel } from "@/lib/constants/ui";
 import { cn } from "@/lib/utils";
 
+import type { CatalogServiceBrand } from "@/lib/actions/category/get-catalog-service-brands";
+
 type HeaderActionsContextType = {
   closeMobileNavigationMenu: () => void;
   toggleDesktopNavigation: () => void;
@@ -39,7 +41,10 @@ const HeaderStateContext = createContext<HeaderContextType | undefined>(
   undefined
 );
 
-export const HeaderContainer = ({ children }: PropsWithChildren) => {
+export const HeaderContainer = ({
+  allBrands = [],
+  children,
+}: PropsWithChildren<{ allBrands?: CatalogServiceBrand[] }>) => {
   const [showDesktopNavigation, setShowDesktopNavigation] = useState(false);
   const [showStaticMobileNavigation, setShowStaticMobileNavigation] =
     useState(false);
@@ -111,7 +116,7 @@ export const HeaderContainer = ({ children }: PropsWithChildren) => {
   return (
     <HeaderActionsContext.Provider value={headerActionsValue}>
       <HeaderStateContext.Provider value={headerStateValue}>
-        <SearchContainer>
+        <SearchContainer allBrands={allBrands}>
           <header
             className={cn(
               "site-header bg-bg-default top-0 w-full [view-transition-name:site-header] lg:[view-transition-name:none]",

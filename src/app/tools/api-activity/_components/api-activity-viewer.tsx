@@ -92,7 +92,6 @@ export function ApiActivityViewer({
               failedOnly={failedOnly}
               pageSize={pageSize}
               searchQuery={searchQuery}
-              selectedEntryId={selectedEntryId}
               totalEntries={totalVisibleEntries}
               totalPages={totalVisiblePages}
             />

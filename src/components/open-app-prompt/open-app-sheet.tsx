@@ -8,13 +8,8 @@ import {
   useTransition,
 } from "react";
 
-import Image from "next/image";
-
-import { useLocale } from "next-intl";
-
-import GoldenScentLogoAr from "@/assets/logos/golden-scent-logo-ar.svg";
-import GoldenScentLogoEn from "@/assets/logos/golden-scent-logo-en.svg";
 import { ProductRating } from "@/components/product/product-rating";
+import { ContentfulImage } from "@/components/shared/contentful-image";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -31,7 +26,6 @@ import { ROUTES } from "@/lib/constants/routes";
 import { SessionStorageKey } from "@/lib/constants/session-storage";
 import { ZIndexLevel } from "@/lib/constants/ui";
 import { cn } from "@/lib/utils";
-import { getLocaleInfo } from "@/lib/utils/locale";
 import {
   getSessionStorage,
   setSessionStorage,
@@ -41,6 +35,9 @@ import type { OpenAppPromptModel } from "@/lib/models/open-app-prompt-model";
 
 export function OpenAppSheet({
   openAppPrompt: {
+    appIconHeight,
+    appIconUrl,
+    appIconWidth,
     appRating,
     appStoreUrl,
     dismissButtonLabel,
@@ -52,14 +49,10 @@ export function OpenAppSheet({
 }: {
   openAppPrompt: OpenAppPromptModel;
 }) {
-  const locale = useLocale();
   const isMobile = useIsMobile();
   const isMobileBottomNavHidden = useIsMobileBottomNavHidden();
   const [isNavigatingToApp, startNavigatingToApp] = useTransition();
   const [isOpen, setIsOpen] = useState(false);
-  const { language } = getLocaleInfo(locale);
-  const fallbackLogoSrc =
-    language === "ar" ? GoldenScentLogoAr : GoldenScentLogoEn;
   const normalizedAppRating = normalizeAppRating(appRating);
 
   useEffect(() => {
@@ -138,14 +131,16 @@ export function OpenAppSheet({
         <SheetTitle className="sr-only">{title}</SheetTitle>
         <SheetDescription className="sr-only">{subtitle}</SheetDescription>
         <div className="flex items-start gap-3">
-          <div className="bg-bg-primary size-10.5 flex shrink-0 items-center justify-center rounded-xl">
-            <Image
-              alt="Golden Scent"
-              className="h-2 w-7"
-              height={8}
-              src={fallbackLogoSrc}
-              width={28}
-            />
+          <div className="size-10.5 shrink-0">
+            {appIconUrl && (
+              <ContentfulImage
+                alt=""
+                className="size-10.5 object-contain"
+                height={appIconHeight ?? 42}
+                src={appIconUrl}
+                width={appIconWidth ?? 42}
+              />
+            )}
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center justify-between gap-2">

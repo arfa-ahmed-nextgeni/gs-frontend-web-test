@@ -1,3 +1,4 @@
+import { categoryUrlPathToRoutePath } from "@/lib/category/category-route-path";
 import { CategoryBreadcrumbsModel } from "@/lib/models/category-breadcrumbs-model";
 import { CategoryModel } from "@/lib/models/category-model";
 import { type CategoryRouteShellNode } from "@/lib/types/category-route-shell";
@@ -22,7 +23,7 @@ export class CategoryRouteShellModel {
   routePath = "";
 
   constructor({ data, locale, urlPath }: CategoryRouteShellModelArgs) {
-    this.routePath = `/c/${urlPath}`;
+    this.routePath = categoryUrlPathToRoutePath(urlPath);
 
     const categoryNode = data?.categories?.items?.find(
       (item): item is CategoryRouteShellNode => Boolean(item?.uid)

@@ -20,6 +20,7 @@ export const INSIDER_EVENT_NAME_MAPPING: Record<string, string> = {
   cart_clear: "cart_clear",
   cart_remove: "remove_from_cart",
   cart_to_wishlist: "item_added_to_wishlist",
+  checkout_init: "checkout_init",
   home: "home",
   login: "login",
   logout: "logout",

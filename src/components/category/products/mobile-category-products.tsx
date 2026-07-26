@@ -183,7 +183,7 @@ export function MobileCategoryProducts({
       )}
 
       {!hasNextPage && products.length > 0 && !showLoadMoreError && (
-        <div className="flex justify-center py-8">
+        <div className="flex justify-center pb-16 pt-8">
           <span className="text-text-secondary text-sm">
             {t("endOfProducts")}
           </span>

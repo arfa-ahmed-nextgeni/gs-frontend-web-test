@@ -1,7 +1,5 @@
 "use server";
 
-import { updateTag } from "next/cache";
-
 import { getLocale } from "next-intl/server";
 
 import { getAuthToken } from "@/lib/actions/auth/get-auth-token";
@@ -9,10 +7,6 @@ import { getOrSetDeviceIdCookie } from "@/lib/actions/cookies/device-id";
 import { getCustomerByAuthToken } from "@/lib/actions/customer/get-customer-by-auth-token";
 import { graphqlRequest } from "@/lib/clients/graphql";
 import { PRODUCTS_GRAPHQL_MUTATIONS } from "@/lib/constants/api/graphql/products";
-import {
-  getRecentlyViewedProductsTagByDeviceId,
-  getRecentlyViewedProductsTagByMobileNumber,
-} from "@/lib/constants/cache/tags";
 import { Locale } from "@/lib/constants/i18n";
 import { getStoreCode } from "@/lib/utils/country";
 import { ok } from "@/lib/utils/service-result";
@@ -47,16 +41,11 @@ export async function saveViewedProduct({
       device_id: resolvedDeviceId,
       product_sku: productSku,
     };
-    let mobileNumberForCacheTag: null | string = null;
 
     if (authToken) {
       const currentCustomer = await getCustomerByAuthToken(authToken);
       if (currentCustomer?.phoneNumber) {
-        mobileNumberForCacheTag = currentCustomer.phoneNumber.replace(
-          /\D/g,
-          ""
-        );
-        input.mobile_number = mobileNumberForCacheTag;
+        input.mobile_number = currentCustomer.phoneNumber.replace(/\D/g, "");
       }
 
       if (currentCustomer?.email) {
@@ -72,14 +61,6 @@ export async function saveViewedProduct({
         input,
       },
     });
-
-    updateTag(getRecentlyViewedProductsTagByDeviceId(resolvedDeviceId));
-
-    if (mobileNumberForCacheTag) {
-      updateTag(
-        getRecentlyViewedProductsTagByMobileNumber(mobileNumberForCacheTag)
-      );
-    }
 
     return ok({
       requiresDeviceSync: false,

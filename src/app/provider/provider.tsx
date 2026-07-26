@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import type { PropsWithChildren } from "react";
 
 import dynamic from "next/dynamic";
@@ -37,6 +38,12 @@ import { PendingWishlistProvider } from "@/contexts/wishlist/pending-wishlist-co
 import { WishlistProvider } from "@/contexts/wishlist/wishlist-context";
 import { useBannerTrackingFlush } from "@/hooks/use-banner-tracking-flush";
 import { useBlurOnScroll } from "@/hooks/use-blur-on-scroll";
+import { usePathname } from "@/i18n/navigation";
+import {
+  isCategoryPath,
+  isProductPath,
+  isSearchPath,
+} from "@/lib/utils/routes";
 
 const ReactQueryDevtools = dynamic(
   () =>
@@ -52,6 +59,15 @@ if (typeof window !== "undefined") {
   dayjs.extend(utc);
   dayjs.extend(timezone);
   dayjs.extend(duration);
+
+  // Disable browser-native scroll restoration on product/category/search pages synchronously at module evaluation time.
+  // window.location.pathname here because the Next.js router isn't available yet.
+  if ("scrollRestoration" in window.history) {
+    const p = window.location.pathname;
+    if (isCategoryPath(p) || isProductPath(p) || isSearchPath(p)) {
+      window.history.scrollRestoration = "manual";
+    }
+  }
 }
 
 function makeQueryClient() {
@@ -85,9 +101,85 @@ function Providers({
   dir: "ltr" | "rtl";
 }>) {
   const queryClient = getQueryClient();
+  const pathname = usePathname();
+  const prevPathnameRef = useRef<null | string>(null);
+  // Continuously tracks the latest scrollY so we always have the pre-navigation
+  // value available when the pathname-change effect fires (by then the DOM has
+  // already scrolled to 0 for the new page, so window.scrollY is useless).
+  const lastScrollYRef = useRef(0);
 
   useBlurOnScroll();
   useBannerTrackingFlush();
+
+  // Keep scrollRestoration in sync as the user navigates between page types.
+  useEffect(() => {
+    if (!("scrollRestoration" in window.history)) return;
+    if (
+      isProductPath(pathname) ||
+      isCategoryPath(pathname) ||
+      isSearchPath(pathname)
+    ) {
+      window.history.scrollRestoration = "manual";
+    } else {
+      window.history.scrollRestoration = "auto";
+    }
+  }, [pathname]);
+
+  // Update lastScrollY on every scroll event.
+  useEffect(() => {
+    const onScroll = () => {
+      lastScrollYRef.current = window.scrollY;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Save scroll position when leaving a category/search page to a PDP, and
+  // restore it when navigating back.
+  useEffect(() => {
+    const prev = prevPathnameRef.current;
+    prevPathnameRef.current = pathname;
+
+    if (!prev) return;
+
+    // Leaving category/search → entering PDP: snapshot the scroll position.
+    if (
+      (isCategoryPath(prev) || isSearchPath(prev)) &&
+      isProductPath(pathname)
+    ) {
+      sessionStorage.setItem(`scroll:${prev}`, String(lastScrollYRef.current));
+      return;
+    }
+
+    // Returning from PDP → back to category/search: restore after page renders.
+    if (
+      isProductPath(prev) &&
+      (isCategoryPath(pathname) || isSearchPath(pathname))
+    ) {
+      const saved = sessionStorage.getItem(`scroll:${pathname}`);
+      if (!saved) return;
+      const scrollY = parseInt(saved, 10);
+
+      // Wait for the page layout to load before restoring position.
+      let frameCount = 0;
+      const MAX_FRAMES = 300;
+      const tryScroll = () => {
+        frameCount++;
+        const pageIsLoaded =
+          document.documentElement.scrollHeight >= scrollY + window.innerHeight;
+
+        if (pageIsLoaded || frameCount >= MAX_FRAMES) {
+          sessionStorage.removeItem(`scroll:${pathname}`);
+          window.scrollTo({ behavior: "instant", top: scrollY });
+        } else {
+          rafId = requestAnimationFrame(tryScroll);
+        }
+      };
+
+      let rafId = requestAnimationFrame(tryScroll);
+      return () => cancelAnimationFrame(rafId);
+    }
+  }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>

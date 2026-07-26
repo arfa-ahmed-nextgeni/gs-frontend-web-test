@@ -2,34 +2,25 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function OrderActionsSkeleton() {
   return (
-    <div className="px-5 pt-4">
-      {/* Top Actions */}
-      <div className="mb-4 space-y-3">
-        {/* Add Coupon */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Skeleton className="h-5 w-5 rounded-full" />
-            <Skeleton className="h-5 w-24" />
-          </div>
-          <Skeleton className="h-5 w-5" />
-        </div>
-        {/* Redeem Points */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Skeleton className="h-5 w-5 rounded-full" />
-            <Skeleton className="h-5 w-32" />
-          </div>
-          <Skeleton className="h-5 w-5" />
-        </div>
-        {/* Use Wallet */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Skeleton className="h-5 w-5 rounded-full" />
-            <Skeleton className="h-5 w-28" />
-          </div>
-          <Skeleton className="h-6 w-10 rounded-full" />
-        </div>
-      </div>
+    <div className="bg-bg-default mb-3 overflow-hidden rounded-xl border-0 py-0 shadow-none lg:block">
+      <ul className="text-sm">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <li
+            className="border-border-base h-11.25 flex items-center justify-between border-t px-4 first:border-t-0"
+            key={index}
+          >
+            <span className="flex items-center gap-3">
+              <Skeleton className="size-5 rounded-full" />
+              <Skeleton className="w-30 h-4" />
+            </span>
+            {index === 2 ? (
+              <Skeleton className="h-6 w-10 rounded-full" />
+            ) : (
+              <Skeleton className="size-5 rounded-full" />
+            )}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

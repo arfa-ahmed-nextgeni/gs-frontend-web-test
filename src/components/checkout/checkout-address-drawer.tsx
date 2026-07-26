@@ -14,6 +14,8 @@ import { CheckoutAddressTracker } from "@/components/analytics/checkout-address-
 import HomeIcon from "@/components/icons/home-icon";
 import { DrawerLayout } from "@/components/shared/layouts/drawer-layout";
 import { useCheckoutContext } from "@/contexts/checkout-context";
+import { useStoreCode } from "@/hooks/i18n/use-store-code";
+import { StoreCode } from "@/lib/constants/i18n";
 
 import type { CheckoutAddress } from "./checkout-page";
 
@@ -51,6 +53,9 @@ export function CheckoutAddressDrawer({
   const isArabic = locale?.toLowerCase().startsWith("ar");
   const t = useTranslations("CheckoutPage.addressDrawer");
   const { selectedLockerAddressType } = useCheckoutContext();
+  const { storeCode } = useStoreCode();
+  const isSaudiStore =
+    storeCode === StoreCode.ar_sa || storeCode === StoreCode.en_sa;
 
   const tabs = useMemo(() => {
     return [
@@ -142,7 +147,7 @@ export function CheckoutAddressDrawer({
       >
         <div className="space-y-5 px-5 pb-5 pt-2.5">
           <button
-            className="text-text-primary hover:bg-primary/5 shadow-xs h-[50px] w-full rounded-[10px] bg-white font-[Gilroy] text-[20px] font-medium transition"
+            className="text-text-primary hover:bg-primary/5 shadow-xs h-[50px] w-full rounded-[10px] bg-white text-[20px] font-medium transition"
             onClick={onAddNew}
             type="button"
           >
@@ -229,7 +234,12 @@ export function CheckoutAddressDrawer({
                             countryName
                               ? `${countryName}, ${address.formattedAddress}`
                               : address.formattedAddress
-                          ).replace(/,\s*0+$/, ""); //temp fix to remove trailing zeros, BE should ideally not return formatted addresses with trailing zeros
+                          )
+                            .replace(/,\s*0+$/, "") //temp fix to remove trailing zeros, BE should ideally not return formatted addresses with trailing zeros
+                            .split(",")
+                            .map((part) => part.trim())
+                            .filter((part) => part !== "N/A")
+                            .join(", ");
                           return ksaShortAddress
                             ? `${ksaShortAddress}, ${rawAddress}`
                             : rawAddress;
@@ -245,7 +255,7 @@ export function CheckoutAddressDrawer({
                           : address.phoneNumber}
                       </span>
                     </div>
-                    {hasVerificationStatus && (
+                    {isSaudiStore && hasVerificationStatus && (
                       <div className="mb-3 mt-0 flex justify-end px-5">
                         {isKsaVerified ? (
                           <span className="inline-flex items-center gap-1 text-[8px] font-medium text-[#2563EB]">

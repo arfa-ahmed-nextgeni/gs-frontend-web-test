@@ -11,14 +11,26 @@ import { useHandleAuthRevoked } from "@/hooks/auth/use-handle-auth-revoked";
 import { useOfflineToast } from "@/hooks/ui/use-offline-toast";
 import { useRouteMatch } from "@/hooks/use-route-match";
 import { addWishlistItemToCartAction } from "@/lib/actions/customer/wishlist/add-wishlist-item-to-cart";
+import {
+  trackAddToCart,
+  trackRemoveFromWishlist,
+} from "@/lib/analytics/events";
+import { ProductProperties } from "@/lib/analytics/models/event-models";
 import { Locale } from "@/lib/constants/i18n";
 import { MUTATION_KEYS } from "@/lib/constants/mutation-keys";
 import { QUERY_KEYS } from "@/lib/constants/query-keys";
+import { Cart } from "@/lib/models/cart";
 import { Wishlist } from "@/lib/models/wishlist";
 import { mutationPrefix } from "@/lib/utils/mutation-key";
 import { isError, isUnauthenticated } from "@/lib/utils/service-result";
 
-export const useAddWishlistItemToCart = ({ sku }: { sku: string }) => {
+export const useAddWishlistItemToCart = ({
+  product,
+  sku,
+}: {
+  product?: Partial<ProductProperties>;
+  sku: string;
+}) => {
   const { isCart } = useRouteMatch();
   const queryClient = useQueryClient();
   const locale = useLocale() as Locale;
@@ -76,6 +88,16 @@ export const useAddWishlistItemToCart = ({ sku }: { sku: string }) => {
           queryKey: QUERY_KEYS.CART.ROOT(locale),
         }),
       ]);
+
+      trackRemoveFromWishlist(sku);
+      trackAddToCart(
+        {
+          "product.sku": sku,
+          ...product,
+          [`product.${sku}.qty_in_cart`]: 1,
+        },
+        queryClient.getQueryData<Cart>(QUERY_KEYS.CART.FULL(locale))
+      );
 
       if (!isCart) {
         openCartDrawer();

@@ -39,7 +39,11 @@ export function OrderSummary({
 }: OrderSummaryProps) {
   const t = useTranslations("CartPage.orderSummary");
 
-  const remaining = Math.max(freeShippingThreshold - subTotal, 0);
+  const thresholdSubtotal = Math.max(
+    subTotal - discount - (rewardPointsValue ?? 0),
+    0
+  );
+  const remaining = Math.max(freeShippingThreshold - thresholdSubtotal, 0);
   const freeShippingUnlocked = remaining === 0 && freeShippingThreshold > 0;
 
   const renderPrice = (amount: number) => (

@@ -1,6 +1,7 @@
+/* eslint-disable no-restricted-imports -- Standalone tools route has no next-intl context. */
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 import {
   createApiActivitySession,
@@ -8,7 +9,6 @@ import {
   verifyApiActivityPassword,
 } from "@/lib/api-activity/api-activity-auth";
 import { ROUTES } from "@/lib/constants/routes";
-import { failure, ok } from "@/lib/utils/service-result";
 
 type ApiActivityAccessFormState = {
   errorMessage: null | string;
@@ -18,6 +18,7 @@ export async function submitApiActivityAccess(
   _previousState: ApiActivityAccessFormState,
   formData: FormData
 ): Promise<ApiActivityAccessFormState> {
+  const redirectTo = getRedirectTo(formData);
   const password = formData.get("password");
 
   if (typeof password !== "string" || password.trim().length === 0) {
@@ -26,32 +27,36 @@ export async function submitApiActivityAccess(
     };
   }
 
-  const result = await authenticateApiActivity(password);
-
-  if ("error" in result) {
-    return {
-      errorMessage: result.error,
-    };
-  }
-
-  return {
-    errorMessage: null,
-  };
-}
-
-async function authenticateApiActivity(password: string) {
   const availability = getApiActivityAvailability();
 
   if (!availability.available) {
-    return failure("This tool is currently unavailable.");
+    return {
+      errorMessage: "This tool is currently unavailable.",
+    };
   }
 
   if (!verifyApiActivityPassword(password)) {
-    return failure("Incorrect password.");
+    return {
+      errorMessage: "Incorrect password.",
+    };
   }
 
   await createApiActivitySession();
-  revalidatePath(ROUTES.TOOLS.API_ACTIVITY);
+  redirect(redirectTo);
+}
 
-  return ok({ authenticated: true });
+function getRedirectTo(formData: FormData) {
+  const redirectTo = formData.get("redirectTo");
+
+  if (typeof redirectTo === "string" && isAllowedToolRedirectPath(redirectTo)) {
+    return redirectTo;
+  }
+
+  return ROUTES.TOOLS.API_ACTIVITY;
+}
+
+function isAllowedToolRedirectPath(path: string) {
+  return (
+    path === ROUTES.TOOLS.API_ACTIVITY || path === ROUTES.TOOLS.CACHE_REVALIDATE
+  );
 }

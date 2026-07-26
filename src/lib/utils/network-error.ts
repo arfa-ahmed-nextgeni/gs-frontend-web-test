@@ -1,3 +1,5 @@
+import { API_CONSTANTS } from "@/lib/constants/api";
+
 export function createTimeoutError(): Error {
   const timeoutError = new Error("timeoutError");
   timeoutError.name = "TimeoutError";
@@ -5,7 +7,12 @@ export function createTimeoutError(): Error {
 }
 
 export function isAbortError(error: unknown): boolean {
-  return error instanceof Error && error.name === "AbortError";
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "name" in error &&
+    error.name === "AbortError"
+  );
 }
 
 /**
@@ -67,4 +74,19 @@ export function isTimeoutError(error: unknown): boolean {
     );
   }
   return false;
+}
+
+export async function retryNetworkRequest<T>(
+  request: () => Promise<T>,
+  attempts: number = API_CONSTANTS.RETRY_ATTEMPTS
+): Promise<T> {
+  try {
+    return await request();
+  } catch (error) {
+    if (attempts <= 1 || (!isTimeoutError(error) && !isNetworkError(error))) {
+      throw error;
+    }
+
+    return retryNetworkRequest(request, attempts - 1);
+  }
 }

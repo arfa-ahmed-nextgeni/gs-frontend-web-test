@@ -13,6 +13,12 @@ import {
   resolveCustomerId,
   resolveCustomerUuid,
 } from "@/lib/utils/customer-id-storage";
+import {
+  isCodPaymentMethod,
+  isTabbyPaymentMethod,
+  isTamaraPaymentMethod,
+  requiresCardPaymentSection,
+} from "@/lib/utils/payment-method";
 import { isPerfumeAttributeSet } from "@/lib/utils/product-type";
 
 import type {
@@ -72,7 +78,7 @@ export function buildAddPaymentInfoProperties(
   return {
     ...base,
     coupon: cart.appliedCoupons?.join(",") ?? null,
-    payment_type: paymentType,
+    payment_type: getAddPaymentInfoPaymentType(paymentType),
   };
 }
 
@@ -93,7 +99,7 @@ export function buildCartInsiderProperties(
       product_integer_id: item.externalId || "",
       pt: item.productType || "",
     },
-    id: item.sku || "",
+    id: item.skuParent || item.sku || "",
     name: item.name,
     product_image_url: item.imageUrl || "",
     quantity: item.quantity || 0,
@@ -169,7 +175,7 @@ export function buildAddRemoveCartInsiderProperties(
       product_integer_id: (product["product.id"] as string) ?? "",
       pt: type ?? "",
     },
-    id: (sku as string) ?? "",
+    id: (groupcode as string) ?? "",
     name: (product["product.name"] as string) ?? "",
     product_image_url: imageUrl as string,
     quantity: (product[`product.${sku}.qty_in_cart`] as number) ?? 0,
@@ -194,14 +200,14 @@ export function buildBeginCheckoutProperties(
     item_category: item.productType || undefined,
     item_id: item.externalId || item.sku || "",
     item_name: item.name || "",
-    price: item.priceValue || 0,
+    price: toEcommerceIntegerAmount(item.priceValue),
     quantity: item.quantity || 1,
   }));
 
   return {
     currency,
     items,
-    value: cart.grandTotalPrice,
+    value: toEcommerceIntegerAmount(cart.grandTotalPrice),
   };
 }
 
@@ -221,6 +227,18 @@ export function buildCartProperties(
   // Add discounts if available
   if (cart.mokafaaDiscount) {
     cartProperties["cart.discounts"] = cart.mokafaaDiscount;
+  }
+
+  // Add cart discount (coupon / cart rule) if available; value is negative
+  if (cart.discount) {
+    cartProperties["cart.discount"] =
+      `-${formatMoneyWithCurrency(cart.discount, currency)}`;
+  }
+
+  // Add redeemed reward (wallet/loyalty) points if applied
+  if (cart.appliedRewardPoints && cart.appliedRewardPointsValue) {
+    cartProperties["cart.redeemPoints"] =
+      `-${formatMoneyWithCurrency(cart.appliedRewardPointsValue, currency)}`;
   }
 
   // Add promo codes if available
@@ -392,7 +410,7 @@ export function buildOrderPropertiesFromUiOrder(
   const orderProperties: Record<string, unknown> = {
     "cart.subtotal": formatMoneyWithCurrency(0, "SAR"), // UI order doesn't have subtotal breakdown
     "cart.total": order.total || 0,
-    "order.payment_method": order.paymentMethod || "",
+    "order.payment_method": order.paymentMethodType || "",
   };
 
   // Add shipping fees
@@ -439,7 +457,7 @@ export function buildProductInsiderProperties(
       product_integer_id: product["product.id"],
       pt: product["product.type"] ?? "",
     },
-    id: product["product.sku"],
+    id: product["product.sku_parent"] ?? product["product.sku"],
     name: product["product.name"],
     product_image_url: product["product.image_url"] ?? "",
     ...(product["product.size"] && { size: product["product.size"] }),
@@ -493,7 +511,9 @@ export function buildProductPropertiesFromCard(
     "product.price": product.priceValue || 0,
     "product.sku": product.sku || "",
     "product.sku_parent": product.skuParent || undefined,
-    "product.stock": product.stockStatus === StockStatus.InStock ? 1 : 0,
+    "product.stock":
+      product.availableStock ??
+      (product.stockStatus === StockStatus.InStock ? 1 : 0),
     "product.type": product.productType || undefined,
     "product.url": product.urlKey || undefined,
     // Extract size from options if available
@@ -604,7 +624,7 @@ export function buildProductPropertiesFromDetails(
       "product.size": productSize,
       "product.sku": variant.sku || "",
       "product.sku_parent": parentProduct.sku || "",
-      "product.stock": variant.inStock ? 1 : 0,
+      "product.stock": variant.availableStock ?? (variant.inStock ? 1 : 0),
       "product.type": parentProduct.type?.toString() || "",
       "product.url": parentProduct.urlKey ? `/p/${parentProduct.urlKey}` : "",
     };
@@ -644,7 +664,8 @@ export function buildProductPropertiesFromDetails(
     "product.size": productSize,
     "product.sku": productModel.sku || "",
     "product.sku_parent": productModel.sku || "",
-    "product.stock": productModel.inStock ? 1 : 0,
+    "product.stock":
+      productModel.availableStock ?? (productModel.inStock ? 1 : 0),
     "product.type": productModel.productInfo?.type || "",
     "product.url": productModel.urlKey ? `/p/${productModel.urlKey}` : "",
   };
@@ -691,21 +712,21 @@ export function buildPurchaseEcommerceProperties(
   const items = order.products.map((item) => ({
     item_brand: item.brand || undefined,
     item_category: item.productType || undefined,
-    item_id: String(item.id || ""),
+    item_id: String(item.productId ?? ""),
     item_name: item.name || "",
-    price: item.price || 0,
+    price: toEcommerceIntegerAmount(item.price),
     quantity: item.quantity || 1,
   }));
 
   const ecommerce: PurchaseEcommerceProperties = {
-    coupon: null,
+    coupon: order.appliedCoupons?.join(",") || null,
     currency,
     items,
     payment_type: order.paymentMethodType || order.paymentMethod || "",
     shipping: order.shipping_fee || 0,
     tax: order.tax || 0,
     transaction_id: order.tracking_number || String(order.id || ""),
-    value: order.total || 0,
+    value: toEcommerceIntegerAmount(order.total),
   };
 
   const customerDetails: PurchaseCustomerDetails[] = customer
@@ -739,7 +760,7 @@ export function buildPurchaseInsiderProperties(
       product_integer_id: String(item.variantId ?? ""),
       pt: item.productType || "",
     },
-    id: item.variantSKU || "",
+    id: item.sku || item.variantSKU || "",
     name: item.name,
     product_image_url: item.image.thumbnail || "",
     quantity: item.quantity || 0,
@@ -779,7 +800,10 @@ export function buildPurchasePropertiesFromOrder(
     "order.fees_shipping": order.shipping_fee || 0,
     "order.grandTotal": order.total || 0,
     "order.id": String(order.tracking_number || ""),
-    "order.payment_method": order.paymentMethod || "",
+    "order.payment_method": order.paymentMethodType || "",
+    ...(order.appliedCoupons?.length && {
+      "order.promo_code": order.appliedCoupons.join(","),
+    }),
     "order.subtotal": subtotal,
     products: order.products,
     shipping_type: shippingType,
@@ -806,7 +830,10 @@ export function buildPurchasePropertiesFromUiOrder(
     "order.fees_shipping": order.shipping_fee || 0,
     "order.grandTotal": order.total || 0,
     "order.id": String(order.id || ""),
-    "order.payment_method": order.paymentMethod || "",
+    "order.payment_method": order.paymentMethodType || "",
+    ...(order.appliedCoupons?.length && {
+      "order.promo_code": order.appliedCoupons.join(","),
+    }),
     "order.subtotal": subtotal,
     shipping_type: shippingType,
   };
@@ -934,15 +961,17 @@ export function buildWishlistViewInsiderProperties(
       is_gwp: product.is_gwp ?? false,
       parent_product_integer_id: product.parentId ?? product.externalId ?? "",
       product_integer_id: product.externalId ?? "",
-      pt: product.type ?? "",
+      pt: product.type ?? product.productType ?? "",
     },
-    id: product.sku ?? "",
+    id: product.skuParent ?? product.sku ?? "",
     name: product.name,
     product_image_url: product.imageUrl ?? "",
     quantity: 1,
     ...(product.size && { size: product.size }),
     stock: 1,
-    taxonomy: [product.type, product.brand].filter(Boolean) as string[],
+    taxonomy: [product.type ?? product.productType, product.brand].filter(
+      Boolean
+    ) as string[],
     unit_price: unitPrice ?? 0,
     unit_sale_price: product.priceValue ?? 0,
     url: product.urlKey
@@ -1021,4 +1050,17 @@ function formatMoneyWithCurrency(
   currency: null | string | undefined
 ): string {
   return `${value ?? 0} ${currency || "SAR"}`;
+}
+
+function getAddPaymentInfoPaymentType(paymentType: string): string {
+  if (isCodPaymentMethod(paymentType)) return "Cash";
+  if (isTamaraPaymentMethod(paymentType)) return "Tamara";
+  if (isTabbyPaymentMethod(paymentType)) return "Tabby";
+  if (requiresCardPaymentSection(paymentType)) return "Credit Card";
+
+  return paymentType;
+}
+
+function toEcommerceIntegerAmount(value: null | number | undefined): number {
+  return Math.round(value ?? 0);
 }

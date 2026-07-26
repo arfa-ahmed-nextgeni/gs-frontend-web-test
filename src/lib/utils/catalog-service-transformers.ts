@@ -21,7 +21,7 @@ import {
 
 /**
  * Builds the `sort` argument for header autocomplete `productSearch`.
- * Default: in-stock first, then relevance (search-term match quality).
+ * Default: relevance, then catalog position.
  */
 export function buildAutocompleteProductSearchSort(
   sortBy?: string
@@ -29,7 +29,7 @@ export function buildAutocompleteProductSearchSort(
   const normalized = sortBy?.trim();
   if (!normalized || normalized === "relevance") {
     return [
-      { attribute: "inStock", direction: SortEnum.Desc },
+      { attribute: "position", direction: SortEnum.Asc },
       { attribute: "relevance", direction: SortEnum.Desc },
     ];
   }
@@ -43,31 +43,22 @@ export function buildCategoryProductSearchSort(
   const normalized = sortBy?.trim();
 
   if (normalized === CategorySortKey.Relevance) {
-    return [
-      { attribute: "inStock", direction: SortEnum.Desc },
-      { attribute: "relevance", direction: SortEnum.Desc },
-    ];
+    return [{ attribute: "relevance", direction: SortEnum.Desc }];
   }
 
   if (!normalized || normalized === CategorySortKey.Position) {
-    return [
-      { attribute: "inStock", direction: SortEnum.Desc },
-      { attribute: "position", direction: SortEnum.Asc },
-    ];
+    return [{ attribute: "position", direction: SortEnum.Asc }];
   }
 
   const userSort = convertSortToProductSearchSort(normalized);
-  return [
-    { attribute: "inStock", direction: SortEnum.Desc },
-    ...(userSort || []),
-  ];
+  return userSort || [];
 }
 
 /**
  * Builds the `sort` argument for search results page `productSearch`.
- * Relevance (default): in-stock first, then search relevance.
- * Position: in-stock first, then catalog position.
- * Other UI sorts: in-stock first, then the mapped attribute sort.
+ * Relevance (default): search relevance, then catalog position.
+ * Position: catalog position.
+ * Other UI sorts: the mapped attribute sort.
  */
 export function buildProductSearchSort(
   sortBy?: string
@@ -75,24 +66,18 @@ export function buildProductSearchSort(
   const normalized = sortBy?.trim();
 
   if (normalized === CategorySortKey.Position) {
-    return [
-      { attribute: "inStock", direction: SortEnum.Desc },
-      { attribute: "position", direction: SortEnum.Asc },
-    ];
+    return [{ attribute: "position", direction: SortEnum.Asc }];
   }
 
   if (!normalized || normalized === CategorySortKey.Relevance) {
     return [
-      { attribute: "inStock", direction: SortEnum.Desc },
+      { attribute: "position", direction: SortEnum.Asc },
       { attribute: "relevance", direction: SortEnum.Desc },
     ];
   }
 
   const userSort = convertSortToProductSearchSort(normalized);
-  return [
-    { attribute: "inStock", direction: SortEnum.Desc },
-    ...(userSort || []),
-  ];
+  return userSort || [];
 }
 
 /**
@@ -181,11 +166,20 @@ export function convertSortToProductSearchSort(
   }
 
   const sortMap: Record<string, ProductSearchSortInput[]> = {
-    news_from_date: [{ attribute: "news_to_date", direction: SortEnum.Desc }],
+    news_from_date: [
+      { attribute: "relevance", direction: SortEnum.Desc },
+      { attribute: "news_to_date", direction: SortEnum.Desc },
+    ],
     offers: [{ attribute: "price", direction: SortEnum.Desc }],
     popular: [{ attribute: "name", direction: SortEnum.Asc }],
-    priceHighToLow: [{ attribute: "price", direction: SortEnum.Desc }],
-    priceLowToHigh: [{ attribute: "price", direction: SortEnum.Asc }],
+    priceHighToLow: [
+      { attribute: "relevance", direction: SortEnum.Desc },
+      { attribute: "price", direction: SortEnum.Desc },
+    ],
+    priceLowToHigh: [
+      { attribute: "relevance", direction: SortEnum.Desc },
+      { attribute: "price", direction: SortEnum.Asc },
+    ],
   };
 
   return sortMap[sortBy];

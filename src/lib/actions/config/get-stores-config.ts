@@ -8,7 +8,8 @@ import { API_ENDPOINTS } from "@/lib/constants/api/endpoints";
 import { GetStoreConfigResponse } from "@/lib/types/store-config";
 import { failure, ok } from "@/lib/utils/service-result";
 
-let lastGoodStoresConfig: GetStoreConfigResponse | null = null;
+const lastGoodStoresConfig: Partial<Record<string, GetStoreConfigResponse>> =
+  {};
 
 const isValidStoresConfig = (
   data: GetStoreConfigResponse | undefined
@@ -21,34 +22,40 @@ const loadBundledStoreConfig = async (): Promise<GetStoreConfigResponse> => {
   return [bundledStoreConfigFallback] as unknown as GetStoreConfigResponse;
 };
 
-export const getStoresConfig = cache(async () => {
+export const getStoresConfig = cache(async (websiteId?: number) => {
   if (USE_BUNDLED_STORE_CONFIG_FALLBACK) {
     return ok(await loadBundledStoreConfig());
   }
 
+  const endpoint = websiteId
+    ? API_ENDPOINTS.CONFIG.STORES_CONFIG_BY_WEBSITE(websiteId)
+    : API_ENDPOINTS.CONFIG.STORES_CONFIG;
+
   try {
     const response = await restRequest<GetStoreConfigResponse>({
-      endpoint: API_ENDPOINTS.CONFIG.STORES_CONFIG,
+      endpoint,
     });
 
     if (!isValidStoresConfig(response.data)) {
       console.error("Empty or invalid stores config response");
 
-      if (lastGoodStoresConfig) {
-        return ok(lastGoodStoresConfig);
+      const cached = lastGoodStoresConfig[String(websiteId ?? "default")];
+      if (cached) {
+        return ok(cached);
       }
 
       return failure("Error fetching stores config: Empty response");
     }
 
-    lastGoodStoresConfig = response.data;
+    lastGoodStoresConfig[String(websiteId ?? "default")] = response.data;
 
     return ok(response.data);
   } catch (error) {
     console.error("Error fetching stores config: ", error);
 
-    if (lastGoodStoresConfig) {
-      return ok(lastGoodStoresConfig);
+    const cached = lastGoodStoresConfig[String(websiteId ?? "default")];
+    if (cached) {
+      return ok(cached);
     }
 
     return failure(

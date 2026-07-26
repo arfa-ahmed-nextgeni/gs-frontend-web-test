@@ -103,6 +103,7 @@ export function AuthDropdown({
   const handleLinkClick = (menuId: string) => {
     trackMenuClick(menuId);
     setIsMenuOpen(false);
+    clearHoverStack();
   };
 
   const handleMouseEnter = () => {

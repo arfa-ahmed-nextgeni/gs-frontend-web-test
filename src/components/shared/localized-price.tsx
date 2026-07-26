@@ -38,16 +38,9 @@ export const LocalizedPrice = ({
         <span
           {...currencySymbolProps}
           className={cn(
-            "font-gilroy me-1 inline align-middle leading-none",
+            "font-gilroy leading-none! relative me-1 inline align-middle text-[0.8em]",
             currencySymbolProps?.className
           )}
-          style={{
-            lineHeight: "inherit",
-            position: "relative",
-            top: "calc(-0.04em + 0.3px)",
-            verticalAlign: "middle",
-            ...currencySymbolProps?.style,
-          }}
         >
           {config.symbol}
         </span>

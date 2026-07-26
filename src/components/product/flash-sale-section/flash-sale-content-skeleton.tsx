@@ -9,68 +9,45 @@ export const FlashSaleContentSkeleton = ({
   variant?: ProductCardVariant;
 }) => {
   return (
-    <div className="lg:mb-18 relative mb-8">
-      <div className="bg-bg-success relative my-4 h-[510px] w-full rounded-[15px] px-4 py-6 lg:my-8 lg:h-[300px] lg:w-full lg:px-6 lg:pb-32 lg:pt-6">
-        {/* See All Link - Desktop Only */}
+    <div className="relative lg:mb-28">
+      <div
+        aria-hidden
+        className="bg-bg-success absolute inset-0 rounded-[15px] lg:hidden"
+      />
+      <div className="bg-bg-success lg:w-274.75 relative w-full rounded-[15px] px-5 pb-0 pt-5 lg:my-8 lg:h-[300px] lg:px-6 lg:pb-32 lg:pt-6">
         <Skeleton className="absolute end-4 top-4 hidden h-6 w-20 lg:end-8 lg:top-8 lg:block" />
 
-        {/* Desktop Layout */}
-        <div className="hidden lg:block">
-          <div className="flex flex-col">
-            {/* Title and Subtitle */}
-            <div className="mb-6">
-              <div className="mb-6 flex items-center gap-2.5">
-                <Skeleton className="h-9 w-6" />
-                <Skeleton className="h-[51px] w-48" />
-              </div>
-              <Skeleton className="h-7 w-80" />
+        <div className="flex flex-col">
+          <div className="flex-col">
+            <div className="flex items-center gap-2.5">
+              <Skeleton className="h-6 w-4 lg:h-9 lg:w-6" />
+              <Skeleton className="h-8 w-40 lg:h-[51px] lg:w-48" />
             </div>
-            {/* Countdown Timer */}
-            <FlashSaleCountdownSkeleton layout="desktop" />
+            <Skeleton className="w-70 mt-2 h-6 lg:h-7 lg:w-80" />
           </div>
-        </div>
-
-        {/* Mobile Layout */}
-        <div className="block lg:hidden">
-          {/* Title and Subtitle */}
-          <div className="mb-4">
-            <div className="mb-4 flex items-center gap-2.5">
-              <Skeleton className="h-9 w-6" />
-              <Skeleton className="h-8 w-40" />
-            </div>
-            <Skeleton className="w-70 h-6" />
-          </div>
-
-          {/* Timer and Products Side by Side */}
-          <div className="relative flex items-end gap-6">
-            {/* Countdown Timer */}
-            <div className="w-[50px] flex-shrink-0">
-              <FlashSaleCountdownSkeleton layout="mobile" />
-            </div>
-
-            {/* Products */}
-            <div className="relative min-w-0 flex-1">
-              <CategoryProductsCarouselItemsSkeleton
-                maximumProducts={4}
-                variant={variant}
-              />
-
-              {/* See All - Bottom Right (Mobile Only) */}
-              <Skeleton className="absolute -bottom-10 end-2 h-6 w-16" />
-            </div>
+          <div className="lg:inset-s-6 mt-3 lg:absolute lg:bottom-6 lg:mt-0">
+            <FlashSaleCountdownSkeleton />
           </div>
         </div>
       </div>
 
-      {/* Product Cards - Only for Desktop (Overlapping) */}
-      <div className="absolute -bottom-20 end-2 z-10 hidden w-[700px] lg:block xl:w-[800px]">
+      <div className="lg:-bottom-22.5 relative -me-2.5 mt-4 min-w-0 lg:absolute lg:end-0 lg:z-10 lg:me-0 lg:mt-0 lg:w-[700px] xl:w-[800px]">
         <div className="w-full">
           <CategoryProductsCarouselItemsSkeleton
+            carouselProps={{
+              className:
+                "[&>[data-slot=scroll-snap-carousel-viewport]]:[scroll-padding-inline-end:0px] [&>[data-slot=scroll-snap-carousel-viewport]]:[scroll-padding-inline-start:1.25rem] lg:[&>[data-slot=scroll-snap-carousel-viewport]]:[scroll-padding-inline:0px]",
+            }}
+            contentProps={{
+              className: "ps-5 pe-0 lg:ps-0 lg:pe-0",
+            }}
             maximumProducts={4}
             variant={variant}
           />
         </div>
       </div>
+
+      <Skeleton className="relative my-4 me-5 ms-auto h-6 w-16 lg:hidden" />
     </div>
   );
 };

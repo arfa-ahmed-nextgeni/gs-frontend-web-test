@@ -72,9 +72,11 @@ type PayfortOrderDetailsRawResponse = {
 };
 
 export async function getPayfortOrderDetailsAction({
+  forwardHeaders,
   locale,
   orderId,
 }: {
+  forwardHeaders?: HeadersInit;
   locale: Locale;
   orderId: string;
 }) {
@@ -87,6 +89,7 @@ export async function getPayfortOrderDetailsAction({
     const response = await restRequest<PayfortOrderDetailsRawResponse>({
       authToken: authToken ?? undefined,
       endpoint: `/payfort/order?orderId=${orderId}`,
+      forwardHeaders,
       options: {
         method: "GET",
       },

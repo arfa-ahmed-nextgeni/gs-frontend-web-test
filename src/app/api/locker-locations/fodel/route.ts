@@ -4,6 +4,7 @@ import { operationsApiRequest } from "@/lib/clients/operations";
 import { OPERATIONS_FODEL_APPKEY } from "@/lib/config/server-env";
 import { OPERATIONS_ENDPOINTS } from "@/lib/constants/api/endpoints";
 import { STATUS } from "@/lib/constants/service-result";
+import { getForwardedRequestHeadersFrom } from "@/lib/utils/forwarded-headers";
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,6 +29,7 @@ export async function POST(request: NextRequest) {
         warehouse: null,
       },
       endpoint: OPERATIONS_ENDPOINTS.FODEL_POINTS,
+      forwardHeaders: getForwardedRequestHeadersFrom(request.headers),
     });
 
     return NextResponse.json({

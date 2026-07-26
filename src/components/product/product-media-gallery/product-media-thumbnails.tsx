@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 import { ProductImageWithFallback } from "@/components/product/product-image-with-fallback";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -17,7 +17,19 @@ export const ProductMediaThumbnails = ({
   items: ProductMedia[];
   onSelect: (index: number) => void;
 }) => {
+  const [isVisible, setIsVisible] = useState(false);
   const [thumbnails, setThumbnails] = useState<(null | string)[]>([]);
+
+  useEffect(() => {
+    const animationFrameId = window.requestAnimationFrame(() => {
+      setIsVisible(true);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(animationFrameId);
+      setIsVisible(false);
+    };
+  }, []);
 
   useEffect(() => {
     async function loadThumbnails() {
@@ -46,7 +58,10 @@ export const ProductMediaThumbnails = ({
 
   return (
     <ScrollArea
-      className="col-span-0 lg:h-148.75 hidden lg:col-span-1 lg:block"
+      className={cn(
+        "col-span-0 lg:h-148.75 hidden transition-all duration-200 ease-out lg:col-span-1 lg:block",
+        isVisible ? "translate-y-0 opacity-100" : "translate-y-1 opacity-0"
+      )}
       type="hover"
     >
       <div className="flex flex-col gap-2.5">
@@ -72,15 +87,13 @@ export const ProductMediaThumbnails = ({
                 onClick={() => onSelect(index)}
               >
                 {imageUrl && (
-                  <ProductImageWithFallback
-                    alt="Product thumbnail"
-                    className={cn({
-                      "transition-default opacity-50": index !== currentIndex,
+                  <span
+                    className={cn("transition-default block size-full", {
+                      "opacity-50": index !== currentIndex,
                     })}
-                    fill
-                    sizes="91px"
-                    src={imageUrl}
-                  />
+                  >
+                    <ProductMediaThumbnailImage imageUrl={imageUrl} />
+                  </span>
                 )}
               </button>
             );
@@ -90,3 +103,18 @@ export const ProductMediaThumbnails = ({
     </ScrollArea>
   );
 };
+
+const ProductMediaThumbnailImage = memo(function ProductMediaThumbnailImage({
+  imageUrl,
+}: {
+  imageUrl: string;
+}) {
+  return (
+    <ProductImageWithFallback
+      alt="Product thumbnail"
+      fill
+      sizes="91px"
+      src={imageUrl}
+    />
+  );
+});

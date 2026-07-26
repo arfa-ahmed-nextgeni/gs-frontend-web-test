@@ -5,19 +5,23 @@ import {
   ApiActivityServices,
 } from "@/lib/api-activity/api-activity-meta";
 import { loggedFetch } from "@/lib/api-activity/fetch/logged-fetch";
+import { getStorefrontTlsOptions } from "@/lib/clients/storefront-tls";
 import { REST_BASE_URL } from "@/lib/config/client-env";
 import { API_CONSTANTS, HEADERS } from "@/lib/constants/api";
 import { StoreCode } from "@/lib/constants/i18n";
+import { applyForwardHeaders } from "@/lib/utils/forwarded-headers";
 
 export async function restRequest<T>({
   authToken,
   endpoint,
+  forwardHeaders,
   options,
   requestInit,
   storeCode,
 }: {
   authToken?: string;
   endpoint: string;
+  forwardHeaders?: HeadersInit;
   isGuest?: boolean;
   options?: RequestInit;
   requestInit?: RequestInit;
@@ -33,6 +37,8 @@ export async function restRequest<T>({
   headers.set(HEADERS.X_PLATFORM, "web");
   if (authToken) headers.set(HEADERS.AUTHORIZATION, `Bearer ${authToken}`);
 
+  applyForwardHeaders(headers, forwardHeaders);
+
   const response = await loggedFetch(
     url,
     {
@@ -40,6 +46,7 @@ export async function restRequest<T>({
       headers,
       signal: AbortSignal.timeout(API_CONSTANTS.DEFAULT_TIMEOUT),
       ...requestInit,
+      ...getStorefrontTlsOptions(),
     },
     {
       feature: ApiActivityFeatures.Storefront,

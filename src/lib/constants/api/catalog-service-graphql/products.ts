@@ -1,151 +1,108 @@
 import { graphql } from "@/catalog-service-graphql";
 
+/**
+ * Attribute set read by ProductDetailsModel on the PDP (37 attributes).
+ * Single source of truth — update this list before reading a new attribute
+ * on the product detail page, then re-run codegen.
+ */
+export const PdpAttributesFragment = graphql(`
+  fragment PdpAttributes on ProductView {
+    attributes(
+      names: [
+        "associated_products"
+        "attribute_set"
+        "product_type"
+        "product_type_new2"
+        "exclusive"
+        "is_new"
+        "product_tags"
+        "review_rating"
+        "value_off"
+        "express_delivery_available"
+        "low_stock_qty"
+        "countdown_timer_enabled"
+        "countdown_timer_start_date"
+        "countdown_timer_end_date"
+        "countdown_timer_title"
+        "brand_new"
+        "color"
+        "gender"
+        "character"
+        "fragrance_notes"
+        "top_notes"
+        "middle_notes"
+        "base_notes"
+        "concentration"
+        "year_of_launch"
+        "size_new"
+        "categories"
+        "ingredients"
+        "makeup_color"
+        "area_of_apply"
+        "texture"
+        "product_color"
+        "item_category"
+        "skin_type"
+        "finish"
+        "coverage"
+        "parent_product_url"
+        "available_stock"
+      ]
+    ) {
+      label
+      name
+      roles
+      value
+    }
+  }
+`);
+
+/**
+ * Attribute set for product cards / listings (19 attributes). This is the
+ * union of every card-type consumer:
+ *  - transformProductViewToCardModel (PLP, search, category)
+ *  - CategoryProductsModel
+ *  - LinkProducts (similar / you-might-also-like)
+ *  - ViewedProducts + determineProductType (by-skus)  -> needs attribute_set
+ *  - extractProductPrice                              -> needs giftcard_amount_values
+ *  - gift-wrap drawer                                 -> needs product_meta_type
+ * Some attributes are unused by a given query; the over-fetch is harmless and
+ * keeps a single shared list. Update before reading a new card attribute.
+ */
+export const CardAttributesFragment = graphql(`
+  fragment CardAttributes on ProductView {
+    attributes(
+      names: [
+        "associated_products"
+        "brand"
+        "brand_new"
+        "product_type"
+        "product_type_new2"
+        "exclusive"
+        "is_new"
+        "product_tags"
+        "review_rating"
+        "value_off"
+        "express_delivery_available"
+        "countdown_timer_enabled"
+        "countdown_timer_start_date"
+        "countdown_timer_end_date"
+        "countdown_timer_title"
+        "product_meta_type"
+        "giftcard_amount_values"
+        "attribute_set"
+        "available_stock"
+      ]
+    ) {
+      label
+      name
+      roles
+      value
+    }
+  }
+`);
+
 export const CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES = {
-  GET_LINK_PRODUCTS: graphql(`
-    query GetLinkProducts($sku: String!, $linkType: String!) {
-      products(skus: [$sku]) {
-        links(linkTypes: [$linkType]) {
-          product {
-            __typename
-            id
-            externalId
-            name
-            shortDescription
-            sku
-            inStock
-            urlKey
-            images {
-              url
-            }
-            attributes {
-              label
-              name
-              roles
-              value
-            }
-            ... on SimpleProductView {
-              price {
-                final {
-                  amount {
-                    currency
-                    value
-                  }
-                }
-                regular {
-                  amount {
-                    currency
-                    value
-                  }
-                }
-              }
-            }
-            ... on ComplexProductView {
-              options {
-                id
-                values {
-                  __typename
-                  id
-                  title
-                  inStock
-                  ... on ProductViewOptionValueSwatch {
-                    type
-                    value
-                  }
-                }
-              }
-              priceRange {
-                minimum {
-                  final {
-                    amount {
-                      currency
-                      value
-                    }
-                  }
-                  regular {
-                    amount {
-                      currency
-                      value
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `),
-
-  GET_PRODUCT_DETAILS: graphql(`
-    query GetProductDetails($sku: String!) {
-      products(skus: [$sku]) {
-        __typename
-        externalId
-        name
-        description
-        sku
-        videos {
-          preview {
-            url
-          }
-          url
-        }
-        images {
-          url
-        }
-        ... on ComplexProductView {
-          options {
-            id
-            multi
-            required
-            title
-            values {
-              __typename
-              id
-              title
-              inStock
-              ... on ProductViewOptionValueSwatch {
-                title
-                type
-                value
-              }
-              ... on ProductViewOptionValueProduct {
-                product {
-                  id
-                }
-              }
-            }
-          }
-        }
-        ... on SimpleProductView {
-          name
-          sku
-          inStock
-          price {
-            regular {
-              amount {
-                currency
-                value
-              }
-            }
-            final {
-              amount {
-                currency
-                value
-              }
-            }
-          }
-        }
-        attributes {
-          label
-          name
-          roles
-          value
-        }
-      }
-    }
-  `),
-
   GET_PRODUCT_DETAILS_BY_SKU: graphql(`
     query GetProductDetailsBySku($sku: String!) {
       productSearch(filter: [{ attribute: "sku", eq: $sku }], phrase: "") {
@@ -212,12 +169,7 @@ export const CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES = {
                 }
               }
             }
-            attributes {
-              label
-              name
-              roles
-              value
-            }
+            ...PdpAttributes
           }
           product {
             price_range {
@@ -302,12 +254,7 @@ export const CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES = {
                 }
               }
             }
-            attributes {
-              label
-              name
-              roles
-              value
-            }
+            ...PdpAttributes
           }
           product {
             price_range {
@@ -315,58 +262,6 @@ export const CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES = {
                 final_price {
                   currency
                   value
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `),
-
-  GET_PRODUCT_VARIANTS: graphql(`
-    query GetProductVariants($sku: String!) {
-      variants(sku: $sku) {
-        variants {
-          selections
-          product {
-            __typename
-            images(roles: []) {
-              url
-            }
-            videos {
-              preview {
-                url
-              }
-              url
-            }
-            addToCartAllowed
-            inStock
-            lowStock
-            id
-            sku
-            urlKey
-            attributes {
-              label
-              name
-              roles
-              value
-            }
-
-            ... on SimpleProductView {
-              price {
-                roles
-                final {
-                  amount {
-                    currency
-                    value
-                  }
-                }
-                regular {
-                  amount {
-                    currency
-                    value
-                  }
                 }
               }
             }
@@ -390,12 +285,7 @@ export const CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES = {
         images {
           url
         }
-        attributes {
-          label
-          name
-          roles
-          value
-        }
+        ...CardAttributes
         ... on SimpleProductView {
           price {
             final {
@@ -450,15 +340,16 @@ export const CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES = {
   GET_SIMILAR_PRODUCTS: graphql(`
     query GetSimilarProducts(
       $brand: String!
-      $productType: String!
+      $typeFilter: SearchClauseInput!
       $gender: String!
     ) {
       productSearch(
         filter: [
           { attribute: "brand_new", eq: $brand }
-          { attribute: "product_type_new2", eq: $productType }
+          $typeFilter
           { attribute: "gender", eq: $gender }
         ]
+        sort: [{ attribute: "inStock", direction: DESC }]
         phrase: ""
         page_size: 10
       ) {
@@ -476,12 +367,7 @@ export const CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES = {
             images {
               url
             }
-            attributes {
-              label
-              name
-              roles
-              value
-            }
+            ...CardAttributes
             ... on SimpleProductView {
               price {
                 final {
@@ -536,15 +422,21 @@ export const CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES = {
   `),
 
   GET_YOU_MIGHT_ALSO_LIKE_PRODUCTS: graphql(`
-    query GetYouMightAlsoLikeProducts($productType: String!, $gender: String!) {
+    query GetYouMightAlsoLikeProducts(
+      $typeFilter: SearchClauseInput!
+      $gender: String!
+    ) {
       productSearch(
         filter: [
           { attribute: "categoryPath", eq: "you-might-also-like" }
-          { attribute: "product_type_new2", eq: $productType }
+          $typeFilter
           { attribute: "gender", eq: $gender }
           { attribute: "inStock", eq: "true" }
         ]
-        sort: [{ attribute: "position", direction: ASC }]
+        sort: [
+          { attribute: "position", direction: ASC }
+          { attribute: "inStock", direction: DESC }
+        ]
         phrase: ""
         page_size: 10
       ) {
@@ -562,12 +454,7 @@ export const CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES = {
             images {
               url
             }
-            attributes {
-              label
-              name
-              roles
-              value
-            }
+            ...CardAttributes
             ... on SimpleProductView {
               price {
                 final {
@@ -676,12 +563,7 @@ export const CATALOG_SERVICE_PRODUCTS_GRAPHQL_QUERIES = {
               label
               roles
             }
-            attributes {
-              name
-              label
-              value
-              roles
-            }
+            ...CardAttributes
             ... on SimpleProductView {
               price {
                 final {

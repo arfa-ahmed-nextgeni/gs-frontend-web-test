@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import { CartListSkeleton } from "@/components/cart/order/skeletons/cart-list-skeleton";
+import { CartProductRailSkeleton } from "@/components/cart/order/skeletons/product-rail-skeleton";
 
 import { SuggestedProducts } from "./suggested-products";
 
@@ -12,7 +12,7 @@ export const SuggestedProductsSection = ({
   locale,
 }: SuggestedProductsSectionProps) => {
   return (
-    <Suspense fallback={<CartListSkeleton />}>
+    <Suspense fallback={<CartProductRailSkeleton />}>
       <SuggestedProducts locale={locale} />
     </Suspense>
   );

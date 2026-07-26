@@ -1,7 +1,5 @@
 import "server-only";
 
-import { getLocale } from "next-intl/server";
-
 import { getAuthToken } from "@/lib/actions/auth/get-auth-token";
 import { getStoreConfig } from "@/lib/actions/config/get-store-config";
 import { getDeviceIdCookie } from "@/lib/actions/cookies/device-id";
@@ -18,7 +16,7 @@ import type { GetViewedProductInput } from "@/graphql/graphql";
 
 const emptyViewedProductsResult = ok(new ViewedProducts({ products: [] }));
 
-export async function getViewedProducts() {
+export async function getViewedProducts({ locale }: { locale: Locale }) {
   try {
     const authToken = await getAuthToken();
     const input: GetViewedProductInput = {};
@@ -40,7 +38,6 @@ export async function getViewedProducts() {
       input.device_id = deviceId;
     }
 
-    const locale = (await getLocale()) as Locale;
     const storeConfig = await getStoreConfig({ locale });
 
     const store = storeConfig.data.store;

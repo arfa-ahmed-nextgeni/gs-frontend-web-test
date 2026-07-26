@@ -9,7 +9,6 @@ export function ApiActivityPagination({
   failedOnly,
   pageSize,
   searchQuery,
-  selectedEntryId,
   totalEntries,
   totalPages,
 }: {
@@ -18,7 +17,6 @@ export function ApiActivityPagination({
   failedOnly: boolean;
   pageSize: number;
   searchQuery: string;
-  selectedEntryId: null | string;
   totalEntries: number;
   totalPages: number;
 }) {
@@ -43,7 +41,6 @@ export function ApiActivityPagination({
               currentPage={currentPage - 1}
               failedOnly={failedOnly}
               searchQuery={searchQuery}
-              selectedEntryId={selectedEntryId}
             />
             <Button disabled={currentPage <= 1} type="submit" variant="outline">
               Previous
@@ -60,7 +57,6 @@ export function ApiActivityPagination({
               currentPage={currentPage + 1}
               failedOnly={failedOnly}
               searchQuery={searchQuery}
-              selectedEntryId={selectedEntryId}
             />
             <Button
               disabled={currentPage >= totalPages}

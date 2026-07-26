@@ -21,9 +21,11 @@ import { Cart } from "@/lib/models/cart";
 import { isError, isOk, isUnauthenticated } from "@/lib/utils/service-result";
 
 export const useRemoveProductFromCart = ({
+  product,
   skipTracking = false,
   sku,
 }: {
+  product?: Partial<ProductProperties>;
   skipTracking?: boolean;
   sku: string;
 }) => {
@@ -53,9 +55,24 @@ export const useRemoveProductFromCart = ({
       const item = cart?.items.find(
         (cartItem) => cartItem.uidInCart === variables.itemUid
       );
-      removedProductRef.current = item
-        ? buildProductPropertiesFromCartItem(item) // ← pura product object
+      const itemProperties = item
+        ? buildProductPropertiesFromCartItem(item)
         : undefined;
+
+      removedProductRef.current = itemProperties
+        ? {
+            ...itemProperties,
+            ...(item?.sku && {
+              [`product.${item.sku}.qty_in_cart`]: item.quantity || 0,
+            }),
+            ...(product?.["product.stock"] != null && {
+              "product.stock": product["product.stock"],
+            }),
+            ...(product?.["product.type"] && {
+              "product.type": product["product.type"],
+            }),
+          }
+        : product;
     },
 
     onSettled: async (data) => {

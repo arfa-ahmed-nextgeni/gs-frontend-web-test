@@ -10,6 +10,7 @@ import { restRequest } from "@/lib/clients/rest";
 import { API_ENDPOINTS } from "@/lib/constants/api/endpoints";
 import { Locale, LOCALE_TO_STORE } from "@/lib/constants/i18n";
 import { ROUTES } from "@/lib/constants/routes";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 
 export const deleteCustomerPaymentCard = async ({ id }: { id: string }) => {
   const t = await getTranslations("CustomerCardsPage.messages");
@@ -29,6 +30,7 @@ export const deleteCustomerPaymentCard = async ({ id }: { id: string }) => {
     }>({
       authToken,
       endpoint: API_ENDPOINTS.CUSTOMER.DELETE_PAYMENT_CARD(id),
+      forwardHeaders: await getForwardedRequestHeaders(),
       options: {
         method: "DELETE",
       },

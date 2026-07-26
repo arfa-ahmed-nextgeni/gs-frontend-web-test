@@ -33,7 +33,11 @@ export function getApiActivityFeatureState() {
     DEFAULT_API_ACTIVITY_MAX_BODY_BYTES
   );
   const passwordConfigured = Boolean(passwordValue);
-  const redactionEnabled = API_ACTIVITY_REDACTION_ENABLED === "true";
+  // Fail safe: redaction stays on unless explicitly disabled. This log
+  // captures raw request/response bodies (including PayFort's raw card
+  // number/CVV form POST), so a missing env var must never silently
+  // disable masking of cardholder data.
+  const redactionEnabled = API_ACTIVITY_REDACTION_ENABLED !== "false";
 
   return {
     available: enabled && passwordConfigured,

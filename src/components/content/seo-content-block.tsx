@@ -6,7 +6,10 @@ import Container from "@/components/shared/container";
 import type { SeoContentBlock as SeoContentBlockModel } from "@/lib/models/seo-content-block";
 
 interface SeoContentBlockProps {
-  data: Pick<SeoContentBlockModel, "content" | "contentType" | "internalName">;
+  data: Pick<
+    SeoContentBlockModel,
+    "content" | "contentType" | "internalName" | "title"
+  >;
 }
 
 export default function SeoContentBlock({ data }: SeoContentBlockProps) {
@@ -14,7 +17,7 @@ export default function SeoContentBlock({ data }: SeoContentBlockProps) {
     return null;
   }
 
-  const title = data.internalName || "More information";
+  const title = data.title || data.internalName || "More information";
 
   return (
     <Container>

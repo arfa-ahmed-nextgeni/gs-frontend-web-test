@@ -10,6 +10,14 @@ import type { ClickOrigin } from "./models/event-models";
  */
 class ClickOriginTrackingManager {
   private clickOrigin: ClickOrigin | null = null;
+  private pdpNavigationSource: "cart" | null = null;
+
+  consumePdpNavigationSource(): "cart" | null {
+    const source = this.pdpNavigationSource;
+    this.pdpNavigationSource = null;
+
+    return source;
+  }
 
   /**
    * Get the current click origin
@@ -34,6 +42,10 @@ class ClickOriginTrackingManager {
    */
   setClickOrigin(origin: ClickOrigin): void {
     this.clickOrigin = origin;
+  }
+
+  setPdpNavigationSource(source: "cart"): void {
+    this.pdpNavigationSource = source;
   }
 }
 

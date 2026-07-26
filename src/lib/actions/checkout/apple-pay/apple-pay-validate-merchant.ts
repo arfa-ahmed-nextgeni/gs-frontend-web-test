@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 
 import { paymentsServiceRequest } from "@/lib/clients/payments-service";
 import { PAYMENT_ENDPOINTS } from "@/lib/constants/api/endpoints";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 import { isPayfortApplePayPaymentMethod } from "@/lib/utils/payment-method";
 import { failure, ok } from "@/lib/utils/service-result";
 
@@ -50,6 +51,7 @@ export async function applePayValidateMerchantAction({
     const response =
       await paymentsServiceRequest<ApplePayValidateMerchantResponse>({
         endpoint,
+        forwardHeaders: await getForwardedRequestHeaders(),
         options: {
           body: JSON.stringify({
             displayName: tApplePay("displayName"),

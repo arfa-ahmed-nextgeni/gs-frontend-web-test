@@ -152,6 +152,7 @@ function mapCustomerOrderToUiOrder(order: CustomerOrderModel): UiOrder {
     const existing = productMap.get(key);
 
     if (existing) {
+      existing.isGwp = existing.isGwp || Boolean(item.is_gwp);
       existing.quantity += item.quantity_ordered;
       return;
     }
@@ -161,6 +162,7 @@ function mapCustomerOrderToUiOrder(order: CustomerOrderModel): UiOrder {
       color,
       id: variantSku,
       image,
+      isGwp: item.is_gwp ?? false,
       name: item.product_name,
       price: unitPrice,
       productId: item.product?.id,
@@ -204,6 +206,7 @@ function mapCustomerOrderToUiOrder(order: CustomerOrderModel): UiOrder {
     ) || 0;
 
   return {
+    appliedCoupons: order.appliedCoupons,
     cod_fee: codFee,
     contactPhone: shippingAddress?.telephone,
     customer: {
@@ -222,7 +225,7 @@ function mapCustomerOrderToUiOrder(order: CustomerOrderModel): UiOrder {
     shipping_fee: shippingFee,
     tax,
     total: grandTotal,
-    tracking_number: order.increment_id || order.number,
+    tracking_number: order.tracking_number,
   };
 }
 

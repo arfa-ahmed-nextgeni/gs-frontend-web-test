@@ -10,7 +10,10 @@ import { QueryParamsKey } from "@/lib/constants/query-params";
 import { ROUTES } from "@/lib/constants/routes";
 import { PendingOrderInfo } from "@/lib/types/checkout/order";
 import { getOpenAppRedirectResponse } from "@/lib/utils/open-app-redirect";
-import { getBaseUrlFromRequest } from "@/lib/utils/request";
+import {
+  getBaseUrlFromRequest,
+  isNextRouterBackgroundRequest,
+} from "@/lib/utils/request";
 import { isOrderConfirmationPath } from "@/lib/utils/routes";
 
 const intlMiddleware = createIntlMiddleware(routing);
@@ -51,7 +54,7 @@ export default async function proxy(request: NextRequest) {
   if (isHealthCheck && isProbedPath) {
     // Very lightweight response – no routing, no RSC, no async
     console.info(
-      `Health check early-return: UA=${ua.slice(0, 50)}, path=${pathname}`
+      `Health check early-return: UA=${ua.slice(0, 50)}, path=${pathname}`,
     );
     return new NextResponse("OK", {
       headers: {
@@ -80,23 +83,27 @@ async function authMiddleware(request: NextRequest, response: NextResponse) {
 
   // Check if user is returning from payment gateway via browser back button
   const pendingOrderInfo = request.cookies.get(
-    CookieName.PENDING_ORDER_INFO
+    CookieName.PENDING_ORDER_INFO,
   )?.value;
 
   const isOrderConfirmation = isOrderConfirmationPath(basePathname);
 
-  if (pendingOrderInfo && !isOrderConfirmation) {
+  if (
+    pendingOrderInfo &&
+    !isOrderConfirmation &&
+    !isNextRouterBackgroundRequest(request)
+  ) {
     // User came back from payment gateway, redirect to refill-cart API
     const pendingOrderInfoParsed = JSON.parse(
-      pendingOrderInfo
+      pendingOrderInfo,
     ) as PendingOrderInfo;
 
     const refillCartPath = ROUTES.CHECKOUT.REFILL_CART_API(
-      PaymentStatus.Cancelled
+      PaymentStatus.Cancelled,
     );
     const refillCartUrl = new URL(
       refillCartPath,
-      pendingOrderInfoParsed.baseUrl
+      pendingOrderInfoParsed.baseUrl,
     );
     const requestedRoute = `${request.nextUrl.pathname}${request.nextUrl.search}`;
     refillCartUrl.searchParams.set(QueryParamsKey.To, requestedRoute);
@@ -121,10 +128,10 @@ export const config = {
     // Skip Next.js internals, static files, sitemap routes, and well-known paths
     // - API routes: /api, /trpc
     // - Next.js internals: /_next, /_vercel
-    // - Standalone tools: /tools/api-activity
+    // - Standalone tools: /tools/api-activity, /tools/cache-revalidate
     // - Static files: files with extensions (.*\\..*)
     // - Sitemap: /sitemap, /sitemap.xml
     // - Well-known: /.well-known
-    "/((?!api|trpc|_next|_vercel|\\.well-known|sitemap|tools/api-activity|.*\\..*).*)",
+    "/((?!api|trpc|_next|_vercel|\\.well-known|sitemap|tools/(?:api-activity|cache-revalidate)|.*\\..*).*)",
   ],
 };

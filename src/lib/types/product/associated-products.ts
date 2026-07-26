@@ -13,6 +13,7 @@ export type GalleryItem = {
 };
 
 type AssociatedProduct = {
+  available_stock?: null | number;
   color_swatch: any;
   countdown_timer?: {
     countdown_timer_enabled: boolean;

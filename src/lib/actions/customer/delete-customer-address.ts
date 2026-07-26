@@ -10,6 +10,7 @@ import { graphqlRequest } from "@/lib/clients/graphql";
 import { CUSTOMER_GRAPHQL_MUTATIONS } from "@/lib/constants/api/graphql/customer";
 import { Locale, LOCALE_TO_STORE } from "@/lib/constants/i18n";
 import { ROUTES } from "@/lib/constants/routes";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 import { failure, ok } from "@/lib/utils/service-result";
 
 export const deleteCustomerAddress = async ({ id }: { id: string }) => {
@@ -26,6 +27,7 @@ export const deleteCustomerAddress = async ({ id }: { id: string }) => {
 
     const response = await graphqlRequest({
       authToken,
+      forwardHeaders: await getForwardedRequestHeaders(),
       query: CUSTOMER_GRAPHQL_MUTATIONS.DELETE_CUSTOMER_ADDRESS,
       storeCode: LOCALE_TO_STORE[locale],
       variables: {

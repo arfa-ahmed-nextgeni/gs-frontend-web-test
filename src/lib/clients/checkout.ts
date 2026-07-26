@@ -10,12 +10,15 @@ import {
   CHECKOUT_PUBLIC_API_KEY,
 } from "@/lib/config/server-env";
 import { API_CONSTANTS, HEADERS } from "@/lib/constants/api";
+import { applyForwardHeaders } from "@/lib/utils/forwarded-headers";
 
 export async function checkoutRequest<T>({
   endpoint,
+  forwardHeaders,
   options,
 }: {
   endpoint: string;
+  forwardHeaders?: HeadersInit;
   options?: RequestInit;
 }): Promise<{ data: T; status: number }> {
   const url = `${CHECKOUT_BASE_URL}${endpoint}`;
@@ -24,6 +27,7 @@ export async function checkoutRequest<T>({
 
   headers.set(HEADERS.CONTENT_TYPE, "application/json");
   headers.set(HEADERS.AUTHORIZATION, `Bearer ${CHECKOUT_PUBLIC_API_KEY}`);
+  applyForwardHeaders(headers, forwardHeaders);
 
   const response = await loggedFetch(
     url,

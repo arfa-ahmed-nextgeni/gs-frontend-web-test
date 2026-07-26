@@ -24,3 +24,18 @@ export function getBaseUrlFromRequest(request: NextRequest): string {
 
   return `${PROTOCOL}://${domain}`;
 }
+
+export function isNextRouterBackgroundRequest(request: NextRequest): boolean {
+  const accept = request.headers.get(HEADERS.ACCEPT) ?? "";
+  const isHtmlRequest = accept.includes("text/html");
+  const isPageRequest = !request.nextUrl.pathname.startsWith("/api");
+  const hasNextRouterSignal =
+    request.nextUrl.searchParams.has("_rsc") ||
+    request.headers.get("rsc") === "1" ||
+    request.headers.has("next-router-state-tree") ||
+    request.headers.get("next-router-prefetch") === "1" ||
+    request.headers.get("next-router-segment-prefetch") === "1" ||
+    request.headers.get("purpose") === "prefetch";
+
+  return !isHtmlRequest && (hasNextRouterSignal || isPageRequest);
+}

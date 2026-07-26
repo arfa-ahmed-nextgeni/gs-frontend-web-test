@@ -22,6 +22,7 @@ import { ok } from "@/lib/utils/service-result";
 export async function applePayMakePaymentAction({
   baseUrl,
   data,
+  forwardHeaders,
   locale,
   orderId,
   paymentMethodType,
@@ -29,6 +30,7 @@ export async function applePayMakePaymentAction({
 }: {
   baseUrl: string;
   data?: PayFortApplePayPayResponse;
+  forwardHeaders?: HeadersInit;
   locale: Locale;
   orderId: string;
   paymentMethodType: PaymentMethodType;
@@ -56,7 +58,9 @@ export async function applePayMakePaymentAction({
     };
 
     const response = await restRequest<MakePaymentResponse>({
+      authToken,
       endpoint: ORDER_ENDPOINTS.MAKE_PAYMENT,
+      forwardHeaders,
       options: {
         body: JSON.stringify(requestPayload),
         method: "POST",

@@ -1,10 +1,7 @@
 import { BannerSlider } from "@/lib/models/banner-slider";
 import { CartSuggestedProducts } from "@/lib/models/cart-suggested-products";
 import { CategoryProducts } from "@/lib/models/category-products";
-import {
-  type ComponentSeo,
-  parseComponentSeo,
-} from "@/lib/models/component-seo";
+import { ComponentSeo } from "@/lib/models/component-seo";
 import { CookieConsentPromptModel } from "@/lib/models/cookie-consent-prompt-model";
 import { DesktopCategories } from "@/lib/models/desktop-categories";
 import { FlashSale } from "@/lib/models/flash-sale";
@@ -27,6 +24,7 @@ import {
   BannerSliderData,
   CartSuggestedProductsData,
   CategoryProductsData,
+  ComponentSeoData,
   CookieConsentPromptData,
   DesktopCategoriesData,
   FlashSaleData,
@@ -46,6 +44,7 @@ export const enum TabContentType {
   BannerSlider = "bannerSlider",
   CartSuggestedProducts = "cartSuggestedProducts",
   CategoryProducts = "categoryProducts",
+  ComponentSeo = "componentSeo",
   CookieConsentPrompt = "cookieConsentPrompt",
   DesktopCategories = "desktopCategories",
   FlashSale = "flashSale",
@@ -66,7 +65,7 @@ export const enum TabContentType {
 const DEFAULT_BANNER_LCP_CANDIDATE_INDEX = 0;
 
 export class PageLanding {
-  public cartSuggestedProducts?: CartSuggestedProducts;
+  public cartSuggestedProducts: CartSuggestedProducts[] = [];
   public contents?: (
     | BannerSlider
     | CategoryProducts
@@ -97,11 +96,16 @@ export class PageLanding {
       data.items?.[0]?.fields?.lcpPriorityContent?.sys?.id;
     this.mobileHeaderTitle = data.items?.[0]?.fields?.mobileHeaderTitle;
     const fields = data.items?.[0]?.fields;
-    const resolvedSeo = parseComponentSeo(fields?.seo);
-    if (resolvedSeo) {
-      this.seo = resolvedSeo;
-    }
     const tabContents = fields?.tabContent;
+
+    const componentSeoData = tabContents?.find(
+      (content) =>
+        content.sys.contentType?.sys.id === TabContentType.ComponentSeo
+    );
+
+    if (componentSeoData?.fields && componentSeoData.sys.contentType) {
+      this.seo = new ComponentSeo(componentSeoData.fields as ComponentSeoData);
+    }
 
     const webFooterData = tabContents?.find(
       (content) =>
@@ -175,20 +179,22 @@ export class PageLanding {
       );
     }
 
-    const cartSuggestedProductsData = tabContents?.find(
-      (content) =>
-        content.sys.contentType?.sys.id === TabContentType.CartSuggestedProducts
-    );
-
-    if (
-      cartSuggestedProductsData?.fields &&
-      cartSuggestedProductsData.sys.contentType
-    ) {
-      this.cartSuggestedProducts = new CartSuggestedProducts(
-        cartSuggestedProductsData.fields as CartSuggestedProductsData,
-        cartSuggestedProductsData.sys.contentType.sys.id
-      );
-    }
+    this.cartSuggestedProducts =
+      tabContents
+        ?.filter(
+          (content) =>
+            content.fields &&
+            content.sys.contentType?.sys.id ===
+              TabContentType.CartSuggestedProducts
+        )
+        .map(
+          (content) =>
+            new CartSuggestedProducts(
+              content.fields as CartSuggestedProductsData,
+              TabContentType.CartSuggestedProducts,
+              content.sys.id
+            )
+        ) ?? [];
 
     this.contents = tabContents
       ?.filter((content) =>

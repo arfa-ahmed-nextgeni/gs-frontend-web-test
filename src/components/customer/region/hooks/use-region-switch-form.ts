@@ -17,6 +17,7 @@ import {
   regionSwitchFormSchema,
 } from "@/lib/forms/region-switch";
 import { LocaleSwitchOption } from "@/lib/types/store-config";
+import { getCrossDomainLocalePrefix } from "@/lib/utils/cross-domain-locale";
 
 export const useRegionSwitchForm = ({
   localeSwitchOptions,
@@ -68,8 +69,19 @@ export const useRegionSwitchForm = ({
           });
         } else {
           await invalidateSession();
+          // Prefix comes from the target domain's default locale
+          // (next-intl `as-needed`), so the default language (e.g. Arabic)
+          // stays prefix-less instead of 301-redirecting (/ar/... -> /...).
+          const targetLanguage =
+            selectedLanguage === LanguageCode.AR
+              ? LanguageCode.AR
+              : LanguageCode.EN;
+          const targetPrefix = getCrossDomainLocalePrefix(
+            selectedLocaleSwitchOption?.domain ?? "",
+            targetLanguage
+          );
           router.replace(
-            `${PROTOCOL}://${selectedLocaleSwitchOption?.domain}/${selectedLanguage === LanguageCode.AR ? selectedLocaleSwitchOption?.arLocale : selectedLocaleSwitchOption?.enLocale}${ROUTES.CUSTOMER.ACCOUNT}`
+            `${PROTOCOL}://${selectedLocaleSwitchOption?.domain}${targetPrefix}${ROUTES.CUSTOMER.ACCOUNT}`
           );
         }
 

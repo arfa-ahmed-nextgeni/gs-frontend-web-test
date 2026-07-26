@@ -125,7 +125,6 @@ async function ApiActivityPageContent({
     );
   }
 
-  const allEntries = getApiActivityEntries();
   const autoRefreshEnabled =
     getSearchParamValue(resolvedSearchParams.autoRefresh) === "1";
   const searchQuery = getSearchParamValue(resolvedSearchParams.q) ?? "";
@@ -134,6 +133,15 @@ async function ApiActivityPageContent({
   const requestedSelectedEntryId = getSearchParamValue(
     resolvedSearchParams.selected
   );
+  const [allEntries, requestedSelectedEntryState] = await Promise.all([
+    getApiActivityEntries(),
+    requestedSelectedEntryId
+      ? getSelectedApiActivityEntry({
+          id: requestedSelectedEntryId,
+          sessionKey,
+        })
+      : Promise.resolve(null),
+  ]);
   const filteredEntries = filterApiActivityEntries({
     entries: allEntries,
     failedOnly,
@@ -146,19 +154,13 @@ async function ApiActivityPageContent({
     requestedSelectedEntryId,
   });
   const visibleEntries = getEntriesForPage(filteredEntries, currentPage);
-  const requestedSelectedEntryState = requestedSelectedEntryId
-    ? getSelectedApiActivityEntry({
-        id: requestedSelectedEntryId,
-        sessionKey,
-      })
-    : null;
   const selectedEntryId =
     requestedSelectedEntryId && requestedSelectedEntryState?.entry
       ? requestedSelectedEntryId
       : (visibleEntries[0]?.id ?? null);
   const selectedEntry =
     requestedSelectedEntryState?.entry ??
-    (selectedEntryId ? getApiActivityEntryById(selectedEntryId) : null);
+    (selectedEntryId ? await getApiActivityEntryById(selectedEntryId) : null);
   const selectedEntryIsStale = requestedSelectedEntryState?.isStale ?? false;
 
   return (
@@ -259,14 +261,14 @@ function getSearchParamValue(
   return value ?? null;
 }
 
-function getSelectedApiActivityEntry({
+async function getSelectedApiActivityEntry({
   id,
   sessionKey,
 }: {
   id: string;
   sessionKey: null | string;
 }) {
-  const liveEntry = getApiActivityEntryById(id);
+  const liveEntry = await getApiActivityEntryById(id);
 
   if (liveEntry) {
     if (sessionKey) {

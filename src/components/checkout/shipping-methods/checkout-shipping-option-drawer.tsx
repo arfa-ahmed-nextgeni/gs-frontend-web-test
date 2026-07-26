@@ -92,8 +92,11 @@ export function CheckoutShippingOptionDrawer({
   onClose,
   onConfirm,
 }: CheckoutShippingOptionDrawerProps) {
-  const { setCameFromShippingOptionDrawer, setDeliveryAddressFlowState } =
-    useCheckoutContext();
+  const {
+    setCameFromShippingOptionDrawer,
+    setDeliveryAddressFlowState,
+    updateDeliveryAddressEntryKey,
+  } = useCheckoutContext();
   const { storeConfig } = useStoreConfig();
   const allowGiftOrder = storeConfig?.allowGiftOrder ?? false;
   const router = useRouter();
@@ -152,7 +155,7 @@ export function CheckoutShippingOptionDrawer({
       countryCode ||
       (() => {
         const localeInfo = getLocaleInfo(locale);
-        return localeInfo.region;
+        return localeInfo.region === "GLOBAL" ? "US" : localeInfo.region;
       })();
 
     if (!effectiveCountryCode) {
@@ -646,6 +649,7 @@ export function CheckoutShippingOptionDrawer({
               ) {
                 // Set flag to indicate we came from shipping option drawer
                 setCameFromShippingOptionDrawer(true);
+                updateDeliveryAddressEntryKey();
                 setDeliveryAddressFlowState(null);
                 const targetRoute = `${ROUTES.CHECKOUT.ADD_DELIVERY_ADDRESS}?type=${selectedOption}`;
                 // Blur the focused element so Vaul won't block aria-hidden during

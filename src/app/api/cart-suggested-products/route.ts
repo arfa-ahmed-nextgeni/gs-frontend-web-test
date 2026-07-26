@@ -12,55 +12,63 @@ import { QueryParamsKey } from "@/lib/constants/query-params";
 import { failure, isOk, ok } from "@/lib/utils/service-result";
 
 import type { CartSuggestedProductsApiData } from "@/lib/types/cart-suggested-products";
+import type { ContentDisplayOn } from "@/lib/types/contentful/display-on";
 
 const EMPTY_CART_SUGGESTED_PRODUCTS: CartSuggestedProductsApiData = {
-  products: [],
-  title: "",
+  sections: [],
 };
 
-const getSuggestedProductsCategory = async (
-  locale: Locale
-): Promise<{
+type SuggestedProductsCategory = {
   categoryId: string;
+  displayOn: ContentDisplayOn;
+  id: string;
   maximumProducts: number;
   title: string;
-} | null> => {
+};
+
+const getSuggestedProductsCategories = async (
+  locale: Locale
+): Promise<SuggestedProductsCategory[]> => {
   const cartDetailsResult = await getCartDetails({
     locale,
     page: 1,
     pageSize: 50,
   });
-
   const cartItemsCount = isOk(cartDetailsResult)
     ? cartDetailsResult.data?.items.length || 0
     : 0;
 
   const pageLandingData = await getPageLandingData({ locale });
-  const suggestedProducts = pageLandingData.cartSuggestedProducts;
 
-  if (!suggestedProducts?.enabled) {
-    return null;
-  }
+  return pageLandingData.cartSuggestedProducts.flatMap((suggestedProducts) => {
+    if (!suggestedProducts.enabled) {
+      return [];
+    }
 
-  const useFallback =
-    cartItemsCount === 0 && !!suggestedProducts.emptyCartFallbackCategoryId;
-  const categoryId = useFallback
-    ? (suggestedProducts.emptyCartFallbackCategoryId ??
-      suggestedProducts.suggestedProductsCategoryId)
-    : suggestedProducts.suggestedProductsCategoryId;
-  const title = useFallback
-    ? (suggestedProducts.emptyCartFallbackTitle ?? suggestedProducts.title)
-    : suggestedProducts.title;
+    const useFallback =
+      cartItemsCount === 0 && !!suggestedProducts.emptyCartFallbackCategoryId;
+    const categoryId = useFallback
+      ? (suggestedProducts.emptyCartFallbackCategoryId ??
+        suggestedProducts.suggestedProductsCategoryId)
+      : suggestedProducts.suggestedProductsCategoryId;
+    const title = useFallback
+      ? (suggestedProducts.emptyCartFallbackTitle ?? suggestedProducts.title)
+      : suggestedProducts.title;
 
-  if (!categoryId) {
-    return null;
-  }
+    if (!categoryId) {
+      return [];
+    }
 
-  return {
-    categoryId,
-    maximumProducts: suggestedProducts.maximumProducts,
-    title,
-  };
+    return [
+      {
+        categoryId,
+        displayOn: suggestedProducts.displayOn,
+        id: suggestedProducts.entryId,
+        maximumProducts: suggestedProducts.maximumProducts,
+        title,
+      },
+    ];
+  });
 };
 
 export async function GET(request: NextRequest) {
@@ -72,25 +80,38 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const category = await getSuggestedProductsCategory(locale);
+    const categories = await getSuggestedProductsCategories(locale);
 
-    if (!category) {
+    if (categories.length === 0) {
       return NextResponse.json(ok(EMPTY_CART_SUGGESTED_PRODUCTS));
     }
 
-    const response = await getProductsByCategory({
-      category: category.categoryId,
-      locale,
-      pageSize: category.maximumProducts,
-      variant: ProductCardVariant.Single,
-    });
+    const sections = await Promise.all(
+      categories.map(async (category) => {
+        const response = await getProductsByCategory({
+          category: category.categoryId,
+          locale,
+          pageSize: category.maximumProducts,
+          variant: ProductCardVariant.Single,
+        });
+        const products = response.data?.products ?? [];
 
-    const products = response.data?.products ?? [];
+        if (products.length === 0) {
+          return null;
+        }
+
+        return {
+          displayOn: category.displayOn,
+          id: category.id,
+          products,
+          title: category.title,
+        };
+      })
+    );
 
     return NextResponse.json(
       ok({
-        products,
-        title: category.title,
+        sections: sections.filter((section) => section !== null),
       })
     );
   } catch (error) {

@@ -8,6 +8,7 @@ import { getAuthToken } from "@/lib/actions/auth/get-auth-token";
 import { restRequest } from "@/lib/clients/rest";
 import { API_ENDPOINTS } from "@/lib/constants/api/endpoints";
 import { Locale, LOCALE_TO_STORE } from "@/lib/constants/i18n";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 
 export const deleteCustomerAccount = async () => {
   const t = await getTranslations("CustomerProfilePage.messages");
@@ -27,6 +28,7 @@ export const deleteCustomerAccount = async () => {
     }>({
       authToken,
       endpoint: API_ENDPOINTS.CUSTOMER.DELETE_ACCOUNT,
+      forwardHeaders: await getForwardedRequestHeaders(),
       options: {
         method: "DELETE",
       },

@@ -55,8 +55,11 @@ const SearchCard: React.FC<SearchProductProps> = ({ product }) => {
             }
           />
           {basePrice && (
-            <span className="font-gilroy text-text-secondary ms-2.5 text-[9px] font-normal line-through">
-              <LocalizedPrice price={basePrice} />
+            <span className="font-gilroy text-text-secondary ms-2.5 text-[9px] font-normal">
+              <LocalizedPrice
+                price={basePrice}
+                valueProps={{ className: "line-through" }}
+              />
             </span>
           )}
         </div>

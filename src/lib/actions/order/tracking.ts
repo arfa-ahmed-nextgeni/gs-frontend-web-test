@@ -6,24 +6,32 @@ import { StoreCode } from "@/lib/constants/i18n";
 
 export interface ShipmentTrackingResponse {
   carrier: string;
+  currency?: string;
   delivery_status: string;
   grand_total: string;
   message: string;
   status: boolean;
   tracking_number: string;
-  updates: any;
+  tracking_status?: string;
+  updates: TrackingUpdate[];
+}
+
+export interface TrackingUpdate {
+  comments?: string;
+  update_code: string;
+  update_date_time: string;
+  update_description: string;
+  update_location: string;
 }
 
 export async function trackShipment({
   orderId,
   storeCode,
   trackingNumber,
-  trackingType = "incrementId",
 }: {
   orderId: string;
   storeCode: StoreCode;
   trackingNumber: string;
-  trackingType?: "incrementId" | "orderId";
 }): Promise<{
   data: null | ShipmentTrackingResponse;
   error: null | string;
@@ -31,13 +39,11 @@ export async function trackShipment({
   success: boolean;
 }> {
   try {
-    const encodedOrderId = Buffer.from(orderId).toString("base64");
-
     const result = await restRequest<ShipmentTrackingResponse>({
       endpoint: ORDER_ENDPOINTS.TRACK_SHIPMENT(
-        encodedOrderId,
+        orderId,
         trackingNumber,
-        trackingType === "incrementId" ? "incrementId" : undefined
+        "incrementId"
       ),
       options: {
         method: "GET",

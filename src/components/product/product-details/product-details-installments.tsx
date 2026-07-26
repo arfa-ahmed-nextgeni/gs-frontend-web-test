@@ -69,7 +69,7 @@ export const ProductDetailsInstallments = () => {
                 <span className="text-text-brand">
                   <LocalizedPrice
                     currencySymbolProps={{
-                      className: "font-normal",
+                      className: "text-[1.3em]",
                     }}
                     price={installmentPrice}
                   />

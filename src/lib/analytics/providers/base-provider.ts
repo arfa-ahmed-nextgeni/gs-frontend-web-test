@@ -56,8 +56,13 @@ export interface AnalyticsProvider {
    * Track a custom event
    * @param eventName - Name of the event to track
    * @param properties - Optional event properties/metadata
+   * @param context - Optional canonical event context for provider-specific routing
    */
-  track(eventName: string, properties?: Record<string, unknown>): void;
+  track(
+    eventName: string,
+    properties?: Record<string, unknown>,
+    context?: AnalyticsTrackContext
+  ): void;
 
   /**
    * Optional: push a GA4-style ecommerce event with a nested ecommerce object.
@@ -69,4 +74,12 @@ export interface AnalyticsProvider {
     ecommerce: Record<string, unknown>,
     additionalFields?: Record<string, unknown>
   ): void;
+}
+
+export interface AnalyticsTrackContext {
+  /**
+   * Original event name before provider-specific routing.
+   * Providers can use this for internal enrichment while emitting a mapped name.
+   */
+  canonicalEventName: string;
 }

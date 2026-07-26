@@ -29,6 +29,7 @@ import {
 } from "@/lib/utils/routes";
 
 import type { BrandSuggestion } from "@/components/search/search-brand-pills";
+import type { CatalogServiceBrand } from "@/lib/actions/category/get-catalog-service-brands";
 
 type SearchActions = {
   clear: () => void;
@@ -48,6 +49,7 @@ type SearchActions = {
 };
 
 type SearchState = {
+  allBrands: CatalogServiceBrand[];
   hasDropdownContent: boolean;
   isNavigating: boolean;
   queryText: string;
@@ -59,7 +61,13 @@ type SearchState = {
 const SearchActionsContext = createContext<null | SearchActions>(null);
 const SearchStateContext = createContext<null | SearchState>(null);
 
-export function SearchContainer({ children }: { children: React.ReactNode }) {
+export function SearchContainer({
+  allBrands = [],
+  children,
+}: {
+  allBrands?: CatalogServiceBrand[];
+  children: React.ReactNode;
+}) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -239,6 +247,7 @@ export function SearchContainer({ children }: { children: React.ReactNode }) {
 
   const searchStateValue = useMemo(
     () => ({
+      allBrands,
       hasDropdownContent,
       isNavigating,
       queryText,
@@ -247,6 +256,7 @@ export function SearchContainer({ children }: { children: React.ReactNode }) {
       showStickyDesktopSearch,
     }),
     [
+      allBrands,
       hasDropdownContent,
       isNavigating,
       queryText,

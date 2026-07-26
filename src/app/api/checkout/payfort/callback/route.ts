@@ -7,7 +7,9 @@ import {
   getPendingOrderInfo,
 } from "@/lib/actions/cookies/checkout";
 import { PaymentStatus } from "@/lib/constants/payment-status";
+import { QueryParamsKey } from "@/lib/constants/query-params";
 import { ROUTES } from "@/lib/constants/routes";
+import { getForwardedRequestHeadersFrom } from "@/lib/utils/forwarded-headers";
 import { getBaseUrlFromRequest } from "@/lib/utils/request";
 
 export async function GET(request: NextRequest) {
@@ -15,6 +17,7 @@ export async function GET(request: NextRequest) {
   const responseCodeFromCookie = await getPayfortResponseCode();
   const responseCodeFromQuery = searchParams.get("response_code");
   const responseCode = responseCodeFromQuery ?? responseCodeFromCookie;
+  const responseMessage = searchParams.get("response_message");
   const baseUrl = getBaseUrlFromRequest(request);
 
   const pendingOrderInfo = await getPendingOrderInfo();
@@ -56,6 +59,7 @@ export async function GET(request: NextRequest) {
     // Call makePaymentAction to finalize the payment (similar to Flutter's _finalizeMakePayment)
     const paymentResult = await makePaymentAction({
       baseUrl: pendingOrderInfoBaseUrl,
+      forwardHeaders: getForwardedRequestHeadersFrom(request.headers),
       locale,
       orderId,
       paymentMethodType: "payfortcc",
@@ -63,13 +67,32 @@ export async function GET(request: NextRequest) {
 
     if (paymentResult.data?.checkoutUrl) {
       return NextResponse.redirect(paymentResult.data.checkoutUrl, 303);
-    } else {
-      // Payment failed, redirect to failure page
-      return NextResponse.redirect(failureUrl, 303);
     }
+
+    // PayFort authorized (response_code was a success code) but finalizing
+    // the order via Magento failed. Log it so this isn't silent — note the
+    // payment may be captured at PayFort even though the order didn't
+    // finalize, so this needs manual reconciliation, not a blind retry.
+    console.error("[payfortCallback] makePayment finalize failed", {
+      orderId,
+      responseCode,
+    });
+    return NextResponse.redirect(failureUrl, 303);
   }
 
-  // For any other response_code (including null), treat as cancelled/failed
-  // This handles cases where payment was cancelled, failed, or incomplete
+  // For any other response_code (including null), treat as cancelled/failed.
+  // PayFort returns the real reason on the callback query string — log it so
+  // the decline reason isn't silently dropped, and forward the code so
+  // checkout can show a specific message instead of a generic failure.
+  console.error("[payfortCallback] Payment declined post-3DS", {
+    orderId,
+    responseCode,
+    responseMessage,
+  });
+
+  if (responseCode) {
+    failureUrl.searchParams.set(QueryParamsKey.PaymentReasonCode, responseCode);
+  }
+
   return NextResponse.redirect(failureUrl, 303);
 }

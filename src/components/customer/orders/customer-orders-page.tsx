@@ -2,18 +2,22 @@
 
 import { useEffect } from "react";
 
+import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { useOrdersContext } from "@/contexts/orders-context";
+import { useUI } from "@/contexts/use-ui";
 
 import { CustomerOrdersList } from "./customer-orders-list";
+import { CustomerOrdersSkeleton } from "./customer-orders-skeleton";
 
 export const CustomerOrdersPage = () => {
   const { error, hasLoaded, isLoading, loadOrders } = useOrdersContext();
+  const { isAuthorized } = useUI();
 
   useEffect(() => {
-    if (!hasLoaded && !isLoading) {
+    if (isAuthorized && !hasLoaded && !isLoading) {
       void loadOrders();
     }
-  }, [hasLoaded, isLoading, loadOrders]);
+  }, [isAuthorized, hasLoaded, isLoading, loadOrders]);
 
   const handleTrackOrder = () => {
     // Navigate to track order page or open tracking modal
@@ -40,20 +44,32 @@ export const CustomerOrdersPage = () => {
     // You can implement invoice logic here
   };
 
+  // During logout `isAuthorized` flips to false and the orders provider
+  // remounts (it is keyed on auth state in the layout), resetting state and
+  // re-triggering a fetch that now fails because the auth cookie is gone.
+  // Skip data/error rendering during this transition — the user is being
+  // redirected to home.
+  if (!isAuthorized) {
+    return (
+      <div className="px-2.5 lg:mt-2 lg:px-0">
+        <CustomerOrdersSkeleton />
+      </div>
+    );
+  }
+
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center py-12">
-        <div className="text-text-danger mb-4 text-center">
-          <p className="text-lg font-medium lg:text-xl">Error loading orders</p>
-          <p className="text-sm lg:text-base">{error}</p>
-        </div>
-        <button
-          className="bg-bg-brand text-text-inverse rounded-lg px-4 py-2 lg:px-6 lg:py-3"
-          onClick={() => window.location.reload()}
-        >
-          Try Again
-        </button>
-      </div>
+      <ErrorBoundary
+        error={new Error(error)}
+        loadingFallback={
+          <div className="px-2.5 lg:mt-2 lg:px-0">
+            <CustomerOrdersSkeleton />
+          </div>
+        }
+        reset={() => {
+          void loadOrders();
+        }}
+      />
     );
   }
 

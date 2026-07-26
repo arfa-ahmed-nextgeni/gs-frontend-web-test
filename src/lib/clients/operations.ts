@@ -10,14 +10,17 @@ import {
   OPERATIONS_BASE_URL,
 } from "@/lib/config/server-env";
 import { API_CONSTANTS, HEADERS } from "@/lib/constants/api";
+import { applyForwardHeaders } from "@/lib/utils/forwarded-headers";
 
 export async function operationsApiRequest<T>({
   body,
   endpoint,
+  forwardHeaders,
   options,
 }: {
   body?: unknown;
   endpoint: string;
+  forwardHeaders?: HeadersInit;
   options?: RequestInit;
 }): Promise<{ data: T; status: number }> {
   const url = `${OPERATIONS_BASE_URL}${endpoint}`;
@@ -26,6 +29,7 @@ export async function operationsApiRequest<T>({
   headers.set(HEADERS.ACCEPT, "application/json");
   headers.set(HEADERS.CONTENT_TYPE, "application/json");
   headers.set(HEADERS.API_SECRET, OPERATIONS_API_SECRET);
+  applyForwardHeaders(headers, forwardHeaders);
 
   const response = await loggedFetch(
     url,

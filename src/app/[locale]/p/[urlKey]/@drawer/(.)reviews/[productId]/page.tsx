@@ -34,7 +34,11 @@ export default async function ProductReviewsPage({
   return (
     <ProductReviewsDrawerLayout>
       <Suspense fallback={<ProductReviewsViewSkeleton />}>
-        <ProductReviewsView params={params} searchParams={searchParams} />
+        <ProductReviewsView
+          clientPagination
+          params={params}
+          searchParams={searchParams}
+        />
       </Suspense>
     </ProductReviewsDrawerLayout>
   );

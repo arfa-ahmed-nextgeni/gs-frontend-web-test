@@ -1,14 +1,13 @@
 import { TabContentType } from "@/lib/models/page-landing";
+import { cleanUrl } from "@/lib/utils/clean-url";
 
-import type {
-  BannerDisplayOn,
-  WebsiteBannerData,
-} from "@/lib/types/contentful/page-landing";
+import type { ContentDisplayOn } from "@/lib/types/contentful/display-on";
+import type { WebsiteBannerData } from "@/lib/types/contentful/page-landing";
 
 export class WebsiteBanner {
   public contentType: TabContentType;
   public desktopImageUrl?: string;
-  public displayOn: BannerDisplayOn;
+  public displayOn: ContentDisplayOn;
   public elementId?: string;
   public entryId: string;
   public flexPercent?: number;
@@ -33,7 +32,7 @@ export class WebsiteBanner {
     this.displayOn = data.displayOn ?? "all";
     this.elementId = data.elementId;
     this.internalName = data.internalName;
-    this.url = data.url;
+    this.url = cleanUrl(data.url);
     this.width = data.width;
     this.height = data.height;
     this.mobileImageWidth = data.mobileImageWidth;

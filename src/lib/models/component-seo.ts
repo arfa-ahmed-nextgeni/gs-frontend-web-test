@@ -1,42 +1,23 @@
-import type {
-  ComponentSeoData,
-  PageLandingData,
-} from "@/lib/types/contentful/page-landing";
+import type { ComponentSeoData } from "@/lib/types/contentful/page-landing";
 
-export interface ComponentSeo {
-  canonicalUrl?: string;
-  metaKeywords?: string;
-  nofollow: boolean;
-  noindex: boolean;
-  pageDescription?: string;
-  pageTitle?: string;
-  shareImageUrls: string[];
-}
+export class ComponentSeo {
+  public canonicalUrl?: string;
+  public metaKeywords?: string;
+  public nofollow: boolean;
+  public noindex: boolean;
+  public pageDescription?: string;
+  public pageTitle?: string;
+  public shareImageUrls: string[];
 
-const COMPONENT_SEO_CONTENT_TYPE_ID = "componentSeo";
-
-type ResolvedSeoEntry = NonNullable<
-  NonNullable<NonNullable<PageLandingData["items"]>[0]["fields"]>["seo"]
->;
-
-export function parseComponentSeo(
-  seo: ResolvedSeoEntry | undefined
-): ComponentSeo | undefined {
-  if (seo === undefined || !isResolvedSeoEntry(seo) || !seo.fields) {
-    return undefined;
+  constructor(data: ComponentSeoData) {
+    this.canonicalUrl = data.canonicalUrl;
+    this.metaKeywords = data.metaKeywords?.trim() || undefined;
+    this.nofollow = data.nofollow ?? false;
+    this.noindex = data.noindex ?? false;
+    this.pageDescription = data.pageDescription;
+    this.pageTitle = data.pageTitle;
+    this.shareImageUrls = getShareImageUrls(data.shareImages);
   }
-
-  const data = seo.fields;
-
-  return {
-    canonicalUrl: data.canonicalUrl,
-    metaKeywords: data.metaKeywords?.trim() || undefined,
-    nofollow: data.nofollow ?? false,
-    noindex: data.noindex ?? false,
-    pageDescription: data.pageDescription,
-    pageTitle: data.pageTitle,
-    shareImageUrls: getShareImageUrls(data.shareImages),
-  };
 }
 
 function getShareImageUrls(
@@ -46,13 +27,4 @@ function getShareImageUrls(
   return shareImages
     .map((asset) => asset?.fields?.file?.url)
     .filter((url): url is string => typeof url === "string" && url.length > 0);
-}
-
-function isResolvedSeoEntry(
-  seo: ResolvedSeoEntry
-): seo is { fields: ComponentSeoData } & ResolvedSeoEntry {
-  return Boolean(
-    seo?.fields &&
-    seo?.sys?.contentType?.sys?.id === COMPONENT_SEO_CONTENT_TYPE_ID
-  );
 }

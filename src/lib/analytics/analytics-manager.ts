@@ -1,6 +1,7 @@
 import "client-only";
 
 import { bannerTrackingManager } from "@/lib/analytics/banner-tracking-manager";
+import { resolveAnalyticsProviderEventName } from "@/lib/analytics/config/analytics-provider-event-config";
 import { amplitudeProvider } from "@/lib/analytics/providers/amplitude-provider";
 import { googleTagManagerProvider } from "@/lib/analytics/providers/google-tag-manager-provider";
 import { insiderProvider } from "@/lib/analytics/providers/insider-provider";
@@ -43,6 +44,11 @@ export interface TrackOptions {
    */
   properties?: Record<string, unknown>;
   /**
+   * Optional config lookup key when one trigger needs provider-specific routing
+   * without changing other triggers that emit the same canonical event.
+   */
+  routingKey?: string;
+  /**
    * If true, skip including user properties in this event
    */
   skipUserProperties?: boolean;
@@ -53,8 +59,14 @@ export interface TrackOptions {
  */
 type QueuedEvent =
   | {
+      additionalFields?: Record<string, unknown>;
+      ecommerce: Record<string, unknown>;
       eventName: string;
-      optionsOrProperties?: Record<string, unknown> | TrackOptions;
+      type: "ecommerce";
+    }
+  | {
+      eventName: string;
+      optionsOrProperties?: TrackOptions;
       type: "track";
     }
   | {
@@ -301,19 +313,57 @@ class AnalyticsManager {
   }
 
   /**
-   * Track a custom event across all available providers
-   * Automatically resets banner tracking for all events except those in EVENTS_THAT_DONT_RESET_BANNER_TRACKING
-   * (as per requirements: banner click sequence should reset if any event comes in between)
-   * Automatically includes user properties in every event unless skipUserProperties is true
-   * Queues the event if analytics is not yet initialized
-   *
-   * @param eventName - Name of the event to track
-   * @param optionsOrProperties - Either event properties or options object with properties and skipUserProperties flag
+   * Track a custom event across all available providers.
+   * Queues the event if analytics is not yet initialized.
    */
-  track(
+  track(eventName: string, properties?: Record<string, unknown>): void {
+    this.trackWithOptions(eventName, { properties });
+  }
+
+  /**
+   * Push a GA4-style ecommerce event.
+   * Only calls providers that implement trackEcommerce (currently GTM).
+   * Other providers (Amplitude, Insider) are skipped — use track() alongside
+   * this when you want those providers to also receive the event.
+   */
+  trackEcommerce(
     eventName: string,
-    optionsOrProperties?: Record<string, unknown> | TrackOptions
+    ecommerce: Record<string, unknown>,
+    additionalFields?: Record<string, unknown>
   ): void {
+    if (this.enabledTools.size === 0) return;
+
+    if (!this.isReadyForTracking()) {
+      this.requestInitialization?.();
+      this.eventQueue.push({
+        additionalFields,
+        ecommerce,
+        eventName,
+        type: "ecommerce",
+      });
+      return;
+    }
+
+    this.getEnabledProviders().forEach((provider) => {
+      if (
+        provider.isAvailable() &&
+        typeof provider.trackEcommerce === "function"
+      ) {
+        try {
+          provider.trackEcommerce(eventName, ecommerce, additionalFields);
+        } catch (error) {
+          console.error("Analytics trackEcommerce error:", error);
+        }
+      }
+    });
+  }
+
+  /**
+   * Track a custom event with full options (tool targeting, user-property skipping).
+   * Use when you need onlyTools or skipUserProperties; otherwise prefer track().
+   * Queues the event if analytics is not yet initialized.
+   */
+  trackWithOptions(eventName: string, options: TrackOptions): void {
     if (this.enabledTools.size === 0) {
       return;
     }
@@ -323,7 +373,7 @@ class AnalyticsManager {
       this.requestInitialization?.();
       this.eventQueue.push({
         eventName,
-        optionsOrProperties,
+        optionsOrProperties: options,
         type: "track",
       });
       return;
@@ -338,27 +388,12 @@ class AnalyticsManager {
       bannerTrackingManager.resetLastClickedBanner();
     }
 
-    // Handle both old API (properties) and new API (options object)
-    let properties: Record<string, unknown> | undefined;
-    let skipUserProperties = false;
-    let onlyTools: AnalyticsTool[] | undefined;
-
-    if (optionsOrProperties) {
-      // Check if it's the new options format (has skipUserProperties, properties, or onlyTools key)
-      if (
-        "skipUserProperties" in optionsOrProperties ||
-        "properties" in optionsOrProperties ||
-        "onlyTools" in optionsOrProperties
-      ) {
-        const options = optionsOrProperties as TrackOptions;
-        properties = options.properties;
-        skipUserProperties = options.skipUserProperties ?? false;
-        onlyTools = options.onlyTools;
-      } else {
-        // Old API: just properties object
-        properties = optionsOrProperties as Record<string, unknown>;
-      }
-    }
+    const {
+      onlyTools,
+      properties,
+      routingKey,
+      skipUserProperties = false,
+    } = options;
 
     // Merge user properties with event properties unless skipUserProperties is true
     // Event properties take precedence over user properties if there are conflicts
@@ -384,41 +419,20 @@ class AnalyticsManager {
     providers.forEach((provider) => {
       if (provider.isAvailable()) {
         try {
-          provider.track(eventName, mergedProperties);
+          const providerEventName = resolveAnalyticsProviderEventName(
+            provider.tool,
+            eventName,
+            routingKey
+          );
+
+          if (!providerEventName) return;
+
+          provider.track(providerEventName, mergedProperties, {
+            canonicalEventName: eventName,
+          });
         } catch (error) {
           // Silently fail - analytics shouldn't break the app
           console.error("Analytics track error:", error);
-        }
-      }
-    });
-  }
-
-  /**
-   * Push a GA4-style ecommerce event.
-   * Only calls providers that implement trackEcommerce (currently GTM).
-   * Other providers (Amplitude, Insider) are skipped — use track() alongside
-   * this when you want those providers to also receive the event.
-   */
-  trackEcommerce(
-    eventName: string,
-    ecommerce: Record<string, unknown>,
-    additionalFields?: Record<string, unknown>
-  ): void {
-    if (this.enabledTools.size === 0) return;
-
-    if (!this.isReadyForTracking()) {
-      return;
-    }
-
-    this.getEnabledProviders().forEach((provider) => {
-      if (
-        provider.isAvailable() &&
-        typeof provider.trackEcommerce === "function"
-      ) {
-        try {
-          provider.trackEcommerce(eventName, ecommerce, additionalFields);
-        } catch (error) {
-          console.error("Analytics trackEcommerce error:", error);
         }
       }
     });
@@ -438,6 +452,13 @@ class AnalyticsManager {
     eventsToProcess.forEach((event) => {
       try {
         switch (event.type) {
+          case "ecommerce":
+            this.trackEcommerce(
+              event.eventName,
+              event.ecommerce,
+              event.additionalFields
+            );
+            break;
           case "identify":
             this.identify(event.userId, event.traits);
             break;
@@ -445,7 +466,10 @@ class AnalyticsManager {
             this.page(event.name, event.properties);
             break;
           case "track":
-            this.track(event.eventName, event.optionsOrProperties);
+            this.trackWithOptions(
+              event.eventName,
+              event.optionsOrProperties ?? {}
+            );
             break;
         }
       } catch (error) {

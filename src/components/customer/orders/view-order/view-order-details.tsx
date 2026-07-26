@@ -27,6 +27,7 @@ import {
 } from "@/lib/analytics/events";
 import { buildTrackOrderPropertiesFromOrder } from "@/lib/analytics/utils/build-properties";
 import { QueryParamsKey } from "@/lib/constants/query-params";
+import { formatOrderDate } from "@/lib/utils/date";
 import { getProductDetailsHref } from "@/lib/utils/get-product-details-href";
 import { formatPrice } from "@/lib/utils/price";
 
@@ -41,7 +42,7 @@ export const ViewOrderDetails = () => {
   const t = useTranslations("CustomerViewOrderPage");
   const { isLoading, orderData } = useViewOrderContext();
   const { cancelOrder, reorderOrder } = useOrdersContext();
-  const { showError, showSuccess } = useToastContext();
+  const { showError, showInfo, showSuccess } = useToastContext();
   const isMobile = useIsMobile();
   const locale = useLocale() as Locale;
   const router = useRouter();
@@ -111,21 +112,27 @@ export const ViewOrderDetails = () => {
       const result = await cancelOrder(orderData.id);
       if (result.success) {
         showSuccess(
-          "Order Cancelled",
-          "Your order has been successfully cancelled.",
+          t("cancelToast.successTitle"),
+          t("cancelToast.successMessage"),
+          toastPosition
+        );
+      } else if (orderData.status?.toLowerCase() === "processing") {
+        showInfo(
+          t("cancelToast.processingTitle"),
+          t("cancelToast.processingMessage"),
           toastPosition
         );
       } else {
-        showError(
-          "Cancellation Failed",
-          result.message || "Failed to cancel order. Please try again.",
+        showInfo(
+          t("cancelToast.unableTitle"),
+          result.message || t("cancelToast.unableMessage"),
           toastPosition
         );
       }
     } catch {
       showError(
-        "Cancellation Failed",
-        "An unexpected error occurred. Please try again.",
+        t("cancelToast.failedTitle"),
+        t("cancelToast.failedMessage"),
         toastPosition
       );
     }
@@ -181,10 +188,10 @@ export const ViewOrderDetails = () => {
     // Track quick_action when any action is clicked from order detail screen
     trackQuickAction("track");
 
-    const trackingNumber = orderData.increment_id;
-    const orderNumber = orderData.id;
+    const orderNumber = orderData.increment_id;
+    const trackingNumber = orderData.tracking_number;
 
-    if (trackingNumber && orderNumber) {
+    if (orderNumber && trackingNumber) {
       router.push(
         `/track-order?orderNumber=${encodeURIComponent(orderNumber)}&trackingNumber=${encodeURIComponent(trackingNumber)}`
       );
@@ -325,12 +332,8 @@ export const ViewOrderDetails = () => {
   // };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
+    return formatOrderDate(dateString, locale, {
       month: "long",
-      year: "numeric",
     });
   };
 
@@ -433,6 +436,10 @@ export const ViewOrderDetails = () => {
                   sku: item.product?.sku || item.product_sku,
                   urlKey: item.product?.url_key || item.product_url_key,
                 });
+                const isGiftWithPurchase = item.is_gwp ?? item.isGwp ?? false;
+                const productLinkHref = isGiftWithPurchase
+                  ? ""
+                  : productHref || "#";
                 const productBrand =
                   item.product?.brand_new_label || item.product?.brand || "";
                 const productName =
@@ -454,7 +461,7 @@ export const ViewOrderDetails = () => {
                     <div className="flex items-center gap-1 px-2">
                       <ProductDetailsLink
                         className="my-2.5 h-20 w-20 items-center justify-center overflow-hidden rounded-xl"
-                        href={productHref || "#"}
+                        href={productLinkHref}
                         title={productName}
                       >
                         <ProductImageWithFallback
@@ -474,7 +481,7 @@ export const ViewOrderDetails = () => {
                       <div className="min-w-0 flex-1">
                         <ProductDetailsLink
                           className="block"
-                          href={productHref || "#"}
+                          href={productLinkHref}
                           title={productName}
                         >
                           <h4 className="text-text-primary line-clamp-1 text-xs font-semibold">
@@ -506,17 +513,22 @@ export const ViewOrderDetails = () => {
                                     : "text-[#5D5D5D]"
                                 }`}
                               >
-                                <LocalizedPrice
-                                  price={formatPrice({
-                                    amount: salePrice,
-                                    currencyCode:
-                                      item.product_sale_price.currency || "SAR",
-                                  })}
-                                />
+                                {isGiftWithPurchase ? (
+                                  t("free")
+                                ) : (
+                                  <LocalizedPrice
+                                    price={formatPrice({
+                                      amount: salePrice,
+                                      currencyCode:
+                                        item.product_sale_price.currency ||
+                                        "SAR",
+                                    })}
+                                  />
+                                )}
                               </span>
                             )}
                             {hasRealOriginalPrice && (
-                              <span className="text-text-secondary text-xs line-through">
+                              <span className="text-text-secondary text-xs">
                                 <LocalizedPrice
                                   price={formatPrice({
                                     amount: regularPrice ?? 0,
@@ -524,6 +536,9 @@ export const ViewOrderDetails = () => {
                                       item.product_regular_price?.currency ||
                                       "SAR",
                                   })}
+                                  valueProps={{
+                                    className: "line-through",
+                                  }}
                                 />
                               </span>
                             )}
@@ -711,9 +726,23 @@ export const ViewOrderDetails = () => {
               </span>
               <p className="text-text-primary text-sm font-medium">
                 {orderData.shipping_address
-                  ? `${orderData.shipping_address.city}, ${orderData.shipping_address.street?.join(", ")}`
+                  ? [
+                      orderData.shipping_address.city,
+                      ...(orderData.shipping_address.street?.filter(
+                        (s: string) => s !== "N/A"
+                      ) ?? []),
+                    ]
+                      .filter(Boolean)
+                      .join(", ")
                   : orderData.billing_address
-                    ? `${orderData.billing_address.city}, ${orderData.billing_address.street?.join(", ")}`
+                    ? [
+                        orderData.billing_address.city,
+                        ...(orderData.billing_address.street?.filter(
+                          (s: string) => s !== "N/A"
+                        ) ?? []),
+                      ]
+                        .filter(Boolean)
+                        .join(", ")
                     : "Address not available"}
               </p>
             </div>
@@ -754,22 +783,26 @@ export const ViewOrderDetails = () => {
                   )}
                 </button>
               )}
-              <button
-                className="flex items-center space-x-1.5 rounded-[10px] py-1 text-left transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
-                disabled={isTrackOrderPending}
-                onClick={() =>
-                  startTrackOrderTransition(() => {
-                    handleTrackOrder();
-                  })
-                }
-                type="button"
-              >
-                <Image alt="track" height={15} src={LocateIcon} width={15} />
-                <span className="text-sm text-gray-700">{t("trackOrder")}</span>
-                {isTrackOrderPending && (
-                  <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-gray-300 border-t-gray-700" />
-                )}
-              </button>
+              {orderData.tracking_number && (
+                <button
+                  className="flex items-center space-x-1.5 rounded-[10px] py-1 text-left transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
+                  disabled={isTrackOrderPending}
+                  onClick={() =>
+                    startTrackOrderTransition(() => {
+                      handleTrackOrder();
+                    })
+                  }
+                  type="button"
+                >
+                  <Image alt="track" height={15} src={LocateIcon} width={15} />
+                  <span className="text-sm text-gray-700">
+                    {t("trackOrder")}
+                  </span>
+                  {isTrackOrderPending && (
+                    <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-gray-300 border-t-gray-700" />
+                  )}
+                </button>
+              )}
             </div>
 
             <div className="flex flex-row gap-2">

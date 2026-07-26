@@ -6,6 +6,7 @@ import Image from "next/image";
 
 import { useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 
@@ -73,6 +74,7 @@ export const OtpLoginPopup: React.FC<OtpLoginPopupProps> = ({
   const { authorize } = uiContext;
   const { showSuccess } = useToastContext();
   const t = useTranslations("HomePage.header.otpLogin");
+  const tFormErrors = useTranslations("formErrorMessages");
   const tToast = useTranslations("Toast");
   const [step, setStep] = useState<"otp" | "phone">("phone");
   const [otpSent, setOtpSent] = useState(false);
@@ -96,6 +98,7 @@ export const OtpLoginPopup: React.FC<OtpLoginPopupProps> = ({
   const [verificationSuccess, setVerificationSuccess] = useState(false);
 
   const [hasValidationError, setHasValidationError] = useState(false);
+  const [countryCodeError, setCountryCodeError] = useState("");
   const [hasBeenFocused, setHasBeenFocused] = useState(false);
   const [formattedPhoneNumber, setFormattedPhoneNumber] = useState("");
   const [showToast, setShowToast] = useState(false);
@@ -145,11 +148,29 @@ export const OtpLoginPopup: React.FC<OtpLoginPopupProps> = ({
       setResendMethod(null);
       setVerificationSuccess(false);
       setHasValidationError(false);
+      setCountryCodeError("");
       setHasBeenFocused(false);
       setFormattedPhoneNumber("");
       setShowToast(false);
     }
   }, [isOpen]);
+
+  const validateGlobalCountryCode = React.useCallback(
+    (value: string) => {
+      if (!isGlobalStore(storeCode)) {
+        return true;
+      }
+
+      const cleanCountryCode = value.replace(/^\+/, "");
+      if (cleanCountryCode.length === 0 || !/^\d+$/.test(cleanCountryCode)) {
+        return false;
+      }
+
+      const parsedPhoneNumber = parsePhoneNumberFromString(`${value}11111111`);
+      return parsedPhoneNumber?.countryCallingCode === cleanCountryCode;
+    },
+    [storeCode]
+  );
 
   // Toast auto-hide effect
   useEffect(() => {
@@ -162,6 +183,11 @@ export const OtpLoginPopup: React.FC<OtpLoginPopupProps> = ({
   }, [showToast]);
 
   const handleSendOtp = async () => {
+    if (isGlobalStore(storeCode) && !validateGlobalCountryCode(countryCode)) {
+      setCountryCodeError(tFormErrors("invalidCountryCode"));
+      return;
+    }
+
     if (!phoneNumber.trim()) {
       setHasValidationError(true);
       return;
@@ -522,7 +548,8 @@ export const OtpLoginPopup: React.FC<OtpLoginPopupProps> = ({
 
         {/* Header */}
         <div className="mb-2 mt-10">
-          <h1 className="text-4xl font-normal text-gray-700">{t("title")}</h1>
+          {/* SEO: h2 because this is a modal overlay — the underlying page already has an h1 */}
+          <h2 className="text-4xl font-normal text-gray-700">{t("title")}</h2>
         </div>
 
         {step === "phone" ? (
@@ -533,52 +560,78 @@ export const OtpLoginPopup: React.FC<OtpLoginPopupProps> = ({
               </p>
 
               <div className="mb-5">
-                <div className="flex h-[50px] gap-2 rtl:flex-row-reverse">
-                  <div className="flex h-[50px] w-auto items-center rounded-xl bg-gray-100 px-4 py-2 rtl:flex-row-reverse">
-                    <span className="text-l flex h-[20px] w-[30px] items-center rtl:mr-2">
-                      {typeof getCountryFlag(countryCode) === "string" ? (
-                        <span className="text-lg">
-                          {getCountryFlag(countryCode)}
-                        </span>
-                      ) : (
-                        <Image
-                          alt={`${countryCode} flag`}
-                          className="h-full w-full object-contain"
-                          src={getCountryFlag(countryCode)}
-                        />
+                <div className="flex gap-2 rtl:flex-row-reverse">
+                  <div className="flex w-[120px] flex-col gap-2">
+                    <div
+                      className={cn(
+                        "flex h-[50px] items-center rounded-xl bg-gray-100 px-4 py-2 rtl:flex-row-reverse",
+                        countryCodeError && "border-2 border-orange-500"
                       )}
-                    </span>
-                    {isGlobalStore(storeCode) ? (
-                      <input
-                        className="w-[60px] bg-[#FAFAFA] text-lg font-normal outline-none"
-                        dir="ltr"
-                        onChange={(e) => {
-                          let value = e.target.value;
-                          // Ensure it starts with + and only contains numbers
-                          if (!value.startsWith("+")) {
-                            value = "+" + value.replace(/[^0-9]/g, "");
-                          } else {
-                            value = "+" + value.slice(1).replace(/[^0-9]/g, "");
-                          }
-                          // Limit country code: + plus 1-3 digits (total length 2-4)
-                          if (value.length >= 2 && value.length <= 4) {
-                            setCountryCode(value);
-                          } else if (value === "+") {
-                            setCountryCode(value); // Allow just "+" while typing
-                          }
-                        }}
-                        placeholder="+1"
-                        type="text"
-                        value={countryCode}
-                      />
-                    ) : (
-                      <span
-                        className="text-lg font-normal text-gray-700"
-                        dir="ltr"
-                      >
-                        {countryCode}
+                    >
+                      <span className="text-l flex h-[20px] w-[30px] items-center rtl:mr-2">
+                        {typeof getCountryFlag(countryCode) === "string" ? (
+                          <span className="text-lg">
+                            {getCountryFlag(countryCode)}
+                          </span>
+                        ) : (
+                          <Image
+                            alt={`${countryCode} flag`}
+                            className="h-full w-full object-contain"
+                            src={getCountryFlag(countryCode)}
+                          />
+                        )}
                       </span>
-                    )}
+                      {isGlobalStore(storeCode) ? (
+                        <input
+                          className="w-[60px] bg-[#FAFAFA] text-lg font-normal outline-none"
+                          dir="ltr"
+                          onBlur={() => {
+                            if (validateGlobalCountryCode(countryCode)) {
+                              setCountryCodeError("");
+                            } else {
+                              setCountryCodeError(
+                                tFormErrors("invalidCountryCode")
+                              );
+                            }
+                          }}
+                          onChange={(e) => {
+                            let value = e.target.value;
+                            // Ensure it starts with + and only contains numbers
+                            if (!value.startsWith("+")) {
+                              value = "+" + value.replace(/[^0-9]/g, "");
+                            } else {
+                              value =
+                                "+" + value.slice(1).replace(/[^0-9]/g, "");
+                            }
+                            // Limit country code: + plus 1-3 digits (total length 2-4)
+                            if (value.length >= 2 && value.length <= 4) {
+                              setCountryCode(value);
+                              setCountryCodeError("");
+                            } else if (value === "+") {
+                              setCountryCode(value); // Allow just "+" while typing
+                              setCountryCodeError("");
+                            }
+                          }}
+                          placeholder="+1"
+                          type="text"
+                          value={countryCode}
+                        />
+                      ) : (
+                        <span
+                          className="text-lg font-normal text-gray-700"
+                          dir="ltr"
+                        >
+                          {countryCode}
+                        </span>
+                      )}
+                    </div>
+                    <div className="min-h-4">
+                      {countryCodeError && (
+                        <p className="text-xs font-normal text-orange-500">
+                          {countryCodeError}
+                        </p>
+                      )}
+                    </div>
                   </div>
 
                   <div className="relative flex-1">
@@ -830,12 +883,14 @@ export const OtpLoginPopup: React.FC<OtpLoginPopupProps> = ({
 
                       return (
                         <input
+                          autoComplete={index === 0 ? "one-time-code" : "off"}
                           autoFocus={index === 0}
                           className={inputClass}
                           dir="ltr"
                           disabled={isLoading || verificationSuccess}
+                          inputMode="numeric"
                           key={index}
-                          maxLength={1}
+                          maxLength={index === 0 ? 5 : 1}
                           onBlur={() => {
                             const newStates = [...inputStates];
                             newStates[index] = currentValue
@@ -844,17 +899,40 @@ export const OtpLoginPopup: React.FC<OtpLoginPopupProps> = ({
                             setInputStates(newStates);
                           }}
                           onChange={(e) => {
+                            const digits = e.target.value.replace(/\D/g, "");
+
+                            // Browser OTP autofill (and paste) drops the whole
+                            // code into a single box. Distribute it across all
+                            // boxes instead of keeping only the first digit.
+                            if (digits.length > 1) {
+                              const code = digits.slice(0, 5);
+                              setOtp(code);
+                              setInputStates(
+                                Array.from({ length: 5 }, (_, i) =>
+                                  code[i] ? "filled" : "empty"
+                                )
+                              );
+                              if (code.length === 5) {
+                                trackVerificationSmsDetected({
+                                  phone: formatPhoneForAnalytics(
+                                    countryCode,
+                                    phoneNumber
+                                  ),
+                                });
+                                handleVerifyOtp(code);
+                              }
+                              return;
+                            }
+
                             const newOtp = otp.split("");
-                            newOtp[index] = e.target.value;
+                            newOtp[index] = digits;
                             const finalOtp = newOtp.join("");
                             setOtp(finalOtp);
                             const newStates = [...inputStates];
-                            newStates[index] = e.target.value
-                              ? "filled"
-                              : "empty";
+                            newStates[index] = digits ? "filled" : "empty";
                             setInputStates(newStates);
 
-                            if (e.target.value && index < 4) {
+                            if (digits && index < 4) {
                               const nextInput = e.target.parentElement
                                 ?.children[index + 1] as HTMLInputElement;
                               nextInput?.focus();
@@ -876,32 +954,6 @@ export const OtpLoginPopup: React.FC<OtpLoginPopupProps> = ({
                               ? "filled"
                               : "active";
                             setInputStates(newStates);
-                          }}
-                          onInput={(e) => {
-                            const input = e.target as HTMLInputElement;
-                            const value = input.value;
-
-                            if (value.length === 5 && /^\d{5}$/.test(value)) {
-                              e.preventDefault();
-                              setOtp(value);
-
-                              const newStates = Array(5).fill(
-                                "filled" as const
-                              );
-                              setInputStates(newStates);
-
-                              trackVerificationSmsDetected({
-                                phone: formatPhoneForAnalytics(
-                                  countryCode,
-                                  phoneNumber
-                                ),
-                              });
-                              setTimeout(() => {
-                                handleVerifyOtp(value);
-                              }, 100);
-
-                              input.value = "";
-                            }
                           }}
                           onKeyDown={(e) => {
                             if (

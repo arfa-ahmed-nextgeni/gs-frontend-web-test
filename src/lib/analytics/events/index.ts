@@ -75,7 +75,7 @@ export function trackAddGift(cartProperties: Partial<CartProperties>): void {
 // Event: add_payment_info - GA4 ecommerce event, triggers when user selects/confirms a payment method
 // track() targets Amplitude only (flat properties); trackEcommerce() sends the nested GA4 payload to GTM
 export function trackAddPaymentInfo(cart: Cart, paymentType: string): void {
-  analyticsManager.track("add_payment_info", {
+  analyticsManager.trackWithOptions("add_payment_info", {
     onlyTools: [ANALYTICS_TOOL.AMPLITUDE],
     properties: buildCartProperties(cart),
   });
@@ -93,10 +93,10 @@ export function trackAddressbookDeleteAddress(): void {
   analyticsManager.track("addressbook_delete_address");
 }
 
-// Event: add_shipping_info - GA4 ecommerce event, triggers when user confirms shipping method
+// Event: add_shipping_info - GA4 ecommerce event, triggers when shipping info is resolved
 // track() targets Amplitude only (flat properties); trackEcommerce() sends the nested GA4 payload to GTM
 export function trackAddShippingInfo(cart: Cart): void {
-  analyticsManager.track("add_shipping_info", {
+  analyticsManager.trackWithOptions("add_shipping_info", {
     onlyTools: [ANALYTICS_TOOL.AMPLITUDE],
     properties: buildCartProperties(cart),
   });
@@ -198,7 +198,10 @@ export function trackAddToCart(
 
 // Event: add_to_wishlist - triggers when a product is added to wishlist
 // Includes click origin and location (same pattern as add_to_cart)
-export function trackAddToWishlist(product: Partial<ProductProperties>): void {
+export function trackAddToWishlist(
+  product: Partial<ProductProperties>,
+  options?: { navigatedFromCart?: boolean }
+): void {
   const lastClickedBanner = bannerTrackingManager.getLastClickedBanner();
   const clickOrigin = clickOriginTrackingManager.getClickOrigin();
 
@@ -251,10 +254,10 @@ export function trackAddToWishlist(product: Partial<ProductProperties>): void {
     }
   }
 
-  // // When adding from PDP and no click.origin from banner/click tracking, set to "pdp"
-  // if (eventProperties.location === "pp") {
-  //   eventProperties["click.origin"] = "pdp";
-  // }
+  // Cart-to-PDP navigation retains cart origin; wishlist click belongs to PDP.
+  if (eventProperties.location === "pp" && options?.navigatedFromCart) {
+    eventProperties["click.origin"] = "pdp";
+  }
 
   analyticsManager.track("add_to_wishlist", eventProperties);
 }
@@ -288,7 +291,7 @@ export function trackBackToShippingType(): void {
 // Event: begin_checkout - GA4 ecommerce event, triggers when user arrives at checkout
 // track() targets Amplitude only (flat properties); trackEcommerce() sends the nested GA4 payload to GTM
 export function trackBeginCheckout(cart: Cart): void {
-  analyticsManager.track("begin_checkout", {
+  analyticsManager.trackWithOptions("begin_checkout", {
     onlyTools: [ANALYTICS_TOOL.AMPLITUDE],
     properties: buildCartProperties(cart),
   });
@@ -477,6 +480,13 @@ export function trackCheckoutOrderReviewEditAddress(): void {
 // Event: checkout_payment - triggers at payment step in checkout
 export function trackCheckoutPayment(): void {
   analyticsManager.track("checkout_payment");
+}
+
+// Event: checkout_payment_applepay - triggers when the selected payment method is Apple Pay
+export function trackCheckoutPaymentApplepay(
+  cart: Partial<CartProperties>
+): void {
+  analyticsManager.track("checkout_payment_applepay", cart);
 }
 
 // Event: checkout_payment_cc - triggers when the selected payment method is cc
@@ -703,10 +713,8 @@ export function trackFodelPointSearch(): void {
 
 // Event: GA4 purchase - fires the standard GA4 ecommerce purchase event on the order-confirmation page.
 // Pushes the full nested ecommerce payload + customer_details to GTM/dataLayer.
-// Also fires a flat track() for Amplitude/Insider.
 // customer is optional — customer_details will be empty array when not provided.
 // Event: purchase (GA4) - GA4 ecommerce event, triggers on order confirmation
-// track() targets Amplitude only (flat signal); trackEcommerce() sends the full nested GA4 payload to GTM
 export function trackGA4Purchase(
   order: UiOrder,
   customer?: Customer | null
@@ -715,10 +723,6 @@ export function trackGA4Purchase(
     order,
     customer
   );
-  analyticsManager.track("purchase", {
-    onlyTools: [ANALYTICS_TOOL.AMPLITUDE],
-    properties: { "order.grandTotal": order.total },
-  });
   analyticsManager.trackEcommerce(
     "purchase",
     ecommerce as unknown as Record<string, unknown>,
@@ -1072,8 +1076,10 @@ export function trackSearchFreetext(searchQuery?: string): void {
 }
 
 // Event: search_init - triggers when search screen is present
-export function trackSearchInit(): void {
-  analyticsManager.track("search_init");
+export function trackSearchInit(options?: { asCatalogView?: boolean }): void {
+  analyticsManager.trackWithOptions("search_init", {
+    routingKey: options?.asCatalogView ? "search_page_init" : undefined,
+  });
 }
 
 // Event: search_recent - triggers when an item in search history is selected
@@ -1204,6 +1210,42 @@ export function trackTabbyViewLearnMore(): void {
 // Event: talon_mokafaa_error_disclaimer_shown - triggers when error disclaimer is shown (user attempts to redeem talon when mokafaa is already redeemed)
 export function trackTalonMokafaaErrorDisclaimerShown(): void {
   analyticsManager.track("talon_mokafaa_error_disclaimer_shown");
+}
+
+// Event: talon_redeem_points_attempt - triggers when user initiates a reward (wallet) points redemption
+export function trackTalonRedeemPointsAttempt(
+  cart: Partial<CartProperties>
+): void {
+  analyticsManager.track("talon_redeem_points_attempt", {
+    ...cart,
+  });
+}
+
+// Event: talon_redeem_points_cancel - triggers when user removes/cancels a reward (wallet) points redemption
+export function trackTalonRedeemPointsCancel(
+  cart: Partial<CartProperties>
+): void {
+  analyticsManager.track("talon_redeem_points_cancel", {
+    ...cart,
+  });
+}
+
+// Event: talon_redeem_points_error - triggers when a reward (wallet) points redemption fails
+export function trackTalonRedeemPointsError(
+  cart: Partial<CartProperties>,
+  errorMessage: string
+): void {
+  analyticsManager.track("talon_redeem_points_error", {
+    ...cart,
+    error: errorMessage,
+  });
+}
+
+// Event: talon_redeem_points_ok - triggers when a reward (wallet) points redemption completes successfully
+export function trackTalonRedeemPointsOk(cart: Partial<CartProperties>): void {
+  analyticsManager.track("talon_redeem_points_ok", {
+    ...cart,
+  });
 }
 
 // Event: tamara_close - triggers when user cancels tamara payment page by clicking back button

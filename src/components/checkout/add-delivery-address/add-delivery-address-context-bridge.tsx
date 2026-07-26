@@ -20,7 +20,8 @@ export const AddDeliveryAddressContextBridge = ({
   deliveryType,
   isFirstAddressInCheckout,
 }: AddDeliveryAddressContextBridgeProps) => {
-  const { deliveryAddressFlowState } = useCheckoutContext();
+  const { deliveryAddressEntryKey, deliveryAddressFlowState } =
+    useCheckoutContext();
 
   return (
     <AddDeliveryAddressContextProvider
@@ -33,6 +34,7 @@ export const AddDeliveryAddressContextBridge = ({
         deliveryAddressFlowState?.initialSelectedLocation
       }
       isFirstAddressInCheckout={isFirstAddressInCheckout}
+      key={`${deliveryType}-${deliveryAddressEntryKey}-${deliveryAddressFlowState?.editingAddressId ?? "new"}`}
     >
       <AddDeliveryAddressContainer />
     </AddDeliveryAddressContextProvider>

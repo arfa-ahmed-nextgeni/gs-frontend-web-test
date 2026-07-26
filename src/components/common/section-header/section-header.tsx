@@ -81,7 +81,36 @@ export const SectionHeader = ({
                 ),
               },
               renderNode: {
+                // SEO: All Contentful headings in section headers render as h2.
+                // These are section titles on the homepage — the page already has
+                // one h1, so section titles should be h2 regardless of what level
+                // the Contentful author chose.
                 [BLOCKS.HEADING_1]: (_node, children) => (
+                  <h2 className="inline font-semibold rtl:font-bold">
+                    {children}
+                  </h2>
+                ),
+                [BLOCKS.HEADING_2]: (_node, children) => (
+                  <h2 className="inline font-semibold rtl:font-bold">
+                    {children}
+                  </h2>
+                ),
+                [BLOCKS.HEADING_3]: (_node, children) => (
+                  <h2 className="inline font-semibold rtl:font-bold">
+                    {children}
+                  </h2>
+                ),
+                [BLOCKS.HEADING_4]: (_node, children) => (
+                  <h2 className="inline font-semibold rtl:font-bold">
+                    {children}
+                  </h2>
+                ),
+                [BLOCKS.HEADING_5]: (_node, children) => (
+                  <h2 className="inline font-semibold rtl:font-bold">
+                    {children}
+                  </h2>
+                ),
+                [BLOCKS.HEADING_6]: (_node, children) => (
                   <h2 className="inline font-semibold rtl:font-bold">
                     {children}
                   </h2>

@@ -1,85 +1,99 @@
-import { cacheTag } from "next/cache";
+"use client";
 
-import { getLocale, getTranslations } from "next-intl/server";
+import { useQuery } from "@tanstack/react-query";
+import { useLocale, useTranslations } from "next-intl";
 
 import { SectionHeader } from "@/components/common/section-header";
+import { CategoryProductsCarouselSkeleton } from "@/components/product/category-products-carousel-skeleton";
 import { ProductCard } from "@/components/product/product-card";
 import {
   CardRailScrollSnapCarousel,
   CardRailScrollSnapCarouselItem,
 } from "@/components/ui/card-rail-scroll-snap-carousel";
-import { getAuthToken } from "@/lib/actions/auth/get-auth-token";
-import { getBulletDeliveryEnabled } from "@/lib/actions/config/get-bullet-delivery-enabled";
-import { getDeviceIdCookie } from "@/lib/actions/cookies/device-id";
-import { getCustomerByAuthToken } from "@/lib/actions/customer/get-customer-by-auth-token";
-import { getViewedProducts } from "@/lib/actions/products/get-viewed-products";
-import {
-  getRecentlyViewedProductsTagByDeviceId,
-  getRecentlyViewedProductsTagByMobileNumber,
-} from "@/lib/constants/cache/tags";
+import { useUI } from "@/contexts/use-ui";
+import { useBulletDeliveryEnabled } from "@/hooks/use-bullet-delivery-enabled";
+import { syncDeviceIdCookie } from "@/lib/actions/cookies/device-id";
+import { appApiRequest } from "@/lib/clients/app-client";
 import { type Locale } from "@/lib/constants/i18n";
+import { ProductCardVariant } from "@/lib/constants/product/product-card";
+import { QUERY_KEYS } from "@/lib/constants/query-keys";
 import { ROUTES } from "@/lib/constants/routes";
-import { RecentlyViewedProductsContent } from "@/lib/models/recently-viewed-products-content";
+import { type ProductCardModel } from "@/lib/models/product-card-model";
+import { type RecentlyViewedProductsContent } from "@/lib/models/recently-viewed-products-content";
+import { getClientDeviceId } from "@/lib/utils/device-id";
 import { isOk } from "@/lib/utils/service-result";
 
-import { DeviceIdCookieBootstrap } from "./device-id-cookie-bootstrap";
-
-export async function RecentlyViewedProductsSection({
-  data,
+export function RecentlyViewedProductsSection({
   lpRow,
+  maximumProducts,
+  productsCategoryId,
+  richTitle,
+  showViewAll,
+  viewAllUrl,
 }: {
-  data: RecentlyViewedProductsContent;
   lpRow?: number;
-}) {
-  "use cache: private";
+} & Pick<
+  RecentlyViewedProductsContent,
+  | "maximumProducts"
+  | "productsCategoryId"
+  | "richTitle"
+  | "showViewAll"
+  | "viewAllUrl"
+>) {
+  const locale = useLocale() as Locale;
+  const { isAuthorized } = useUI();
+  const audience = isAuthorized ? "customer" : "guest";
+  const isBulletDeliveryEnabled = useBulletDeliveryEnabled();
+  const {
+    data = [],
+    isError,
+    isPending,
+  } = useQuery({
+    gcTime: Infinity,
+    queryFn: async () => {
+      if (audience === "guest") {
+        await syncDeviceIdCookie({
+          deviceId: await getClientDeviceId(),
+          shouldRefresh: false,
+        });
+      }
 
-  const authToken = await getAuthToken();
-  let cacheIdentityTag: null | string = null;
+      const response = await appApiRequest<{ products: ProductCardModel[] }>({
+        endpoint: `/recently-viewed-products?locale=${locale}`,
+      });
 
-  if (authToken) {
-    const customer = await getCustomerByAuthToken(authToken);
-    if (customer?.phoneNumber) {
-      cacheIdentityTag = getRecentlyViewedProductsTagByMobileNumber(
-        customer.phoneNumber.replace(/\D/g, "")
-      );
-    }
-  } else {
-    const deviceId = await getDeviceIdCookie();
-    if (!deviceId) {
-      return <DeviceIdCookieBootstrap maximumProducts={data.maximumProducts} />;
-    }
+      return isOk(response) ? response.data.products : [];
+    },
+    queryKey: [...QUERY_KEYS.PRODUCTS.RECENTLY_VIEWED, locale, audience],
+    refetchOnWindowFocus: false,
+    retry: 1,
+    staleTime: Infinity,
+  });
+  const t = useTranslations("HomePage.recentlyViewedProducts");
+  const tCategoryProducts = useTranslations("HomePage.categoryProducts");
 
-    cacheIdentityTag = getRecentlyViewedProductsTagByDeviceId(deviceId);
+  if (isPending) {
+    return (
+      <CategoryProductsCarouselSkeleton
+        maximumProducts={maximumProducts}
+        variant={ProductCardVariant.Single}
+      />
+    );
   }
 
-  if (cacheIdentityTag) {
-    cacheTag(cacheIdentityTag);
-  }
-
-  const locale = (await getLocale()) as Locale;
-  const [isBulletDeliveryEnabled, response, t, tCategoryProducts] =
-    await Promise.all([
-      getBulletDeliveryEnabled({ locale }),
-      getViewedProducts(),
-      getTranslations("HomePage.recentlyViewedProducts"),
-      getTranslations("HomePage.categoryProducts"),
-    ]);
-
-  if (!isOk(response)) {
+  if (isError) {
     return null;
   }
 
-  const products = response.data.products.slice(0, data.maximumProducts);
+  const products = data.slice(0, maximumProducts);
 
   if (!products.length) {
     return null;
   }
 
   const seeAllHref =
-    data.viewAllUrl ||
-    (data.productsCategoryId
-      ? ROUTES.CATEGORY.BY_SLUG(data.productsCategoryId)
-      : "");
+    viewAllUrl ||
+    (productsCategoryId ? ROUTES.CATEGORY.BY_SLUG(productsCategoryId) : "");
 
   return (
     <div className="gap-4.5 flex flex-col">
@@ -89,7 +103,7 @@ export async function RecentlyViewedProductsSection({
           type: "recently-viewed-products",
         }}
         lpRow={lpRow}
-        richTitle={data.richTitle}
+        richTitle={richTitle}
         sectionHeading={
           <p className="text-text-primary text-2xl font-normal rtl:font-semibold">
             {t.rich("title", {
@@ -101,7 +115,7 @@ export async function RecentlyViewedProductsSection({
         }
         seeAllButton={{
           href: seeAllHref,
-          show: data.showViewAll && Boolean(seeAllHref),
+          show: showViewAll && Boolean(seeAllHref),
           text: tCategoryProducts("seeAll"),
         }}
       />

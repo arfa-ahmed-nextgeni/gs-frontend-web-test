@@ -37,6 +37,7 @@ export class TopTrendsCategoryProducts extends CategoryProducts {
   constructor(data: TopTrendsData, contentType: TabContentType) {
     super(
       {
+        displayOn: data.displayOn,
         maximumProducts: data.maximumProducts || 0,
         productsCategoryId: data.productsCategoryId || "",
         richTitle: data.title,

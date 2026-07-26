@@ -9,6 +9,7 @@ import { CheckoutError } from "@/lib/constants/checkout-error";
 import { Locale } from "@/lib/constants/i18n";
 import { ROUTES } from "@/lib/constants/routes";
 import { getStoreCode } from "@/lib/utils/country";
+import { getForwardedRequestHeaders } from "@/lib/utils/forwarded-request-headers";
 import { failure, isOk } from "@/lib/utils/service-result";
 
 import type { PlaceOrderFailureResult } from "@/lib/types/checkout/place-order";
@@ -35,6 +36,7 @@ export async function validateCartForPlaceOrder({
 
   const validationResponse = await graphqlRequest({
     authToken,
+    forwardHeaders: await getForwardedRequestHeaders(),
     query: CART_GRAPHQL_QUERIES.GET_CART_VALIDATION,
     storeCode: getStoreCode(locale),
     variables: {

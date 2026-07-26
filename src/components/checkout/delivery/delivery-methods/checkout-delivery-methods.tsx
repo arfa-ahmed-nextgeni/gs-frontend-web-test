@@ -11,7 +11,9 @@ import { CheckoutBulletDeliveryOption } from "@/components/checkout/bullet-deliv
 import { LocalizedPrice } from "@/components/shared/localized-price";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCheckoutContext } from "@/contexts/checkout-context";
+import { useCartShippingMethodDisplayPrice } from "@/hooks/checkout/use-cart-shipping-method-display-price";
 import { LockerType } from "@/lib/constants/checkout/locker-locations";
+import { formatPrice } from "@/lib/utils/price";
 
 import { CheckoutDeliveryOption } from "./checkout-delivery-option";
 import { DeliveryMethod } from "./types";
@@ -33,6 +35,7 @@ export function CheckoutDeliveryMethods({
 }: CheckoutDeliveryMethodsProps) {
   const t = useTranslations("CheckoutPage");
   const { selectedLockerAddressType } = useCheckoutContext();
+  const { getMethodDisplayPrice } = useCartShippingMethodDisplayPrice();
   const translate = (key: string, fallback: string) =>
     (t as any).has?.(key) ? t(key as any) : fallback;
 
@@ -72,19 +75,14 @@ export function CheckoutDeliveryMethods({
       return <span>{t("delivery.free")}</span>;
     }
 
-    if (currency) {
-      try {
-        const formatted = new Intl.NumberFormat(undefined, {
-          currency,
-          style: "currency",
-        }).format(price);
-        return <LocalizedPrice price={formatted} />;
-      } catch {
-        return <LocalizedPrice price={`${currency} ${price.toFixed(2)}`} />;
-      }
-    }
-
-    return <LocalizedPrice price={price.toFixed(2)} />;
+    return (
+      <LocalizedPrice
+        currencySymbolProps={{
+          className: "text-[1.3em] me-0.75",
+        }}
+        price={formatPrice({ amount: price, currencyCode: currency ?? "SAR" })}
+      />
+    );
   };
 
   const useFallback = typeof methods === "undefined";
@@ -146,6 +144,8 @@ export function CheckoutDeliveryMethods({
 
       {!isLoading &&
         (methodsToRender ?? []).map((method, index) => {
+          const methodDisplayPrice = getMethodDisplayPrice(method);
+
           // Check if this is bullet/express delivery
           const isBulletDelivery =
             method.id?.toLowerCase().includes("express") ||
@@ -161,7 +161,10 @@ export function CheckoutDeliveryMethods({
                 key={`${method.id}-${index}`}
                 method={method}
                 onMethodChange={onMethodChange}
-                price={renderPrice(method.price, method.currency)}
+                price={renderPrice(
+                  methodDisplayPrice.price,
+                  methodDisplayPrice.currency
+                )}
                 selectedMethod={selectedMethod}
               />
             );
@@ -178,7 +181,10 @@ export function CheckoutDeliveryMethods({
               key={`${method.id}-${index}`}
               name={method.name}
               onChange={() => onMethodChange(method.id)}
-              price={renderPrice(method.price, method.currency)}
+              price={renderPrice(
+                methodDisplayPrice.price,
+                methodDisplayPrice.currency
+              )}
               value={method.id}
             />
           );

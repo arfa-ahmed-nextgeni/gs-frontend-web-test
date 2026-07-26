@@ -1,3 +1,5 @@
+import { categoryUrlPathToRoutePath } from "@/lib/category/category-route-path";
+
 import type { Locale } from "@/lib/constants/i18n";
 import type { CategoryBreadcrumb } from "@/lib/types/category-route-data";
 import type { CategoryRouteShellNode } from "@/lib/types/category-route-shell";
@@ -48,7 +50,7 @@ export class CategoryBreadcrumbsModel {
       }
 
       this.pushUniqueBreadcrumb(breadcrumbs, {
-        href: `/c/${breadcrumbPath}`,
+        href: categoryUrlPathToRoutePath(breadcrumbPath),
         title: breadcrumbTitle,
       });
     }
@@ -60,7 +62,7 @@ export class CategoryBreadcrumbsModel {
 
     if (currentCategoryPath && currentCategoryTitle) {
       this.pushUniqueBreadcrumb(breadcrumbs, {
-        href: `/c/${currentCategoryPath}`,
+        href: categoryUrlPathToRoutePath(currentCategoryPath),
         title: currentCategoryTitle,
       });
     }

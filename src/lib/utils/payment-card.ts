@@ -155,28 +155,3 @@ export function extractBinNumber(
 
   return undefined;
 }
-
-/**
- * Parse card expiry like "05/25", "5/25", "05/2025" and return { month, year }.
- */
-export function paymentCardExpiryToMonthYear(expiryRaw: string): {
-  month: number;
-  year: number;
-} {
-  const raw = expiryRaw.trim();
-
-  // Accept formats: M/YY, MM/YY, MM/YYYY (allow spaces)
-  const m = raw.match(/^(\d{1,2})\s*[\/\-]\s*(\d{2}|\d{4})$/);
-  if (!m) {
-    throw new Error(`cardExpiryToMonthYear: unexpected expiry format "${raw}"`);
-  }
-
-  const monthNum = Number(m[1]);
-  const yearPart = m[2];
-
-  // Convert 2-digit year to 4-digit (assume 2000-based, e.g. "25" -> 2025)
-  const yearNum =
-    yearPart.length === 2 ? 2000 + Number(yearPart) : Number(yearPart);
-
-  return { month: monthNum, year: yearNum };
-}
