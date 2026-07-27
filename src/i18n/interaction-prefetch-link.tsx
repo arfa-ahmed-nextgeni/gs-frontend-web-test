@@ -18,12 +18,14 @@ export const InteractionPrefetchLink = ({
 }: PropsWithChildren<ComponentProps<typeof BaseLink>>) => {
   const hasInteractionBooted = useBootTrigger(
     LINK_PREFETCH_DISABLED,
-    INTERACTION_BOOT_POLICY,
+    INTERACTION_BOOT_POLICY
   );
   const resolvedPrefetch =
     LINK_PREFETCH_DISABLED && !hasInteractionBooted
       ? false
-      : (prefetch ?? "auto");
+      : prefetch === undefined
+        ? "auto"
+        : prefetch;
 
   return (
     <BaseLink {...props} prefetch={resolvedPrefetch}>
