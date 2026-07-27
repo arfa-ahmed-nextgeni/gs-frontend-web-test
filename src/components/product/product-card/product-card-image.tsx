@@ -47,7 +47,7 @@ export const ProductCardImage = ({
       className={cn(
         "transition-default relative mx-2.5 mt-2.5 overflow-hidden rounded-xl group-focus-within:mx-5 group-focus-within:mt-5 group-hover:mx-5 group-hover:mt-5 group-has-[button[data-loading=true]]:mx-5 group-has-[button[data-loading=true]]:mt-5",
         className,
-        isBundlesGrid && "max-md:mx-auto! max-md:w-[calc(100%-20px)]!"
+        isBundlesGrid && "max-md:mx-auto! max-md:w-[calc(100%-20px)]!",
       )}
       style={style}
     >
@@ -61,7 +61,7 @@ export const ProductCardImage = ({
           },
           variant === ProductCardVariant.Bundles
             ? "aspect-[var(--card-w)/var(--card-h)]"
-            : "aspect-square"
+            : "aspect-square",
         )}
         fill
         key={imageUrl}
@@ -82,7 +82,6 @@ export const ProductCardImage = ({
           lpInnerPosition={lpInnerPosition}
           lpRow={lpRow}
           position={position}
-          prefetch={false}
           searchTerm={searchTerm}
           title={t("viewProduct")}
         >
