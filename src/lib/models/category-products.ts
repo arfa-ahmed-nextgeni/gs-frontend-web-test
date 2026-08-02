@@ -12,6 +12,7 @@ export class CategoryProducts {
   public displayOn: ContentDisplayOn;
   public grid: boolean;
   public maximumProducts: number;
+  public optimizeProductImages = false;
   public products?: ProductCardModel[] = [];
   public productsCategoryId: string;
   public richTitle?: Document;

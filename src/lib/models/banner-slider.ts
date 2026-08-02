@@ -2,6 +2,8 @@ import { Helper } from "@/lib/models/helper";
 import { TabContentType } from "@/lib/models/page-landing";
 import { BannerSliderData } from "@/lib/types/contentful/page-landing";
 
+import type { ContentDisplayOn } from "@/lib/types/contentful/display-on";
+
 export class BannerSlider {
   public autoSliding: {
     delay: number;
@@ -11,6 +13,7 @@ export class BannerSlider {
     enabled: false,
   };
   public contentType: TabContentType;
+  public displayOn: ContentDisplayOn;
   public entryId: string;
   public isLcpCandidate = false;
   public items: BannerSliderItem[] = [];
@@ -25,9 +28,10 @@ export class BannerSlider {
   constructor(
     data: BannerSliderData,
     contentType: TabContentType,
-    entryId: string
+    entryId: string,
   ) {
     this.contentType = contentType;
+    this.displayOn = data.displayOn ?? "all";
     this.entryId = entryId;
     this.autoSliding = {
       delay: data.autoSlidingDelay || 3000,
@@ -48,7 +52,7 @@ export class BannerSlider {
             url: fields.image.fields.file.url,
             width: fields.image.fields.file.details.image.width,
           },
-        })
+        }),
     );
   }
 }

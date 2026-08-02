@@ -1,5 +1,9 @@
 import type { ContentDisplayOn } from "@/lib/types/contentful/display-on";
 
+export const CONTENT_VIEWPORTS = ["mobile", "desktop"] as const;
+
+export type ContentViewport = (typeof CONTENT_VIEWPORTS)[number];
+
 const displayOnClassNames = {
   block: {
     all: "",
@@ -15,7 +19,12 @@ const displayOnClassNames = {
 
 export function getDisplayOnClassName(
   displayOn: ContentDisplayOn = "all",
-  display: "block" | "flex" = "block"
+  display: "block" | "flex" = "block",
 ) {
   return displayOnClassNames[display][displayOn];
 }
+
+export const isVisibleOnViewport = (
+  displayOn: ContentDisplayOn = "all",
+  viewport: ContentViewport,
+) => displayOn === "all" || displayOn === viewport;

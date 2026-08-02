@@ -29,7 +29,7 @@ export default function WebsiteMultipleBannersComponent({
     <div
       className={cn(
         "flex gap-2.5",
-        getDisplayOnClassName(data.displayOn, "flex")
+        getDisplayOnClassName(data.displayOn, "flex"),
       )}
     >
       {data.banners.map((banner: WebsiteMultipleBanner, index: number) => (

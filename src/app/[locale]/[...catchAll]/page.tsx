@@ -186,7 +186,10 @@ export default async function StaticPage({
                 case TabContentType.BannerSlider:
                   const bannerSlider = content as BannerSlider;
                   return (
-                    <div key={`content-${index}`}>
+                    <div
+                      className={getDisplayOnClassName(bannerSlider.displayOn)}
+                      key={`content-${index}`}
+                    >
                       <BannerSliderSection
                         bannerColumn={1}
                         bannerContainerProps={{
@@ -209,6 +212,7 @@ export default async function StaticPage({
                             },
                           },
                         }}
+                        displayOn={bannerSlider.displayOn}
                         isLcpCandidate={bannerSlider.isLcpCandidate}
                       />
                     </div>

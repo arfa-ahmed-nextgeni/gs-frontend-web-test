@@ -65,9 +65,6 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
 
   // Generate WebSite schema for homepage
   const websiteSchema = generateWebsiteSchema(locale as Locale);
-  const firstCategoryProductsIndex = pageLandingData.contents.findIndex(
-    (content) => content.contentType === TabContentType.CategoryProducts,
-  );
 
   return (
     <>
@@ -82,7 +79,13 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
           case TabContentType.BannerSlider:
             const bannerSlider = content as BannerSlider;
             return (
-              <Container className="mt-4" key={`content-${index}`}>
+              <Container
+                className={cn(
+                  "mt-4",
+                  getDisplayOnClassName(bannerSlider.displayOn),
+                )}
+                key={`content-${index}`}
+              >
                 <BannerSliderSection
                   bannerColumn={1}
                   bannerContainerProps={{
@@ -105,6 +108,7 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
                       },
                     },
                   }}
+                  displayOn={bannerSlider.displayOn}
                   isLcpCandidate={bannerSlider.isLcpCandidate}
                 />
               </Container>
@@ -123,7 +127,6 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
                 <CategoryProductsCarousel
                   {...categoryProducts}
                   lpRow={index + 1}
-                  optimizeProductImages={index === firstCategoryProductsIndex}
                 />
               </Container>
             );

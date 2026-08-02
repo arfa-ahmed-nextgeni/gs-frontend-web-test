@@ -44,6 +44,7 @@ export type BannerSliderData = {
     };
   }[];
   desktopSliderHeight: number;
+  displayOn?: ContentDisplayOn;
   internalName: string;
   sliderHeight: number;
   sliding: boolean;
@@ -188,13 +189,18 @@ export type PageLandingData = {
     {
       fields?: {
         countryCode: string;
-        internalName: string;
-        lcpPriorityContent?: {
+        desktopLcpPriorityContent?: {
           sys?: {
             id?: string;
           };
         };
+        internalName: string;
         mobileHeaderTitle?: string;
+        mobileLcpPriorityContent?: {
+          sys?: {
+            id?: string;
+          };
+        };
         slug: string;
         tabContent: {
           fields?:

@@ -33,7 +33,6 @@ export const CategoryProductsCarouselContent = async ({
 }: {
   carouselContainerProps?: ComponentProps<typeof CardRailScrollSnapCarousel>;
   lpRow?: number;
-  optimizeProductImages?: boolean;
   sectionHeaderProps?: ComponentProps<typeof SectionHeader>;
 } & CategoryProducts) => {
   const locale = (await getLocale()) as Locale;

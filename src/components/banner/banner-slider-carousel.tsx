@@ -1,5 +1,7 @@
 import type { ComponentProps } from "react";
 
+import { getImageProps } from "next/image";
+
 import { BannerTrackerLink } from "@/components/analytics/banner-tracker";
 import { ContentfulImage } from "@/components/shared/contentful-image";
 import {
@@ -9,9 +11,55 @@ import {
 import { Link } from "@/i18n/navigation";
 import { BannerSliderItem } from "@/lib/models/banner-slider";
 import { cn } from "@/lib/utils";
-import { getShimmerPlaceholder } from "@/lib/utils/image";
+import { contentfulImageLoader } from "@/lib/utils/contentful-image-loader";
+import { getShimmerPlaceholder, isSvgSrc } from "@/lib/utils/image";
+
+import type { ContentDisplayOn } from "@/lib/types/contentful/display-on";
+import type { ContentViewport } from "@/lib/utils/display-on";
 
 const BANNER_SLIDE_GAP_PX = 10;
+const BANNER_SLIDER_IMAGE_SIZES =
+  "(max-width: 1200px) calc(100vw - 20px), 1200px";
+const VIEWPORT_MEDIA = {
+  desktop: "(min-width: 64rem)",
+  mobile: "(width < 64rem)",
+} satisfies Record<ContentViewport, string>;
+
+function ViewportLcpBannerImage({
+  alt,
+  displayOn,
+  src,
+}: {
+  alt: string;
+  displayOn: ContentViewport;
+  src: string;
+}) {
+  const {
+    props: { src: fallbackSrc, srcSet, ...imageProps },
+  } = getImageProps({
+    alt,
+    className: "object-cover",
+    decoding: "sync",
+    fetchPriority: "high",
+    fill: true,
+    loader: contentfulImageLoader,
+    loading: "eager",
+    sizes: BANNER_SLIDER_IMAGE_SIZES,
+    src,
+    unoptimized: isSvgSrc(src),
+  });
+
+  return (
+    <picture>
+      <source
+        media={VIEWPORT_MEDIA[displayOn]}
+        sizes={imageProps.sizes}
+        srcSet={srcSet || fallbackSrc}
+      />
+      <img {...imageProps} alt={imageProps.alt} />
+    </picture>
+  );
+}
 
 export const BannerSliderCarousel = ({
   bannerColumn,
@@ -22,6 +70,7 @@ export const BannerSliderCarousel = ({
   banners,
   carouselContainerProps,
   carouselItemProps,
+  displayOn = "all",
   isLcpCandidate = false,
 }: {
   bannerColumn?: number;
@@ -53,6 +102,7 @@ export const BannerSliderCarousel = ({
     >["previousIconProps"];
   };
   carouselItemProps?: ComponentProps<typeof ScrollSnapCarouselItem>;
+  displayOn?: ContentDisplayOn;
   isLcpCandidate?: boolean;
 }) => {
   return (
@@ -63,7 +113,7 @@ export const BannerSliderCarousel = ({
         ...carouselContainerProps?.contentProps,
         className: cn(
           "ms-0 gap-2.5",
-          carouselContainerProps?.contentProps?.className
+          carouselContainerProps?.contentProps?.className,
         ),
       }}
       dotsProps={{
@@ -74,7 +124,7 @@ export const BannerSliderCarousel = ({
         ...carouselContainerProps?.nextButtonProps,
         className: cn(
           "end-10",
-          carouselContainerProps?.nextButtonProps?.className
+          carouselContainerProps?.nextButtonProps?.className,
         ),
       }}
       nextIconProps={{
@@ -85,7 +135,7 @@ export const BannerSliderCarousel = ({
         ...carouselContainerProps?.previousButtonProps,
         className: cn(
           "start-10",
-          carouselContainerProps?.previousButtonProps?.className
+          carouselContainerProps?.previousButtonProps?.className,
         ),
       }}
       previousIconProps={{
@@ -111,26 +161,36 @@ export const BannerSliderCarousel = ({
             bannerType="banner-slider"
             className={cn(
               "relative flex w-full items-center",
-              bannerContainerProps?.className
+              bannerContainerProps?.className,
             )}
             elementId={banner.elementId}
             href={banner.btnUrl}
           >
-            <ContentfulImage
-              alt={`Banner slider ${index}`}
-              className="object-cover"
-              decoding={index === 0 && isLcpCandidate ? "sync" : "async"}
-              fetchPriority={index === 0 && isLcpCandidate ? "high" : undefined}
-              fill
-              loading={index === 0 && isLcpCandidate ? "eager" : "lazy"}
-              placeholder={
-                index === 0 && isLcpCandidate
-                  ? "empty"
-                  : getShimmerPlaceholder()
-              }
-              sizes="(max-width: 1200px) calc(100vw - 20px), 1200px"
-              src={banner.image.desktop.url}
-            />
+            {index === 0 && isLcpCandidate && displayOn !== "all" ? (
+              <ViewportLcpBannerImage
+                alt={`Banner slider ${index}`}
+                displayOn={displayOn}
+                src={banner.image.desktop.url}
+              />
+            ) : (
+              <ContentfulImage
+                alt={`Banner slider ${index}`}
+                className="object-cover"
+                decoding={index === 0 && isLcpCandidate ? "sync" : "async"}
+                fetchPriority={
+                  index === 0 && isLcpCandidate ? "high" : undefined
+                }
+                fill
+                loading={index === 0 && isLcpCandidate ? "eager" : "lazy"}
+                placeholder={
+                  index === 0 && isLcpCandidate
+                    ? "empty"
+                    : getShimmerPlaceholder()
+                }
+                sizes={BANNER_SLIDER_IMAGE_SIZES}
+                src={banner.image.desktop.url}
+              />
+            )}
           </BannerTrackerLink>
         </ScrollSnapCarouselItem>
       ))}

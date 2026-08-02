@@ -39,6 +39,9 @@ import {
   WebsiteMultipleBannersData,
   YoutubeVideoData,
 } from "@/lib/types/contentful/page-landing";
+import { CONTENT_VIEWPORTS, isVisibleOnViewport } from "@/lib/utils/display-on";
+
+import type { ContentViewport } from "@/lib/utils/display-on";
 
 export const enum TabContentType {
   BannerSlider = "bannerSlider",
@@ -62,8 +65,6 @@ export const enum TabContentType {
   YoutubeVideo = "youtubeVideo",
 }
 
-const DEFAULT_BANNER_LCP_CANDIDATE_INDEX = 0;
-
 export class PageLanding {
   public cartSuggestedProducts: CartSuggestedProducts[] = [];
   public contents?: (
@@ -82,7 +83,6 @@ export class PageLanding {
   public cookieConsentPrompt?: CookieConsentPromptModel;
   public homeBanner?: WebsiteBanner;
   public internalName?: string;
-  public lcpPriorityContentId?: string;
   public mobileHeaderTitle?: string;
   public openAppPrompt?: OpenAppPromptModel;
   public promoBanner?: PromoBanner;
@@ -92,15 +92,13 @@ export class PageLanding {
 
   constructor(data: PageLandingData) {
     this.internalName = data.items?.[0]?.fields?.internalName;
-    this.lcpPriorityContentId =
-      data.items?.[0]?.fields?.lcpPriorityContent?.sys?.id;
     this.mobileHeaderTitle = data.items?.[0]?.fields?.mobileHeaderTitle;
     const fields = data.items?.[0]?.fields;
     const tabContents = fields?.tabContent;
 
     const componentSeoData = tabContents?.find(
       (content) =>
-        content.sys.contentType?.sys.id === TabContentType.ComponentSeo
+        content.sys.contentType?.sys.id === TabContentType.ComponentSeo,
     );
 
     if (componentSeoData?.fields && componentSeoData.sys.contentType) {
@@ -109,64 +107,65 @@ export class PageLanding {
 
     const webFooterData = tabContents?.find(
       (content) =>
-        content.sys.contentType?.sys.id === TabContentType.WebsiteFooter
+        content.sys.contentType?.sys.id === TabContentType.WebsiteFooter,
     );
 
     if (webFooterData?.fields && webFooterData.sys.contentType) {
       this.websiteFooter = new WebsiteFooter(
-        webFooterData.fields as WebsiteFooterData
+        webFooterData.fields as WebsiteFooterData,
       );
     }
 
     const promoBannerData = tabContents?.find(
       (content) =>
-        content.sys.contentType?.sys.id === TabContentType.PromoBanner
+        content.sys.contentType?.sys.id === TabContentType.PromoBanner,
     );
 
     if (promoBannerData?.fields) {
       this.promoBanner = new PromoBanner(
-        promoBannerData.fields as PromoBannerData
+        promoBannerData.fields as PromoBannerData,
       );
     }
 
     const siteNavigationData = tabContents?.find(
-      (content) => content.sys.contentType?.sys.id === TabContentType.Navigation
+      (content) =>
+        content.sys.contentType?.sys.id === TabContentType.Navigation,
     );
 
     if (siteNavigationData?.fields) {
       this.siteNavigation = new SiteNavigation(
-        siteNavigationData.fields as NavHeaderData
+        siteNavigationData.fields as NavHeaderData,
       );
     }
 
     const homeBannerData = tabContents?.find(
       (content) =>
-        content.sys.contentType?.sys.id === TabContentType.WebsiteBanner
+        content.sys.contentType?.sys.id === TabContentType.WebsiteBanner,
     );
 
     if (homeBannerData?.fields && homeBannerData.sys.contentType) {
       this.homeBanner = new WebsiteBanner(
         homeBannerData.fields as WebsiteBannerData,
         homeBannerData.sys.contentType.sys.id,
-        homeBannerData.sys.id
+        homeBannerData.sys.id,
       );
     }
 
     const openAppPromptData = tabContents?.find(
       (content) =>
-        content.sys.contentType?.sys.id === TabContentType.OpenAppPrompt
+        content.sys.contentType?.sys.id === TabContentType.OpenAppPrompt,
     );
 
     if (openAppPromptData?.fields && openAppPromptData.sys.contentType) {
       this.openAppPrompt = new OpenAppPromptModel(
         openAppPromptData.fields as OpenAppPromptData,
-        openAppPromptData.sys.contentType.sys.id
+        openAppPromptData.sys.contentType.sys.id,
       );
     }
 
     const cookieConsentPromptData = tabContents?.find(
       (content) =>
-        content.sys.contentType?.sys.id === TabContentType.CookieConsentPrompt
+        content.sys.contentType?.sys.id === TabContentType.CookieConsentPrompt,
     );
 
     if (
@@ -175,7 +174,7 @@ export class PageLanding {
     ) {
       this.cookieConsentPrompt = new CookieConsentPromptModel(
         cookieConsentPromptData.fields as CookieConsentPromptData,
-        cookieConsentPromptData.sys.contentType.sys.id
+        cookieConsentPromptData.sys.contentType.sys.id,
       );
     }
 
@@ -185,15 +184,15 @@ export class PageLanding {
           (content) =>
             content.fields &&
             content.sys.contentType?.sys.id ===
-              TabContentType.CartSuggestedProducts
+              TabContentType.CartSuggestedProducts,
         )
         .map(
           (content) =>
             new CartSuggestedProducts(
               content.fields as CartSuggestedProductsData,
               TabContentType.CartSuggestedProducts,
-              content.sys.id
-            )
+              content.sys.id,
+            ),
         ) ?? [];
 
     this.contents = tabContents
@@ -211,7 +210,7 @@ export class PageLanding {
           TabContentType.WebsiteBanner,
           TabContentType.WebsiteMultipleBanner,
           TabContentType.YoutubeVideo,
-        ].includes(content.sys.contentType?.sys.id as TabContentType)
+        ].includes(content.sys.contentType?.sys.id as TabContentType),
       )
       .map((filteredContent) => {
         switch (filteredContent.sys.contentType?.sys.id) {
@@ -219,80 +218,97 @@ export class PageLanding {
             return new BannerSlider(
               filteredContent.fields as BannerSliderData,
               filteredContent.sys.contentType.sys.id,
-              filteredContent.sys.id
+              filteredContent.sys.id,
             );
           case TabContentType.CategoryProducts:
             return new CategoryProducts(
               filteredContent.fields as CategoryProductsData,
-              filteredContent.sys.contentType.sys.id
+              filteredContent.sys.contentType.sys.id,
             );
 
           case TabContentType.DesktopCategories:
             return new DesktopCategories(
               filteredContent.fields as DesktopCategoriesData,
-              filteredContent.sys.contentType.sys.id
+              filteredContent.sys.contentType.sys.id,
             );
           case TabContentType.FlashSale:
             return new FlashSale(
               filteredContent.fields as FlashSaleData,
-              TabContentType.FlashSale
+              TabContentType.FlashSale,
             );
           case TabContentType.RecentlyViewedProducts:
             return new RecentlyViewedProductsContent(
               filteredContent.fields as RecentlyViewedProductsData,
-              TabContentType.RecentlyViewedProducts
+              TabContentType.RecentlyViewedProducts,
             );
           case TabContentType.SeoContentBlock:
             return new SeoContentBlock(
               filteredContent.fields as SeoContentBlockData,
-              filteredContent.sys.contentType.sys.id
+              filteredContent.sys.contentType.sys.id,
             );
           case TabContentType.TitleAndDescription:
             return new TitleAndDescription(
               filteredContent.fields as TitleAndDescriptionData,
-              filteredContent.sys.contentType.sys.id
+              filteredContent.sys.contentType.sys.id,
             );
           case TabContentType.TopTrendsCategoryProducts:
             return new TopTrendsCategoryProducts(
               filteredContent.fields as TopTrendsData,
-              TabContentType.TopTrendsCategoryProducts
+              TabContentType.TopTrendsCategoryProducts,
             );
           case TabContentType.WebsiteBanner:
             return new WebsiteBanner(
               filteredContent.fields as WebsiteBannerData,
               filteredContent.sys.contentType.sys.id,
-              filteredContent.sys.id
+              filteredContent.sys.id,
             );
           case TabContentType.WebsiteMultipleBanner:
             return new WebsiteMultipleBanners(
               filteredContent.fields as unknown as WebsiteMultipleBannersData,
-              TabContentType.WebsiteMultipleBanner
+              TabContentType.WebsiteMultipleBanner,
             );
           case TabContentType.YoutubeVideo:
             return new YoutubeVideo(
               filteredContent.fields as YoutubeVideoData,
-              filteredContent.sys.contentType.sys.id
+              filteredContent.sys.contentType.sys.id,
             );
         }
       })
       .filter((item) => !!item);
 
-    const bannerLcpCandidateEntryId =
-      PageLanding.resolveBannerLcpCandidateEntryId({
+    CONTENT_VIEWPORTS.forEach((viewport) => {
+      const categoryProductsCandidate = this.contents?.find(
+        (content): content is CategoryProducts =>
+          content.contentType === TabContentType.CategoryProducts &&
+          isVisibleOnViewport(
+            (content as CategoryProducts).displayOn,
+            viewport,
+          ),
+      );
+
+      if (categoryProductsCandidate) {
+        categoryProductsCandidate.optimizeProductImages = true;
+      }
+    });
+
+    const bannerLcpCandidateEntryIds =
+      PageLanding.resolveBannerLcpCandidateEntryIds({
         contents: this.contents,
-        fallbackIndex: DEFAULT_BANNER_LCP_CANDIDATE_INDEX,
-        lcpPriorityContentId: this.lcpPriorityContentId,
+        desktopLcpPriorityContentId: fields?.desktopLcpPriorityContent?.sys?.id,
+        mobileLcpPriorityContentId: fields?.mobileLcpPriorityContent?.sys?.id,
       });
 
     this.contents?.forEach((content) => {
       if (PageLanding.isBannerLcpCandidateContent(content)) {
-        content.isLcpCandidate = content.entryId === bannerLcpCandidateEntryId;
+        content.isLcpCandidate = bannerLcpCandidateEntryIds.has(
+          content.entryId,
+        );
       }
     });
   }
 
   private static isBannerLcpCandidateContent(
-    content: NonNullable<PageLanding["contents"]>[number]
+    content: NonNullable<PageLanding["contents"]>[number],
   ): content is BannerSlider | WebsiteBanner {
     return (
       content.contentType === TabContentType.BannerSlider ||
@@ -300,36 +316,63 @@ export class PageLanding {
     );
   }
 
-  private static resolveBannerLcpCandidateEntryId({
+  private static resolveBannerLcpCandidateEntryIds({
     contents,
-    fallbackIndex,
-    lcpPriorityContentId,
+    desktopLcpPriorityContentId,
+    mobileLcpPriorityContentId,
   }: {
     contents?: PageLanding["contents"];
-    fallbackIndex?: number;
-    lcpPriorityContentId?: string;
+    desktopLcpPriorityContentId?: string;
+    mobileLcpPriorityContentId?: string;
   }) {
-    if (
-      lcpPriorityContentId &&
-      contents?.some(
-        (content) =>
-          PageLanding.isBannerLcpCandidateContent(content) &&
-          content.entryId === lcpPriorityContentId
-      )
-    ) {
-      return lcpPriorityContentId;
+    const bannerContents =
+      contents?.filter(PageLanding.isBannerLcpCandidateContent) ?? [];
+
+    const getConfiguredContent = (entryId?: string) =>
+      bannerContents.find((content) => content.entryId === entryId);
+    const getFirstVisibleContent = (viewport: ContentViewport) =>
+      bannerContents.find((content) =>
+        isVisibleOnViewport(content.displayOn, viewport),
+      );
+    const sharedConfiguredContent =
+      mobileLcpPriorityContentId === desktopLcpPriorityContentId
+        ? getConfiguredContent(mobileLcpPriorityContentId)
+        : undefined;
+
+    if (sharedConfiguredContent?.displayOn === "all") {
+      return new Set([sharedConfiguredContent.entryId]);
     }
 
-    const fallbackContent =
-      typeof fallbackIndex === "number" ? contents?.[fallbackIndex] : undefined;
+    const candidateEntryIds = new Set<string>();
+    const configuredIds = {
+      desktop: desktopLcpPriorityContentId,
+      mobile: mobileLcpPriorityContentId,
+    } satisfies Record<ContentViewport, string | undefined>;
 
-    if (
-      fallbackContent &&
-      PageLanding.isBannerLcpCandidateContent(fallbackContent)
-    ) {
-      return fallbackContent.entryId;
+    CONTENT_VIEWPORTS.forEach((viewport) => {
+      const configuredContent = getConfiguredContent(configuredIds[viewport]);
+      const firstVisibleContent = getFirstVisibleContent(viewport);
+      const candidateContent =
+        configuredContent?.displayOn === viewport
+          ? configuredContent
+          : firstVisibleContent;
+
+      if (candidateContent?.displayOn === viewport) {
+        candidateEntryIds.add(candidateContent.entryId);
+      }
+    });
+
+    if (candidateEntryIds.size > 0) {
+      return candidateEntryIds;
     }
 
-    return undefined;
+    const mobileContent = getFirstVisibleContent("mobile");
+    const desktopContent = getFirstVisibleContent("desktop");
+
+    return new Set(
+      mobileContent === desktopContent && mobileContent?.displayOn === "all"
+        ? [mobileContent.entryId]
+        : [],
+    );
   }
 }

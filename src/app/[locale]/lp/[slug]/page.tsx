@@ -159,10 +159,6 @@ export default async function LandingPage({
     return <RedirectToHome />;
   }
 
-  const firstCategoryProductsIndex = pageLandingData.contents.findIndex(
-    (content) => content.contentType === TabContentType.CategoryProducts,
-  );
-
   return (
     <>
       {pageLandingData.mobileHeaderTitle ? (
@@ -180,7 +176,13 @@ export default async function LandingPage({
           case TabContentType.BannerSlider:
             const bannerSlider = content as BannerSlider;
             return (
-              <Container className="mt-2" key={`content-${index}`}>
+              <Container
+                className={cn(
+                  "mt-2",
+                  getDisplayOnClassName(bannerSlider.displayOn),
+                )}
+                key={`content-${index}`}
+              >
                 <BannerSliderSection
                   bannerColumn={1}
                   bannerContainerProps={{
@@ -203,6 +205,7 @@ export default async function LandingPage({
                       },
                     },
                   }}
+                  displayOn={bannerSlider.displayOn}
                   isLcpCandidate={bannerSlider.isLcpCandidate}
                 />
               </Container>
@@ -221,7 +224,6 @@ export default async function LandingPage({
                 <CategoryProductsCarousel
                   {...categoryProducts}
                   lpRow={index + 1}
-                  optimizeProductImages={index === firstCategoryProductsIndex}
                 />
               </Container>
             );
