@@ -25,12 +25,14 @@ function getLcpBannerImageProps({
   alt,
   height,
   maxWidth,
+  sizes,
   src,
   width,
 }: {
   alt: string;
   height: number;
   maxWidth?: number;
+  sizes?: string;
   src: string;
   width: number;
 }) {
@@ -44,6 +46,7 @@ function getLcpBannerImageProps({
     loader: (loaderProps) =>
       contentfulImageLoader({ ...loaderProps, maxWidth }),
     loading: "eager",
+    sizes,
     src: normalizedSrc,
     unoptimized: isSvgSrc(normalizedSrc),
     width,
@@ -84,6 +87,7 @@ export const WebsiteBannerComponent = ({
           mobile: getLcpBannerImageProps({
             alt: bannerAlt,
             height: banner.mobileImageHeight || 200,
+            sizes: `(max-width: ${(banner.mobileImageWidth || 400) + 20}px) calc(100vw - 20px), ${banner.mobileImageWidth || 400}px`,
             src: banner.mobileImageUrl,
             width: banner.mobileImageWidth || 400,
           }),
@@ -149,6 +153,7 @@ export const WebsiteBannerComponent = ({
               <source
                 height={mobileImageHeight}
                 media="(width < 64rem)"
+                sizes={responsiveLcpImageProps.mobile.sizes}
                 srcSet={
                   responsiveLcpImageProps.mobile.srcSet ||
                   responsiveLcpImageProps.mobile.src
