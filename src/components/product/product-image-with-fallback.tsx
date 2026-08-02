@@ -7,8 +7,10 @@ import type { ImageProps } from "next/image";
 import ProductPlaceholder from "@/assets/images/product-placeholder.svg";
 import { RemoteImage } from "@/components/shared/remote-image";
 import { cn } from "@/lib/utils";
+import { isNoSelectionProductImageUrl } from "@/lib/utils/image";
 
 type ProductImageWithFallbackProps = {
+  showFallbackForNoSelection?: boolean;
   src?: ImageProps["src"];
 } & Omit<ImageProps, "onError" | "src">;
 
@@ -16,9 +18,23 @@ const PLACEHOLDER_STYLE: CSSProperties = {
   backgroundImage: `url(${ProductPlaceholder.src})`,
 };
 
-export function ProductImageWithFallback(props: ProductImageWithFallbackProps) {
+export function ProductImageWithFallback({
+  showFallbackForNoSelection = false,
+  ...props
+}: ProductImageWithFallbackProps) {
+  const isNoSelection = isNoSelectionImage(props.src);
+
+  // Hide the invalid API image unless a sole gallery image needs a fallback.
+  if (isNoSelection && !showFallbackForNoSelection) {
+    return null;
+  }
+
   return (
-    <ProductImageWithFallbackInner key={getSrcKey(props.src)} {...props} />
+    <ProductImageWithFallbackInner
+      key={getSrcKey(props.src)}
+      {...props}
+      src={isNoSelection ? undefined : props.src}
+    />
   );
 }
 
@@ -29,12 +45,17 @@ function getSrcKey(src: ImageProps["src"] | undefined): string {
   return src.default.src;
 }
 
+function isNoSelectionImage(src: ImageProps["src"] | undefined): boolean {
+  return !!src && isNoSelectionProductImageUrl(getSrcKey(src));
+}
+
 function ProductImageWithFallbackInner({
   alt,
   className,
   fill,
   onLoad,
   src,
+  unoptimized = true,
   ...imageProps
 }: ProductImageWithFallbackProps) {
   const [hasLoadError, setHasLoadError] = useState(false);
@@ -59,7 +80,7 @@ function ProductImageWithFallbackInner({
         className={cn(
           "transition-default",
           showOverlay && "opacity-0",
-          className
+          className,
         )}
         fill={fill}
         onError={hasLoadError ? undefined : () => setHasLoadError(true)}
@@ -68,7 +89,7 @@ function ProductImageWithFallbackInner({
           setIsLoaded(true);
         }}
         src={imageSrc}
-        unoptimized={isPlaceholder ? false : true}
+        unoptimized={isPlaceholder ? false : unoptimized}
       />
     </span>
   );

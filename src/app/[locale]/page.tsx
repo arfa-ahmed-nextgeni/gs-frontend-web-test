@@ -65,6 +65,9 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
 
   // Generate WebSite schema for homepage
   const websiteSchema = generateWebsiteSchema(locale as Locale);
+  const firstCategoryProductsIndex = pageLandingData.contents.findIndex(
+    (content) => content.contentType === TabContentType.CategoryProducts,
+  );
 
   return (
     <>
@@ -120,6 +123,7 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
                 <CategoryProductsCarousel
                   {...categoryProducts}
                   lpRow={index + 1}
+                  optimizeProductImages={index === firstCategoryProductsIndex}
                 />
               </Container>
             );

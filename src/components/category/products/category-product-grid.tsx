@@ -9,6 +9,7 @@ export const CategoryProductGrid = ({
   desktopColumns = 5,
   isBulletDeliveryEnabled,
   lpRow,
+  optimizeProductImages = false,
   products,
   searchTerm,
 }: {
@@ -16,6 +17,7 @@ export const CategoryProductGrid = ({
   desktopColumns?: 5 | 6;
   isBulletDeliveryEnabled: boolean;
   lpRow?: number;
+  optimizeProductImages?: boolean;
   products: ProductCardModel[];
   searchTerm?: string;
 }) => {
@@ -24,7 +26,7 @@ export const CategoryProductGrid = ({
   }
 
   const hasBundles = products.some(
-    (p) => p.variant === ProductCardVariant.Bundles
+    (p) => p.variant === ProductCardVariant.Bundles,
   );
   const effectiveDesktopColumns = hasBundles ? 4 : desktopColumns;
   const displayProducts = hasBundles
@@ -33,7 +35,7 @@ export const CategoryProductGrid = ({
           ? p
           : Object.assign(structuredClone(p), {
               variant: ProductCardVariant.Bundles,
-            })
+            }),
       )
     : products;
 
@@ -53,7 +55,7 @@ export const CategoryProductGrid = ({
       className={cn(
         "grid grid-cols-2 gap-2.5 md:grid-cols-3",
         hasBundles ? "lg:grid-cols-4" : "lg:grid-cols-5",
-        !hasBundles && desktopColumns === 6 && "xl:grid-cols-6 xl:gap-2"
+        !hasBundles && desktopColumns === 6 && "xl:grid-cols-6 xl:gap-2",
       )}
     >
       {displayProducts.map((product, index) => {
@@ -65,6 +67,7 @@ export const CategoryProductGrid = ({
             key={`${product.id}-${index}`}
             lpColumn={lpRow ? gridColumn : undefined}
             lpRow={lpRow ? lpRow + gridRow - 1 : undefined}
+            optimizeImage={optimizeProductImages}
             position={index + 1}
             product={product}
             searchTerm={searchTerm}

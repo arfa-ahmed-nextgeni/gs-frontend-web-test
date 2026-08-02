@@ -23,6 +23,7 @@ export const ProductCard = ({
   lpExtra,
   lpInnerPosition,
   lpRow,
+  optimizeImage = false,
   position,
   product,
   searchTerm,
@@ -31,6 +32,7 @@ export const ProductCard = ({
   isBulletDeliveryEnabled: boolean;
   isInCarousel?: boolean;
   isWishlistItem?: boolean;
+  optimizeImage?: boolean;
   product: ProductCardModel;
 } & ProductCardClickOriginProps) => {
   const isConfigurable = !!product.options?.choices?.length;
@@ -68,7 +70,7 @@ export const ProductCard = ({
             isBundles,
           "w-60": isBundles && isInCarousel,
         },
-        containerProps?.className
+        containerProps?.className,
       )}
       data-product-card-root
       tabIndex={0}
@@ -82,6 +84,7 @@ export const ProductCard = ({
         lpExtra={lpExtra}
         lpInnerPosition={lpInnerPosition}
         lpRow={lpRow}
+        optimizeImage={optimizeImage}
         position={position}
         searchTerm={searchTerm}
         urlKey={product.urlKey}

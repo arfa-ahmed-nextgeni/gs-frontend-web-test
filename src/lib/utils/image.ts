@@ -17,6 +17,11 @@ export function isContentfulSrc(src: string) {
   }
 }
 
+// Identifies an unavailable image URL returned by the product API.
+export function isNoSelectionProductImageUrl(url?: null | string): boolean {
+  return !!url && url.includes("/no_selection");
+}
+
 export function isSvgSrc(src: string) {
   try {
     return new URL(src).pathname.toLowerCase().endsWith(".svg");
@@ -29,7 +34,7 @@ const PLACEHOLDER_IMAGE_PATH = "/placeholder/";
 
 export function resolveProductImageUrl(
   variantUrl?: null | string,
-  parentUrl?: null | string
+  parentUrl?: null | string,
 ): string {
   if (variantUrl && !isPlaceholderImageUrl(variantUrl)) {
     return variantUrl;

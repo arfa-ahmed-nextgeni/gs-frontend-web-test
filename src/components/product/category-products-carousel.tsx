@@ -11,8 +11,9 @@ export const CategoryProductsCarousel = async (
   props: {
     carouselContainerProps?: ComponentProps<typeof CardRailScrollSnapCarousel>;
     lpRow?: number;
+    optimizeProductImages?: boolean;
     sectionHeaderProps?: ComponentProps<typeof SectionHeader>;
-  } & CategoryProducts
+  } & CategoryProducts,
 ) => {
   return (
     <AsyncBoundary

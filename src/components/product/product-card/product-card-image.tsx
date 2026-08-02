@@ -24,6 +24,7 @@ export const ProductCardImage = ({
   lpExtra,
   lpInnerPosition,
   lpRow,
+  optimizeImage = false,
   position,
   searchTerm,
   urlKey,
@@ -32,12 +33,19 @@ export const ProductCardImage = ({
   imageUrl: string;
   isInCarousel?: boolean;
   isOutOfStock?: boolean;
+  optimizeImage?: boolean;
   urlKey?: string;
   variant: ProductCardVariant;
 } & ProductCardClickOriginProps) => {
   const t = useTranslations("productCard");
   const { className, style } = productCardSizeClasses(variant);
   const isBundlesGrid = variant === ProductCardVariant.Bundles && !isInCarousel;
+  const imageSizes =
+    variant === ProductCardVariant.Bundles
+      ? isInCarousel
+        ? `${PRODUCT_CARD_DIMENSIONS[ProductCardVariant.Bundles].default.w}px`
+        : `(max-width: 767px) calc(50vw - 35px), ${PRODUCT_CARD_DIMENSIONS[ProductCardVariant.Bundles].default.w}px`
+      : `${PRODUCT_CARD_DIMENSIONS[ProductCardVariant.Single].default.w}px`;
   const productHref = urlKey?.trim()
     ? ROUTES.PRODUCT.BY_URL_KEY(urlKey)
     : undefined;
@@ -65,12 +73,9 @@ export const ProductCardImage = ({
         )}
         fill
         key={imageUrl}
-        sizes={
-          variant === ProductCardVariant.Bundles
-            ? `(max-width: 768px) 30vw, ${PRODUCT_CARD_DIMENSIONS[ProductCardVariant.Bundles].default.w}px`
-            : `(max-width: 768px) 22vw, ${PRODUCT_CARD_DIMENSIONS[ProductCardVariant.Single].default.w}px`
-        }
+        sizes={imageSizes}
         src={imageUrl}
+        unoptimized={!optimizeImage}
       />
       {productHref ? (
         <ProductCardImageLink
@@ -82,6 +87,7 @@ export const ProductCardImage = ({
           lpInnerPosition={lpInnerPosition}
           lpRow={lpRow}
           position={position}
+          prefetch={false}
           searchTerm={searchTerm}
           title={t("viewProduct")}
         >

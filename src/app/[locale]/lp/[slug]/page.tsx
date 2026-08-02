@@ -159,6 +159,10 @@ export default async function LandingPage({
     return <RedirectToHome />;
   }
 
+  const firstCategoryProductsIndex = pageLandingData.contents.findIndex(
+    (content) => content.contentType === TabContentType.CategoryProducts,
+  );
+
   return (
     <>
       {pageLandingData.mobileHeaderTitle ? (
@@ -217,6 +221,7 @@ export default async function LandingPage({
                 <CategoryProductsCarousel
                   {...categoryProducts}
                   lpRow={index + 1}
+                  optimizeProductImages={index === firstCategoryProductsIndex}
                 />
               </Container>
             );

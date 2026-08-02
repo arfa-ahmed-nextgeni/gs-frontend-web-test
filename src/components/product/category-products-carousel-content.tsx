@@ -23,6 +23,7 @@ export const CategoryProductsCarouselContent = async ({
   grid,
   lpRow,
   maximumProducts,
+  optimizeProductImages = false,
   productsCategoryId,
   richTitle,
   sectionHeaderProps,
@@ -32,6 +33,7 @@ export const CategoryProductsCarouselContent = async ({
 }: {
   carouselContainerProps?: ComponentProps<typeof CardRailScrollSnapCarousel>;
   lpRow?: number;
+  optimizeProductImages?: boolean;
   sectionHeaderProps?: ComponentProps<typeof SectionHeader>;
 } & CategoryProducts) => {
   const locale = (await getLocale()) as Locale;
@@ -83,6 +85,7 @@ export const CategoryProductsCarouselContent = async ({
           desktopColumns={desktopGridColumns}
           isBulletDeliveryEnabled={isBulletDeliveryEnabled}
           lpRow={lpRow}
+          optimizeProductImages={optimizeProductImages}
           products={products}
         />
       ) : (
@@ -121,6 +124,7 @@ export const CategoryProductsCarouselContent = async ({
                 }}
                 lpInnerPosition={index + 1}
                 lpRow={lpRow}
+                optimizeImage={optimizeProductImages}
                 product={product}
               />
             </CardRailScrollSnapCarouselItem>
