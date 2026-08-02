@@ -21,6 +21,10 @@ export default function WebsiteMultipleBannersComponent({
 }) {
   if (!data || !data.banners || data.banners.length === 0) return null;
 
+  const imageSizes = data.imagesWidth
+    ? `(min-width: 1200px) ${data.imagesWidth}px, 32vw`
+    : "32vw";
+
   return (
     <div
       className={cn(
@@ -56,7 +60,7 @@ export default function WebsiteMultipleBannersComponent({
               className="absolute size-full object-cover"
               fill
               placeholder={getShimmerPlaceholder()}
-              sizes="32vw"
+              sizes={imageSizes}
               src={banner.imageUrl}
             />
           )}
