@@ -79,6 +79,7 @@ const nextConfig: NextConfig = {
   },
   images: {
     formats: ["image/webp", "image/avif"],
+    imageSizes: [32, 48, 64, 96, 128, 256, 384, 400],
     remotePatterns: [
       {
         hostname: "*",
